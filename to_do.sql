@@ -1,0 +1,12 @@
+CREATE TABLE `ToDoList` (
+	`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+	`title`	TEXT NOT NULL DEFAULT "",
+	`content`	TEXT NOT NULL DEFAULT "",
+	`due_time`	TEXT NOT NULL,
+	`remind_time`	TEXT NOT NULL,
+	`create_time`	TEXT NOT NULL,
+	`update_time`	TEXT NOT NULL DEFAULT "",
+	`to_do_tag`	INTEGER NOT NULL DEFAULT -1,
+	`to_do_type`	INTEGER NOT NULL DEFAULT -1,
+	`state`	INTEGER NOT NULL DEFAULT 0
+);

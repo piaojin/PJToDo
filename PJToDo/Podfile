@@ -1,0 +1,20 @@
+# Uncomment the next line to define a global platform for your project
+# platform :ios, '9.0'
+
+target 'PJToDo' do
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for PJToDo
+
+  target 'PJToDoTests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+  target 'PJToDoUITests' do
+    inherit! :search_paths
+    # Pods for testing
+  end
+
+end

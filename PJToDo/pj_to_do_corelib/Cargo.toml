@@ -1,0 +1,42 @@
+[package]
+name = "pj_to_do_corelib"
+version = "0.1.0"
+authors = ["Zoey Weng <zoey.weng@ringcentral.com>"]
+
+include = [
+  "Cargo.toml",
+  "LICENSE",
+  "src/**/*"
+]
+
+[dependencies]
+# ****** C ******
+libc = "*"
+
+# ****** NetWork ******
+bytes = "0.4"
+futures = "0.1.21"
+native-tls = "0.2"
+hyper = "0.12.8"
+hyper-tls = "0.3.0"
+tokio-io = "0.1"
+tokio = "0.1.7"
+
+# ****** Sqlite : ORM ******
+diesel = { version = "1.0.0", features = ["sqlite"] }
+
+# ****** Json ******
+serde = "1.0.75"
+serde_derive = "1.0.75"
+serde_json = "1.0.26"
+# serde_json = { version = ">=0.8.0, <2.0", optional = true }
+
+# ****** Log ******
+log = "0.4.4"
+
+# ****** Base64 ******
+rustc-serialize = "0.3.24"
+
+[lib]
+crate-type = ["staticlib"]
+name = "pj_to_do_corelib"
