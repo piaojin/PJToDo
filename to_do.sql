@@ -6,7 +6,9 @@ CREATE TABLE `ToDoList` (
 	`remind_time`	TEXT NOT NULL,
 	`create_time`	TEXT NOT NULL,
 	`update_time`	TEXT NOT NULL DEFAULT "",
-	`to_do_tag`	INTEGER NOT NULL DEFAULT -1,
-	`to_do_type`	INTEGER NOT NULL DEFAULT -1,
-	`state`	INTEGER NOT NULL DEFAULT 0
+	`to_do_tag_id`	INTEGER NOT NULL DEFAULT -1,
+	`to_do_type_id`	INTEGER NOT NULL DEFAULT -1,
+	`state`	INTEGER NOT NULL DEFAULT 0,
+	CONSTRAINT fk_to_do_type FOREIGN KEY (to_do_type_id) REFERENCES ToDoType(id),
+	CONSTRAINT fk_to_do_tag FOREIGN KEY (to_do_tag_id) REFERENCES ToDoTag(id)
 );

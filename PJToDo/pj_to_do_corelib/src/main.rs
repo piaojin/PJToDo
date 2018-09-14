@@ -1,6 +1,7 @@
 #![feature(extern_prelude)]
 #![feature(unboxed_closures)]
-// #![feature(use_extern_macros)]
+#![feature(custom_attribute)]
+#![allow(proc_macro_derive_resolution_fallback)]
 #[macro_use]
 extern crate log;
 
@@ -10,8 +11,11 @@ extern crate serde;
 extern crate serde_json;
 extern crate futures;
 
+#[macro_use]
+extern crate diesel;
+
 pub mod to_do_type;
-use to_do_type::to_do_type::ToDoType;
+use to_do_type::to_do_type::{ToDoTypeForm, ToDoType};
 
 #[macro_use]
 pub mod common;
@@ -26,6 +30,14 @@ pub mod mine;
 
 pub mod repos;
 use repos::repos_file::ReposFileBody;
+
+#[macro_use]
+pub mod db;
+use db::pj_db_connection_util::PJDBConnectionUtil;
+use db::tables::schema;
+use diesel::prelude::*;
+
+pub mod pal;
 
 fn main() {
     //使用log之前需要初始化，并且只需要初始化一次
@@ -151,22 +163,86 @@ fn main() {
     //     }
     // });
 
-    let repos_delete_file_body = ReposFileBody {
-        path: "examples/test0.md",
-        message: "测试添加一个文件",
-        content: "aGVsbG8gd29ybGQsIGhlbGxvIHBpYW9qaW4h",
-        sha: "fa43f290c3e94a9940a7473c17c17980b0bd4b73"
-    };
+    // let repos_delete_file_body = ReposFileBody {
+    //     path: "examples/test0.md",
+    //     message: "测试添加一个文件",
+    //     content: "aGVsbG8gd29ybGQsIGhlbGxvIHBpYW9qaW4h",
+    //     sha: "fa43f290c3e94a9940a7473c17c17980b0bd4b73"
+    // };
 
-    PJHttpReposRequest::delete_file(repos_delete_file_body, |result| {
-        match result {
-            Ok(repos_content) => {
-                pj_info!("repos_content: {:?}", repos_content);
-            },
-            Err(e) => {
-                pj_error!("request error: {:?}", e);
-            }
-        }
-    });
+    // PJHttpReposRequest::delete_file(repos_delete_file_body, |result| {
+    //     match result {
+    //         Ok(repos_content) => {
+    //             pj_info!("repos_content: {:?}", repos_content);
+    //         },
+    //         Err(e) => {
+    //             pj_error!("request error: {:?}", e);
+    //         }
+    //     }
+    // });
+
+    // /Users/zoey.weng/Desktop/Study/PJToDo/ToDo.db
+    let connection_util = PJDBConnectionUtil::new();
+
+    // let to_do_type = ToDoTypeForm {
+    //     type_name: String::from("分类2")
+    // };
+
+    // diesel::insert_into(schema::todotype::table)
+    //     .values(&to_do_type)
+    //     .execute(&connection_util.connection)
+    //     .expect("Error saving new ToDoType");
+
+    use schema::todotype::dsl::*;
+
+    // let to_do_type = todotype.select(type_name.eq("分类2".to_string())).load::<ToDoType>(&connection_util.connection).unwrap();
+
+    //查询所有数据，不带条件
+    // let to_do_types = todotype.load::<ToDoType>(&connection_util.connection).unwrap();
+    // pj_info!("to_do_type: {:?}", to_do_types);
+
+    // //查找所有type_name="分类2"的数据集合
+    // let to_do_types2 = schema::todotype::table.filter(type_name.eq("分类2".to_string())).load::<ToDoType>(&connection_util.connection).unwrap();
+    // pj_info!("to_do_type2: {:?}", to_do_types2);
+
+    // //取出结果中的第一条记录
+    // let to_do_types2_first = to_do_types2.first();
+    // pj_info!("to_do_types2_first: {:?}", to_do_types2_first);
+
+    //通过ID查找
+    // let t = todotype.find(1).first::<ToDoType>(&connection_util.connection);
+    // pj_info!("t: {:?}", t);
+
+    //更新数据通过传入更新字段
+    // use diesel::{update};
+    // update(todotype.filter(id.eq(1)))
+    //     .set(type_name.eq("Jim"))
+    //     .execute(&connection_util.connection)
+    //     .unwrap();
+
+    //更新数据通过传入struct
+    // let newType = ToDoTypeForm {
+    //     type_name: String::from("hello piaojin!")
+    // };
+    // use diesel::{update};
+    // update(todotype.filter(id.eq(1)))
+    //     .set(&newType)
+    //     .execute(&connection_util.connection)
+    //     .unwrap();
+
+    //删除数据
+    // use diesel::{delete};
+    // let deleted_rows = delete(todotype.filter(type_name.eq("hello piaojin!"))).execute(&connection_util.connection);
+    // pj_info!("deleted_rows: {:?}", deleted_rows);
 }
 
+// impl Queryable<users::SqlType, DB> for User {
+//     type Row = (i32, String);
+
+//     fn build(row: Self::Row) -> Self {
+//         User {
+//             id: row.0,
+//             name: row.1.to_lowercase(),
+//         }
+//     }
+// }

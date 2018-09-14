@@ -1,8 +1,16 @@
 #![feature(extern_prelude)]
 #![feature(unboxed_closures)]
+#![feature(custom_attribute)]
+#![allow(proc_macro_derive_resolution_fallback)]
 
 #[macro_use]
 extern crate log;
+
+#[macro_use]
+extern crate diesel;
+// use diesel::sqlite::Sqlite;
+// use diesel::debug_query;
+// use diesel::prelude::*;
 
 #[macro_use]
 extern crate serde_derive;
@@ -23,3 +31,8 @@ pub mod mine;
 pub mod network;
 
 pub mod repos;
+
+#[macro_use]
+pub mod db;
+
+pub mod pal;
