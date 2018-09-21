@@ -4,7 +4,6 @@ extern crate serde_json;
 
 // use diesel::associations::BelongsTo;
 // use diesel::*;
-use to_do::to_do::ToDo;
 
 // use diesel::prelude::*;
 // use diesel::backend::Backend;
@@ -17,11 +16,9 @@ use db::tables::schema::{todotype};
 // #[column_name(barId)]
 #[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
 #[derive(Queryable, AsChangeset, Identifiable)]
-// #[belongs_to(ToDo, foreign_key = "to_do_id")]
 #[table_name = "todotype"]
 pub struct ToDoType {
     pub id: i32,
-    pub to_do_id: i32,
     pub type_name: String,
 }
 
@@ -68,6 +65,5 @@ pub struct ToDoType {
 #[derive(Insertable)]
 #[table_name = "todotype"]
 pub struct ToDoTypeInsert {
-    pub to_do_id: i32,
     pub type_name: String,
 }

@@ -1,7 +1,6 @@
 table! {
     todotype (id) {
         id -> Integer,
-        to_do_id -> Integer,
         type_name -> Text,
     }
 }
@@ -9,14 +8,11 @@ table! {
 table! {
     todotag (id) {
         id -> Integer,
-        to_do_id -> Integer,
         tag_name -> Text,
     }
 }
 
 table! {
-    use diesel::sql_types::*;
-    use to_do::to_do::ToDoStateType;
     todo (id) {
         id -> Integer,
         content -> Text,
@@ -27,7 +23,7 @@ table! {
         update_time -> Text,
         to_do_type_id -> Integer,
         to_do_tag_id -> Integer,
-        state -> ToDoStateType,
+        state -> Integer,
     }
 }
 

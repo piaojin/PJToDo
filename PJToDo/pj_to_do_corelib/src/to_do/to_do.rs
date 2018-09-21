@@ -14,12 +14,7 @@ use to_do_type::to_do_type::ToDoType;
 
 use db::tables::schema::todo;
 
-#[derive(SqlType)]
-#[sqlite(type_name = "todo_state_type")]
-pub struct ToDoStateType;
-
-#[derive(Serialize, Deserialize, Debug, FromSqlRow, AsExpression, PartialEq)]
-#[sql_type = "ToDoStateType"]
+#[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub enum ToDoState {
     Determined,
     InProgress,
@@ -60,19 +55,27 @@ impl Default for ToDoState {
 #[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
 #[derive(Identifiable, Queryable, Associations)]
 #[belongs_to(ToDoType, foreign_key = "to_do_type_id")]
+#[belongs_to(ToDoTag, foreign_key = "to_do_tag_id")]
 #[table_name = "todo"]
-pub struct ToDoQuery<'a> {
+pub struct ToDoQuery {
     pub id: i32,
-    pub content: &'a str, //待办事项内容
-    pub title: &'a str, //待办事项标题
-    pub due_time: &'a str, //到期时间
-    pub remind_time: &'a str, //提醒时间
-    pub create_time: &'a str, //创建时间
-    pub update_time: &'a str, //更新时间
+    pub content: String, //待办事项内容
+    pub title: String, //待办事项标题
+    pub due_time: String, //到期时间
+    pub remind_time: String, //提醒时间
+    // #[sql_type="Text"]
+    pub create_time: String, //创建时间
+    pub update_time: String, //更新时间
     pub to_do_type_id: i32, //标签
     pub to_do_tag_id: i32, //分类
-    pub state: ToDoState //状态
+    pub state: i32, //状态
 }
+
+// use diesel::sql_types::*;
+// use diesel::expression::AsExpression;
+// impl<'expr> AsExpression<Text> for &'expr str {
+
+// }
 
 //如果ToDo中不包含生命周期的属性则可以使用#[derive(Associations)]替代一下代码
 //Unreleased:
@@ -93,50 +96,51 @@ pub struct ToDoQuery<'a> {
 #[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
 #[derive(Insertable)]
 #[table_name = "todo"]
-pub struct ToDoInsert<'a> {
-    pub content: &'a str, //待办事项内容
-    pub title: &'a str, //待办事项标题
-    pub due_time: &'a str, //到期时间
-    pub remind_time: &'a str, //提醒时间
-    pub create_time: &'a str, //创建时间
-    pub update_time: &'a str, //更新时间
+pub struct ToDoInsert {
+    pub content: String, //待办事项内容
+    pub title: String, //待办事项标题
+    pub due_time: String, //到期时间
+    pub remind_time: String, //提醒时间
+    pub create_time: String, //创建时间
+    pub update_time: String, //更新时间
     pub to_do_type_id: i32, //标签
     pub to_do_tag_id: i32, //分类
-    pub state: ToDoState //状态
+    pub state: i32, //状态
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-pub struct ToDo<'a> {
+pub struct ToDo {
     pub id: i32,
-    pub content: &'a str, //待办事项内容
-    pub title: &'a str, //待办事项标题
-    pub due_time: &'a str, //到期时间
-    pub remind_time: &'a str, //提醒时间
-    pub create_time: &'a str, //创建时间
-    pub update_time: &'a str, //更新时间
+    pub content: String, //待办事项内容
+    pub title: String, //待办事项标题
+    pub due_time: String, //到期时间
+    pub remind_time: String, //提醒时间
+    pub create_time: String, //创建时间
+    pub update_time: String, //更新时间
     pub to_do_type_id: i32, //标签
     pub to_do_tag_id: i32, //分类
     pub to_do_tag: ToDoTag, //标签
     pub to_do_type: ToDoType, //分类
-    pub state: ToDoState //状态
+    pub state: ToDoState, //状态
+    pub state_raw_value: i32, //状态
 }
 
-impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for ToDo<'a> {
-    type Item = ToDo<'a>;
+impl<'b> PJSerdeDeserialize<'b> for ToDo {
+    type Item = ToDo;
     fn new() -> Self::Item {
         Self::Item::default()
     }
 }
 
-impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for ToDoQuery<'a> {
-    type Item = ToDoQuery<'a>;
+impl<'b> PJSerdeDeserialize<'b> for ToDoQuery {
+    type Item = ToDoQuery;
     fn new() -> Self::Item {
         Self::Item::default()
     }
 }
 
-impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for ToDoInsert<'a> {
-    type Item = ToDoInsert<'a>;
+impl<'b> PJSerdeDeserialize<'b> for ToDoInsert {
+    type Item = ToDoInsert;
     fn new() -> Self::Item {
         Self::Item::default()
     }

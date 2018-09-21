@@ -40,6 +40,8 @@ use diesel::prelude::*;
 pub mod pal;
 
 pub mod to_do;
+use to_do::to_do::{ToDoInsert, ToDoState, ToDoQuery};
+
 pub mod to_do_tag;
 
 fn main() {
@@ -240,8 +242,43 @@ fn main() {
     // let deleted_rows = delete(todotype.filter(type_name.eq("hello piaojin!"))).execute(&connection_util.connection);
     // pj_info!("deleted_rows: {:?}", deleted_rows);
 
-    //插入数据
-    // let to_do = To
+    //插入ToDo数据
+    use schema::todo::dsl::*;
+    
+    // let to_do = ToDoInsert {
+    //     content: "content".to_owned(), //待办事项内容
+    //     title: "title".to_owned(), //待办事项标题
+    //     due_time: "due_time".to_owned(), //到期时间
+    //     remind_time: "remind_time".to_owned(), //提醒时间
+    //     create_time: "create_time".to_owned(), //创建时间
+    //     update_time: "update_time".to_owned(), //更新时间
+    //     to_do_type_id: 2, //标签
+    //     to_do_tag_id: 2, //分类
+    //     state: 0 //状态
+    // };
+
+    // diesel::insert_into(schema::todo::table)
+    //     .values(&to_do)
+    //     .execute(&connection_util.connection)
+    //     .expect("Error saving new ToDoType");
+
+    let t = todotype.find(2).first::<ToDoType>(&connection_util.connection);
+    pj_info!("t: {:?}", t);
+
+    match t {
+        Ok(result) => {
+            let to_do: ToDoQuery = ToDoQuery::belonging_to(&result)
+            .first(&connection_util.connection)
+            .expect("Error query new ToDoType");
+            pj_info!("to_do: {:?}", to_do);
+        },
+        Err(e) => {
+            pj_error!("e: {}", e);
+        },
+    };
+
+    // let to_do_query = todo.find(1).first::<ToDoQuery>(&connection_util.connection);
+    // pj_info!("to_do_query: {:?}", to_do_query);
 }
 
 // impl Queryable<users::SqlType, DB> for User {
