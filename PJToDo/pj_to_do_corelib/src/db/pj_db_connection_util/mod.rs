@@ -1,6 +1,5 @@
 extern crate diesel;
 
-// use diesel::sqlite::Sqlite;
 use diesel::prelude::*;
 
 use pal::pj_db_pal::PJDBPal;

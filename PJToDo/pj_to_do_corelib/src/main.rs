@@ -15,7 +15,7 @@ extern crate futures;
 extern crate diesel;
 
 pub mod to_do_type;
-use to_do_type::to_do_type::{ToDoTypeForm, ToDoType};
+use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType};
 
 #[macro_use]
 pub mod common;
@@ -38,6 +38,9 @@ use db::tables::schema;
 use diesel::prelude::*;
 
 pub mod pal;
+
+pub mod to_do;
+pub mod to_do_tag;
 
 fn main() {
     //使用log之前需要初始化，并且只需要初始化一次
@@ -181,10 +184,12 @@ fn main() {
     //     }
     // });
 
+    //DB 测试
     // /Users/zoey.weng/Desktop/Study/PJToDo/ToDo.db
     let connection_util = PJDBConnectionUtil::new();
 
-    // let to_do_type = ToDoTypeForm {
+    // let to_do_type = ToDoTypeInsert {
+    //     to_do_id: 0,
     //     type_name: String::from("分类2")
     // };
 
@@ -221,7 +226,7 @@ fn main() {
     //     .unwrap();
 
     //更新数据通过传入struct
-    // let newType = ToDoTypeForm {
+    // let newType = ToDoTypeInsert {
     //     type_name: String::from("hello piaojin!")
     // };
     // use diesel::{update};
@@ -234,6 +239,9 @@ fn main() {
     // use diesel::{delete};
     // let deleted_rows = delete(todotype.filter(type_name.eq("hello piaojin!"))).execute(&connection_util.connection);
     // pj_info!("deleted_rows: {:?}", deleted_rows);
+
+    //插入数据
+    // let to_do = To
 }
 
 // impl Queryable<users::SqlType, DB> for User {

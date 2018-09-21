@@ -2,20 +2,44 @@ extern crate serde_derive;
 extern crate serde;
 extern crate serde_json;
 
+// use diesel::associations::BelongsTo;
+// use diesel::*;
+use to_do::to_do::ToDo;
+
 // use diesel::prelude::*;
 // use diesel::backend::Backend;
 // use diesel::types::{FromSqlRow, HasSqlType};
 // use diesel::row::Row;
 // use std::error::Error;
 
-use db::tables::schema::todotype;
-// #[primary_key(imei)]
-// #[belongs_to(User)]
-#[derive(Serialize, Deserialize, Debug, Default, PartialEq, Queryable)]
+use db::tables::schema::{todotype};
+// #[primary_key(id)]
+// #[column_name(barId)]
+#[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
+#[derive(Queryable, AsChangeset, Identifiable)]
+// #[belongs_to(ToDo, foreign_key = "to_do_id")]
+#[table_name = "todotype"]
 pub struct ToDoType {
     pub id: i32,
+    pub to_do_id: i32,
     pub type_name: String,
 }
+
+//如果ToDo中不包含生命周期的属性则可以使用#[derive(Associations)]替代一下代码
+//Unreleased:
+//#[belongs_to] can now accept types that are generic over lifetimes (for example, if one of the fields has the type Cow<'a, str>). To define an association to such a type, write #[belongs_to(parent = "User<'_>")]
+// impl<'a> BelongsTo<ToDo<'a>> for ToDoType {
+//     type ForeignKey = i32;
+//     type ForeignKeyColumn = todotype::to_do_id;
+    
+//     fn foreign_key(&self) -> Option<&Self::ForeignKey> {
+//         Some(&self.to_do_id)
+//     }
+
+//     fn foreign_key_column() -> Self::ForeignKeyColumn {
+//         todotype::to_do_id
+//     }
+// }
 
 // impl<ST, DB> FromSqlRow<ST, DB> for ToDoType where
 //     DB: Backend + HasSqlType<ST>,
@@ -40,10 +64,10 @@ pub struct ToDoType {
 //     }
 // }
 
-#[derive(Serialize, Deserialize, Debug, Default, PartialEq, Insertable, AsChangeset)]
+#[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
+#[derive(Insertable)]
 #[table_name = "todotype"]
-pub struct ToDoTypeForm {
-    // #[serde(rename = "id")]
-    // pub id: i32,
+pub struct ToDoTypeInsert {
+    pub to_do_id: i32,
     pub type_name: String,
 }
