@@ -7,7 +7,7 @@ extern crate serde_derive;
 extern crate serde;
 extern crate serde_json;
 
-use self::serde::{Deserialize, Serialize};
+// use self::serde::{Deserialize, Serialize};
 
 use self::hyper_tls::HttpsConnector;
 use self::hyper::{Request, Body, Method, Client, Uri};

@@ -50,6 +50,7 @@ extern crate serde_json;
 
 use common::pj_serialize::PJSerdeDeserialize;
 
+#[repr(C)]
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct User<'a> {
     pub login: &'a str,

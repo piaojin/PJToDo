@@ -47,7 +47,8 @@ pub mod to_do_tag;
 fn main() {
     //使用log之前需要初始化，并且只需要初始化一次
     let _ = PJLogger::pj_init_logger();
-
+    
+    //网络测试
     // let to_do_type = ToDoType {
     //     id: 10,
     //     type_name: "分类"
@@ -262,6 +263,7 @@ fn main() {
     //     .execute(&connection_util.connection)
     //     .expect("Error saving new ToDoType");
 
+    //级联获取数据
     let t = todotype.find(2).first::<ToDoType>(&connection_util.connection);
     pj_info!("t: {:?}", t);
 
@@ -276,18 +278,4 @@ fn main() {
             pj_error!("e: {}", e);
         },
     };
-
-    // let to_do_query = todo.find(1).first::<ToDoQuery>(&connection_util.connection);
-    // pj_info!("to_do_query: {:?}", to_do_query);
 }
-
-// impl Queryable<users::SqlType, DB> for User {
-//     type Row = (i32, String);
-
-//     fn build(row: Self::Row) -> Self {
-//         User {
-//             id: row.0,
-//             name: row.1.to_lowercase(),
-//         }
-//     }
-// }

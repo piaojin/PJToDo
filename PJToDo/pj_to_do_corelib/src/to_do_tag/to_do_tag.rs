@@ -4,8 +4,9 @@ extern crate serde_json;
 
 use db::tables::schema::{todotag};
 
-#[derive(Serialize, Deserialize, Debug, Default)]
-#[derive(Insertable)]
+#[repr(C)]
+#[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
+#[derive(Queryable, AsChangeset, Identifiable)]
 #[table_name = "todotag"]
 pub struct ToDoTag {
     id: i32,
@@ -15,6 +16,6 @@ pub struct ToDoTag {
 #[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
 #[derive(Insertable)]
 #[table_name = "todotag"]
-pub struct ToDoTagInsert {
+pub struct ToDoTypeInsert {
     pub tag_name: String,
 }

@@ -108,6 +108,7 @@ pub struct ToDoInsert {
     pub state: i32, //状态
 }
 
+#[repr(C)]
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ToDo {
     pub id: i32,

@@ -14,6 +14,7 @@ extern crate serde_json;
 use db::tables::schema::{todotype};
 // #[primary_key(id)]
 // #[column_name(barId)]
+#[repr(C)]
 #[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
 #[derive(Queryable, AsChangeset, Identifiable)]
 #[table_name = "todotype"]
