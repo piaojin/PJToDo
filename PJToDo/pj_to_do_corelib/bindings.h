@@ -22,4 +22,30 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+typedef struct ToDoTypeInsert ToDoTypeInsert;
+
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
+} PJToDoTypeServiceDelegate;
+
+typedef struct {
+  void (*insert_to_do_type)(ToDoTypeInsert);
+} ToDoTypeServiceViewModel;
+
+typedef struct {
+  PJToDoTypeServiceDelegate delegate;
+  ToDoTypeServiceViewModel view_model;
+} PJToDoTypeServiceImpl;
+
+PJToDoTypeServiceImpl *createPJToDoTypeService(PJToDoTypeServiceDelegate delegate);
+
+ToDoTypeInsert *createToDoTypeInsert(const char *type_name);
+
+ToDoTypeServiceViewModel *createToDoTypeServiceViewModel(void);
+
+void freePJToDoTypeServiceImpl(PJToDoTypeServiceImpl *ptr);
+
+void insertToDoType(ToDoTypeInsert toDoType);
+
 #endif /* struct_heads_h */

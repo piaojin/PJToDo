@@ -2,6 +2,10 @@ extern crate serde_derive;
 extern crate serde;
 extern crate serde_json;
 
+extern crate libc;
+use self::libc::{c_void, c_char};
+use std::ffi::CStr;
+
 // use diesel::associations::BelongsTo;
 // use diesel::*;
 
@@ -67,4 +71,20 @@ pub struct ToDoType {
 #[table_name = "todotype"]
 pub struct ToDoTypeInsert {
     pub type_name: String,
+}
+
+impl ToDoTypeInsert {
+    pub fn new(type_name: String) -> ToDoTypeInsert {
+        ToDoTypeInsert {
+            type_name: type_name
+        }
+    }
+}
+
+/*** extern "C" ***/
+
+#[no_mangle]
+pub unsafe extern "C" fn createToDoTypeInsert(type_name: *const c_char) -> *mut ToDoTypeInsert {
+    let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned();//unsafe
+    Box::into_raw(Box::new(ToDoTypeInsert::new(type_name)))
 }

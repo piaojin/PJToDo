@@ -14,6 +14,9 @@ extern crate futures;
 #[macro_use]
 extern crate diesel;
 
+#[macro_use]
+extern crate lazy_static;
+
 pub mod to_do_type;
 use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType};
 
@@ -192,7 +195,6 @@ fn main() {
     let connection_util = PJDBConnectionUtil::new();
 
     // let to_do_type = ToDoTypeInsert {
-    //     to_do_id: 0,
     //     type_name: String::from("分类2")
     // };
 
@@ -264,18 +266,18 @@ fn main() {
     //     .expect("Error saving new ToDoType");
 
     //级联获取数据
-    let t = todotype.find(2).first::<ToDoType>(&connection_util.connection);
-    pj_info!("t: {:?}", t);
+    // let t = todotype.find(2).first::<ToDoType>(&connection_util.connection);
+    // pj_info!("t: {:?}", t);
 
-    match t {
-        Ok(result) => {
-            let to_do: ToDoQuery = ToDoQuery::belonging_to(&result)
-            .first(&connection_util.connection)
-            .expect("Error query new ToDoType");
-            pj_info!("to_do: {:?}", to_do);
-        },
-        Err(e) => {
-            pj_error!("e: {}", e);
-        },
-    };
+    // match t {
+    //     Ok(result) => {
+    //         let to_do: ToDoQuery = ToDoQuery::belonging_to(&result)
+    //         .first(&connection_util.connection)
+    //         .expect("Error query new ToDoType");
+    //         pj_info!("to_do: {:?}", to_do);
+    //     },
+    //     Err(e) => {
+    //         pj_error!("e: {}", e);
+    //     },
+    // };
 }

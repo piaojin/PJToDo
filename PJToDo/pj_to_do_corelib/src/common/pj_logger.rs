@@ -22,6 +22,7 @@ impl log::Log for PJLogger {
 }
 
 #[allow(unused_macros)]
+#[macro_export]
 macro_rules! pj_warn {
     ($fmt:expr) => {
         print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
@@ -34,6 +35,7 @@ macro_rules! pj_warn {
 }
 
 #[allow(unused_macros)]
+#[macro_export]
 macro_rules! pj_debug {
     ($fmt:expr) => {
         print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
@@ -46,6 +48,7 @@ macro_rules! pj_debug {
 }
 
 #[allow(unused_macros)]
+#[macro_export]
 macro_rules! pj_error {
     ($fmt:expr) => {
         print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
@@ -58,6 +61,7 @@ macro_rules! pj_error {
 }
 
 #[allow(unused_macros)]
+#[macro_export]
 macro_rules! pj_info {
     ($fmt:expr) => {
         print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
@@ -70,6 +74,7 @@ macro_rules! pj_info {
 }
 
 #[allow(unused_macros)]
+#[macro_export]
 macro_rules! pj_trace {
     ($fmt:expr) => {
         print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());

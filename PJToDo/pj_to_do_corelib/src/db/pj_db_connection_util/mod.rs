@@ -4,9 +4,17 @@ use diesel::prelude::*;
 
 use pal::pj_db_pal::PJDBPal;
 
+lazy_static! {
+    pub static ref StaticPJDBConnectionUtil: PJDBConnectionUtil = {
+        PJDBConnectionUtil::new()
+    };
+}
+
 pub struct PJDBConnectionUtil {
     pub connection: SqliteConnection
 }
+
+unsafe impl Sync for PJDBConnectionUtil {}
 
 impl PJDBConnectionUtil {
 

@@ -17,6 +17,11 @@ extern crate serde_derive;
 extern crate serde;
 extern crate serde_json;
 
+#[macro_use]
+extern crate lazy_static;
+
+extern crate libc;
+
 pub mod to_do_type;
 
 pub mod to_do_tag;
@@ -36,3 +41,7 @@ pub mod repos;
 pub mod db;
 
 pub mod pal;
+
+pub mod init;
+
+pub mod service;

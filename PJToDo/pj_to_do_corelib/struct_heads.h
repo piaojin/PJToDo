@@ -11,31 +11,43 @@
  *   2. Run `rustup run nightly cbindgen toolkit/library/rust/ --lockfile Cargo.lock --crate webrender_bindings -o gfx/webrender_bindings/webrender_ffi_generated.h`
  */
 
-#include <stdint.h>
-#include <stdlib.h>
-#include <stdbool.h>
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
+    
+// #include <stdio.h>
+// #include <stdint.h>
 
-/*
-* mine/authorizations.rsAuthorizations
-*/
-typedef Authorizations Authorizations;
+// /*
+// * mine/authorizations.rsAuthorizations
+// */
+// typedef struct Authorizations Authorizations;
 
-/*
-* mine/user.rs/User
-*/
-typedef User User;
+// /*
+// * mine/user.rs/User
+// */
+// typedef struct User User;
 
-/*
-* to_do/to_do.rs/ToDo
-*/
-typedef ToDo ToDo;
+// /*
+// * to_do/to_do.rs/ToDo
+// */
+// typedef struct ToDo ToDo;
 
-/*
-* to_do_tag/to_do_tag.rs/ToDoTag
-*/
-typedef ToDoTag ToDoTag;
+// /*
+// * to_do_tag/to_do_tag.rs/ToDoTag
+// */
+// typedef struct ToDoTag ToDoTag;
 
-/*
-* to_do_type/to_do_type.rs/ToDoType
-*/
-typedef ToDoType ToDoType;
+// /*
+// * to_do_type/to_do_type.rs/ToDoType
+// */
+// typedef struct ToDoType ToDoType;
+
+// /*
+// * to_do_type/to_do_type.rs/ToDoTypeInsert
+// */
+// typedef struct ToDoTypeInsert ToDoTypeInsert;
+
+// #ifdef __cplusplus
+// }
+// #endif

@@ -23,7 +23,7 @@ include_guard = "struct_heads_h"
 # the generated bindings
 # include = ["PJStruct"]
 # A list of items to not include in the generated bindings
-# exclude = ["ViewModel", "AStruct", "BStruct"]
+# exclude = ["ToDoTypeInsert"]
 # A prefix to add before the name of every item
 # prefix = "PJI_"
 
@@ -41,6 +41,25 @@ parse_deps = false
 
 [struct]
 derive_eq = true
+
+# #[repr(C)]表示把Rust的struct一起转成C的struct,不加则表示不转，但是会生成一个对应的struct声明
+
+# A 加#[repr(C)]:
+# #[repr(C)]
+# pub struct AStruct {
+#     a: i32, 
+# }
+# 将会转成
+# typedef struct {
+#   int32_t age;
+# } AStruct;
+
+# B 不加#[repr(C)]:
+# pub struct AStruct {
+#     a: i32, 
+# }
+# 将会生成
+# typedef struct AStruct AStruct;
 
 [enum]
 add_sentinel = false
