@@ -3,7 +3,7 @@ extern crate serde;
 extern crate serde_json;
 
 extern crate libc;
-use self::libc::{c_void, c_char};
+use self::libc::{c_char};
 use std::ffi::CStr;
 
 // use diesel::associations::BelongsTo;
