@@ -8,7 +8,7 @@ use std::ffi::CStr;
 #[repr(C)]
 #[derive(Debug)]
 pub struct ToDoTypeServiceViewModel {
-    insert_to_do_type: extern fn(to_do_type: ToDoTypeInsert),
+    insert_to_do_type: extern "C" fn(to_do_type: ToDoTypeInsert),
 }
 
 impl ToDoTypeServiceViewModel {

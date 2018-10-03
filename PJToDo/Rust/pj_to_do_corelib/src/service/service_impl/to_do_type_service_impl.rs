@@ -40,7 +40,7 @@ pub extern "C" fn createPJToDoTypeService(delegate: PJToDoTypeServiceDelegate) -
 
 //析构对象
 #[no_mangle]
-pub unsafe extern fn freePJToDoTypeServiceImpl(ptr: *mut PJToDoTypeServiceImpl) {
+pub unsafe extern "C" fn freePJToDoTypeServiceImpl(ptr: *mut PJToDoTypeServiceImpl) {
     if ptr.is_null() { return };
     Box::from_raw(ptr);//unsafe
 }

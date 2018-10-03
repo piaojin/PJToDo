@@ -14,8 +14,6 @@
 		76348C152116F2F40009455C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76348C0C2116F2F30009455C /* LaunchScreen.storyboard */; };
 		76348C162116F2F40009455C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76348C0E2116F2F30009455C /* Main.storyboard */; };
 		76348C182116F2F40009455C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76348C132116F2F40009455C /* AppDelegate.swift */; };
-		7636201E21645B5C0018008D /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7636201D21645B5C0018008D /* Security.framework */; };
-		76362020216463C20018008D /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 7636201F216463C20018008D /* libresolv.tbd */; };
 		90B883A67742CBA20B227A90 /* Pods_PJToDoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */; };
 		E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */; };
 /* End PBXBuildFile section */
@@ -54,6 +52,8 @@
 		2A4E8B45B569FF38E2D47836 /* Pods-PJToDoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDoTests/Pods-PJToDoTests.release.xcconfig"; sourceTree = "<group>"; };
 		727187D5B8F93B220B45B8AA /* Pods-PJToDoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDoTests/Pods-PJToDoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		73FB746FC3A9EE4D2B7700C1 /* Pods-PJToDo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDo.release.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo.release.xcconfig"; sourceTree = "<group>"; };
+		762AD8E52164F39500D0C5C7 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		762AD8E72165075D00D0C5C7 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		76348BD92116F2AC0009455C /* PJToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PJToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76348BE82116F2AD0009455C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		76348BED2116F2AD0009455C /* PJToDoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PJToDoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,8 +80,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				76362020216463C20018008D /* libresolv.tbd in Frameworks */,
-				7636201E21645B5C0018008D /* Security.framework in Frameworks */,
 				E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -197,6 +195,8 @@
 		D7B6BE488F9FA8DC6E6E1C35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				762AD8E72165075D00D0C5C7 /* libstdc++.tbd */,
+				762AD8E52164F39500D0C5C7 /* libiconv.tbd */,
 				7636201F216463C20018008D /* libresolv.tbd */,
 				7636201D21645B5C0018008D /* Security.framework */,
 				8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */,
@@ -519,7 +519,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -573,7 +573,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
@@ -587,12 +587,17 @@
 			baseConfigurationReference = D8C7DCA9E375B4ACEF6FE7C8 /* Pods-PJToDo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = NO;
+				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_STYLE = Automatic;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = PJToDo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piaojin.PJToDo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				RUST_BUILD_BINDINGS_DIR = "${SRCROOT}/Bindings";
@@ -608,8 +613,12 @@
 			baseConfigurationReference = 73FB746FC3A9EE4D2B7700C1 /* Pods-PJToDo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = NO;
+				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_STYLE = Automatic;
+				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = PJToDo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
