@@ -1,0 +1,3 @@
+cargo:rerun-if-env-changed=SQLITE3_INCLUDE_DIR
+cargo:rerun-if-env-changed=SQLITE3_LIB_DIR
+cargo:rustc-link-lib=sqlite3

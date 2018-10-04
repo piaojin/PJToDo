@@ -14,6 +14,8 @@
 		76348C152116F2F40009455C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76348C0C2116F2F30009455C /* LaunchScreen.storyboard */; };
 		76348C162116F2F40009455C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76348C0E2116F2F30009455C /* Main.storyboard */; };
 		76348C182116F2F40009455C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76348C132116F2F40009455C /* AppDelegate.swift */; };
+		764882C12165C66A00F11106 /* libpj_to_do_corelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 764882C02165C66A00F11106 /* libpj_to_do_corelib.a */; };
+		764882C32165C72B00F11106 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 764882C22165C72B00F11106 /* libsqlite3.tbd */; };
 		90B883A67742CBA20B227A90 /* Pods_PJToDoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */; };
 		E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */; };
 /* End PBXBuildFile section */
@@ -68,6 +70,12 @@
 		76348C132116F2F40009455C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7636201D21645B5C0018008D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		7636201F216463C20018008D /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		764882B82165BB0200F11106 /* PJToDo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PJToDo-Bridging-Header.h"; sourceTree = "<group>"; };
+		764882BD2165BBDA00F11106 /* app_bindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_bindings.h; sourceTree = "<group>"; };
+		764882BE2165BC3D00F11106 /* struct_heads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = struct_heads.h; sourceTree = "<group>"; };
+		764882BF2165C0B300F11106 /* Rust */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Rust; path = ../Rust; sourceTree = "<group>"; };
+		764882C02165C66A00F11106 /* libpj_to_do_corelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libpj_to_do_corelib.a; sourceTree = "<group>"; };
+		764882C22165C72B00F11106 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		7CFB5B5F9AE9D85494D81D5D /* Pods-PJToDoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDoUITests/Pods-PJToDoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD3758FA50254166E4D59F88 /* Pods_PJToDoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -80,6 +88,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				764882C32165C72B00F11106 /* libsqlite3.tbd in Frameworks */,
+				764882C12165C66A00F11106 /* libpj_to_do_corelib.a in Frameworks */,
 				E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -106,6 +116,7 @@
 		76348BD02116F2AC0009455C = {
 			isa = PBXGroup;
 			children = (
+				764882BF2165C0B300F11106 /* Rust */,
 				76348BDB2116F2AC0009455C /* PJToDo */,
 				76348BF02116F2AD0009455C /* PJToDoTests */,
 				76348BFB2116F2AE0009455C /* PJToDoUITests */,
@@ -128,10 +139,12 @@
 		76348BDB2116F2AC0009455C /* PJToDo */ = {
 			isa = PBXGroup;
 			children = (
+				764882BC2165BBDA00F11106 /* RustBindings */,
 				76348C112116F2F40009455C /* AppDelegate */,
 				76348C102116F2F30009455C /* Class */,
 				76348C0A2116F2F30009455C /* Resources */,
 				76348BE82116F2AD0009455C /* Info.plist */,
+				764882B82165BB0200F11106 /* PJToDo-Bridging-Header.h */,
 			);
 			path = PJToDo;
 			sourceTree = "<group>";
@@ -179,6 +192,16 @@
 			path = AppDelegate;
 			sourceTree = "<group>";
 		};
+		764882BC2165BBDA00F11106 /* RustBindings */ = {
+			isa = PBXGroup;
+			children = (
+				764882C02165C66A00F11106 /* libpj_to_do_corelib.a */,
+				764882BE2165BC3D00F11106 /* struct_heads.h */,
+				764882BD2165BBDA00F11106 /* app_bindings.h */,
+			);
+			path = RustBindings;
+			sourceTree = SOURCE_ROOT;
+		};
 		B8D75D4EE9038E4B3C3B95DF /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,6 +218,7 @@
 		D7B6BE488F9FA8DC6E6E1C35 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				764882C22165C72B00F11106 /* libsqlite3.tbd */,
 				762AD8E72165075D00D0C5C7 /* libstdc++.tbd */,
 				762AD8E52164F39500D0C5C7 /* libiconv.tbd */,
 				7636201F216463C20018008D /* libresolv.tbd */,
@@ -279,6 +303,7 @@
 				TargetAttributes = {
 					76348BD82116F2AC0009455C = {
 						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 0940;
 					};
 					76348BEC2116F2AD0009455C = {
 						CreatedOnToolsVersion = 9.4.1;
@@ -589,6 +614,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = NO;
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = PJToDo/Info.plist;
@@ -597,12 +623,15 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/RustBindings";
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piaojin.PJToDo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				RUST_BUILD_BINDINGS_DIR = "${SRCROOT}/Bindings";
-				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/Bindings/app_bindings.h";
+				RUST_BUILD_BINDINGS_DIR = "${SRCROOT}/RustBindings";
+				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/RustBindings/app_bindings.h";
 				RUST_LIB_DIR_NAME = pj_to_do_corelib;
+				SWIFT_OBJC_BRIDGING_HEADER = "PJToDo/PJToDo-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -615,6 +644,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ADDRESS_SANITIZER_CONTAINER_OVERFLOW = NO;
 				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				ENABLE_BITCODE = YES;
 				INFOPLIST_FILE = PJToDo/Info.plist;
@@ -623,11 +653,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/RustBindings";
 				PRODUCT_BUNDLE_IDENTIFIER = com.piaojin.PJToDo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				RUST_BUILD_BINDINGS_DIR = "${SRCROOT}/Bindings";
-				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/Bindings/app_bindings.h";
+				RUST_BUILD_BINDINGS_DIR = "${SRCROOT}/RustBindings";
+				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/RustBindings/app_bindings.h";
 				RUST_LIB_DIR_NAME = pj_to_do_corelib;
+				SWIFT_OBJC_BRIDGING_HEADER = "PJToDo/PJToDo-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

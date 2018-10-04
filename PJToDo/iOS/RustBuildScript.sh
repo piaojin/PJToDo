@@ -32,9 +32,14 @@ then
     cargo lipo --verbose
     # cargo build --verbose
     # LLVM_SYS_70_PREFIX=/path/to/llvm cargo build
+
+    # copy staticlib to iOS 
+    cp $rust_lib_path/target/universal/debug/libpj_to_do_corelib.a $RUST_BUILD_BINDINGS_DIR
 else
     echo "******cargo lipo --release:"
     cargo lipo --release
+
+    cp $rust_lib_path/target/universal/debug/libpj_to_do_corelib.a $RUST_BUILD_BINDINGS_DIR
 fi
 
 cbindgen_path="$root_path/.cargo/bin/cbindgen"
@@ -43,7 +48,7 @@ alias cbindgen='$cbindgen_path'
 
 rustup_path="$root_path/.cargo/bin/rustup"
 alias rustup='$rustup_path'
-rustup target add aarch64-apple-ios armv7-apple-ios armv7s-apple-ios x86_64-apple-ios i386-apple-ios
+# rustup target add aarch64-apple-ios armv7-apple-ios armv7s-apple-ios x86_64-apple-ios i386-apple-ios
 echo "******rustup run nightly cbindgen $rust_lib_path --lockfile Cargo.lock --crate $RUST_LIB_DIR_NAME -o $RUST_BUILD_BINDINGS_HEAD_PATH
 :"
 # stable | nightly
