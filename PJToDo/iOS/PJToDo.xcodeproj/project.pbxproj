@@ -232,6 +232,23 @@
 		};
 /* End PBXGroup section */
 
+/* Begin PBXLegacyTarget section */
+		764882C82166574D00F11106 /* RustMake */ = {
+			isa = PBXLegacyTarget;
+			buildArgumentsString = "$(ACTION)";
+			buildConfigurationList = 764882CB2166574D00F11106 /* Build configuration list for PBXLegacyTarget "RustMake" */;
+			buildPhases = (
+			);
+			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "${SRCROOT}/";
+			dependencies = (
+			);
+			name = RustMake;
+			passBuildSettingsInEnvironment = 1;
+			productName = RustMake;
+		};
+/* End PBXLegacyTarget section */
+
 /* Begin PBXNativeTarget section */
 		76348BD82116F2AC0009455C /* PJToDo */ = {
 			isa = PBXNativeTarget;
@@ -313,6 +330,9 @@
 						CreatedOnToolsVersion = 9.4.1;
 						TestTargetID = 76348BD82116F2AC0009455C;
 					};
+					764882C82166574D00F11106 = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
 				};
 			};
 			buildConfigurationList = 76348BD42116F2AC0009455C /* Build configuration list for PBXProject "PJToDo" */;
@@ -331,6 +351,7 @@
 				76348BD82116F2AC0009455C /* PJToDo */,
 				76348BEC2116F2AD0009455C /* PJToDoTests */,
 				76348BF72116F2AE0009455C /* PJToDoUITests */,
+				764882C82166574D00F11106 /* RustMake */,
 			);
 		};
 /* End PBXProject section */
@@ -429,7 +450,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/RustBuildScript.sh\"";
+			shellScript = "#\"${SRCROOT}/RustBuildScript.sh\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -749,6 +770,33 @@
 			};
 			name = Release;
 		};
+		764882C92166574D00F11106 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUGGING_SYMBOLS = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				RustMake_RUST_LIB_DIR_NAME = pj_to_do_corelib;
+			};
+			name = Debug;
+		};
+		764882CA2166574D00F11106 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				OTHER_CFLAGS = "";
+				OTHER_LDFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				RustMake_RUST_LIB_DIR_NAME = pj_to_do_corelib;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -784,6 +832,15 @@
 			buildConfigurations = (
 				76348C082116F2AE0009455C /* Debug */,
 				76348C092116F2AE0009455C /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		764882CB2166574D00F11106 /* Build configuration list for PBXLegacyTarget "RustMake" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				764882C92166574D00F11106 /* Debug */,
+				764882CA2166574D00F11106 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
