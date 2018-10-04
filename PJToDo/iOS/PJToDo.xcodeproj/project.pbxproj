@@ -266,7 +266,6 @@
 				76348BD52116F2AC0009455C /* Sources */,
 				76348BD62116F2AC0009455C /* Frameworks */,
 				76348BD72116F2AC0009455C /* Resources */,
-				76E1020B2163408C00860A77 /* Rust Run Script */,
 				76D4B0D22163B18700C54A32 /* CopyFiles */,
 			);
 			buildRules = (
@@ -447,20 +446,6 @@
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
-		};
-		76E1020B2163408C00860A77 /* Rust Run Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Rust Run Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "#\"${SRCROOT}/RustBuildScript.sh\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
