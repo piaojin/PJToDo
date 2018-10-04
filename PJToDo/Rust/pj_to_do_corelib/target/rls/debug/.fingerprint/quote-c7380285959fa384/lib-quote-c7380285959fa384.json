@@ -1,1 +1,0 @@
-{"rustc":970946203203473159,"features":"[\"default\", \"proc-macro\", \"proc-macro2\"]","target":3326035008365736537,"profile":7282077418741342047,"path":14128791631968657305,"deps":[["proc-macro2 v0.3.8","proc_macro2",11408555202876792764]],"local":[{"Precalculated":"0.5.2"}],"rustflags":[],"edition":"Edition2015"}
