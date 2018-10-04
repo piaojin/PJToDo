@@ -1,6 +1,7 @@
 #!/bin/sh
 
 echo "******Rust Custom Build Script Start******"
+
 echo "Current Shell: $SHELL"
 echo "BuildConfiguration=$CONFIGURATION"
 echo "RUST_BUILD_BINDINGS_DIR path: $RUST_BUILD_BINDINGS_DIR"
@@ -34,12 +35,12 @@ then
     # LLVM_SYS_70_PREFIX=/path/to/llvm cargo build
 
     # copy staticlib to iOS 
-    cp $rust_lib_path/target/universal/debug/libpj_to_do_corelib.a $RUST_BUILD_BINDINGS_DIR
+    cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR
 else
     echo "******cargo lipo --release:"
     cargo lipo --release
 
-    cp $rust_lib_path/target/universal/debug/libpj_to_do_corelib.a $RUST_BUILD_BINDINGS_DIR
+    cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR
 fi
 
 cbindgen_path="$root_path/.cargo/bin/cbindgen"
@@ -53,4 +54,7 @@ echo "******rustup run nightly cbindgen $rust_lib_path --lockfile Cargo.lock --c
 :"
 # stable | nightly
 rustup run nightly cbindgen $rust_lib_path --lockfile Cargo.lock --crate $RUST_LIB_DIR_NAME -o $RUST_BUILD_BINDINGS_HEAD_PATH
+
+cd $SRCROOT
+
 echo "******Rust Custom Build Script End******"

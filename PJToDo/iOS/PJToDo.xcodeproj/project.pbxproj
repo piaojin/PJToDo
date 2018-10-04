@@ -630,6 +630,7 @@
 				RUST_BUILD_BINDINGS_DIR = "${SRCROOT}/RustBindings";
 				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/RustBindings/app_bindings.h";
 				RUST_LIB_DIR_NAME = pj_to_do_corelib;
+				RUST_LIB_NAME = libpj_to_do_corelib.a;
 				SWIFT_OBJC_BRIDGING_HEADER = "PJToDo/PJToDo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -659,6 +660,7 @@
 				RUST_BUILD_BINDINGS_DIR = "${SRCROOT}/RustBindings";
 				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/RustBindings/app_bindings.h";
 				RUST_LIB_DIR_NAME = pj_to_do_corelib;
+				RUST_LIB_NAME = libpj_to_do_corelib.a;
 				SWIFT_OBJC_BRIDGING_HEADER = "PJToDo/PJToDo-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
