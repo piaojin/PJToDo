@@ -1,6 +1,6 @@
-#!/bin/sh
+# !/bin/sh
 
-echo "******Rust Custom Clean Script Start******"
+echo "******Rust RustCoreLib RustCargoScript Clean Script Start******"
 
 echo "RUST_LIB_DIR_NAME: $RUST_LIB_DIR_NAME"
 
@@ -8,7 +8,7 @@ pwd
 cd ..
 
 current_path=`pwd`
-rust_lib_path="$current_path/Rust/pj_to_do_corelib"
+rust_lib_path="$current_path/Rust/$RUST_LIB_DIR_NAME"
 
 cd $rust_lib_path
 echo "rust_lib_path: $rust_lib_path"
@@ -21,4 +21,7 @@ alias cargo='$cargo_path'
 echo "******cargo clean:"
 cargo clean
 
-echo "******Rust Custom Clean Script End******"
+cd $SRCROOT
+
+echo "******Rust RustCoreLib RustCargoScript Clean Script End******"
+

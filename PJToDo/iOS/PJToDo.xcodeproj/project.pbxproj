@@ -16,6 +16,7 @@
 		76348C182116F2F40009455C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76348C132116F2F40009455C /* AppDelegate.swift */; };
 		764882C12165C66A00F11106 /* libpj_to_do_corelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 764882C02165C66A00F11106 /* libpj_to_do_corelib.a */; };
 		764882C32165C72B00F11106 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 764882C22165C72B00F11106 /* libsqlite3.tbd */; };
+		764882D021666A0A00F11106 /* Rust in Resources */ = {isa = PBXBuildFile; fileRef = 764882BF2165C0B300F11106 /* Rust */; };
 		90B883A67742CBA20B227A90 /* Pods_PJToDoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */; };
 		E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */; };
 /* End PBXBuildFile section */
@@ -34,6 +35,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 76348BD82116F2AC0009455C;
 			remoteInfo = PJToDo;
+		};
+		764882E921666E1F00F11106 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76348BD12116F2AC0009455C /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 764882E521666CA400F11106;
+			remoteInfo = RustCoreLib;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -233,19 +241,19 @@
 /* End PBXGroup section */
 
 /* Begin PBXLegacyTarget section */
-		764882C82166574D00F11106 /* RustMake */ = {
+		764882E521666CA400F11106 /* RustCoreLib */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "$(ACTION)";
-			buildConfigurationList = 764882CB2166574D00F11106 /* Build configuration list for PBXLegacyTarget "RustMake" */;
+			buildArgumentsString = "${SRCROOT}/RustCustomScript.sh";
+			buildConfigurationList = 764882E621666CA400F11106 /* Build configuration list for PBXLegacyTarget "RustCoreLib" */;
 			buildPhases = (
 			);
-			buildToolPath = /usr/bin/make;
+			buildToolPath = /bin/sh;
 			buildWorkingDirectory = "${SRCROOT}/";
 			dependencies = (
 			);
-			name = RustMake;
+			name = RustCoreLib;
 			passBuildSettingsInEnvironment = 1;
-			productName = RustMake;
+			productName = RustCoreLib;
 		};
 /* End PBXLegacyTarget section */
 
@@ -264,6 +272,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				764882EA21666E1F00F11106 /* PBXTargetDependency */,
 			);
 			name = PJToDo;
 			productName = PJToDo;
@@ -330,7 +339,7 @@
 						CreatedOnToolsVersion = 9.4.1;
 						TestTargetID = 76348BD82116F2AC0009455C;
 					};
-					764882C82166574D00F11106 = {
+					764882E521666CA400F11106 = {
 						CreatedOnToolsVersion = 9.4.1;
 					};
 				};
@@ -351,7 +360,7 @@
 				76348BD82116F2AC0009455C /* PJToDo */,
 				76348BEC2116F2AD0009455C /* PJToDoTests */,
 				76348BF72116F2AE0009455C /* PJToDoUITests */,
-				764882C82166574D00F11106 /* RustMake */,
+				764882E521666CA400F11106 /* RustCoreLib */,
 			);
 		};
 /* End PBXProject section */
@@ -363,6 +372,7 @@
 			files = (
 				76348C142116F2F40009455C /* Assets.xcassets in Resources */,
 				76348C162116F2F40009455C /* Main.storyboard in Resources */,
+				764882D021666A0A00F11106 /* Rust in Resources */,
 				76348C152116F2F40009455C /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -450,7 +460,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/RustBuildScript.sh\"";
+			shellScript = "#\"${SRCROOT}/RustBuildScript.sh\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -491,6 +501,11 @@
 			isa = PBXTargetDependency;
 			target = 76348BD82116F2AC0009455C /* PJToDo */;
 			targetProxy = 76348BF92116F2AE0009455C /* PBXContainerItemProxy */;
+		};
+		764882EA21666E1F00F11106 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 764882E521666CA400F11106 /* RustCoreLib */;
+			targetProxy = 764882E921666E1F00F11106 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -648,10 +663,6 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.piaojin.PJToDo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				RUST_BUILD_BINDINGS_DIR = "${SRCROOT}/RustBindings";
-				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/RustBindings/app_bindings.h";
-				RUST_LIB_DIR_NAME = pj_to_do_corelib;
-				RUST_LIB_NAME = libpj_to_do_corelib.a;
 				SWIFT_OBJC_BRIDGING_HEADER = "PJToDo/PJToDo-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -678,10 +689,6 @@
 				LIBRARY_SEARCH_PATHS = "$(PROJECT_DIR)/RustBindings";
 				PRODUCT_BUNDLE_IDENTIFIER = com.piaojin.PJToDo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				RUST_BUILD_BINDINGS_DIR = "${SRCROOT}/RustBindings";
-				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/RustBindings/app_bindings.h";
-				RUST_LIB_DIR_NAME = pj_to_do_corelib;
-				RUST_LIB_NAME = libpj_to_do_corelib.a;
 				SWIFT_OBJC_BRIDGING_HEADER = "PJToDo/PJToDo-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -770,7 +777,7 @@
 			};
 			name = Release;
 		};
-		764882C92166574D00F11106 /* Debug */ = {
+		764882E721666CA400F11106 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -781,11 +788,14 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				RustMake_RUST_LIB_DIR_NAME = pj_to_do_corelib;
+				RUST_BUILD_BINDINGS_DIR = "${SRCROOT}/RustBindings";
+				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/RustBindings/app_bindings.h";
+				RUST_LIB_DIR_NAME = pj_to_do_corelib;
+				RUST_LIB_NAME = libpj_to_do_corelib.a;
 			};
 			name = Debug;
 		};
-		764882CA2166574D00F11106 /* Release */ = {
+		764882E821666CA400F11106 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
@@ -793,7 +803,10 @@
 				OTHER_CFLAGS = "";
 				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				RustMake_RUST_LIB_DIR_NAME = pj_to_do_corelib;
+				RUST_BUILD_BINDINGS_DIR = "${SRCROOT}/RustBindings";
+				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/RustBindings/app_bindings.h";
+				RUST_LIB_DIR_NAME = pj_to_do_corelib;
+				RUST_LIB_NAME = libpj_to_do_corelib.a;
 			};
 			name = Release;
 		};
@@ -836,11 +849,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		764882CB2166574D00F11106 /* Build configuration list for PBXLegacyTarget "RustMake" */ = {
+		764882E621666CA400F11106 /* Build configuration list for PBXLegacyTarget "RustCoreLib" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				764882C92166574D00F11106 /* Debug */,
-				764882CA2166574D00F11106 /* Release */,
+				764882E721666CA400F11106 /* Debug */,
+				764882E821666CA400F11106 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

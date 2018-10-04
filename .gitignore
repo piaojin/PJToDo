@@ -122,6 +122,7 @@ Cargo.lock
 /target/**/*.d
 /target/**/*.a
 /target/**/*.rlib
+/RustBindings/*.a
 
 # Rust
 PJToDo/PJToDo/Rust/pj_to_do_corelib/target

@@ -2,6 +2,7 @@
 
 echo "******Rust Custom Build Script Start******"
 
+echo "ACTION: $ACTION"
 echo "Current Shell: $SHELL"
 echo "BuildConfiguration=$CONFIGURATION"
 echo "RUST_BUILD_BINDINGS_DIR path: $RUST_BUILD_BINDINGS_DIR"
