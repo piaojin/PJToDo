@@ -450,7 +450,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#\"${SRCROOT}/RustBuildScript.sh\"";
+			shellScript = "\"${SRCROOT}/RustBuildScript.sh\"";
 		};
 /* End PBXShellScriptBuildPhase section */
 

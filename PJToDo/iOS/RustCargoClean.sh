@@ -2,7 +2,7 @@
 
 echo "******Rust Custom Clean Script Start******"
 
-echo "RustMake_RUST_LIB_DIR_NAME: $RustMake_RUST_LIB_DIR_NAME"
+echo "RUST_LIB_DIR_NAME: $RUST_LIB_DIR_NAME"
 
 pwd
 cd ..

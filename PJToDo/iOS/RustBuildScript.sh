@@ -35,6 +35,7 @@ then
     # LLVM_SYS_70_PREFIX=/path/to/llvm cargo build
 
     # copy staticlib to iOS 
+    echo "******cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR:"
     cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR
 else
     echo "******cargo lipo --release:"
