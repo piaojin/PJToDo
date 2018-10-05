@@ -21,6 +21,13 @@ alias cargo='$cargo_path'
 echo "******cargo clean:"
 cargo clean
 
+# After clean need to rebuild lib for iOS, the following script still has some issues.
+# cd $SRCROOT
+# cd ..
+# pwd
+
+# sh RustCoreLibInitScript.sh
+
 cd $SRCROOT
 
 echo "******Rust RustCoreLib RustCargoScript Clean Script End******"
