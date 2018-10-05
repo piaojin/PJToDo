@@ -1,20 +1,22 @@
-header = """/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */"""
-autogen_warning = """/* DO NOT MODIFY THIS MANUALLY! This file was generated using cbindgen.
+header = """/* This Source Code Form is subject to the PJTodo
+ * gitHub: https://github.com/piaojin/PJToDo
+ * Rust on iOS. */"""
+autogen_warning = """/* Generated with cbindgen */
+
+/* DO NOT MODIFY THIS MANUALLY! This file was generated using cbindgen.
  * To generate this file:
  *   1. Get the latest cbindgen using `cargo install --force cbindgen`
  *      a. Alternatively, you can clone `https://github.com/eqrion/cbindgen` and use a tagged release
- *   2. Run `rustup run nightly cbindgen toolkit/library/rust/ --lockfile Cargo.lock --crate webrender_bindings -o gfx/webrender_bindings/webrender_ffi_generated.h`
+ *   2. Run `rustup run nightly cbindgen path/to/your/crate/projrct --lockfile Cargo.lock --crate your/crate/name -o path/to/save/head_ffi_generated.h`
  */ 
  
  \n\n#include \"struct_heads.h\"""" # 引入自己的头文件
 include_version = true
 braces = "SameLine"
-line_length = 100
+line_length = 200
 tab_width = 2
 language = "C"
-# namespaces = ["mozilla", "wr"]
+# namespaces = ["pj"]
 # An optional name to use as an include guard
 include_guard = "app_bindings_h"
 
@@ -30,12 +32,12 @@ include_guard = "app_bindings_h"
 
 [parse]
 parse_deps = false
-# include = ["log", "webrender", "webrender_api"]
-# expand = ["euclid"]
+# include = [""]
+# expand = [""]
 
 [fn]
-# prefix = "WR_INLINE"
-# postfix = "WR_FUNC"
+# prefix = ""
+# postfix = ""
 # args = "Vertical"
 # rename_args = "GeckoCase"
 
