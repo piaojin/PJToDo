@@ -1,6 +1,8 @@
 /* This Source Code Form is subject to the PJTodo
  * gitHub: https://github.com/piaojin/PJToDo
- * Rust on iOS. */
+ * Rust on iOS.
+ * Copyright © 2018年 piaojin. All rights reserved.
+ */
 
 #ifndef app_bindings_h
 #define app_bindings_h

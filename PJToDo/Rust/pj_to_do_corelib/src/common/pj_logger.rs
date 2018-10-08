@@ -21,15 +21,42 @@ impl log::Log for PJLogger {
     fn flush(&self) {}
 }
 
+#[cfg(feature = "type_name")]
+macro_rules! function {
+    () => {{
+        fn f() {}
+        fn type_name_of<T>(_: T) -> &'static str {
+            extern crate core;
+            unsafe { core::intrinsics::type_name::<T>() }
+        }
+        let name = type_name_of(f);
+        &name[6..name.len() - 4]
+    }}
+}
+
+#[cfg(not(feature = "type_name"))]
+macro_rules! function {
+    // () => {{ "<fn>" }}
+    () => {{
+        fn f() {}
+        fn type_name_of<T>(_: T) -> &'static str {
+            extern crate core;
+            unsafe { core::intrinsics::type_name::<T>() }
+        }
+        let name = type_name_of(f);
+        &name[6..name.len() - 4]
+    }}
+}
+
 #[allow(unused_macros)]
 #[macro_export]
 macro_rules! pj_warn {
     ($fmt:expr) => {
-        print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
+        print!("in module_path: {}, file: {}, function: {}, line: {}, column: {} : ", module_path!(), file!(), function!(), line!(), column!());
         warn!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
+        print!("in module_path: {}, file: {}, function: {}, line: {}, column: {} : ", module_path!(), file!(), function!(), line!(), column!());
         warn!($fmt, $($arg)*);
     };
 }
@@ -38,11 +65,11 @@ macro_rules! pj_warn {
 #[macro_export]
 macro_rules! pj_debug {
     ($fmt:expr) => {
-        print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
+        print!("in module_path: {}, file: {}, function: {}, line: {}, column: {} : ", module_path!(), file!(), function!(), line!(), column!());
         debug!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
+        print!("in module_path: {}, file: {}, function: {}, line: {}, column: {} : ", module_path!(), file!(), function!(), line!(), column!());
         debug!($fmt, $($arg)*);
     };
 }
@@ -51,11 +78,11 @@ macro_rules! pj_debug {
 #[macro_export]
 macro_rules! pj_error {
     ($fmt:expr) => {
-        print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
+        print!("in module_path: {}, file: {}, function: {}, line: {}, column: {} : ", module_path!(), file!(), function!(), line!(), column!());
         error!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
+        print!("in module_path: {}, file: {}, function: {}, line: {}, column: {} : ", module_path!(), file!(), function!(), line!(), column!());
         error!($fmt, $($arg)*);
     };
 }
@@ -64,11 +91,11 @@ macro_rules! pj_error {
 #[macro_export]
 macro_rules! pj_info {
     ($fmt:expr) => {
-        print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
+        print!("in module_path: {}, file: {}, function: {}, line: {}, column: {} : ", module_path!(), file!(), function!(), line!(), column!());
         info!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
+        print!("in module_path: {}, file: {}, function: {}, line: {}, column: {} : ", module_path!(), file!(), function!(), line!(), column!());
         info!($fmt, $($arg)*);
     };
 }
@@ -77,11 +104,11 @@ macro_rules! pj_info {
 #[macro_export]
 macro_rules! pj_trace {
     ($fmt:expr) => {
-        print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
+        print!("in module_path: {}, file: {}, function: {}, line: {}, column: {} : ", module_path!(), file!(), function!(), line!(), column!());
         trace!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        print!("module_path: {}, file: {}, line: {}, column: {} : ", module_path!(), file!(), line!(), column!());
+        print!("in module_path: {}, file: {}, function: {}, line: {}, column: {} : ", module_path!(), file!(), function!(), line!(), column!());
         trace!($fmt, $($arg)*);
     };
 }

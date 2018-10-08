@@ -2,6 +2,7 @@
 #![feature(unboxed_closures)]
 #![feature(custom_attribute)]
 #![allow(proc_macro_derive_resolution_fallback)]
+#![feature(core_intrinsics)]
 
 #[macro_use]
 extern crate log;

@@ -28,6 +28,9 @@ pwd
 rustup_path="$root_path/.cargo/bin/rustup"
 alias rustup='$rustup_path'
 
+unset IPHONEOS_DEPLOYMENT_TARGET
+unset $(env | grep '^SDK' | cut -d'=' -f1)
+
 if [[ "$CONFIGURATION" == "Debug" ]]
 then
     echo "******cargo lipo:"

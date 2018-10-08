@@ -1,6 +1,8 @@
 header = """/* This Source Code Form is subject to the PJTodo
  * gitHub: https://github.com/piaojin/PJToDo
- * Rust on iOS. */"""
+ * Rust on iOS.
+ * Copyright © 2018年 piaojin. All rights reserved.
+ */"""
 autogen_warning = """/* Generated with cbindgen */
 
 /* DO NOT MODIFY THIS MANUALLY! This file was generated using cbindgen.

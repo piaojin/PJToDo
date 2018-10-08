@@ -2,6 +2,8 @@
 #![feature(unboxed_closures)]
 #![feature(custom_attribute)]
 #![allow(proc_macro_derive_resolution_fallback)]
+// #![cfg_attr(feature = "type_name", feature(core_intrinsics))]
+#![feature(core_intrinsics)]
 #[macro_use]
 extern crate log;
 
@@ -48,9 +50,9 @@ use to_do::to_do::{ToDoInsert, ToDoState, ToDoQuery};
 pub mod to_do_tag;
 
 fn main() {
+    
     //使用log之前需要初始化，并且只需要初始化一次
     let _ = PJLogger::pj_init_logger();
-    
     //网络测试
     // let to_do_type = ToDoType {
     //     id: 10,
