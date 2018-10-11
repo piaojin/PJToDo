@@ -2,7 +2,7 @@ extern crate diesel;
 
 use diesel::prelude::*;
 
-use pal::pj_db_pal::PJDBPal;
+use pal::pj_to_do_pal::PJToDoPal;
 
 lazy_static! {
     pub static ref StaticPJDBConnectionUtil: PJDBConnectionUtil = {
@@ -20,7 +20,7 @@ impl PJDBConnectionUtil {
 
     pub fn new() -> PJDBConnectionUtil {
         PJDBConnectionUtil {
-            connection: PJDBConnectionUtil::establish_connection(PJDBPal::sqlite_url())
+            connection: PJDBConnectionUtil::establish_connection(PJToDoPal::sqlite_url())
         }
     }
 

@@ -3,6 +3,7 @@ name = "pj_to_do_corelib"
 version = "0.1.0"
 authors = ["Zoey Weng <zoey.weng@ringcentral.com>"]
 description = "Example static library project built for iOS"
+build = "build.rs"
 
 # include = [
 #   "Cargo.toml",
@@ -39,13 +40,22 @@ log = "0.4.5"
 # ****** Base64 ******
 rustc-serialize = "0.3.24"
 
+cc = "1.0"
+
 [dependencies.lazy_static]
 version = "1.1.0"
 
-[features]
+# ****** CC ******
+[build-dependencies]
+cc = "1.0"
 
+[features]
 type_name = [] # feature has no explicit dependencies
 
 [lib]
 crate-type = ["staticlib", "cdylib", "dylib"]
+# crate-type = ["staticlib"]
 name = "pj_to_do_corelib"
+
+[profile.release]
+lto = true

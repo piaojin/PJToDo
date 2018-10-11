@@ -8,6 +8,8 @@
 
 import UIKit
 
-struct PJToDoCoreLibPAL {
-
+@objc class PJToDoCoreLibPAL: NSObject {
+    @objc public static func swiftSayHi() {
+        print("Hi piaojin, Hi iOS, Hi Rust!")
+    }
 }

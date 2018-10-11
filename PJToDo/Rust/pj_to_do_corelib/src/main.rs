@@ -1,4 +1,3 @@
-#![feature(extern_prelude)]
 #![feature(unboxed_closures)]
 #![feature(custom_attribute)]
 #![allow(proc_macro_derive_resolution_fallback)]
@@ -18,6 +17,8 @@ extern crate diesel;
 
 #[macro_use]
 extern crate lazy_static;
+
+extern crate cc;
 
 pub mod to_do_type;
 use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType};
@@ -194,7 +195,7 @@ fn main() {
 
     //DB 测试
     // /Users/zoey.weng/Desktop/Study/PJToDo/ToDo.db
-    let connection_util = PJDBConnectionUtil::new();
+    // let connection_util = PJDBConnectionUtil::new();
 
     // let to_do_type = ToDoTypeInsert {
     //     type_name: String::from("分类2")
@@ -205,7 +206,7 @@ fn main() {
     //     .execute(&connection_util.connection)
     //     .expect("Error saving new ToDoType");
 
-    use schema::todotype::dsl::*;
+    // use schema::todotype::dsl::*;
 
     // let to_do_type = todotype.select(type_name.eq("分类2".to_string())).load::<ToDoType>(&connection_util.connection).unwrap();
 
@@ -248,7 +249,7 @@ fn main() {
     // pj_info!("deleted_rows: {:?}", deleted_rows);
 
     //插入ToDo数据
-    use schema::todo::dsl::*;
+    // use schema::todo::dsl::*;
     
     // let to_do = ToDoInsert {
     //     content: "content".to_owned(), //待办事项内容

@@ -1,4 +1,3 @@
-#![feature(extern_prelude)]
 #![feature(unboxed_closures)]
 #![feature(custom_attribute)]
 #![allow(proc_macro_derive_resolution_fallback)]
@@ -22,6 +21,8 @@ extern crate serde_json;
 extern crate lazy_static;
 
 extern crate libc;
+
+extern crate cc;
 
 pub mod to_do_type;
 

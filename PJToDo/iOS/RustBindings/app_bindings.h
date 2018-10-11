@@ -54,4 +54,8 @@ void init_hello_piaojin(void);
 
 void insertToDoType(ToDoTypeInsert toDoType);
 
+extern void test_pal_from_Swift(void);
+
+void test_pal_from_rust(void);
+
 #endif /* app_bindings_h */
