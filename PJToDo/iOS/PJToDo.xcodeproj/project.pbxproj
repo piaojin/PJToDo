@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		029E7333E7B4A10195C02B02 /* Pods_PJToDoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3758FA50254166E4D59F88 /* Pods_PJToDoTests.framework */; };
+		7625021D2170A6D9001043AF /* PJCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7625021C2170A6D9001043AF /* PJCacheManager.swift */; };
+		762502202170AA69001043AF /* PJToDoConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7625021F2170AA69001043AF /* PJToDoConst.swift */; };
 		76348BF22116F2AD0009455C /* PJToDoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76348BF12116F2AD0009455C /* PJToDoTests.swift */; };
 		76348BFD2116F2AE0009455C /* PJToDoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76348BFC2116F2AE0009455C /* PJToDoUITests.swift */; };
 		76348C142116F2F40009455C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76348C0B2116F2F30009455C /* Assets.xcassets */; };
@@ -39,7 +41,6 @@
 		7648832B21675BF300F11106 /* ToDoTypeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648832A21675BF300F11106 /* ToDoTypeDelegate.swift */; };
 		7648832D21675C0600F11106 /* MineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648832C21675C0600F11106 /* MineDelegate.swift */; };
 		764883302168B4F600F11106 /* PJToDoDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648832F2168B4F600F11106 /* PJToDoDBManager.swift */; };
-		764883342168C28D00F11106 /* PJToDoConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764883332168C28D00F11106 /* PJToDoConst.swift */; };
 		76746D98216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c in Sources */ = {isa = PBXBuildFile; fileRef = 76746D97216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c */; };
 		76746D9E216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m in Sources */ = {isa = PBXBuildFile; fileRef = 76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */; };
 		90B883A67742CBA20B227A90 /* Pods_PJToDoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */; };
@@ -87,6 +88,8 @@
 		2A4E8B45B569FF38E2D47836 /* Pods-PJToDoTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDoTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDoTests/Pods-PJToDoTests.release.xcconfig"; sourceTree = "<group>"; };
 		727187D5B8F93B220B45B8AA /* Pods-PJToDoTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDoTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDoTests/Pods-PJToDoTests.debug.xcconfig"; sourceTree = "<group>"; };
 		73FB746FC3A9EE4D2B7700C1 /* Pods-PJToDo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDo.release.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo.release.xcconfig"; sourceTree = "<group>"; };
+		7625021C2170A6D9001043AF /* PJCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJCacheManager.swift; sourceTree = "<group>"; };
+		7625021F2170AA69001043AF /* PJToDoConst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJToDoConst.swift; sourceTree = "<group>"; };
 		762AD8E52164F39500D0C5C7 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		762AD8E72165075D00D0C5C7 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		76348BD92116F2AC0009455C /* PJToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PJToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,7 +134,6 @@
 		7648832A21675BF300F11106 /* ToDoTypeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTypeDelegate.swift; sourceTree = "<group>"; };
 		7648832C21675C0600F11106 /* MineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineDelegate.swift; sourceTree = "<group>"; };
 		7648832F2168B4F600F11106 /* PJToDoDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoDBManager.swift; sourceTree = "<group>"; };
-		764883332168C28D00F11106 /* PJToDoConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoConst.swift; sourceTree = "<group>"; };
 		76746D97216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJToDoCoreLibPAL_C.c; sourceTree = "<group>"; };
 		76746D9C216E60A200BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C_Bridging_OC.h; sourceTree = "<group>"; };
 		76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PJToDoCoreLibPAL_C_Bridging_OC.m; sourceTree = "<group>"; };
@@ -172,6 +174,30 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7625021A2170A6D9001043AF /* Tools */ = {
+			isa = PBXGroup;
+			children = (
+				7625021B2170A6D9001043AF /* Cache */,
+			);
+			path = Tools;
+			sourceTree = "<group>";
+		};
+		7625021B2170A6D9001043AF /* Cache */ = {
+			isa = PBXGroup;
+			children = (
+				7625021C2170A6D9001043AF /* PJCacheManager.swift */,
+			);
+			path = Cache;
+			sourceTree = "<group>";
+		};
+		7625021E2170AA69001043AF /* Consts */ = {
+			isa = PBXGroup;
+			children = (
+				7625021F2170AA69001043AF /* PJToDoConst.swift */,
+			);
+			path = Consts;
+			sourceTree = "<group>";
+		};
 		76348BD02116F2AC0009455C = {
 			isa = PBXGroup;
 			children = (
@@ -498,7 +524,8 @@
 		764883322168C27A00F11106 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				764883332168C28D00F11106 /* PJToDoConst.swift */,
+				7625021E2170AA69001043AF /* Consts */,
+				7625021A2170A6D9001043AF /* Tools */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -560,6 +587,7 @@
 				76348BD62116F2AC0009455C /* Frameworks */,
 				76348BD72116F2AC0009455C /* Resources */,
 				76D4B0D22163B18700C54A32 /* CopyFiles */,
+				290F02657E8ADD3A0B9AD9C0 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -704,6 +732,28 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
+		290F02657E8ADD3A0B9AD9C0 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
+				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
+				"${BUILT_PRODUCTS_DIR}/SVProgressHUD/SVProgressHUD.framework",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SVProgressHUD.framework",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		377D81D1D9FF2BF88D7228E3 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -760,15 +810,16 @@
 				7648832521675BB400F11106 /* ToDoTagDelegate.swift in Sources */,
 				7648831321675AAC00F11106 /* ToDoTypeViewModel.swift in Sources */,
 				7648832D21675C0600F11106 /* MineDelegate.swift in Sources */,
-				764883342168C28D00F11106 /* PJToDoConst.swift in Sources */,
 				7648832721675BC800F11106 /* ToDoDelegate.swift in Sources */,
 				7648831721675AF700F11106 /* ReposService.swift in Sources */,
 				76488309216759CA00F11106 /* PJToDoCoreLibPAL.swift in Sources */,
 				7648832B21675BF300F11106 /* ToDoTypeDelegate.swift in Sources */,
+				7625021D2170A6D9001043AF /* PJCacheManager.swift in Sources */,
 				7648832921675BDE00F11106 /* SearchDelegate.swift in Sources */,
 				764883052167598000F11106 /* PJToDoCoreLibFactory.swift in Sources */,
 				7648832321675B8F00F11106 /* ReposDelegate.swift in Sources */,
 				7648830F21675A7600F11106 /* ToDoViewModel.swift in Sources */,
+				762502202170AA69001043AF /* PJToDoConst.swift in Sources */,
 				7648831B21675B2300F11106 /* ToDoService.swift in Sources */,
 				7648831921675B1100F11106 /* ToDoTagService.swift in Sources */,
 				7648831F21675B4A00F11106 /* ToDoTypeService.swift in Sources */,

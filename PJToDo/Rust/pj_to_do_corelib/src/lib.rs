@@ -47,3 +47,5 @@ pub mod pal;
 pub mod init;
 
 pub mod service;
+
+pub mod c_binding_extern;

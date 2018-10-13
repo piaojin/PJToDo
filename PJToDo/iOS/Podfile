@@ -6,6 +6,9 @@ target 'PJToDo' do
   use_frameworks!
 
   # Pods for PJToDo
+  pod 'CocoaLumberjack/Swift', '~> 3.4.2'
+  pod 'SVProgressHUD', '~> 2.2.5'
+  pod 'ReachabilitySwift', '~> 4.1.0'
 
   target 'PJToDoTests' do
     inherit! :search_paths

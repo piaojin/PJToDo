@@ -7,32 +7,14 @@
 //
 
 import UIKit
-import SQLite3
+import CocoaLumberjack
 
 public struct PJToDoCoreLibInit {
     static public func initRustCoreLib() {
+        DDLogInfo("******start init CoreLib******")
         init_hello_piaojin()
-        print("Database already exists..")
-    }
-    
-    static public func initDB() {
-        
-    }
-    
-    static public func createDB() {
-        var db: OpaquePointer? = nil
-        let fm = FileManager()
-        if fm.fileExists(atPath: "dbPath", isDirectory: nil) {
-            print("Database already exists..")
-            return
-        }
-        
-        if sqlite3_open("dbPath", &db) == SQLITE_OK {
-            print("Successfully opened connection to database at dbPath")
-        } else {
-            print("Failed opened connection to database at dbPath")
-        }
-        
-        sqlite3_close(db)
+        PJToDoDBManager.initDB()
+        test_pal_from_rust()
+        DDLogInfo("******end init CoreLib******")
     }
 }

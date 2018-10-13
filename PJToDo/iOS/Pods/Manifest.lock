@@ -1,3 +1,26 @@
-PODFILE CHECKSUM: ccfa4085ed4ba9d7c9a61a9ece240794483f1cee
+PODS:
+  - CocoaLumberjack/Default (3.4.2)
+  - CocoaLumberjack/Swift (3.4.2):
+    - CocoaLumberjack/Default
+  - ReachabilitySwift (4.1.0)
+  - SVProgressHUD (2.2.5)
+
+DEPENDENCIES:
+  - CocoaLumberjack/Swift (~> 3.4.2)
+  - ReachabilitySwift (~> 4.1.0)
+  - SVProgressHUD (~> 2.2.5)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - CocoaLumberjack
+    - ReachabilitySwift
+    - SVProgressHUD
+
+SPEC CHECKSUMS:
+  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  ReachabilitySwift: 6849231cd4e06559f3b9ef4a97a0a0f96d41e09f
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+
+PODFILE CHECKSUM: 0ca09f2310f8a9a2862a017af3848b7ef72c9f98
 
 COCOAPODS: 1.5.3

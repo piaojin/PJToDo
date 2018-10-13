@@ -1,12 +1,21 @@
 extern crate diesel;
 
+use std::ffi::{CStr};
 use diesel::prelude::*;
 
 use pal::pj_to_do_pal::PJToDoPal;
+use c_binding_extern::c_binding_extern::{get_db_path};
 
 lazy_static! {
     pub static ref StaticPJDBConnectionUtil: PJDBConnectionUtil = {
         PJDBConnectionUtil::new()
+    };
+
+    pub static ref SQLiteUrl: String = {
+        let get_db_path = unsafe {
+            CStr::from_ptr(get_db_path()).to_string_lossy().into_owned()
+        };
+        get_db_path
     };
 }
 

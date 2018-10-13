@@ -25,6 +25,7 @@ xcuserdata/
 *.moved-aside
 *.xccheckout
 *.xcscmblueprint
+**/Pods/Target\ Support\ Files/Pods-PJToDoUITests/**
 
 ## Obj-C/Swift specific
 *.hmap

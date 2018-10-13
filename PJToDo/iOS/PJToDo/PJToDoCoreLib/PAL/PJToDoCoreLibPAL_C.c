@@ -5,3 +5,7 @@ void test_pal_from_Swift() {
     printf("PJToDoCoreLibPAL is ready in iOS!\n");
     swiftSayHi();
 }
+
+const char * get_db_path() {
+    return getDBPath();
+}

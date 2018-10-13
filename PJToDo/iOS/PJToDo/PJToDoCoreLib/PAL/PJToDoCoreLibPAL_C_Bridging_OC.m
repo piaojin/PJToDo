@@ -12,3 +12,7 @@
 void swiftSayHi() {
     [PJToDoCoreLibPAL swiftSayHi];
 }
+
+const char * getDBPath() {
+    return [PJToDoConst.dbPath UTF8String];
+}
