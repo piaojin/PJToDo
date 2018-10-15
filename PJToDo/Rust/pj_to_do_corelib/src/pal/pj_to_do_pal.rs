@@ -1,7 +1,7 @@
 use std::ffi::{CStr};
 use common::pj_logger::PJLogger;
 use c_binding_extern::c_binding_extern::{test_pal_from_Swift, get_db_path};
-use db::pj_db_connection_util::SQLiteUrl;
+use db::pj_db_connection_util::pj_db_connection_util::SQLiteUrl;
 
 pub struct PJToDoPal;
 

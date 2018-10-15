@@ -52,7 +52,11 @@ void freePJToDoTypeServiceImpl(PJToDoTypeServiceImpl *ptr);
 
 extern const char *get_db_path(void);
 
+void init_database(void);
+
 void init_hello_piaojin(void);
+
+void init_tables(void);
 
 void insertToDoType(ToDoTypeInsert toDoType);
 

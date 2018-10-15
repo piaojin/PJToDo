@@ -1,6 +1,6 @@
 use to_do_type::to_do_type::ToDoTypeInsert;
 use db::dao::to_do_type_dao::PJToDoTypeDAO;
-use db::pj_db_connection_util::StaticPJDBConnectionUtil;
+use db::pj_db_connection_util::pj_db_connection_util::StaticPJDBConnectionUtil;
 use db::tables::schema;
 use diesel::prelude::*;
 use common::pj_logger::PJLogger;

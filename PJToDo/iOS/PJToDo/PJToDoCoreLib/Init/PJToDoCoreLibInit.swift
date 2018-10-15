@@ -13,7 +13,9 @@ public struct PJToDoCoreLibInit {
     static public func initRustCoreLib() {
         DDLogInfo("******start init CoreLib******")
         init_hello_piaojin()
-        PJToDoDBManager.initDB()
+//        PJToDoDBManager.initDB()
+        init_database();
+        init_tables();
         test_pal_from_rust()
         DDLogInfo("******end init CoreLib******")
     }

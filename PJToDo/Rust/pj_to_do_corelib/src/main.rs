@@ -39,7 +39,7 @@ use repos::repos_file::ReposFileBody;
 
 #[macro_use]
 pub mod db;
-use db::pj_db_connection_util::PJDBConnectionUtil;
+use db::pj_db_connection_util::pj_db_connection_util::StaticPJDBConnectionUtil;
 use db::tables::schema;
 use diesel::prelude::*;
 
