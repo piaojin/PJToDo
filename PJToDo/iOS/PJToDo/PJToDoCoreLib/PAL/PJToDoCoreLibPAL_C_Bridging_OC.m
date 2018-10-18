@@ -16,3 +16,7 @@ void swiftSayHi() {
 const char * getDBPath() {
     return [PJToDoConst.dbPath UTF8String];
 }
+
+const char * getDBGZipPath() {
+    return [PJToDoConst.dbGZipPath UTF8String];
+}

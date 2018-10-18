@@ -16,7 +16,7 @@ pub struct ReposFileBody<'a> {
     pub path: &'a str,
     pub message: &'a str,
     pub content: &'a str,
-    pub sha: &'a str
+    pub sha: &'a str,
 }
 
 impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for ReposFileBody<'a> {

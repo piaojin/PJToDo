@@ -137,6 +137,8 @@
 		76746D97216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJToDoCoreLibPAL_C.c; sourceTree = "<group>"; };
 		76746D9C216E60A200BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C_Bridging_OC.h; sourceTree = "<group>"; };
 		76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PJToDoCoreLibPAL_C_Bridging_OC.m; sourceTree = "<group>"; };
+		767A10D421772DC800B1A179 /* PJToDoCoreLibPAL_C.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C.h; sourceTree = "<group>"; };
+		767A10D821772E4800B1A179 /* PJToDoCoreLibPAL_C_Bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C_Bindings.h; sourceTree = "<group>"; };
 		7CFB5B5F9AE9D85494D81D5D /* Pods-PJToDoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDoUITests/Pods-PJToDoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD3758FA50254166E4D59F88 /* Pods_PJToDoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -375,10 +377,12 @@
 		764882F42167592800F11106 /* PAL */ = {
 			isa = PBXGroup;
 			children = (
+				767A10D421772DC800B1A179 /* PJToDoCoreLibPAL_C.h */,
 				76746D97216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c */,
 				76488308216759CA00F11106 /* PJToDoCoreLibPAL.swift */,
 				76746D9C216E60A200BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.h */,
 				76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */,
+				767A10D821772E4800B1A179 /* PJToDoCoreLibPAL_C_Bindings.h */,
 			);
 			path = PAL;
 			sourceTree = "<group>";
@@ -1147,6 +1151,7 @@
 				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/RustBindings/app_bindings.h";
 				RUST_LIB_DIR_NAME = pj_to_do_corelib;
 				RUST_LIB_NAME = libpj_to_do_corelib.a;
+				RUST_PAL_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/PJToDo/PJToDoCoreLib/PAL/PJToDoCoreLibPAL_C_Bindings.h";
 			};
 			name = Debug;
 		};
@@ -1163,6 +1168,7 @@
 				RUST_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/RustBindings/app_bindings.h";
 				RUST_LIB_DIR_NAME = pj_to_do_corelib;
 				RUST_LIB_NAME = libpj_to_do_corelib.a;
+				RUST_PAL_BUILD_BINDINGS_HEAD_PATH = "${SRCROOT}/PJToDo/PJToDoCoreLib/PAL/PJToDoCoreLibPAL_C_Bindings.h";
 			};
 			name = Release;
 		};

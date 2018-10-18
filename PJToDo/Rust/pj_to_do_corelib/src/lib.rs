@@ -24,6 +24,8 @@ extern crate libc;
 
 extern crate cc;
 
+extern crate flate2;
+
 pub mod to_do_type;
 
 pub mod to_do_tag;

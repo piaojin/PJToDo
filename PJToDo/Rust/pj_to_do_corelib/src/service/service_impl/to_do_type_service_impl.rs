@@ -6,9 +6,7 @@ use service::service_delegate::to_do_tag_service_delegate::PJToDoTypeServiceDele
 use service::service_view_model::to_do_type_service_view_model::{createToDoTypeServiceViewModel, ToDoTypeServiceViewModel};
 
 lazy_static! {
-    pub static ref StaticPJToDoTypeDAO: PJToDoTypeDAOImpl = {
-        PJToDoTypeDAOImpl{}
-    };
+    pub static ref StaticPJToDoTypeDAO: PJToDoTypeDAOImpl = { PJToDoTypeDAOImpl {} };
 }
 
 #[repr(C)]
@@ -29,7 +27,9 @@ impl PJToDoTypeService for PJToDoTypeServiceImpl {
 /*** extern "C" ***/
 
 #[no_mangle]
-pub extern "C" fn createPJToDoTypeService(delegate: PJToDoTypeServiceDelegate) -> *mut PJToDoTypeServiceImpl {
+pub extern "C" fn createPJToDoTypeService(
+    delegate: PJToDoTypeServiceDelegate,
+) -> *mut PJToDoTypeServiceImpl {
     let view_model = ToDoTypeServiceViewModel::new();
     let service = PJToDoTypeServiceImpl {
         delegate: delegate,
@@ -41,6 +41,8 @@ pub extern "C" fn createPJToDoTypeService(delegate: PJToDoTypeServiceDelegate) -
 //析构对象
 #[no_mangle]
 pub unsafe extern "C" fn freePJToDoTypeServiceImpl(ptr: *mut PJToDoTypeServiceImpl) {
-    if ptr.is_null() { return };
-    Box::from_raw(ptr);//unsafe
+    if ptr.is_null() {
+        return;
+    };
+    Box::from_raw(ptr); //unsafe
 }

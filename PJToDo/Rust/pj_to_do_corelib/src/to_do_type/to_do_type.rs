@@ -19,8 +19,9 @@ use db::tables::schema::{todotype};
 // #[primary_key(id)]
 // #[column_name(barId)]
 #[repr(C)]
-#[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
-#[derive(Queryable, AsChangeset, Identifiable)]
+#[derive(
+    Serialize, Deserialize, Debug, Default, PartialEq, Queryable, AsChangeset, Identifiable,
+)]
 #[table_name = "todotype"]
 pub struct ToDoType {
     pub id: i32,
@@ -33,7 +34,7 @@ pub struct ToDoType {
 // impl<'a> BelongsTo<ToDo<'a>> for ToDoType {
 //     type ForeignKey = i32;
 //     type ForeignKeyColumn = todotype::to_do_id;
-    
+
 //     fn foreign_key(&self) -> Option<&Self::ForeignKey> {
 //         Some(&self.to_do_id)
 //     }
@@ -66,8 +67,7 @@ pub struct ToDoType {
 //     }
 // }
 
-#[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
-#[derive(Insertable)]
+#[derive(Serialize, Deserialize, Debug, Default, PartialEq, Insertable)]
 #[table_name = "todotype"]
 pub struct ToDoTypeInsert {
     pub type_name: String,
@@ -76,7 +76,7 @@ pub struct ToDoTypeInsert {
 impl ToDoTypeInsert {
     pub fn new(type_name: String) -> ToDoTypeInsert {
         ToDoTypeInsert {
-            type_name: type_name
+            type_name: type_name,
         }
     }
 }
@@ -85,6 +85,6 @@ impl ToDoTypeInsert {
 
 #[no_mangle]
 pub unsafe extern "C" fn createToDoTypeInsert(type_name: *const c_char) -> *mut ToDoTypeInsert {
-    let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned();//unsafe
+    let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned(); //unsafe
     Box::into_raw(Box::new(ToDoTypeInsert::new(type_name)))
 }

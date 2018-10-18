@@ -6,22 +6,25 @@ use diesel::prelude::*;
 use super::pj_database::Database;
 
 use pal::pj_to_do_pal::PJToDoPal;
-use c_binding_extern::c_binding_extern::{get_db_path};
+use c_binding_extern::c_binding_extern::*;
 
 use db::tables::schema::{Table_ToDoType, Table_ToDoTag, Table_ToDo, Table_ToDoType_Create_Sql, Table_ToDoTag_Create_Sql, Table_ToDo_Create_Sql};
 
 use std::collections::HashMap;
 
 lazy_static! {
-    pub static ref StaticPJDBConnectionUtil: PJDBConnectionUtil = {
-        PJDBConnectionUtil::new()
-    };
-
+    pub static ref StaticPJDBConnectionUtil: PJDBConnectionUtil = { PJDBConnectionUtil::new() };
     pub static ref SQLiteUrl: String = {
-        let get_db_path = unsafe {
-            CStr::from_ptr(get_db_path()).to_string_lossy().into_owned()
-        };
+        let get_db_path = unsafe { CStr::from_ptr(get_db_path()).to_string_lossy().into_owned() };
         get_db_path
+    };
+    pub static ref DBGZipPath: String = {
+        let get_db_gzip_path = unsafe {
+            CStr::from_ptr(get_db_gzip_path())
+                .to_string_lossy()
+                .into_owned()
+        };
+        get_db_gzip_path
     };
 }
 
@@ -34,7 +37,6 @@ pub struct PJDBConnectionUtil {
 unsafe impl Sync for PJDBConnectionUtil {}
 
 impl PJDBConnectionUtil {
-
     pub fn new() -> PJDBConnectionUtil {
         PJDBConnectionUtil {
             connection: PJDBConnectionUtil::establish_connection(PJToDoPal::sqlite_url()),
@@ -57,10 +59,16 @@ impl PJDBConnectionUtil {
 
     pub fn init_tables(&self) {
         let mut tables = HashMap::new();
-        tables.insert(Table_ToDoType.to_string(), Table_ToDoType_Create_Sql.to_string());
-        tables.insert(Table_ToDoTag.to_string(), Table_ToDoTag_Create_Sql.to_string());
+        tables.insert(
+            Table_ToDoType.to_string(),
+            Table_ToDoType_Create_Sql.to_string(),
+        );
+        tables.insert(
+            Table_ToDoTag.to_string(),
+            Table_ToDoTag_Create_Sql.to_string(),
+        );
         tables.insert(Table_ToDo.to_string(), Table_ToDo_Create_Sql.to_string());
-        
+
         for (table, table_create_sql) in tables {
             if !self.data_base.table_exists(&table) {
                 self.data_base.execute(&table_create_sql);

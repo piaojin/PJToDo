@@ -13,4 +13,6 @@ void swiftSayHi(void);
 
 const char * getDBPath(void);
 
+const char * getDBGZipPath(void);
+
 #endif /* PJToDoCoreLibPAL_C_Bridging_OC_h */

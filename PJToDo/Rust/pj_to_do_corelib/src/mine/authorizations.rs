@@ -46,7 +46,7 @@ pub struct Authorizations<'a> {
     token: &'a str,
     hashed_token: &'a str,
     created_at: &'a str,
-    updated_at: &'a str
+    updated_at: &'a str,
 }
 
 impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for Authorizations<'a> {

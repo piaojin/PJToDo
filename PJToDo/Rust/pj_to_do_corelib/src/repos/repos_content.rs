@@ -60,7 +60,7 @@ use common::pj_serialize::PJSerdeDeserialize;
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ReposFile<'a> {
     #[serde(borrow)]
-    pub content: ReposContent<'a>
+    pub content: ReposContent<'a>,
 }
 
 impl<'b: 'a, 'a> PJSerdeDeserialize<'b> for ReposFile<'a> {
@@ -81,7 +81,7 @@ pub struct ReposContent<'a> {
     git_url: &'a str,
     download_url: &'a str,
     #[serde(rename = "type")]
-    _type: &'a str
+    _type: &'a str,
 }
 
 impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for ReposContent<'a> {

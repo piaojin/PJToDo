@@ -31,7 +31,7 @@ macro_rules! function {
         }
         let name = type_name_of(f);
         &name[6..name.len() - 4]
-    }}
+    }};
 }
 
 #[cfg(not(feature = "type_name"))]
@@ -45,7 +45,7 @@ macro_rules! function {
         }
         let name = type_name_of(f);
         &name[6..name.len() - 4]
-    }}
+    }};
 }
 
 #[allow(unused_macros)]
@@ -116,7 +116,6 @@ macro_rules! pj_trace {
 impl PJLogger {
     /// init log before use log. And the log just need to init for once.
     pub fn pj_init_logger() -> Result<(), SetLoggerError> {
-        log::set_logger(&LOGGER)
-            .map(|()| log::set_max_level(LevelFilter::Trace))
+        log::set_logger(&LOGGER).map(|()| log::set_max_level(LevelFilter::Trace))
     }
 }

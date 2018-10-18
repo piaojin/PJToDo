@@ -56,7 +56,7 @@ impl PJRequestConfig {
             private: false,
             has_issues: true,
             has_projects: true,
-            has_wiki: true
+            has_wiki: true,
         }
     }
 

@@ -50,7 +50,11 @@ ToDoTypeServiceViewModel *createToDoTypeServiceViewModel(void);
 
 void freePJToDoTypeServiceImpl(PJToDoTypeServiceImpl *ptr);
 
+extern const char *get_db_gzip_path(void);
+
 extern const char *get_db_path(void);
+
+void init_core_lib(void);
 
 void init_database(void);
 
@@ -59,6 +63,8 @@ void init_hello_piaojin(void);
 void init_tables(void);
 
 void insertToDoType(ToDoTypeInsert toDoType);
+
+void pj_compress(const char *file_path);
 
 extern void test_pal_from_Swift(void);
 

@@ -19,6 +19,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.initLog()
         PJToDoCoreLibInit.initRustCoreLib()
+        pj_compress(PJToDoConst.dbPath)
         return true
     }
 

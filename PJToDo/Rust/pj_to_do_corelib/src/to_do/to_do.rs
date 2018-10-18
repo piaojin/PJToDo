@@ -19,7 +19,7 @@ pub enum ToDoState {
     Determined,
     InProgress,
     Finished,
-    Overdue
+    Overdue,
 }
 
 // impl ToSql<ToDoStateType, Sqlite> for ToDoState {
@@ -47,28 +47,29 @@ pub enum ToDoState {
 // }
 
 impl Default for ToDoState {
-    fn default() -> ToDoState { 
-        ToDoState::Determined 
+    fn default() -> ToDoState {
+        ToDoState::Determined
     }
 }
 
-#[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
-#[derive(Identifiable, Queryable, Associations)]
+#[derive(
+    Serialize, Deserialize, Debug, Default, PartialEq, Identifiable, Queryable, Associations,
+)]
 #[belongs_to(ToDoType, foreign_key = "to_do_type_id")]
 #[belongs_to(ToDoTag, foreign_key = "to_do_tag_id")]
 #[table_name = "todo"]
 pub struct ToDoQuery {
     pub id: i32,
-    pub content: String, //待办事项内容
-    pub title: String, //待办事项标题
-    pub due_time: String, //到期时间
+    pub content: String,     //待办事项内容
+    pub title: String,       //待办事项标题
+    pub due_time: String,    //到期时间
     pub remind_time: String, //提醒时间
     // #[sql_type="Text"]
     pub create_time: String, //创建时间
     pub update_time: String, //更新时间
-    pub to_do_type_id: i32, //标签
-    pub to_do_tag_id: i32, //分类
-    pub state: i32, //状态
+    pub to_do_type_id: i32,  //标签
+    pub to_do_tag_id: i32,   //分类
+    pub state: i32,          //状态
 }
 
 // use diesel::sql_types::*;
@@ -83,7 +84,7 @@ pub struct ToDoQuery {
 // impl<'a> BelongsTo<ToDoType> for ToDo<'a> {
 //     type ForeignKey = i32;
 //     type ForeignKeyColumn = todo::to_do_type_id;
-    
+
 //     fn foreign_key(&self) -> Option<&Self::ForeignKey> {
 //         Some(&self.to_do_type_id)
 //     }
@@ -93,36 +94,35 @@ pub struct ToDoQuery {
 //     }
 // }
 
-#[derive(Serialize, Deserialize, Debug, Default, PartialEq)]
-#[derive(Insertable)]
+#[derive(Serialize, Deserialize, Debug, Default, PartialEq, Insertable)]
 #[table_name = "todo"]
 pub struct ToDoInsert {
-    pub content: String, //待办事项内容
-    pub title: String, //待办事项标题
-    pub due_time: String, //到期时间
+    pub content: String,     //待办事项内容
+    pub title: String,       //待办事项标题
+    pub due_time: String,    //到期时间
     pub remind_time: String, //提醒时间
     pub create_time: String, //创建时间
     pub update_time: String, //更新时间
-    pub to_do_type_id: i32, //标签
-    pub to_do_tag_id: i32, //分类
-    pub state: i32, //状态
+    pub to_do_type_id: i32,  //标签
+    pub to_do_tag_id: i32,   //分类
+    pub state: i32,          //状态
 }
 
 #[repr(C)]
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ToDo {
     pub id: i32,
-    pub content: String, //待办事项内容
-    pub title: String, //待办事项标题
-    pub due_time: String, //到期时间
-    pub remind_time: String, //提醒时间
-    pub create_time: String, //创建时间
-    pub update_time: String, //更新时间
-    pub to_do_type_id: i32, //标签
-    pub to_do_tag_id: i32, //分类
-    pub to_do_tag: ToDoTag, //标签
+    pub content: String,      //待办事项内容
+    pub title: String,        //待办事项标题
+    pub due_time: String,     //到期时间
+    pub remind_time: String,  //提醒时间
+    pub create_time: String,  //创建时间
+    pub update_time: String,  //更新时间
+    pub to_do_type_id: i32,   //标签
+    pub to_do_tag_id: i32,    //分类
+    pub to_do_tag: ToDoTag,   //标签
     pub to_do_type: ToDoType, //分类
-    pub state: ToDoState, //状态
+    pub state: ToDoState,     //状态
     pub state_raw_value: i32, //状态
 }
 

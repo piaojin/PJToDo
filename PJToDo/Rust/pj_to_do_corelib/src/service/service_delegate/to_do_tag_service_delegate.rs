@@ -3,7 +3,7 @@ use libc::{c_void, c_char};
 
 #[repr(C)]
 pub struct PJToDoTypeServiceDelegate {
-    user: *mut c_void,//当前持有PJToDoTypeServiceDelegate对象的所有权者
+    user: *mut c_void, //当前持有PJToDoTypeServiceDelegate对象的所有权者
     //释放内存回调，告诉当前持有PJToDoTypeServiceDelegate对象的所有权者做相应的处理
     destroy: extern "C" fn(user: *mut c_void),
 }

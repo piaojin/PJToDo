@@ -50,8 +50,9 @@ use to_do::to_do::{ToDoInsert, ToDoState, ToDoQuery};
 
 pub mod to_do_tag;
 
+extern crate flate2;
+
 fn main() {
-    
     //使用log之前需要初始化，并且只需要初始化一次
     let _ = PJLogger::pj_init_logger();
     //网络测试
@@ -250,7 +251,7 @@ fn main() {
 
     //插入ToDo数据
     // use schema::todo::dsl::*;
-    
+
     // let to_do = ToDoInsert {
     //     content: "content".to_owned(), //待办事项内容
     //     title: "title".to_owned(), //待办事项标题

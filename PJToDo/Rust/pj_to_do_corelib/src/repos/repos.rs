@@ -118,7 +118,7 @@ pub struct Repos<'a> {
     description: &'a str,
     url: &'a str,
     contents_url: &'a str,
-    downloads_url: &'a str
+    downloads_url: &'a str,
 }
 
 impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for Repos<'a> {
@@ -136,7 +136,7 @@ pub struct ReposRequestBody<'a> {
     pub private: bool,
     pub has_issues: bool,
     pub has_projects: bool,
-    pub has_wiki: bool
+    pub has_wiki: bool,
 }
 
 impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for ReposRequestBody<'a> {

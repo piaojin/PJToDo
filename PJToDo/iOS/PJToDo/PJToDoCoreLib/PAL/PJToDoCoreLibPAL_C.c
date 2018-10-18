@@ -9,3 +9,7 @@ void test_pal_from_Swift() {
 const char * get_db_path() {
     return getDBPath();
 }
+
+const char * get_db_gzip_path() {
+    return getDBGZipPath();
+}

@@ -102,7 +102,7 @@ pub struct Plan {
     name: String,
     space: i64,
     collaborators: i64,
-    private_repos: i64
+    private_repos: i64,
 }
 
 impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for User<'a> {

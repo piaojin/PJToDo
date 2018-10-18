@@ -32,8 +32,9 @@ impl Database {
              WHERE type = 'table' \
              AND name = '{}')",
             table
-        ))).get_result(&self.conn())
-            .unwrap()
+        )))
+        .get_result(&self.conn())
+        .unwrap()
     }
 
     pub fn conn(&self) -> SqliteConnection {

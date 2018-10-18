@@ -22,7 +22,7 @@ use common::pj_serialize::PJSerdeDeserialize;
 pub enum FetchError {
     Http(hyper::Error),
     Json(serde_json::Error),
-    Custom(String)
+    Custom(String),
 }
 
 impl From<hyper::Error> for FetchError {
@@ -61,22 +61,22 @@ impl PJHttpRequest {
                 *req.uri_mut() = uri.clone();
                 req.headers_mut().insert(
                     hyper::header::CONTENT_LENGTH,
-                    HeaderValue::from_static("application/json")
+                    HeaderValue::from_static("application/json"),
                 );
 
                 req.headers_mut().insert(
                     hyper::header::ACCEPT,
-                    HeaderValue::from_static("application/json")
+                    HeaderValue::from_static("application/json"),
                 );
 
                 req.headers_mut().insert(
                     hyper::header::CONTENT_TYPE,
-                    HeaderValue::from_static("application/json")
+                    HeaderValue::from_static("application/json"),
                 );
 
                 req.headers_mut().insert(
                     hyper::header::USER_AGENT,
-                    HeaderValue::from_static("application/vnd.github.v3+json")
+                    HeaderValue::from_static("application/vnd.github.v3+json"),
                 );
 
                 // req.headers_mut().insert(
@@ -84,26 +84,27 @@ impl PJHttpRequest {
                 //     HeaderValue::from_static("Basic cGlhb2ppbjp3ZW5nODA0NDg4ODE1")
                 // );
                 req
-            },
+            }
             Err(e) => {
                 pj_error!("url format error: {}!!!", e);
                 req
-            },
+            }
         }
     }
 }
 
 impl PJHttpRequest {
-
-    pub fn do_request_action(request: Request<Body>) -> impl OtherFuture<Item=hyper::Chunk, Error=FetchError> {
+    pub fn do_request_action(
+        request: Request<Body>,
+    ) -> impl OtherFuture<Item = hyper::Chunk, Error = FetchError> {
         // 4 is number of blocking DNS threads
         //为了使用https请求，默认是http请求
         let https = HttpsConnector::new(4).unwrap();
         // https.https_only(true);
-        let client = Client::builder()
-            .build::<_, hyper::Body>(https);
+        let client = Client::builder().build::<_, hyper::Body>(https);
 
-        client.request(request)
+        client
+            .request(request)
             .and_then(|res| {
                 pj_info!("Headers: {:#?}", res.headers());
                 pj_info!("Response: {:#?}", res.status());
@@ -118,52 +119,54 @@ impl PJHttpRequest {
             })
             .from_err::<FetchError>()
             // use the body after concatenation
-            .and_then(|body| {
-                Ok(body)
-            })
+            .and_then(|body| Ok(body))
             .from_err()
     }
 
-    pub fn parse_data<'a, T>(body: &'a hyper::Chunk) -> Result<T, serde_json::Error> where T: std::fmt::Debug + PJSerdeDeserialize<'a> {
+    pub fn parse_data<'a, T>(body: &'a hyper::Chunk) -> Result<T, serde_json::Error>
+    where
+        T: std::fmt::Debug + PJSerdeDeserialize<'a>,
+    {
         // try to parse as json with serde_json
         let parse_result = serde_json::from_slice(body);
         pj_info!("parse data result: {:?}", parse_result);
         parse_result
     }
 
-    pub fn http_send<F>(request: Request<Body>, completion_handler: F) 
-        where F: FnOnce(Result<hyper::Chunk, FetchError>) + std::marker::Sync + Send + 'static + std::clone::Clone {
-
+    pub fn http_send<F>(request: Request<Body>, completion_handler: F)
+    where
+        F: FnOnce(Result<hyper::Chunk, FetchError>)
+            + std::marker::Sync
+            + Send
+            + 'static
+            + std::clone::Clone,
+    {
         let completion_handler_http_err = completion_handler.clone();
         let completion_handler_json_parse_err = completion_handler.clone();
 
         let response_data = PJHttpRequest::do_request_action(request)
-        .map(|body: hyper::Chunk| {
-            body
-        })
-        // if there was an error print it
-        .map_err(|e| {
-            match e {
-                FetchError::Http(e) => {
-                    // eprintln!("http error: {}", e)
-                    completion_handler_http_err(Err(FetchError::Http(e)));
-                },
-                FetchError::Json(e) => {
-                    // eprintln!("json parsing error: {}", e)
-                    completion_handler_json_parse_err(Err(FetchError::Json(e)));
-                },
-                FetchError::Custom(e) => {
-                    completion_handler_json_parse_err(Err(FetchError::Custom(e)));
+            .map(|body: hyper::Chunk| body)
+            // if there was an error print it
+            .map_err(|e| {
+                match e {
+                    FetchError::Http(e) => {
+                        // eprintln!("http error: {}", e)
+                        completion_handler_http_err(Err(FetchError::Http(e)));
+                    }
+                    FetchError::Json(e) => {
+                        // eprintln!("json parsing error: {}", e)
+                        completion_handler_json_parse_err(Err(FetchError::Json(e)));
+                    }
+                    FetchError::Custom(e) => {
+                        completion_handler_json_parse_err(Err(FetchError::Custom(e)));
+                    }
                 }
-            }
-        })
-        .map(|body: hyper::Chunk| {
-            completion_handler(Ok(body));
-        })
-        // if there was an error print it
-        .map_err(|e| {
-            eprintln!("request error: {:?}", e)
-        });
+            })
+            .map(|body: hyper::Chunk| {
+                completion_handler(Ok(body));
+            })
+            // if there was an error print it
+            .map_err(|e| eprintln!("request error: {:?}", e));
 
         hyper::rt::run(response_data);
     }

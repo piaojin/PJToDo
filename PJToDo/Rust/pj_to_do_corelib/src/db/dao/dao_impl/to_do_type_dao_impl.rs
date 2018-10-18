@@ -29,11 +29,11 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
                 }
                 pj_info!("insert_to_do_type: inserted_row: {}", inserted_row);
                 result
-            },
+            }
             Err(_) => {
                 pj_error!("insert_to_do_type: insert failure!");
-                Err(String::from("insert failure!")) 
-            },
+                Err(String::from("insert failure!"))
+            }
         }
     }
 }
