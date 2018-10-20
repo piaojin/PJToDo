@@ -8,6 +8,7 @@
 
 import UIKit
 import CocoaLumberjack
+import SSZipArchive
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -19,8 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Override point for customization after application launch.
         self.initLog()
         PJToDoCoreLibInit.initRustCoreLib()
-        pj_compress(PJToDoConst.dbPath)
-        pj_uncompress(PJToDoConst.dbGZipPath)
+//        SSZipArchive.createZipFile(atPath: PJToDoConst.dbGZipPath, withFilesAtPaths: [PJToDoConst.dbPath])
+//        let isSuccess = try? SSZipArchive.unzipFile(atPath: PJToDoConst.dbGZipPath, toDestination: PJCacheManager.shared.documnetPath, overwrite: true, password: nil)
         return true
     }
 
