@@ -30,6 +30,9 @@ xcuserdata/
 /Pods/
 **/Pods/**
 **/Pods/
+Pods
+!Podfile
+!Podfile.lock
 
 ## Other
 *.moved-aside
