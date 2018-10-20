@@ -16,6 +16,10 @@ impl PJToDoPal {
         &DBGZipPath
     }
 
+    pub fn db_uncompress_path<'a>() -> &'a str {
+        &DBUnCompressPath
+    }
+
     pub unsafe fn say_hi_from_rust() {
         println!("PJToDoPal is ready in Rust CoreLib!");
         test_pal_from_Swift();

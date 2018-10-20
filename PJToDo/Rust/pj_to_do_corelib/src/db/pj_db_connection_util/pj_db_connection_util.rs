@@ -26,6 +26,14 @@ lazy_static! {
         };
         get_db_gzip_path
     };
+    pub static ref DBUnCompressPath: String = {
+        let get_db_uncompresses_path = unsafe {
+            CStr::from_ptr(get_db_uncompresses_path())
+                .to_string_lossy()
+                .into_owned()
+        };
+        get_db_uncompresses_path
+    };
 }
 
 pub struct PJDBConnectionUtil {

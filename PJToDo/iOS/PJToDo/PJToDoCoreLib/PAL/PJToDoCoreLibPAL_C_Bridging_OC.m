@@ -17,6 +17,10 @@ const char * getDBPath() {
     return [PJToDoConst.dbPath UTF8String];
 }
 
-const char * getDBGZipPath() {
+const char * getDBGZipPath(void) {
     return [PJToDoConst.dbGZipPath UTF8String];
+}
+
+const char * getDBUnCompressesPath() {
+    return [PJToDoConst.dbUnCompressesPath UTF8String];
 }

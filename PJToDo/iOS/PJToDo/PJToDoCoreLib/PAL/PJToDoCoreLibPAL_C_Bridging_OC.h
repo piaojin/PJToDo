@@ -15,4 +15,6 @@ const char * getDBPath(void);
 
 const char * getDBGZipPath(void);
 
+const char * getDBUnCompressesPath(void);
+
 #endif /* PJToDoCoreLibPAL_C_Bridging_OC_h */

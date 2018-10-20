@@ -13,3 +13,7 @@ const char * get_db_path() {
 const char * get_db_gzip_path() {
     return getDBGZipPath();
 }
+
+const char * get_db_uncompresses_path() {
+    return getDBUnCompressesPath();
+}

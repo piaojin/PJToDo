@@ -20,6 +20,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.initLog()
         PJToDoCoreLibInit.initRustCoreLib()
         pj_compress(PJToDoConst.dbPath)
+        pj_uncompress(PJToDoConst.dbGZipPath)
         return true
     }
 
