@@ -26,29 +26,41 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+typedef struct PJToDoTypeServiceController PJToDoTypeServiceController;
+
+typedef struct ToDoType ToDoType;
+
 typedef struct ToDoTypeInsert ToDoTypeInsert;
 
 typedef struct {
   void *user;
   void (*destroy)(void*);
-} PJToDoTypeServiceDelegate;
+  void (*insert_result)(void*, int32_t, bool);
+} IPJToDoTypeDelegate;
+
+typedef struct {
+  IPJToDoTypeDelegate delegate;
+  PJToDoTypeServiceController *todo_typ_service_controller;
+  ToDoTypeInsert *todo_type_insert;
+} PJToDoTypeController;
 
 typedef struct {
   void (*insert_to_do_type)(ToDoTypeInsert);
-} ToDoTypeServiceViewModel;
+} PJToDoTypeViewModel;
 
-typedef struct {
-  PJToDoTypeServiceDelegate delegate;
-  ToDoTypeServiceViewModel view_model;
-} PJToDoTypeServiceImpl;
+PJToDoTypeController *createPJToDoTypeController(IPJToDoTypeDelegate delegate);
 
-PJToDoTypeServiceImpl *createPJToDoTypeService(PJToDoTypeServiceDelegate delegate);
+PJToDoTypeViewModel *createPJToDoTypeViewModel(void);
+
+ToDoType *createToDoType(const char *type_name);
 
 ToDoTypeInsert *createToDoTypeInsert(const char *type_name);
 
-ToDoTypeServiceViewModel *createToDoTypeServiceViewModel(void);
+void free_rust_PJToDoTypeController(PJToDoTypeController *ptr);
 
-void freePJToDoTypeServiceImpl(PJToDoTypeServiceImpl *ptr);
+void free_rust_object(void *ptr);
+
+const ToDoTypeInsert *getToDoType(const PJToDoTypeController *ptr);
 
 extern const char *get_db_gzip_path(void);
 
@@ -64,11 +76,15 @@ void init_hello_piaojin(void);
 
 void init_tables(void);
 
-void insertToDoType(ToDoTypeInsert toDoType);
+void insertToDoType(PJToDoTypeController *ptr, const ToDoTypeInsert *toDoType);
+
+void insertToDoType2(ToDoTypeInsert toDoType);
 
 void pj_compress(const char *file_path);
 
 void pj_uncompress(const char *uncompresses_file_path);
+
+void setToDoTypeTypeName(ToDoType *ptr, const char *type_name);
 
 extern void test_pal_from_Swift(void);
 

@@ -61,7 +61,8 @@ cc = "1.0"
 type_name = [] # feature has no explicit dependencies
 
 [lib]
-crate-type = ["staticlib", "cdylib", "dylib"]
+crate-type = ["staticlib"]
+# crate-type = ["staticlib", "cdylib", "dylib"]
 # crate-type = ["staticlib"]
 name = "pj_to_do_corelib"
 

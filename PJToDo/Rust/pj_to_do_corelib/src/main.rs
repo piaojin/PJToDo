@@ -3,6 +3,10 @@
 #![allow(proc_macro_derive_resolution_fallback)]
 // #![cfg_attr(feature = "type_name", feature(core_intrinsics))]
 #![feature(core_intrinsics)]
+#![allow(non_upper_case_globals)]
+#![allow(non_camel_case_types)]
+#![allow(non_snake_case)]
+// #![feature(impl_trait_in_bindings)]
 #[macro_use]
 extern crate log;
 

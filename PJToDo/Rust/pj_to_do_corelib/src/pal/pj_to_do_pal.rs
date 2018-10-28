@@ -25,7 +25,6 @@ impl PJToDoPal {
         test_pal_from_Swift();
         let get_db_path = PJToDoPal::sqlite_url(); //unsafe
         pj_info!("get_db_path: {:}", get_db_path);
-        println!("get_db_path: {:}", get_db_path);
     }
 }
 

@@ -22,6 +22,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PJToDoCoreLibInit.initRustCoreLib()
 //        SSZipArchive.createZipFile(atPath: PJToDoConst.dbGZipPath, withFilesAtPaths: [PJToDoConst.dbPath])
 //        let isSuccess = try? SSZipArchive.unzipFile(atPath: PJToDoConst.dbGZipPath, toDestination: PJCacheManager.shared.documnetPath, overwrite: true, password: nil)
+        let homeViewController = HomeViewController()
+        let nav = UINavigationController(rootViewController: homeViewController)
+        self.window = UIWindow(frame: UIScreen.main.bounds)
+        self.window?.rootViewController = nav
+        self.window?.makeKeyAndVisible()
         return true
     }
 

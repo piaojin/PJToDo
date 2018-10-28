@@ -37,3 +37,8 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
         }
     }
 }
+
+#[allow(non_snake_case)]
+pub fn createPJToDoTypeDAOImpl() -> impl PJToDoTypeDAO {
+    PJToDoTypeDAOImpl {}
+}

@@ -1,48 +1,34 @@
 use db::dao::to_do_type_dao::PJToDoTypeDAO;
-use db::dao::dao_impl::to_do_type_dao_impl::PJToDoTypeDAOImpl;
+use db::dao::dao_impl::to_do_type_dao_impl::{createPJToDoTypeDAOImpl, PJToDoTypeDAOImpl};
 use service::to_do_type_service::PJToDoTypeService;
 use to_do_type::to_do_type::ToDoTypeInsert;
-use service::service_delegate::to_do_tag_service_delegate::PJToDoTypeServiceDelegate;
-use service::service_view_model::to_do_type_service_view_model::{createToDoTypeServiceViewModel, ToDoTypeServiceViewModel};
-
-lazy_static! {
-    pub static ref StaticPJToDoTypeDAO: PJToDoTypeDAOImpl = { PJToDoTypeDAOImpl {} };
-}
 
 #[repr(C)]
 pub struct PJToDoTypeServiceImpl {
-    pub delegate: PJToDoTypeServiceDelegate,
-    pub view_model: ToDoTypeServiceViewModel,
+    pub todo_type_dao: Box<dyn PJToDoTypeDAO>,
 }
 
 impl PJToDoTypeService for PJToDoTypeServiceImpl {
     /**
      * 添加分类
      */
-    fn insert_to_do_type(to_do_type: ToDoTypeInsert) -> Result<usize, String> {
-        StaticPJToDoTypeDAO.insert_to_do_type(to_do_type)
+    fn insert_to_do_type(&self, to_do_type: ToDoTypeInsert) -> Result<usize, String> {
+        self.todo_type_dao.insert_to_do_type(to_do_type)
+    }
+}
+
+impl Drop for PJToDoTypeServiceImpl {
+    fn drop(&mut self) {
+        println!("PJToDoTypeServiceImpl -> drop");
     }
 }
 
 /*** extern "C" ***/
 
-#[no_mangle]
-pub extern "C" fn createPJToDoTypeService(
-    delegate: PJToDoTypeServiceDelegate,
-) -> *mut PJToDoTypeServiceImpl {
-    let view_model = ToDoTypeServiceViewModel::new();
+#[allow(non_snake_case)]
+pub fn createPJToDoTypeServiceImpl() -> impl PJToDoTypeService {
     let service = PJToDoTypeServiceImpl {
-        delegate: delegate,
-        view_model: view_model,
+        todo_type_dao: Box::new(createPJToDoTypeDAOImpl()),
     };
-    Box::into_raw(Box::new(service))
-}
-
-//析构对象
-#[no_mangle]
-pub unsafe extern "C" fn freePJToDoTypeServiceImpl(ptr: *mut PJToDoTypeServiceImpl) {
-    if ptr.is_null() {
-        return;
-    };
-    Box::from_raw(ptr); //unsafe
+    service
 }
