@@ -260,6 +260,12 @@
 		76348C102116F2F30009455C /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				76FD55EC2187073100989102 /* Details */,
+				76FD55EB2187073100989102 /* Login */,
+				76FD55ED2187073100989102 /* Me */,
+				76FD55EA2187073100989102 /* Search */,
+				76FD55E82187073100989102 /* ToDo */,
+				76FD55E92187073100989102 /* ToDoTag */,
 				76B5226E2180BB6700D51AE8 /* Home */,
 				76B5226B21809EA800D51AE8 /* ToDoType */,
 				764883322168C27A00F11106 /* Common */,
@@ -480,6 +486,48 @@
 				76B5226F2180BB8700D51AE8 /* HomeViewController.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		76FD55E82187073100989102 /* ToDo */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ToDo;
+			sourceTree = "<group>";
+		};
+		76FD55E92187073100989102 /* ToDoTag */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ToDoTag;
+			sourceTree = "<group>";
+		};
+		76FD55EA2187073100989102 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		76FD55EB2187073100989102 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		76FD55EC2187073100989102 /* Details */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Details;
+			sourceTree = "<group>";
+		};
+		76FD55ED2187073100989102 /* Me */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Me;
 			sourceTree = "<group>";
 		};
 		B8D75D4EE9038E4B3C3B95DF /* Pods */ = {

@@ -14,10 +14,10 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
     /**
      * 添加分类
      */
-    fn insert_to_do_type(&self, to_do_type: ToDoTypeInsert) -> Result<usize, String> {
+    fn insert_to_do_type(&self, to_do_type: &ToDoTypeInsert) -> Result<usize, String> {
         pj_info!("insert_to_do_type: to_do_type: {:?}", to_do_type);
         let inserted_result = diesel::insert_into(schema::todotype::table)
-            .values(&to_do_type)
+            .values(to_do_type)
             .execute(&StaticPJDBConnectionUtil.connection);
         match inserted_result {
             Ok(inserted_row) => {
@@ -38,7 +38,6 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
     }
 }
 
-#[allow(non_snake_case)]
 pub fn createPJToDoTypeDAOImpl() -> impl PJToDoTypeDAO {
     PJToDoTypeDAOImpl {}
 }

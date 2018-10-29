@@ -7,6 +7,7 @@ use self::libc::{c_char};
 use std::ffi::{CStr};
 
 use db::tables::schema::{todotype};
+use std::marker::{Send, Sync};
 // #[primary_key(id)]
 // #[column_name(barId)]
 #[derive(
@@ -40,6 +41,9 @@ impl ToDoTypeInsert {
         }
     }
 }
+
+unsafe impl Send for ToDoTypeInsert {}
+unsafe impl Sync for ToDoTypeInsert {}
 
 // impl Drop for ToDoTypeInsert {
 //     fn drop(&mut self) {

@@ -1,5 +1,5 @@
 use delegates::to_do_type_delegate::{IPJToDoTypeDelegate, IPJToDoTypeDelegateWrapper};
-use service::to_do_type_service::{PJToDoTypeService};
+use service::to_do_type_service::{PJToDoTypeService, insert_to_do_type};
 use service::service_impl::to_do_type_service_impl::{createPJToDoTypeServiceImpl};
 use view_models::to_do_type_view_model::PJToDoTypeViewModel;
 use to_do_type::to_do_type::{ToDoTypeInsert, createToDoTypeInsert};
@@ -10,6 +10,7 @@ use std::sync::{Arc, Mutex};
 use std::time::Duration;
 use std::thread;
 use std::marker::{Send, Sync};
+use std::ops::Deref;
 
 /*
 * cbindgen didn't support Box<dyn PJToDoTypeService> type,so I need to use PJToDoTypeServiceController to define Box<dyn PJToDoTypeService>.
@@ -34,12 +35,18 @@ impl Drop for PJToDoTypeServiceController {
     }
 }
 
+unsafe impl Send for PJToDoTypeServiceController {}
+unsafe impl Sync for PJToDoTypeServiceController {}
+
 #[repr(C)]
 pub struct PJToDoTypeController {
     pub delegate: IPJToDoTypeDelegate,
     todo_typ_service_controller: *mut PJToDoTypeServiceController,
     pub todo_type_insert: *mut ToDoTypeInsert,
 }
+
+unsafe impl Send for PJToDoTypeController {}
+unsafe impl Sync for PJToDoTypeController {}
 
 impl PJToDoTypeController {
     fn new(delegate: IPJToDoTypeDelegate) -> PJToDoTypeController {
@@ -61,17 +68,26 @@ impl PJToDoTypeController {
      */
     pub unsafe fn insert_to_do_type(&self, to_do_type: *const ToDoTypeInsert) {
         pj_info!("insert_to_do_type: {}", (*to_do_type).type_name);
+        assert!(!to_do_type.is_null());
         let i_delegate = IPJToDoTypeDelegateWrapper((&self.delegate) as *const IPJToDoTypeDelegate);
-        let i_delegate = Arc::new(Mutex::new(i_delegate));
-        // let i_delegate = Arc::clone(&i_delegate);
+        // let i_delegate = Arc::new(Mutex::new(i_delegate));
 
-        thread::spawn(move || {
-            thread::sleep(Duration::new(6, 0));
-            println!("i_delegate thread::spawn");
-            let i_delegate = i_delegate.lock().unwrap();
-            (i_delegate.insert_result)(i_delegate.user, 10, true);
-            // (super_dog_delegate_wrapper.callback_with_int_arg)(super_dog_delegate_wrapper.user, 10);
-        });
+        // let i_delegate = i_delegate.lock().unwrap();
+        let result = insert_to_do_type(
+            &(&(*self.todo_typ_service_controller)).todo_type_service,
+            &(*to_do_type),
+        );
+
+        match result {
+            Ok(_) => {
+                (i_delegate.insert_result)(i_delegate.user, 0, true);
+                pj_info!("insert to_do_type success");
+            }
+            Err(e) => {
+                (i_delegate.insert_result)(i_delegate.user, -1, false);
+                pj_error!("insert to_do_type fiald: {}", e);
+            }
+        }
     }
 }
 
@@ -106,9 +122,15 @@ pub unsafe extern "C" fn insertToDoType(
         pj_error!("ptr: *mut PJToDoTypeController is null!");
         return;
     }
+
     let controler = &mut *ptr;
     let toDoType = &*toDoType;
-    controler.insert_to_do_type(toDoType);
+
+    thread::spawn(move || {
+        println!("insertToDoType thread::spawn");
+        thread::sleep(Duration::new(6, 0));
+        controler.insert_to_do_type(toDoType);
+    });
 }
 
 #[no_mangle]
