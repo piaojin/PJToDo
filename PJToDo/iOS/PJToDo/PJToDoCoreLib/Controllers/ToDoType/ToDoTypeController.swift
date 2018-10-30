@@ -9,7 +9,7 @@
 import UIKit
 
 public protocol ToDoTypeDelegate: NSObjectProtocol {
-    func insertResult(_id: Int, isSuccess: Bool)
+    func insertResult(isSuccess: Bool)
 }
 
 class ToDoTypeController {
@@ -23,14 +23,24 @@ class ToDoTypeController {
         let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
         
         let destroyBlock: @convention(c) (UnsafeMutableRawPointer?) -> Void = {(pointer) in
-            destroy(user: pointer!)
+            if let tempPointer = pointer {
+                destroy(user: tempPointer)
+            }
         }
         
-        let callBackBlock: (@convention(c) (UnsafeMutableRawPointer?, Int32, Bool) -> Void)! = { (pointer, _id, isSuccess) in
-            PJToDo.insertResult(user: pointer!, _id: _id, isSuccess: isSuccess)
+        let insertBackBlock: (@convention(c) (UnsafeMutableRawPointer?, Bool) -> Void)! = { (pointer, isSuccess) in
+            if let tempPointer = pointer {
+                PJToDo.insertResult(user: tempPointer, isSuccess: isSuccess)
+            }
         }
         
-        let iDelegate = IPJToDoTypeDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: callBackBlock)
+        let deleteBackBlock: (@convention(c) (UnsafeMutableRawPointer?, Bool) -> Void)! = { (pointer, isSuccess) in
+            if let tempPointer = pointer {
+                PJToDo.deleteResult(user: tempPointer, isSuccess: isSuccess)
+            }
+        }
+        
+        let iDelegate = IPJToDoTypeDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock)
         return iDelegate
     }()
     
@@ -47,19 +57,27 @@ class ToDoTypeController {
         insertToDoType(self.controller, toDoType.iToDoTypeInsert)
     }
     
+    public func delete(toDoTypeId: Int32) {
+        deleteToDoType(self.controller, toDoTypeId)
+    }
+    
     public func setTypeName(name: String) {
         setToDoTypeTypeName(self.toDoType.iToDoType, name)
     }
     
     //Rust回调Swift
-    fileprivate func insertResult(_id: Int32, isSuccess: Bool) {
-        print("ToDoTypeController: received callback with id \(_id)")
-        self.delegate?.insertResult(_id: Int(_id), isSuccess: isSuccess)
+    fileprivate func insertResult(isSuccess: Bool) {
+        print("ToDoTypeController: received insertResult callback with  \(isSuccess)")
+        self.delegate?.insertResult(isSuccess: isSuccess)
+    }
+    
+    fileprivate func deleteResult(isSuccess: Bool) {
+        print("ToDoTypeController: received deleteResult callback with  \(isSuccess)")
+        self.delegate?.insertResult(isSuccess: isSuccess)
     }
     
     deinit {
         print("deinit -> ToDoTypeController")
-//        free_rust_object(self.controller)
         free_rust_PJToDoTypeController(self.controller)
     }
     
@@ -69,9 +87,14 @@ class ToDoTypeController {
 }
 
 //Rust回调Swift
-fileprivate func insertResult(user: UnsafeMutableRawPointer, _id: Int32, isSuccess: Bool) {
+fileprivate func insertResult(user: UnsafeMutableRawPointer, isSuccess: Bool) {
     let obj: ToDoTypeController = Unmanaged.fromOpaque(user).takeUnretainedValue()
-    obj.insertResult(_id: _id, isSuccess: isSuccess)
+    obj.insertResult(isSuccess: isSuccess)
+}
+
+fileprivate func deleteResult(user: UnsafeMutableRawPointer, isSuccess: Bool) {
+    let obj: ToDoTypeController = Unmanaged.fromOpaque(user).takeUnretainedValue()
+    obj.deleteResult(isSuccess: isSuccess)
 }
 
 //Rust回调Swift用以销毁Swift对象

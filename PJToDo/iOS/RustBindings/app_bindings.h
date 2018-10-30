@@ -35,7 +35,8 @@ typedef struct ToDoTypeInsert ToDoTypeInsert;
 typedef struct {
   void *user;
   void (*destroy)(void*);
-  void (*insert_result)(void*, int32_t, bool);
+  void (*insert_result)(void*, bool);
+  void (*delete_result)(void*, bool);
 } IPJToDoTypeDelegate;
 
 typedef struct {
@@ -55,6 +56,8 @@ PJToDoTypeViewModel *createPJToDoTypeViewModel(void);
 ToDoType *createToDoType(const char *type_name);
 
 ToDoTypeInsert *createToDoTypeInsert(const char *type_name);
+
+void deleteToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
 
 void free_rust_PJToDoTypeController(PJToDoTypeController *ptr);
 
@@ -79,10 +82,6 @@ void init_tables(void);
 void insertToDoType(PJToDoTypeController *ptr, const ToDoTypeInsert *toDoType);
 
 void insertToDoType2(ToDoTypeInsert toDoType);
-
-void pj_compress(const char *file_path);
-
-void pj_uncompress(const char *uncompresses_file_path);
 
 void setToDoTypeTypeName(ToDoType *ptr, const char *type_name);
 

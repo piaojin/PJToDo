@@ -27,8 +27,9 @@ class HomeViewController: UIViewController {
     
     private func initData() {
         let controller = ToDoTypeController(delegate: self)
-        let toDoType = PJToDoType(typeName: "hello piaojin!")
-        controller.insert(toDoType: toDoType)
+//        let toDoType = PJToDoType(typeName: "hello piaojin!")
+//        controller.insert(toDoType: toDoType)
+        controller.delete(toDoTypeId: 1)
     }
 
     override func didReceiveMemoryWarning() {
@@ -38,7 +39,7 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: ToDoTypeDelegate {
-    func insertResult(_id: Int, isSuccess: Bool) {
+    func insertResult(isSuccess: Bool) {
         
     }
 }

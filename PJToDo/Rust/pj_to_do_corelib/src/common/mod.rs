@@ -7,8 +7,6 @@ pub mod pj_serialize;
 
 pub mod pj_utils;
 
-pub mod pj_compress;
-
 use libc::{c_void};
 
 //析构对象

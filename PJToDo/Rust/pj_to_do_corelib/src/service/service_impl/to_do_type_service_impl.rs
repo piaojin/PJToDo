@@ -12,8 +12,15 @@ impl PJToDoTypeService for PJToDoTypeServiceImpl {
     /**
      * 添加分类
      */
-    fn insert_to_do_type(&self, to_do_type: &ToDoTypeInsert) -> Result<usize, String> {
+    fn insert_to_do_type(
+        &self,
+        to_do_type: &ToDoTypeInsert,
+    ) -> Result<usize, diesel::result::Error> {
         self.todo_type_dao.insert_to_do_type(to_do_type)
+    }
+
+    fn delete_to_do_type(&self, to_do_type_id: i32) -> Result<usize, diesel::result::Error> {
+        self.todo_type_dao.delete_to_do_type(to_do_type_id)
     }
 }
 

@@ -1,5 +1,5 @@
 use delegates::to_do_type_delegate::{IPJToDoTypeDelegate, IPJToDoTypeDelegateWrapper};
-use service::to_do_type_service::{PJToDoTypeService, insert_to_do_type};
+use service::to_do_type_service::{PJToDoTypeService, insert_to_do_type, delete_to_do_type};
 use service::service_impl::to_do_type_service_impl::{createPJToDoTypeServiceImpl};
 use view_models::to_do_type_view_model::PJToDoTypeViewModel;
 use to_do_type::to_do_type::{ToDoTypeInsert, createToDoTypeInsert};
@@ -70,9 +70,7 @@ impl PJToDoTypeController {
         pj_info!("insert_to_do_type: {}", (*to_do_type).type_name);
         assert!(!to_do_type.is_null());
         let i_delegate = IPJToDoTypeDelegateWrapper((&self.delegate) as *const IPJToDoTypeDelegate);
-        // let i_delegate = Arc::new(Mutex::new(i_delegate));
 
-        // let i_delegate = i_delegate.lock().unwrap();
         let result = insert_to_do_type(
             &(&(*self.todo_typ_service_controller)).todo_type_service,
             &(*to_do_type),
@@ -80,12 +78,34 @@ impl PJToDoTypeController {
 
         match result {
             Ok(_) => {
-                (i_delegate.insert_result)(i_delegate.user, 0, true);
+                (i_delegate.insert_result)(i_delegate.user, true);
                 pj_info!("insert to_do_type success");
             }
             Err(e) => {
-                (i_delegate.insert_result)(i_delegate.user, -1, false);
+                (i_delegate.insert_result)(i_delegate.user, false);
                 pj_error!("insert to_do_type fiald: {}", e);
+            }
+        }
+    }
+
+    pub unsafe fn delete_to_do_type(&self, to_do_type_id: i32) {
+        pj_info!("delete_to_do_type to_do_type_id: {}", to_do_type_id);
+
+        let i_delegate = IPJToDoTypeDelegateWrapper((&self.delegate) as *const IPJToDoTypeDelegate);
+
+        let result = delete_to_do_type(
+            &(&(*self.todo_typ_service_controller)).todo_type_service,
+            to_do_type_id,
+        );
+
+        match result {
+            Ok(_) => {
+                (i_delegate.delete_result)(i_delegate.user, true);
+                pj_info!("delete to_do_type success");
+            }
+            Err(e) => {
+                (i_delegate.delete_result)(i_delegate.user, false);
+                pj_error!("delete to_do_type fiald: {}", e);
             }
         }
     }
@@ -128,8 +148,23 @@ pub unsafe extern "C" fn insertToDoType(
 
     thread::spawn(move || {
         println!("insertToDoType thread::spawn");
-        thread::sleep(Duration::new(6, 0));
         controler.insert_to_do_type(toDoType);
+    });
+}
+
+#[no_mangle]
+#[allow(non_snake_case)]
+pub unsafe extern "C" fn deleteToDoType(ptr: *mut PJToDoTypeController, toDoTypeId: i32) {
+    if ptr.is_null() {
+        pj_error!("ptr: *mut PJToDoTypeController is null!");
+        return;
+    }
+
+    let controler = &mut *ptr;
+
+    thread::spawn(move || {
+        println!("insertToDoType thread::spawn");
+        controler.delete_to_do_type(toDoTypeId);
     });
 }
 
