@@ -1,6 +1,7 @@
 use std::ops::Deref;
 use libc::{c_void, c_char};
 use std::marker::{Send, Sync};
+use to_do_type::to_do_type::{ToDoType};
 
 #[repr(C)]
 pub struct IPJToDoTypeDelegate {
@@ -9,6 +10,11 @@ pub struct IPJToDoTypeDelegate {
     pub destroy: extern "C" fn(user: *mut c_void),
     pub insert_result: extern "C" fn(user: *mut c_void, isSuccess: bool),
     pub delete_result: extern "C" fn(user: *mut c_void, isSuccess: bool),
+    pub update_result: extern "C" fn(user: *mut c_void, isSuccess: bool),
+    pub find_byId_result:
+        extern "C" fn(user: *mut c_void, toDoType: *mut ToDoType, isSuccess: bool),
+    pub find_byName_result:
+        extern "C" fn(user: *mut c_void, toDoType: *mut ToDoType, isSuccess: bool),
 }
 
 impl Drop for IPJToDoTypeDelegate {

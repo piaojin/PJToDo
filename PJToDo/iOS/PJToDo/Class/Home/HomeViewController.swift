@@ -10,10 +10,10 @@ import UIKit
 
 class HomeViewController: UIViewController {
 
-//    lazy var controller: ToDoTypeController = {
-//        let controller = ToDoTypeController(delegate: self)
-//        return controller
-//    }()
+    lazy var controller: ToDoTypeController = {
+        let controller = ToDoTypeController(delegate: self)
+        return controller
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,10 +26,11 @@ class HomeViewController: UIViewController {
     }
     
     private func initData() {
-        let controller = ToDoTypeController(delegate: self)
-//        let toDoType = PJToDoType(typeName: "hello piaojin!")
-//        controller.insert(toDoType: toDoType)
-        controller.delete(toDoTypeId: 1)
+//        let controller = ToDoTypeController(delegate: self)
+//        let toDoType = PJToDoType(typeName: "piaojin2!")
+//        self.controller.insert(toDoType: toDoType)
+//        self.controller.findById(toDoTypeId: 3)
+        self.controller.findByName(typeName: "piaojin2!")
     }
 
     override func didReceiveMemoryWarning() {
@@ -39,6 +40,26 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: ToDoTypeDelegate {
+    func findByNameResult(toDoType: PJToDoType, isSuccess: Bool) {
+        if isSuccess {
+            print("typeName: \(toDoType.typeName)")
+        }
+    }
+    
+    func findByIdResult(toDoType: PJToDoType, isSuccess: Bool) {
+        if isSuccess {
+            print("typeName: \(toDoType.typeName)")
+        }
+    }
+    
+    func updateResult(isSuccess: Bool) {
+        
+    }
+    
+    func deleteResult(isSuccess: Bool) {
+        
+    }
+    
     func insertResult(isSuccess: Bool) {
         
     }

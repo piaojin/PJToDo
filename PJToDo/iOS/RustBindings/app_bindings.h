@@ -37,12 +37,16 @@ typedef struct {
   void (*destroy)(void*);
   void (*insert_result)(void*, bool);
   void (*delete_result)(void*, bool);
+  void (*update_result)(void*, bool);
+  void (*find_byId_result)(void*, ToDoType*, bool);
+  void (*find_byName_result)(void*, ToDoType*, bool);
 } IPJToDoTypeDelegate;
 
 typedef struct {
   IPJToDoTypeDelegate delegate;
   PJToDoTypeServiceController *todo_typ_service_controller;
   ToDoTypeInsert *todo_type_insert;
+  ToDoType *todo_type;
 } PJToDoTypeController;
 
 typedef struct {
@@ -59,11 +63,23 @@ ToDoTypeInsert *createToDoTypeInsert(const char *type_name);
 
 void deleteToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
 
+void findToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
+
+void findToDoTypeByName(PJToDoTypeController *ptr, const char *type_name);
+
 void free_rust_PJToDoTypeController(PJToDoTypeController *ptr);
+
+void free_rust_ToDoType(ToDoType *ptr);
+
+void free_rust_ToDoTypeInsert(ToDoTypeInsert *ptr);
 
 void free_rust_object(void *ptr);
 
 const ToDoTypeInsert *getToDoType(const PJToDoTypeController *ptr);
+
+int32_t getToDoTypeTypeId(ToDoType *ptr);
+
+const char *getToDoTypeTypeName(const ToDoType *ptr);
 
 extern const char *get_db_gzip_path(void);
 
@@ -83,10 +99,14 @@ void insertToDoType(PJToDoTypeController *ptr, const ToDoTypeInsert *toDoType);
 
 void insertToDoType2(ToDoTypeInsert toDoType);
 
+void setToDoTypeTypeId(ToDoType *ptr, int32_t type_id);
+
 void setToDoTypeTypeName(ToDoType *ptr, const char *type_name);
 
 extern void test_pal_from_Swift(void);
 
 void test_pal_from_rust(void);
+
+void updateToDoType(PJToDoTypeController *ptr, const ToDoType *toDoType);
 
 #endif /* app_bindings_h */
