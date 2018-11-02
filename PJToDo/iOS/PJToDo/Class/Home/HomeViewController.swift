@@ -27,10 +27,13 @@ class HomeViewController: UIViewController {
     
     private func initData() {
 //        let controller = ToDoTypeController(delegate: self)
+//        controller.fetchData()
 //        let toDoType = PJToDoType(typeName: "piaojin2!")
 //        self.controller.insert(toDoType: toDoType)
 //        self.controller.findById(toDoTypeId: 3)
-        self.controller.findByName(typeName: "piaojin2!")
+//        self.controller.findByName(typeName: "piaojin2!")
+        self.controller.fetchData()
+//        print("\(self.controller)")
     }
 
     override func didReceiveMemoryWarning() {
@@ -40,6 +43,12 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: ToDoTypeDelegate {
+    func fetchDataResult(isSuccess: Bool) {
+        if isSuccess {
+            
+        }
+    }
+    
     func findByNameResult(toDoType: PJToDoType, isSuccess: Bool) {
         if isSuccess {
             print("typeName: \(toDoType.typeName)")

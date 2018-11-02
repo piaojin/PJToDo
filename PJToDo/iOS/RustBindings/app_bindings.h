@@ -32,6 +32,8 @@ typedef struct ToDoType ToDoType;
 
 typedef struct ToDoTypeInsert ToDoTypeInsert;
 
+typedef struct Vec_ToDoType Vec_ToDoType;
+
 typedef struct {
   void *user;
   void (*destroy)(void*);
@@ -40,28 +42,25 @@ typedef struct {
   void (*update_result)(void*, bool);
   void (*find_byId_result)(void*, ToDoType*, bool);
   void (*find_byName_result)(void*, ToDoType*, bool);
+  void (*fetch_data_result)(void*, bool);
 } IPJToDoTypeDelegate;
 
 typedef struct {
   IPJToDoTypeDelegate delegate;
   PJToDoTypeServiceController *todo_typ_service_controller;
-  ToDoTypeInsert *todo_type_insert;
-  ToDoType *todo_type;
+  ToDoType *find_result_todo_type;
+  Vec_ToDoType *todo_types;
 } PJToDoTypeController;
 
-typedef struct {
-  void (*insert_to_do_type)(ToDoTypeInsert);
-} PJToDoTypeViewModel;
-
 PJToDoTypeController *createPJToDoTypeController(IPJToDoTypeDelegate delegate);
-
-PJToDoTypeViewModel *createPJToDoTypeViewModel(void);
 
 ToDoType *createToDoType(const char *type_name);
 
 ToDoTypeInsert *createToDoTypeInsert(const char *type_name);
 
 void deleteToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
+
+void fetchToDoTypeData(PJToDoTypeController *ptr);
 
 void findToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
 
@@ -75,7 +74,9 @@ void free_rust_ToDoTypeInsert(ToDoTypeInsert *ptr);
 
 void free_rust_object(void *ptr);
 
-const ToDoTypeInsert *getToDoType(const PJToDoTypeController *ptr);
+int32_t getToDoTypeCount(const PJToDoTypeController *ptr);
+
+const char *getToDoTypeInsertTypeName(const ToDoTypeInsert *ptr);
 
 int32_t getToDoTypeTypeId(ToDoType *ptr);
 
@@ -97,7 +98,7 @@ void init_tables(void);
 
 void insertToDoType(PJToDoTypeController *ptr, const ToDoTypeInsert *toDoType);
 
-void insertToDoType2(ToDoTypeInsert toDoType);
+void setToDoTypeInsertTypeName(ToDoTypeInsert *ptr, const char *type_name);
 
 void setToDoTypeTypeId(ToDoType *ptr, int32_t type_id);
 
@@ -106,6 +107,8 @@ void setToDoTypeTypeName(ToDoType *ptr, const char *type_name);
 extern void test_pal_from_Swift(void);
 
 void test_pal_from_rust(void);
+
+const ToDoType *todoTypeAtIndex(const PJToDoTypeController *ptr, int32_t index);
 
 void updateToDoType(PJToDoTypeController *ptr, const ToDoType *toDoType);
 

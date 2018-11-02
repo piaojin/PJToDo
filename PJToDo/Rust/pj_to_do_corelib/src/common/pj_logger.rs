@@ -5,6 +5,7 @@ use log::{SetLoggerError, LevelFilter};
 
 static LOGGER: PJLogger = PJLogger;
 
+#[allow(unused_imports)]
 pub struct PJLogger;
 
 impl log::Log for PJLogger {

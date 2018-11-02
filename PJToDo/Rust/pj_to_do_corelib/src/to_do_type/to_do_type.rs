@@ -7,7 +7,6 @@ use self::libc::{c_char};
 use std::ffi::{CStr, CString};
 
 use db::tables::schema::{todotype};
-use std::marker::{Send, Sync};
 // #[primary_key(id)]
 // #[column_name(barId)]
 #[derive(
@@ -90,6 +89,25 @@ pub unsafe extern "C" fn getToDoTypeTypeId(ptr: *mut ToDoType) -> i32 {
     assert!(!ptr.is_null());
     let todo_type = &mut *ptr;
     todo_type.id
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn setToDoTypeInsertTypeName(
+    ptr: *mut ToDoTypeInsert,
+    type_name: *const c_char,
+) {
+    assert!(!ptr.is_null());
+    let todo_type = &mut *ptr;
+    let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned();
+    todo_type.type_name = type_name;
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn getToDoTypeInsertTypeName(ptr: *const ToDoTypeInsert) -> *const c_char {
+    assert!(!ptr.is_null());
+    let todo_type = &*ptr;
+    let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe
+    type_name.into_raw()
 }
 
 #[no_mangle]

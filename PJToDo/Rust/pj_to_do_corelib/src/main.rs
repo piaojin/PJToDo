@@ -29,6 +29,7 @@ use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType};
 
 #[macro_use]
 pub mod common;
+#[allow(unused_imports)]
 use common::pj_logger::PJLogger;
 
 pub mod network;

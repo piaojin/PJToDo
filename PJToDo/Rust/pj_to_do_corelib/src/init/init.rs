@@ -1,3 +1,4 @@
+#[allow(unused_imports)]
 use common::pj_logger::PJLogger;
 use db::pj_db_connection_util::pj_db_connection_util::{init_database, init_tables};
 

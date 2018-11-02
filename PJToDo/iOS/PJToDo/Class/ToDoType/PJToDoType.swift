@@ -8,10 +8,17 @@
 
 import UIKit
 
+private enum PJToDoTypeMode {
+    case insert
+    case model
+}
+
 public class PJToDoType {
-    public var iToDoTypeInsert: OpaquePointer?
+    private(set) var iToDoTypeInsert: OpaquePointer?
     
-    public var iToDoType: OpaquePointer?
+    private(set) var iToDoType: OpaquePointer?
+    
+    private var mode: PJToDoTypeMode = .model
     
     public var typeName: String {
         get {
@@ -20,6 +27,9 @@ public class PJToDoType {
         
         set {
             setToDoTypeTypeName(self.iToDoType, newValue)
+            if self.mode == .insert {
+                setToDoTypeInsertTypeName(self.iToDoTypeInsert, newValue)
+            }
         }
     }
     
@@ -33,12 +43,27 @@ public class PJToDoType {
         }
     }
     
+    /*This constructor is used when inserting data.*/
     public init(typeName: String) {
         self.iToDoTypeInsert = createToDoTypeInsert(typeName)
-        self.iToDoType = createToDoType(typeName)
+        self.mode = .insert
     }
     
+    /*This constructor is used by ToDoTypeController when getting data from db.*/
     public init(iToDoType: OpaquePointer?) {
         self.iToDoType = iToDoType;
+    }
+    
+    deinit {
+        /*Rust will free the iToDoType.*/
+        if self.mode == .insert {
+            if let tempIToDoTypeInsert = self.iToDoTypeInsert {
+                free_rust_ToDoTypeInsert(tempIToDoTypeInsert)
+            }
+        } else {
+//            if let tempIToDoType = self.iToDoType {
+//                free_rust_ToDoType(tempIToDoType)
+//            }
+        }
     }
 }

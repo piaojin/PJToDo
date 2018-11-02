@@ -58,6 +58,4 @@ pub mod controllers;
 
 pub mod delegates;
 
-pub mod view_models;
-
 pub mod c_binding_extern;

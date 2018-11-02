@@ -14,6 +14,7 @@ use self::hyper::{Request, Body, Method, Client, Uri};
 use self::hyper::header::{HeaderValue};
 use self::hyper::rt::{Stream, Future as OtherFuture};
 
+#[allow(unused_imports)]
 use common::pj_logger::PJLogger;
 use common::pj_serialize::PJSerdeDeserialize;
 

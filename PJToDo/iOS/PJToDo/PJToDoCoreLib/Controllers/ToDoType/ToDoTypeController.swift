@@ -12,6 +12,7 @@ public protocol ToDoTypeDelegate: NSObjectProtocol {
     func insertResult(isSuccess: Bool)
     func deleteResult(isSuccess: Bool)
     func updateResult(isSuccess: Bool)
+    func fetchDataResult(isSuccess: Bool)
     func findByIdResult(toDoType: PJToDoType, isSuccess: Bool)
     func findByNameResult(toDoType: PJToDoType, isSuccess: Bool)
 }
@@ -63,7 +64,13 @@ class ToDoTypeController {
             }
         }
         
-        let iDelegate = IPJToDoTypeDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, find_byName_result: findByNameBackBlock)
+        let fetchDataBackBlock: (@convention(c) (UnsafeMutableRawPointer?, Bool) -> Void)! = { (pointer, isSuccess) in
+            if let tempPointer = pointer {
+                PJToDo.fetchDataResult(user: tempPointer, isSuccess: isSuccess)
+            }
+        }
+        
+        let iDelegate = IPJToDoTypeDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, find_byName_result: findByNameBackBlock, fetch_data_result: fetchDataBackBlock)
         return iDelegate
     }()
     
@@ -96,6 +103,18 @@ class ToDoTypeController {
         findToDoTypeByName(self.controller, typeName)
     }
     
+    public func fetchData() {
+        fetchToDoTypeData(self.controller)
+    }
+    
+    public func getCount() -> Int32 {
+        return getToDoTypeCount(self.controller)
+    }
+    
+    public func toDoTypeAt(index: Int32) -> PJToDoType {
+        return PJToDoType(iToDoType: todoTypeAtIndex(self.controller, index))
+    }
+    
     public func setTypeName(name: String) {
         setToDoTypeTypeName(self.toDoType.iToDoType, name)
     }
@@ -126,6 +145,11 @@ class ToDoTypeController {
         print("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
         let tempToDoType = PJToDoType(iToDoType: toDoType)
         self.delegate?.findByNameResult(toDoType: tempToDoType, isSuccess: isSuccess)
+    }
+    
+    fileprivate func fetchDataResult(isSuccess: Bool) {
+        print("ToDoTypeController: received fetchDataResult callback with  \(isSuccess)")
+        self.delegate?.fetchDataResult(isSuccess: isSuccess)
     }
     
     deinit {
@@ -162,6 +186,11 @@ fileprivate func findByIdResult(user: UnsafeMutableRawPointer, toDoType: OpaqueP
 fileprivate func findByNameResult(user: UnsafeMutableRawPointer, toDoType: OpaquePointer?, isSuccess: Bool) {
     let obj: ToDoTypeController = Unmanaged.fromOpaque(user).takeUnretainedValue()
     obj.findByNameResult(toDoType: toDoType, isSuccess: isSuccess)
+}
+
+fileprivate func fetchDataResult(user: UnsafeMutableRawPointer, isSuccess: Bool) {
+    let obj: ToDoTypeController = Unmanaged.fromOpaque(user).takeUnretainedValue()
+    obj.fetchDataResult(isSuccess: isSuccess)
 }
 
 //Rust回调Swift用以销毁Swift对象

@@ -16,6 +16,8 @@ pub trait PJToDoTypeService {
     fn find_to_do_type_by_id(&self, to_do_type_id: i32) -> Result<ToDoType, diesel::result::Error>;
 
     fn find_to_do_type_by_name(&self, name: String) -> Result<ToDoType, diesel::result::Error>;
+
+    fn fetch_data(&self) -> Result<Vec<ToDoType>, diesel::result::Error>;
 }
 
 pub fn insert_to_do_type(
@@ -51,4 +53,10 @@ pub fn find_to_do_type_by_name(
     type_name: String,
 ) -> Result<ToDoType, diesel::result::Error> {
     todo_type_service.find_to_do_type_by_name(type_name)
+}
+
+pub fn fetch_data(
+    todo_type_service: &Box<dyn PJToDoTypeService>,
+) -> Result<Vec<ToDoType>, diesel::result::Error> {
+    todo_type_service.fetch_data()
 }

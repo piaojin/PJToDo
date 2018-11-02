@@ -1,5 +1,5 @@
 use std::ops::Deref;
-use libc::{c_void, c_char};
+use libc::{c_void};
 use std::marker::{Send, Sync};
 use to_do_type::to_do_type::{ToDoType};
 
@@ -15,6 +15,7 @@ pub struct IPJToDoTypeDelegate {
         extern "C" fn(user: *mut c_void, toDoType: *mut ToDoType, isSuccess: bool),
     pub find_byName_result:
         extern "C" fn(user: *mut c_void, toDoType: *mut ToDoType, isSuccess: bool),
+    pub fetch_data_result: extern "C" fn(user: *mut c_void, isSuccess: bool),
 }
 
 impl Drop for IPJToDoTypeDelegate {

@@ -3,8 +3,8 @@ use db::dao::to_do_type_dao::PJToDoTypeDAO;
 use db::pj_db_connection_util::pj_db_connection_util::StaticPJDBConnectionUtil;
 use db::tables::schema;
 use diesel::prelude::*;
+#[allow(unused_imports)]
 use common::pj_logger::PJLogger;
-use std::ffi::CString;
 use db::tables::schema::todotype::dsl::*;
 
 pub struct PJToDoTypeDAOImpl;
@@ -132,6 +132,20 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
             }
             Err(e) => {
                 pj_error!("find_to_do_type_by_name failure {}", e);
+                Err(e)
+            }
+        }
+    }
+
+    fn fetch_data(&self) -> Result<Vec<ToDoType>, diesel::result::Error> {
+        let to_do_types_result = todotype.load::<ToDoType>(&StaticPJDBConnectionUtil.connection);
+        match to_do_types_result {
+            Ok(to_do_types) => {
+                pj_info!("fetchData success!");
+                Ok(to_do_types)
+            }
+            Err(e) => {
+                pj_error!("fetchData failure {}", e);
                 Err(e)
             }
         }
