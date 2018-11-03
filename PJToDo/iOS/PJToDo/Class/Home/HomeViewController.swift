@@ -10,8 +10,13 @@ import UIKit
 
 class HomeViewController: UIViewController {
 
-    lazy var controller: ToDoTypeController = {
+    lazy var typeController: ToDoTypeController = {
         let controller = ToDoTypeController(delegate: self)
+        return controller
+    }()
+    
+    lazy var tagController: ToDoTagController = {
+        let controller = ToDoTagController(delegate: self)
         return controller
     }()
     
@@ -21,19 +26,27 @@ class HomeViewController: UIViewController {
         self.initData()
     }
     
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        self.tagController.findById(toDoTagId: 1)
+        self.tagController.fetchData()
+    }
+    
     private func initView() {
         self.view.backgroundColor = .white
     }
     
     private func initData() {
-//        let controller = ToDoTypeController(delegate: self)
-//        controller.fetchData()
-//        let toDoType = PJToDoType(typeName: "piaojin2!")
-//        self.controller.insert(toDoType: toDoType)
-//        self.controller.findById(toDoTypeId: 3)
-//        self.controller.findByName(typeName: "piaojin2!")
-        self.controller.fetchData()
-//        print("\(self.controller)")
+//        let typeController = ToDoTypeController(delegate: self)
+//        typeController.fetchData()
+//        let toDoType = PJToDoType(typeName: "piaojin3!")
+//        self.typeController.insert(toDoType: toDoType)
+//        self.typeController.findById(toDoTypeId: 3)
+//        self.typeController.findByName(typeName: "piaojin2!")
+//        self.typeController.fetchData()
+//        let toDoTag = PJToDoTag(tagName: "piaojin tag")
+//        self.tagController.insert(toDoTag: toDoTag)
+//        self.tagController.findById(toDoTagId: 1)
+//        self.tagController.findByName(tagName: "piaojin tag")
     }
 
     override func didReceiveMemoryWarning() {
@@ -43,33 +56,78 @@ class HomeViewController: UIViewController {
 }
 
 extension HomeViewController: ToDoTypeDelegate {
-    func fetchDataResult(isSuccess: Bool) {
+    func fetchTypeDataResult(isSuccess: Bool) {
         if isSuccess {
             
         }
     }
     
-    func findByNameResult(toDoType: PJToDoType, isSuccess: Bool) {
+    func findTypeByNameResult(toDoType: PJToDoType, isSuccess: Bool) {
         if isSuccess {
             print("typeName: \(toDoType.typeName)")
         }
     }
     
-    func findByIdResult(toDoType: PJToDoType, isSuccess: Bool) {
+    func findTypeByIdResult(toDoType: PJToDoType, isSuccess: Bool) {
         if isSuccess {
             print("typeName: \(toDoType.typeName)")
         }
     }
     
-    func updateResult(isSuccess: Bool) {
-        
+    func updateTypeResult(isSuccess: Bool) {
+        if isSuccess {
+            
+        }
     }
     
-    func deleteResult(isSuccess: Bool) {
-        
+    func deleteTypeResult(isSuccess: Bool) {
+        if isSuccess {
+            
+        }
     }
     
-    func insertResult(isSuccess: Bool) {
-        
+    func insertTypeResult(isSuccess: Bool) {
+        if isSuccess {
+            
+        }
+    }
+}
+
+extension HomeViewController: ToDoTagDelegate {
+    func fetchTagDataResult(isSuccess: Bool) {
+        if isSuccess {
+            
+        }
+    }
+    
+    func findTagByNameResult(toDoTag: PJToDoTag, isSuccess: Bool) {
+        if isSuccess {
+            
+        }
+    }
+    
+    func findTagByIdResult(toDoTag: PJToDoTag, isSuccess: Bool) {
+        if isSuccess {
+//            self.tagController.update(toDoTag: PJToDoTag(tagId: 1, tagName: "hello zlq!"))
+            self.tagController.findByName(tagName: toDoTag.tagName)
+        }
+    }
+    
+    func updateTagResult(isSuccess: Bool) {
+        if isSuccess {
+            
+        }
+    }
+    
+    func deleteTagResult(isSuccess: Bool) {
+        if isSuccess {
+            
+        }
+    }
+    
+    func insertTagResult(isSuccess: Bool) {
+        if isSuccess {
+            
+        }
     }
 }

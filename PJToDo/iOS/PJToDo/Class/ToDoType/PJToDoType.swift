@@ -22,24 +22,29 @@ public class PJToDoType {
     
     public var typeName: String {
         get {
-            return String(cString: getToDoTypeTypeName(self.iToDoType))
+            if self.mode == .insert {
+                return String(cString: getToDoTypeInsertName(self.iToDoTypeInsert))
+            } else {
+                return String(cString: getToDoTypeName(self.iToDoType))
+            }
         }
         
         set {
-            setToDoTypeTypeName(self.iToDoType, newValue)
             if self.mode == .insert {
-                setToDoTypeInsertTypeName(self.iToDoTypeInsert, newValue)
+                setToDoTypeInsertName(self.iToDoTypeInsert, newValue)
+            } else {
+                setToDoTypeName(self.iToDoType, newValue)
             }
         }
     }
     
     public var typeId: Int32 {
         get {
-            return getToDoTypeTypeId(self.iToDoType)
+            return getToDoTypeId(self.iToDoType)
         }
         
         set {
-            setToDoTypeTypeId(self.iToDoType, newValue)
+            setToDoTypeId(self.iToDoType, newValue)
         }
     }
     
@@ -54,16 +59,8 @@ public class PJToDoType {
         self.iToDoType = iToDoType;
     }
     
-    deinit {
-        /*Rust will free the iToDoType.*/
-        if self.mode == .insert {
-            if let tempIToDoTypeInsert = self.iToDoTypeInsert {
-                free_rust_ToDoTypeInsert(tempIToDoTypeInsert)
-            }
-        } else {
-//            if let tempIToDoType = self.iToDoType {
-//                free_rust_ToDoType(tempIToDoType)
-//            }
-        }
+    public init(typeId: Int32, typeName: String) {
+        self.iToDoType = createToDoType(typeName)
+        self.typeId = typeId;
     }
 }

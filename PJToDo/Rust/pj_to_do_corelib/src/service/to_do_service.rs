@@ -3,5 +3,5 @@ pub trait PJToDoService {
     /**
      * 添加待办事项
      */
-    fn insert_to_do();
+    fn insert_todo();
 }

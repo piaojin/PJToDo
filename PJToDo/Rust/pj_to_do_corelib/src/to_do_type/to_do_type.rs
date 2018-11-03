@@ -62,7 +62,7 @@ pub unsafe extern "C" fn createToDoType(type_name: *const c_char) -> *mut ToDoTy
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn setToDoTypeTypeName(ptr: *mut ToDoType, type_name: *const c_char) {
+pub unsafe extern "C" fn setToDoTypeName(ptr: *mut ToDoType, type_name: *const c_char) {
     assert!(!ptr.is_null());
     let todo_type = &mut *ptr;
     let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned();
@@ -70,7 +70,7 @@ pub unsafe extern "C" fn setToDoTypeTypeName(ptr: *mut ToDoType, type_name: *con
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTypeTypeName(ptr: *const ToDoType) -> *const c_char {
+pub unsafe extern "C" fn getToDoTypeName(ptr: *const ToDoType) -> *const c_char {
     assert!(!ptr.is_null());
     let todo_type = &*ptr;
     let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe
@@ -78,24 +78,21 @@ pub unsafe extern "C" fn getToDoTypeTypeName(ptr: *const ToDoType) -> *const c_c
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn setToDoTypeTypeId(ptr: *mut ToDoType, type_id: i32) {
+pub unsafe extern "C" fn setToDoTypeId(ptr: *mut ToDoType, type_id: i32) {
     assert!(!ptr.is_null());
     let todo_type = &mut *ptr;
     todo_type.id = type_id;
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTypeTypeId(ptr: *mut ToDoType) -> i32 {
+pub unsafe extern "C" fn getToDoTypeId(ptr: *mut ToDoType) -> i32 {
     assert!(!ptr.is_null());
     let todo_type = &mut *ptr;
     todo_type.id
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn setToDoTypeInsertTypeName(
-    ptr: *mut ToDoTypeInsert,
-    type_name: *const c_char,
-) {
+pub unsafe extern "C" fn setToDoTypeInsertName(ptr: *mut ToDoTypeInsert, type_name: *const c_char) {
     assert!(!ptr.is_null());
     let todo_type = &mut *ptr;
     let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned();
@@ -103,7 +100,7 @@ pub unsafe extern "C" fn setToDoTypeInsertTypeName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTypeInsertTypeName(ptr: *const ToDoTypeInsert) -> *const c_char {
+pub unsafe extern "C" fn getToDoTypeInsertName(ptr: *const ToDoTypeInsert) -> *const c_char {
     assert!(!ptr.is_null());
     let todo_type = &*ptr;
     let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe

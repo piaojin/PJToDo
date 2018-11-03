@@ -10,6 +10,7 @@
 		029E7333E7B4A10195C02B02 /* Pods_PJToDoTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD3758FA50254166E4D59F88 /* Pods_PJToDoTests.framework */; };
 		7625021D2170A6D9001043AF /* PJCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7625021C2170A6D9001043AF /* PJCacheManager.swift */; };
 		762502202170AA69001043AF /* PJToDoConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7625021F2170AA69001043AF /* PJToDoConst.swift */; };
+		7625A99C218D36EF0014FA6E /* PJToDoTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7625A99B218D36EF0014FA6E /* PJToDoTag.swift */; };
 		76348BF22116F2AD0009455C /* PJToDoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76348BF12116F2AD0009455C /* PJToDoTests.swift */; };
 		76348BFD2116F2AE0009455C /* PJToDoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76348BFC2116F2AE0009455C /* PJToDoUITests.swift */; };
 		76348C142116F2F40009455C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76348C0B2116F2F30009455C /* Assets.xcassets */; };
@@ -86,6 +87,7 @@
 		73FB746FC3A9EE4D2B7700C1 /* Pods-PJToDo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDo.release.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo.release.xcconfig"; sourceTree = "<group>"; };
 		7625021C2170A6D9001043AF /* PJCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJCacheManager.swift; sourceTree = "<group>"; };
 		7625021F2170AA69001043AF /* PJToDoConst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJToDoConst.swift; sourceTree = "<group>"; };
+		7625A99B218D36EF0014FA6E /* PJToDoTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoTag.swift; sourceTree = "<group>"; };
 		762AD8E52164F39500D0C5C7 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		762AD8E72165075D00D0C5C7 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		76348BD92116F2AC0009455C /* PJToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PJToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -498,6 +500,7 @@
 		76FD55E92187073100989102 /* ToDoTag */ = {
 			isa = PBXGroup;
 			children = (
+				7625A99B218D36EF0014FA6E /* PJToDoTag.swift */,
 			);
 			path = ToDoTag;
 			sourceTree = "<group>";
@@ -821,6 +824,7 @@
 				7648831B21675B2300F11106 /* ToDoService.swift in Sources */,
 				7648831921675B1100F11106 /* ToDoTagService.swift in Sources */,
 				7648831F21675B4A00F11106 /* ToDoTypeService.swift in Sources */,
+				7625A99C218D36EF0014FA6E /* PJToDoTag.swift in Sources */,
 				7648830D21675A4D00F11106 /* ToDoTagController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

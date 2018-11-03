@@ -1,7 +1,7 @@
 use delegates::to_do_type_delegate::{IPJToDoTypeDelegate, IPJToDoTypeDelegateWrapper};
-use service::to_do_type_service::{PJToDoTypeService, insert_to_do_type, delete_to_do_type, update_to_do_type, find_to_do_type_by_id, find_to_do_type_by_name, fetch_data};
+use service::to_do_type_service::{PJToDoTypeService, insert_todo_type, delete_todo_type, update_todo_type, find_todo_type_by_id, find_todo_type_by_name, fetch_data};
 use service::service_impl::to_do_type_service_impl::{createPJToDoTypeServiceImpl};
-use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType, createToDoType};
+use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType, createToDoType, createToDoTypeInsert};
 use common::{free_rust_any_object};
 #[allow(unused_imports)]
 use common::pj_logger::PJLogger;
@@ -36,11 +36,13 @@ impl Drop for PJToDoTypeServiceController {
 unsafe impl Send for PJToDoTypeServiceController {}
 unsafe impl Sync for PJToDoTypeServiceController {}
 
+/*The create and free are both in Rust. only free PJToDoTypeController in Swift.*/
 #[repr(C)]
 pub struct PJToDoTypeController {
     pub delegate: IPJToDoTypeDelegate,
     pub todo_typ_service_controller: *mut PJToDoTypeServiceController,
     pub find_result_todo_type: *mut ToDoType,
+    pub insert_todo_type: *mut ToDoTypeInsert,
     pub todo_types: *mut Vec<ToDoType>,
 }
 
@@ -50,6 +52,7 @@ unsafe impl Sync for PJToDoTypeController {}
 impl PJToDoTypeController {
     fn new(delegate: IPJToDoTypeDelegate) -> PJToDoTypeController {
         let c_str_type = CString::new("".to_string()).unwrap();
+        let c_str_type_insert = CString::new("".to_string()).unwrap();
         let controller = unsafe {
             PJToDoTypeController {
                 delegate: delegate,
@@ -57,6 +60,7 @@ impl PJToDoTypeController {
                     PJToDoTypeServiceController::new(),
                 )),
                 find_result_todo_type: createToDoType(c_str_type.into_raw()),
+                insert_todo_type: createToDoTypeInsert(c_str_type_insert.into_raw()),
                 todo_types: Box::into_raw(Box::new(Vec::new())),
             }
         };
@@ -66,15 +70,19 @@ impl PJToDoTypeController {
     /**
      * 添加分类
      */
-    pub unsafe fn insert_to_do_type(&self, to_do_type: *const ToDoTypeInsert) {
-        pj_info!("insert_to_do_type: {}", (*to_do_type).type_name);
+    pub unsafe fn insert_todo_type(&mut self, to_do_type: *mut ToDoTypeInsert) {
+        pj_info!("insert_todo_type: {}", (*to_do_type).type_name);
         assert!(!to_do_type.is_null());
         let i_delegate = IPJToDoTypeDelegateWrapper((&self.delegate) as *const IPJToDoTypeDelegate);
 
-        let result = insert_to_do_type(
+        let result = insert_todo_type(
             &(&(*self.todo_typ_service_controller)).todo_type_service,
             &(*to_do_type),
         );
+
+        /*free the old todoTypeInsert before set the new one*/
+        free_rust_any_object(self.insert_todo_type);
+        self.insert_todo_type = to_do_type;
 
         match result {
             Ok(_) => {
@@ -86,10 +94,10 @@ impl PJToDoTypeController {
         }
     }
 
-    pub unsafe fn delete_to_do_type(&self, to_do_type_id: i32) {
+    pub unsafe fn delete_todo_type(&self, to_do_type_id: i32) {
         let i_delegate = IPJToDoTypeDelegateWrapper((&self.delegate) as *const IPJToDoTypeDelegate);
 
-        let result = delete_to_do_type(
+        let result = delete_todo_type(
             &(&(*self.todo_typ_service_controller)).todo_type_service,
             to_do_type_id,
         );
@@ -104,12 +112,12 @@ impl PJToDoTypeController {
         }
     }
 
-    pub unsafe fn update_to_do_type(&self, to_do_type: *const ToDoType) {
+    pub unsafe fn update_todo_type(&self, to_do_type: *const ToDoType) {
         assert!(!to_do_type.is_null());
 
         let i_delegate = IPJToDoTypeDelegateWrapper((&self.delegate) as *const IPJToDoTypeDelegate);
 
-        let result = update_to_do_type(
+        let result = update_todo_type(
             &(&(*self.todo_typ_service_controller)).todo_type_service,
             &(*to_do_type),
         );
@@ -124,10 +132,10 @@ impl PJToDoTypeController {
         }
     }
 
-    pub unsafe fn find_to_do_type_by_id(&mut self, to_do_type_id: i32) {
+    pub unsafe fn find_todo_type_by_id(&mut self, to_do_type_id: i32) {
         let i_delegate = IPJToDoTypeDelegateWrapper((&self.delegate) as *const IPJToDoTypeDelegate);
 
-        let result = find_to_do_type_by_id(
+        let result = find_todo_type_by_id(
             &(&(*self.todo_typ_service_controller)).todo_type_service,
             to_do_type_id,
         );
@@ -151,10 +159,10 @@ impl PJToDoTypeController {
         }
     }
 
-    pub unsafe fn find_to_do_type_by_name(&mut self, type_name: String) {
+    pub unsafe fn find_todo_type_by_name(&mut self, type_name: String) {
         let i_delegate = IPJToDoTypeDelegateWrapper((&self.delegate) as *const IPJToDoTypeDelegate);
 
-        let result = find_to_do_type_by_name(
+        let result = find_todo_type_by_name(
             &(&(*self.todo_typ_service_controller)).todo_type_service,
             type_name,
         );
@@ -219,6 +227,7 @@ impl Drop for PJToDoTypeController {
         unsafe {
             free_rust_any_object(self.todo_typ_service_controller);
             free_rust_any_object(self.find_result_todo_type);
+            free_rust_any_object(self.insert_todo_type);
             free_rust_any_object(self.todo_types);
         }
         println!("PJToDoTypeController -> drop");
@@ -238,7 +247,7 @@ pub extern "C" fn createPJToDoTypeController(
 #[no_mangle]
 pub unsafe extern "C" fn insertToDoType(
     ptr: *mut PJToDoTypeController,
-    toDoType: *const ToDoTypeInsert,
+    toDoType: *mut ToDoTypeInsert,
 ) {
     if ptr.is_null() || toDoType.is_null() {
         pj_error!("ptr or toDoType: *mut insertToDoType is null!");
@@ -247,11 +256,11 @@ pub unsafe extern "C" fn insertToDoType(
     }
 
     let controler = &mut *ptr;
-    let toDoType = &*toDoType;
+    let toDoType = &mut *toDoType;
 
     thread::spawn(move || {
         println!("insertToDoType thread::spawn");
-        controler.insert_to_do_type(toDoType);
+        controler.insert_todo_type(toDoType);
     });
 }
 
@@ -267,7 +276,7 @@ pub unsafe extern "C" fn deleteToDoType(ptr: *mut PJToDoTypeController, toDoType
 
     thread::spawn(move || {
         println!("insertToDoType thread::spawn");
-        controler.delete_to_do_type(toDoTypeId);
+        controler.delete_todo_type(toDoTypeId);
     });
 }
 
@@ -284,7 +293,7 @@ pub unsafe extern "C" fn updateToDoType(ptr: *mut PJToDoTypeController, toDoType
 
     thread::spawn(move || {
         println!("insertToDoType thread::spawn");
-        controler.update_to_do_type(toDoType);
+        controler.update_todo_type(toDoType);
     });
 }
 
@@ -300,7 +309,7 @@ pub unsafe extern "C" fn findToDoType(ptr: *mut PJToDoTypeController, toDoTypeId
 
     thread::spawn(move || {
         println!("insertToDoType thread::spawn");
-        controler.find_to_do_type_by_id(toDoTypeId);
+        controler.find_todo_type_by_id(toDoTypeId);
     });
 }
 
@@ -320,7 +329,7 @@ pub unsafe extern "C" fn findToDoTypeByName(
 
     thread::spawn(move || {
         println!("insertToDoType thread::spawn");
-        controler.find_to_do_type_by_name(type_name);
+        controler.find_todo_type_by_name(type_name);
     });
 }
 

@@ -12,27 +12,27 @@ impl PJToDoTypeService for PJToDoTypeServiceImpl {
     /**
      * 添加分类
      */
-    fn insert_to_do_type(
+    fn insert_todo_type(
         &self,
         to_do_type: &ToDoTypeInsert,
     ) -> Result<usize, diesel::result::Error> {
-        self.todo_type_dao.insert_to_do_type(to_do_type)
+        self.todo_type_dao.insert_todo_type(to_do_type)
     }
 
-    fn delete_to_do_type(&self, to_do_type_id: i32) -> Result<usize, diesel::result::Error> {
-        self.todo_type_dao.delete_to_do_type(to_do_type_id)
+    fn delete_todo_type(&self, to_do_type_id: i32) -> Result<usize, diesel::result::Error> {
+        self.todo_type_dao.delete_todo_type(to_do_type_id)
     }
 
-    fn update_to_do_type(&self, to_do_type: &ToDoType) -> Result<usize, diesel::result::Error> {
-        self.todo_type_dao.update_to_do_type(to_do_type)
+    fn update_todo_type(&self, to_do_type: &ToDoType) -> Result<usize, diesel::result::Error> {
+        self.todo_type_dao.update_todo_type(to_do_type)
     }
 
-    fn find_to_do_type_by_id(&self, to_do_type_id: i32) -> Result<ToDoType, diesel::result::Error> {
-        self.todo_type_dao.find_to_do_type_by_id(to_do_type_id)
+    fn find_todo_type_by_id(&self, to_do_type_id: i32) -> Result<ToDoType, diesel::result::Error> {
+        self.todo_type_dao.find_todo_type_by_id(to_do_type_id)
     }
 
-    fn find_to_do_type_by_name(&self, name: String) -> Result<ToDoType, diesel::result::Error> {
-        self.todo_type_dao.find_to_do_type_by_name(name)
+    fn find_todo_type_by_name(&self, name: String) -> Result<ToDoType, diesel::result::Error> {
+        self.todo_type_dao.find_todo_type_by_name(name)
     }
 
     fn fetch_data(&self) -> Result<Vec<ToDoType>, diesel::result::Error> {
