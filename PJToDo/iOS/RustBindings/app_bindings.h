@@ -26,9 +26,17 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+typedef struct PJToDoServiceController PJToDoServiceController;
+
 typedef struct PJToDoTagServiceController PJToDoTagServiceController;
 
 typedef struct PJToDoTypeServiceController PJToDoTypeServiceController;
+
+typedef struct ToDo ToDo;
+
+typedef struct ToDoInsert ToDoInsert;
+
+typedef struct ToDoQuery ToDoQuery;
 
 typedef struct ToDoTag ToDoTag;
 
@@ -38,9 +46,34 @@ typedef struct ToDoType ToDoType;
 
 typedef struct ToDoTypeInsert ToDoTypeInsert;
 
+typedef struct Vec_ToDoQuery Vec_ToDoQuery;
+
 typedef struct Vec_ToDoTag Vec_ToDoTag;
 
 typedef struct Vec_ToDoType Vec_ToDoType;
+
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
+  void (*insert_result)(void*, bool);
+  void (*delete_result)(void*, bool);
+  void (*update_result)(void*, bool);
+  void (*find_byId_result)(void*, ToDoQuery*, bool);
+  void (*find_byTitle_result)(void*, ToDoQuery*, bool);
+  void (*fetch_data_result)(void*, bool);
+  void (*find_byLike_result)(void*, bool);
+} IPJToDoDelegate;
+
+typedef struct {
+  IPJToDoDelegate delegate;
+  PJToDoServiceController *todo_service_controller;
+  ToDoQuery *find_result_todo;
+  ToDoInsert *insert_todo;
+  Vec_ToDoQuery *todos;
+  Vec_ToDoType *todo_types;
+  Vec_ToDoTag *todo_tags;
+  Vec_ToDoQuery *like_title_result_todos;
+} PJToDoController;
 
 typedef struct {
   void *user;
@@ -80,9 +113,17 @@ typedef struct {
   Vec_ToDoType *todo_types;
 } PJToDoTypeController;
 
+PJToDoController *createPJToDoController(IPJToDoDelegate delegate);
+
 PJToDoTagController *createPJToDoTagController(IPJToDoTagDelegate delegate);
 
 PJToDoTypeController *createPJToDoTypeController(IPJToDoTypeDelegate delegate);
+
+ToDo *createToDo(void);
+
+ToDoInsert *createToDoInsert(void);
+
+ToDoQuery *createToDoQuery(void);
 
 ToDoTag *createToDoTag(const char *tag_name);
 
@@ -92,13 +133,23 @@ ToDoType *createToDoType(const char *type_name);
 
 ToDoTypeInsert *createToDoTypeInsert(const char *type_name);
 
+void deleteToDo(PJToDoController *ptr, int32_t toDoId);
+
 void deleteToDoTag(PJToDoTagController *ptr, int32_t toDoTagId);
 
 void deleteToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
 
+void fetchToDoData(PJToDoController *ptr);
+
 void fetchToDoTagData(PJToDoTagController *ptr);
 
 void fetchToDoTypeData(PJToDoTypeController *ptr);
+
+void findToDo(PJToDoController *ptr, int32_t toDoId);
+
+void findToDoByTitle(PJToDoController *ptr, const char *title);
+
+void findToDoLikeTitle(PJToDoController *ptr, const char *title);
 
 void findToDoTag(PJToDoTagController *ptr, int32_t toDoTagId);
 
@@ -108,19 +159,53 @@ void findToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
 
 void findToDoTypeByName(PJToDoTypeController *ptr, const char *type_name);
 
+void free_rust_PJToDoController(PJToDoController *ptr);
+
 void free_rust_PJToDoTagController(PJToDoTagController *ptr);
 
 void free_rust_PJToDoTypeController(PJToDoTypeController *ptr);
 
-void free_rust_ToDoTag(ToDoTag *ptr);
-
-void free_rust_ToDoTagInsert(ToDoTagInsert *ptr);
-
-void free_rust_ToDoType(ToDoType *ptr);
-
-void free_rust_ToDoTypeInsert(ToDoTypeInsert *ptr);
-
 void free_rust_object(void *ptr);
+
+int32_t getToDoCount(const PJToDoController *ptr);
+
+const char *getToDoInsertContent(const ToDoInsert *ptr);
+
+const char *getToDoInsertCreateTime(const ToDoInsert *ptr);
+
+const char *getToDoInsertDueTime(const ToDoInsert *ptr);
+
+const char *getToDoInsertRemindTime(const ToDoInsert *ptr);
+
+int32_t getToDoInsertState(ToDoInsert *ptr);
+
+const char *getToDoInsertTitle(const ToDoInsert *ptr);
+
+const char *getToDoInsertUpdateTime(const ToDoInsert *ptr);
+
+int32_t getToDoInsert_ToDoTagId(ToDoInsert *ptr);
+
+int32_t getToDoInsert_ToDoTypeId(ToDoInsert *ptr);
+
+const char *getToDoQueryContent(const ToDoQuery *ptr);
+
+const char *getToDoQueryCreateTime(const ToDoQuery *ptr);
+
+const char *getToDoQueryDueTime(const ToDoQuery *ptr);
+
+int32_t getToDoQueryId(ToDoQuery *ptr);
+
+const char *getToDoQueryRemindTime(const ToDoQuery *ptr);
+
+int32_t getToDoQueryState(ToDoQuery *ptr);
+
+const char *getToDoQueryTitle(const ToDoQuery *ptr);
+
+const char *getToDoQueryUpdateTime(const ToDoQuery *ptr);
+
+int32_t getToDoQuery_ToDoTagId(ToDoQuery *ptr);
+
+int32_t getToDoQuery_ToDoTypeId(ToDoQuery *ptr);
 
 int32_t getToDoTagCount(const PJToDoTagController *ptr);
 
@@ -152,9 +237,49 @@ void init_hello_piaojin(void);
 
 void init_tables(void);
 
+void insertToDo(PJToDoController *ptr, ToDoInsert *toDo);
+
 void insertToDoTag(PJToDoTagController *ptr, ToDoTagInsert *toDoTag);
 
 void insertToDoType(PJToDoTypeController *ptr, ToDoTypeInsert *toDoType);
+
+void setToDoInsertContent(ToDoInsert *ptr, const char *content);
+
+void setToDoInsertCreateTime(ToDoInsert *ptr, const char *create_time);
+
+void setToDoInsertDueTime(ToDoInsert *ptr, const char *due_time);
+
+void setToDoInsertRemindTime(ToDoInsert *ptr, const char *remind_time);
+
+void setToDoInsertState(ToDoInsert *ptr, int32_t state);
+
+void setToDoInsertTitle(ToDoInsert *ptr, const char *title);
+
+void setToDoInsertUpdateTime(ToDoInsert *ptr, const char *update_time);
+
+void setToDoInsert_ToDoTagId(ToDoInsert *ptr, int32_t to_do_tag_id);
+
+void setToDoInsert_ToDoTypeId(ToDoInsert *ptr, int32_t to_do_type_id);
+
+void setToDoQueryContent(ToDoQuery *ptr, const char *content);
+
+void setToDoQueryCreateTime(ToDoQuery *ptr, const char *create_time);
+
+void setToDoQueryDueTime(ToDoQuery *ptr, const char *due_time);
+
+void setToDoQueryId(ToDoQuery *ptr, int32_t _id);
+
+void setToDoQueryRemindTime(ToDoQuery *ptr, const char *remind_time);
+
+void setToDoQueryState(ToDoQuery *ptr, int32_t state);
+
+void setToDoQueryTitle(ToDoQuery *ptr, const char *title);
+
+void setToDoQueryUpdateTime(ToDoQuery *ptr, const char *update_time);
+
+void setToDoQuery_ToDoTagId(ToDoQuery *ptr, int32_t to_do_tag_id);
+
+void setToDoQuery_ToDoTypeId(ToDoQuery *ptr, int32_t to_do_type_id);
 
 void setToDoTagId(ToDoTag *ptr, int32_t type_id);
 
@@ -172,9 +297,17 @@ extern void test_pal_from_Swift(void);
 
 void test_pal_from_rust(void);
 
+const ToDoTag *toDoTagWithId(const PJToDoController *ptr, int32_t tag_id);
+
+const ToDoType *toDoTypeWithId(const PJToDoController *ptr, int32_t type_id);
+
+const ToDoQuery *todoAtIndex(const PJToDoController *ptr, int32_t index);
+
 const ToDoTag *todoTagAtIndex(const PJToDoTagController *ptr, int32_t index);
 
 const ToDoType *todoTypeAtIndex(const PJToDoTypeController *ptr, int32_t index);
+
+void updateToDo(PJToDoController *ptr, const ToDoQuery *toDo);
 
 void updateToDoTag(PJToDoTagController *ptr, const ToDoTag *toDoTag);
 

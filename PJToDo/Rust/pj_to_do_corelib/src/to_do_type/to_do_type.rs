@@ -106,19 +106,3 @@ pub unsafe extern "C" fn getToDoTypeInsertName(ptr: *const ToDoTypeInsert) -> *c
     let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe
     type_name.into_raw()
 }
-
-#[no_mangle]
-pub unsafe extern "C" fn free_rust_ToDoType(ptr: *mut ToDoType) {
-    if ptr.is_null() {
-        return;
-    };
-    Box::from_raw(ptr); //unsafe
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn free_rust_ToDoTypeInsert(ptr: *mut ToDoTypeInsert) {
-    if ptr.is_null() {
-        return;
-    };
-    Box::from_raw(ptr); //unsafe
-}

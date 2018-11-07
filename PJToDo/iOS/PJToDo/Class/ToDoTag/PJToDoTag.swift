@@ -8,17 +8,12 @@
 
 import UIKit
 
-private enum PJToDoTagMode {
-    case insert
-    case model
-}
-
 public class PJToDoTag {
     private(set) var iToDoTagInsert: OpaquePointer?
     
     private(set) var iToDoTag: OpaquePointer?
     
-    private var mode: PJToDoTagMode = .model
+    private var mode: PJToDoMode = .model
     
     public var tagName: String {
         get {

@@ -36,6 +36,8 @@
 		7648831F21675B4A00F11106 /* ToDoTypeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648831E21675B4A00F11106 /* ToDoTypeService.swift */; };
 		7648832121675B5C00F11106 /* MineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648832021675B5C00F11106 /* MineService.swift */; };
 		764883302168B4F600F11106 /* PJToDoDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648832F2168B4F600F11106 /* PJToDoDBManager.swift */; };
+		766E6E282193090E00BC9DFE /* PJ_ToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766E6E272193090E00BC9DFE /* PJ_ToDo.swift */; };
+		766E6E2A21930BC800BC9DFE /* PJToDoMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766E6E2921930BC800BC9DFE /* PJToDoMode.swift */; };
 		76746D98216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c in Sources */ = {isa = PBXBuildFile; fileRef = 76746D97216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c */; };
 		76746D9E216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m in Sources */ = {isa = PBXBuildFile; fileRef = 76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */; };
 		76B5226D21809EC200D51AE8 /* PJToDoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5226C21809EC200D51AE8 /* PJToDoType.swift */; };
@@ -126,6 +128,8 @@
 		7648831E21675B4A00F11106 /* ToDoTypeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTypeService.swift; sourceTree = "<group>"; };
 		7648832021675B5C00F11106 /* MineService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineService.swift; sourceTree = "<group>"; };
 		7648832F2168B4F600F11106 /* PJToDoDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoDBManager.swift; sourceTree = "<group>"; };
+		766E6E272193090E00BC9DFE /* PJ_ToDo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJ_ToDo.swift; sourceTree = "<group>"; };
+		766E6E2921930BC800BC9DFE /* PJToDoMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoMode.swift; sourceTree = "<group>"; };
 		76746D97216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJToDoCoreLibPAL_C.c; sourceTree = "<group>"; };
 		76746D9C216E60A200BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C_Bridging_OC.h; sourceTree = "<group>"; };
 		76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PJToDoCoreLibPAL_C_Bridging_OC.m; sourceTree = "<group>"; };
@@ -470,6 +474,7 @@
 			children = (
 				7625021E2170AA69001043AF /* Consts */,
 				7625021A2170A6D9001043AF /* Tools */,
+				766E6E2921930BC800BC9DFE /* PJToDoMode.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -493,6 +498,7 @@
 		76FD55E82187073100989102 /* ToDo */ = {
 			isa = PBXGroup;
 			children = (
+				766E6E272193090E00BC9DFE /* PJ_ToDo.swift */,
 			);
 			path = ToDo;
 			sourceTree = "<group>";
@@ -813,12 +819,14 @@
 				7648831521675AC500F11106 /* MineController.swift in Sources */,
 				76488307216759AE00F11106 /* PJToDoCoreLibInit.swift in Sources */,
 				7648832121675B5C00F11106 /* MineService.swift in Sources */,
+				766E6E282193090E00BC9DFE /* PJ_ToDo.swift in Sources */,
 				7648831321675AAC00F11106 /* ToDoTypeController.swift in Sources */,
 				7648831721675AF700F11106 /* ReposService.swift in Sources */,
 				76488309216759CA00F11106 /* PJToDoCoreLibPAL.swift in Sources */,
 				7625021D2170A6D9001043AF /* PJCacheManager.swift in Sources */,
 				764883052167598000F11106 /* PJToDoCoreLibFactory.swift in Sources */,
 				7648830F21675A7600F11106 /* ToDoController.swift in Sources */,
+				766E6E2A21930BC800BC9DFE /* PJToDoMode.swift in Sources */,
 				762502202170AA69001043AF /* PJToDoConst.swift in Sources */,
 				76B5226D21809EC200D51AE8 /* PJToDoType.swift in Sources */,
 				7648831B21675B2300F11106 /* ToDoService.swift in Sources */,

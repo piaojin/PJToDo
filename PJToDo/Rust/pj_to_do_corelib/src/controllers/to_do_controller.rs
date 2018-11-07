@@ -1,1 +1,442 @@
+use delegates::to_do_delegate::{IPJToDoDelegate, IPJToDoDelegateWrapper};
+use service::to_do_service::{PJToDoService, insert_todo, delete_todo, update_todo, find_todo_by_id, find_todo_by_title, fetch_data, find_todo_like_title};
+use service::service_impl::to_do_service_impl::{createPJToDoServiceImpl};
+use to_do::to_do::{ToDoInsert, ToDoQuery, createToDoInsert, createToDoQuery};
+use to_do_type::to_do_type::ToDoType;
+use to_do_tag::to_do_tag::ToDoTag;
+use common::{free_rust_any_object};
+#[allow(unused_imports)]
+use common::pj_logger::PJLogger;
+use std::ffi::{CStr};
+use libc::{c_char};
+use std::thread;
+use std::marker::{Send, Sync};
+use common::pj_serialize::PJSerdeDeserialize;
 
+/*
+* cbindgen didn't support Box<dyn PJToDoService> type,so I need to use PJToDoServiceController to define Box<dyn PJToDoService>.
+*/
+#[repr(C)]
+pub struct PJToDoServiceController {
+    todo_service: Box<dyn PJToDoService>,
+}
+
+impl PJToDoServiceController {
+    fn new() -> PJToDoServiceController {
+        let serviceController = PJToDoServiceController {
+            todo_service: Box::new(createPJToDoServiceImpl()),
+        };
+        serviceController
+    }
+}
+
+impl Drop for PJToDoServiceController {
+    fn drop(&mut self) {
+        println!("PJToDoServiceController -> drop");
+    }
+}
+
+unsafe impl Send for PJToDoServiceController {}
+unsafe impl Sync for PJToDoServiceController {}
+
+/*The create and free are both in Rust. only free PJToDoController in Swift.*/
+#[repr(C)]
+pub struct PJToDoController {
+    pub delegate: IPJToDoDelegate,
+    pub todo_service_controller: *mut PJToDoServiceController,
+    pub find_result_todo: *mut ToDoQuery,
+    pub insert_todo: *mut ToDoInsert,
+    pub todos: *mut Vec<ToDoQuery>,
+    pub todo_types: *mut Vec<ToDoType>,
+    pub todo_tags: *mut Vec<ToDoTag>,
+    pub like_title_result_todos: *mut Vec<ToDoQuery>,
+}
+
+unsafe impl Send for PJToDoController {}
+unsafe impl Sync for PJToDoController {}
+
+impl PJToDoController {
+    fn new(delegate: IPJToDoDelegate) -> PJToDoController {
+        let controller = unsafe {
+            PJToDoController {
+                delegate: delegate,
+                todo_service_controller: Box::into_raw(Box::new(PJToDoServiceController::new())),
+                find_result_todo: createToDoQuery(),
+                insert_todo: createToDoInsert(),
+                todos: Box::into_raw(Box::new(Vec::new())),
+                todo_types: Box::into_raw(Box::new(Vec::new())),
+                todo_tags: Box::into_raw(Box::new(Vec::new())),
+                like_title_result_todos: Box::into_raw(Box::new(Vec::new())),
+            }
+        };
+        controller
+    }
+
+    pub unsafe fn insert_todo(&mut self, to_do: *mut ToDoInsert) {
+        pj_info!("insert_todo: {}", (*to_do).title);
+        assert!(!to_do.is_null());
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+
+        let result = insert_todo(&(&(*self.todo_service_controller)).todo_service, &(*to_do));
+
+        /*free the old todoInsert before set the new one*/
+        free_rust_any_object(self.insert_todo);
+        self.insert_todo = to_do;
+
+        match result {
+            Ok(_) => {
+                (i_delegate.insert_result)(i_delegate.user, true);
+            }
+            Err(_e) => {
+                (i_delegate.insert_result)(i_delegate.user, false);
+            }
+        }
+    }
+
+    pub unsafe fn delete_todo(&self, to_do_id: i32) {
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+
+        let result = delete_todo(&(&(*self.todo_service_controller)).todo_service, to_do_id);
+
+        match result {
+            Ok(_) => {
+                (i_delegate.delete_result)(i_delegate.user, true);
+            }
+            Err(_e) => {
+                (i_delegate.delete_result)(i_delegate.user, false);
+            }
+        }
+    }
+
+    pub unsafe fn update_todo(&self, to_do: *const ToDoQuery) {
+        assert!(!to_do.is_null());
+
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+
+        let result = update_todo(&(&(*self.todo_service_controller)).todo_service, &(*to_do));
+
+        match result {
+            Ok(_) => {
+                (i_delegate.update_result)(i_delegate.user, true);
+            }
+            Err(_e) => {
+                (i_delegate.update_result)(i_delegate.user, false);
+            }
+        }
+    }
+
+    pub unsafe fn find_todo_by_id(&mut self, to_do_id: i32) {
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+
+        let result = find_todo_by_id(&(&(*self.todo_service_controller)).todo_service, to_do_id);
+
+        match result {
+            Ok(to_do) => {
+                /*free the old todo before set the new one*/
+                free_rust_any_object(self.find_result_todo);
+                let to_do_ptr = Box::into_raw(Box::new(to_do));
+                self.find_result_todo = to_do_ptr;
+                (i_delegate.find_byId_result)(i_delegate.user, to_do_ptr, true);
+            }
+            Err(_e) => {
+                let mut to_do = ToDoQuery::new();
+                let to_do_ptr = &mut to_do as *mut ToDoQuery;
+                (i_delegate.find_byId_result)(i_delegate.user, to_do_ptr, false);
+            }
+        }
+    }
+
+    pub unsafe fn find_todo_by_title(&mut self, title: String) {
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+
+        let result = find_todo_by_title(&(&(*self.todo_service_controller)).todo_service, title);
+
+        match result {
+            Ok(to_do) => {
+                /*free the old todo before set the new one*/
+                free_rust_any_object(self.find_result_todo);
+                let to_do_ptr = Box::into_raw(Box::new(to_do));
+                self.find_result_todo = to_do_ptr;
+                (i_delegate.find_byTitle_result)(i_delegate.user, to_do_ptr, true);
+            }
+            Err(_e) => {
+                let mut to_do = ToDoQuery::new();
+                let to_do_ptr = &mut to_do as *mut ToDoQuery;
+                (i_delegate.find_byTitle_result)(i_delegate.user, to_do_ptr, false);
+            }
+        }
+    }
+
+    pub unsafe fn fetch_data(&mut self) {
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+
+        let result = fetch_data(&(&(*self.todo_service_controller)).todo_service);
+
+        match result {
+            Ok(to_dos) => {
+                /*free the old todos before set the new one*/
+                free_rust_any_object(self.todos);
+                self.todos = Box::into_raw(Box::new(to_dos));
+                (i_delegate.fetch_data_result)(i_delegate.user, true);
+            }
+            Err(_e) => {
+                (i_delegate.fetch_data_result)(i_delegate.user, false);
+            }
+        }
+    }
+
+    pub unsafe fn find_todo_like_title(&mut self, title: String) {
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+
+        let result = find_todo_like_title(&(&(*self.todo_service_controller)).todo_service, title);
+
+        match result {
+            Ok(like_title_result_todos) => {
+                /*free the old todos before set the new one*/
+                free_rust_any_object(self.like_title_result_todos);
+                self.like_title_result_todos = Box::into_raw(Box::new(like_title_result_todos));
+                (i_delegate.find_byLike_result)(i_delegate.user, true);
+            }
+            Err(_e) => {
+                (i_delegate.find_byLike_result)(i_delegate.user, false);
+            }
+        }
+    }
+
+    pub unsafe fn todo_at_index(&self, index: i32) -> *const ToDoQuery {
+        let index: usize = index as usize;
+        assert!(index <= self.get_count());
+        let todo: *const ToDoQuery = &((*(self.todos))[index]);
+        todo
+    }
+
+    pub unsafe fn get_count(&self) -> usize {
+        if self.todos.is_null() {
+            ()
+        }
+
+        let count = (*(self.todos)).len();
+        count
+    }
+
+    pub unsafe fn todo_type_with_id(&self, type_id: i32) -> *const ToDoType {
+        if !self.todo_types.is_null() {
+            let result = (*self.todo_types)
+                .iter()
+                .find(|ref mut todo_type| todo_type.id == type_id);
+            match result {
+                Some(todo_type) => {
+                    // println!("{:?}", todo_type.type_name);
+                    todo_type
+                }
+                None => {
+                    println!("todo_type_with_id didn't find!");
+                    std::ptr::null()
+                }
+            }
+        } else {
+            std::ptr::null()
+        }
+    }
+
+    pub unsafe fn todo_tag_with_id(&self, tag_id: i32) -> *const ToDoTag {
+        if !self.todo_tags.is_null() {
+            let result = (*self.todo_tags)
+                .iter()
+                .find(|ref mut todo_tag| todo_tag.id == tag_id);
+            match result {
+                Some(todo_tag) => {
+                    // println!("{:?}", todo_type.type_name);
+                    todo_tag
+                }
+                None => {
+                    println!("todo_tag_with_id tag_id {} didn't find!", tag_id);
+                    std::ptr::null()
+                }
+            }
+        } else {
+            std::ptr::null()
+        }
+    }
+}
+
+impl Drop for PJToDoController {
+    fn drop(&mut self) {
+        //PJToDoController被释放，告诉当前持有PJToDoDelegate对象的所有权者做相应的处理
+        unsafe {
+            free_rust_any_object(self.todo_service_controller);
+            free_rust_any_object(self.find_result_todo);
+            free_rust_any_object(self.insert_todo);
+            free_rust_any_object(self.todos);
+            free_rust_any_object(self.todo_types);
+            free_rust_any_object(self.todo_tags);
+            free_rust_any_object(self.like_title_result_todos);
+        }
+        println!("PJToDoController -> drop");
+    }
+}
+
+// /*** extern "C" ***/
+
+#[no_mangle]
+pub extern "C" fn createPJToDoController(delegate: IPJToDoDelegate) -> *mut PJToDoController {
+    let controller = PJToDoController::new(delegate);
+    Box::into_raw(Box::new(controller))
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn insertToDo(ptr: *mut PJToDoController, toDo: *mut ToDoInsert) {
+    if ptr.is_null() || toDo.is_null() {
+        pj_error!("ptr or toDo: *mut insertToDo is null!");
+        assert!(!ptr.is_null() && !toDo.is_null());
+    }
+
+    let controler = &mut *ptr;
+    let toDo = &mut *toDo;
+
+    thread::spawn(move || {
+        println!("insertToDo thread::spawn");
+        controler.insert_todo(toDo);
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn deleteToDo(ptr: *mut PJToDoController, toDoId: i32) {
+    if ptr.is_null() {
+        pj_error!("ptr: *mut deleteToDo is null!");
+        assert!(!ptr.is_null());
+    }
+
+    let controler = &mut *ptr;
+
+    thread::spawn(move || {
+        println!("insertToDo thread::spawn");
+        controler.delete_todo(toDoId);
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn updateToDo(ptr: *mut PJToDoController, toDo: *const ToDoQuery) {
+    if ptr.is_null() || toDo.is_null() {
+        pj_error!("ptr or toDo: *mut updateToDo is null!");
+        assert!(!ptr.is_null() && !toDo.is_null());
+    }
+
+    let controler = &mut *ptr;
+    let toDo = &*toDo;
+
+    thread::spawn(move || {
+        println!("insertToDo thread::spawn");
+        controler.update_todo(toDo);
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn findToDo(ptr: *mut PJToDoController, toDoId: i32) {
+    if ptr.is_null() {
+        pj_error!("ptr: *mut findToDo is null!");
+        assert!(!ptr.is_null());
+    }
+
+    let controler = &mut *ptr;
+
+    thread::spawn(move || {
+        println!("insertToDo thread::spawn");
+        controler.find_todo_by_id(toDoId);
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn findToDoByTitle(ptr: *mut PJToDoController, title: *const c_char) {
+    if ptr.is_null() || title.is_null() {
+        pj_error!("ptr or title: *mut findToDoByTitle is null!");
+        assert!(!ptr.is_null() && !title.is_null());
+    }
+
+    let controler = &mut *ptr;
+    let title = CStr::from_ptr(title).to_string_lossy().into_owned();
+
+    thread::spawn(move || {
+        println!("insertToDo thread::spawn");
+        controler.find_todo_by_title(title);
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn fetchToDoData(ptr: *mut PJToDoController) {
+    if ptr.is_null() {
+        pj_error!("ptr or toDo: *mut fetchData is null!");
+        assert!(!ptr.is_null());
+    }
+    let controler = &mut *ptr;
+    controler.fetch_data()
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn findToDoLikeTitle(ptr: *mut PJToDoController, title: *const c_char) {
+    if ptr.is_null() || title.is_null() {
+        pj_error!("ptr or title: *mut findToDoLikeTitle is null!");
+        assert!(!ptr.is_null() && !title.is_null());
+    }
+
+    let controler = &mut *ptr;
+    let title = CStr::from_ptr(title).to_string_lossy().into_owned();
+
+    thread::spawn(move || {
+        println!("insertToDo thread::spawn");
+        controler.find_todo_like_title(title)
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn todoAtIndex(ptr: *const PJToDoController, index: i32) -> *const ToDoQuery {
+    if ptr.is_null() {
+        pj_error!("ptr or toDo: *mut todoAtIndex is null!");
+        assert!(!ptr.is_null());
+    }
+    let controler = &*ptr;
+    controler.todo_at_index(index)
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn getToDoCount(ptr: *const PJToDoController) -> i32 {
+    if ptr.is_null() {
+        pj_error!("ptr or toDo: *mut getToDoCount is null!");
+        assert!(!ptr.is_null());
+    }
+    let controler = &*ptr;
+    controler.get_count() as i32
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn toDoTypeWithId(
+    ptr: *const PJToDoController,
+    type_id: i32,
+) -> *const ToDoType {
+    if ptr.is_null() {
+        pj_error!("ptr or toDo: *mut todo_type_with_id is null!");
+        assert!(!ptr.is_null());
+    }
+    let controler = &*ptr;
+    controler.todo_type_with_id(type_id)
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn toDoTagWithId(
+    ptr: *const PJToDoController,
+    tag_id: i32,
+) -> *const ToDoTag {
+    if ptr.is_null() {
+        pj_error!("ptr or toDo: *mut todo_tag_with_id is null!");
+        assert!(!ptr.is_null());
+    }
+    let controler = &*ptr;
+    controler.todo_tag_with_id(tag_id)
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn free_rust_PJToDoController(ptr: *mut PJToDoController) {
+    if !ptr.is_null() {
+        Box::from_raw(ptr); //unsafe
+    }
+}

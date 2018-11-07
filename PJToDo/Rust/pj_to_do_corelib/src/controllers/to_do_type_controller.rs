@@ -252,7 +252,6 @@ pub unsafe extern "C" fn insertToDoType(
     if ptr.is_null() || toDoType.is_null() {
         pj_error!("ptr or toDoType: *mut insertToDoType is null!");
         assert!(!ptr.is_null() && !toDoType.is_null());
-        return;
     }
 
     let controler = &mut *ptr;
@@ -269,7 +268,6 @@ pub unsafe extern "C" fn deleteToDoType(ptr: *mut PJToDoTypeController, toDoType
     if ptr.is_null() {
         pj_error!("ptr: *mut deleteToDoType is null!");
         assert!(!ptr.is_null());
-        return;
     }
 
     let controler = &mut *ptr;
@@ -285,7 +283,6 @@ pub unsafe extern "C" fn updateToDoType(ptr: *mut PJToDoTypeController, toDoType
     if ptr.is_null() || toDoType.is_null() {
         pj_error!("ptr or toDoType: *mut updateToDoType is null!");
         assert!(!ptr.is_null() && !toDoType.is_null());
-        return;
     }
 
     let controler = &mut *ptr;
@@ -302,7 +299,6 @@ pub unsafe extern "C" fn findToDoType(ptr: *mut PJToDoTypeController, toDoTypeId
     if ptr.is_null() {
         pj_error!("ptr: *mut findToDoType is null!");
         assert!(!ptr.is_null());
-        return;
     }
 
     let controler = &mut *ptr;
@@ -321,7 +317,6 @@ pub unsafe extern "C" fn findToDoTypeByName(
     if ptr.is_null() || type_name.is_null() {
         pj_error!("ptr or typeName: *mut findToDoTypeByName is null!");
         assert!(!ptr.is_null() && !type_name.is_null());
-        return;
     }
 
     let controler = &mut *ptr;
@@ -368,8 +363,7 @@ pub unsafe extern "C" fn getToDoTypeCount(ptr: *const PJToDoTypeController) -> i
 
 #[no_mangle]
 pub unsafe extern "C" fn free_rust_PJToDoTypeController(ptr: *mut PJToDoTypeController) {
-    if ptr.is_null() {
-        return;
+    if !ptr.is_null() {
+        Box::from_raw(ptr); //unsafe
     };
-    Box::from_raw(ptr); //unsafe
 }

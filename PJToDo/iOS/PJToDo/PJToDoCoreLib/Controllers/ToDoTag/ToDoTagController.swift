@@ -74,8 +74,6 @@ class ToDoTagController {
         return iDelegate
     }()
     
-    public var toDoTag: PJToDoTag = PJToDoTag(tagId: -1, tagName: "")
-    
     public weak var delegate: ToDoTagDelegate?
     
     init(delegate: ToDoTagDelegate) {
@@ -115,10 +113,6 @@ class ToDoTagController {
         return PJToDoTag(iToDoTag: todoTagAtIndex(self.controller, index))
     }
     
-    public func setTagName(name: String) {
-        setToDoTagName(self.toDoTag.iToDoTag, name)
-    }
-    
     //Rust回调Swift
     fileprivate func insertResult(isSuccess: Bool) {
         print("ToDoTagController: received insertResult callback with  \(isSuccess)")
@@ -155,10 +149,6 @@ class ToDoTagController {
     deinit {
         print("deinit -> ToDoTagController")
         free_rust_PJToDoTagController(self.controller)
-    }
-    
-    func free() {
-        
     }
 }
 

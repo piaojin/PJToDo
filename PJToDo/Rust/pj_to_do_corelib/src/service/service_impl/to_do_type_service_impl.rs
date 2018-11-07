@@ -48,7 +48,6 @@ impl Drop for PJToDoTypeServiceImpl {
 
 /*** extern "C" ***/
 
-#[allow(non_snake_case)]
 pub fn createPJToDoTypeServiceImpl() -> impl PJToDoTypeService {
     let service = PJToDoTypeServiceImpl {
         todo_type_dao: Box::new(createPJToDoTypeDAOImpl()),

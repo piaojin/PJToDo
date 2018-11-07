@@ -74,8 +74,6 @@ class ToDoTypeController {
         return iDelegate
     }()
     
-    public var toDoType: PJToDoType = PJToDoType(typeName: "")
-    
     public weak var delegate: ToDoTypeDelegate?
     
     init(delegate: ToDoTypeDelegate) {
@@ -115,10 +113,6 @@ class ToDoTypeController {
         return PJToDoType(iToDoType: todoTypeAtIndex(self.controller, index))
     }
     
-    public func setTypeName(name: String) {
-        setToDoTypeName(self.toDoType.iToDoType, name)
-    }
-    
     //Rust回调Swift
     fileprivate func insertResult(isSuccess: Bool) {
         print("ToDoTypeController: received insertResult callback with  \(isSuccess)")
@@ -155,10 +149,6 @@ class ToDoTypeController {
     deinit {
         print("deinit -> ToDoTypeController")
         free_rust_PJToDoTypeController(self.controller)
-    }
-    
-    func free() {
-        
     }
 }
 

@@ -53,7 +53,15 @@ impl Default for ToDoState {
 }
 
 #[derive(
-    Serialize, Deserialize, Debug, Default, PartialEq, Identifiable, Queryable, Associations,
+    Serialize,
+    Deserialize,
+    Debug,
+    Default,
+    PartialEq,
+    Identifiable,
+    Queryable,
+    Associations,
+    AsChangeset,
 )]
 #[belongs_to(ToDoType, foreign_key = "to_do_type_id")]
 #[belongs_to(ToDoTag, foreign_key = "to_do_tag_id")]
@@ -72,6 +80,22 @@ pub struct ToDoQuery {
     pub state: i32,          //状态
 }
 
+impl ToDoQuery {
+    pub fn from(todo_query: &ToDoQuery) -> ToDoQuery {
+        ToDoQuery {
+            id: todo_query.id,
+            content: todo_query.content.clone(),
+            title: todo_query.title.clone(),
+            due_time: todo_query.due_time.clone(),
+            remind_time: todo_query.remind_time.clone(),
+            create_time: todo_query.create_time.clone(),
+            update_time: todo_query.update_time.clone(),
+            to_do_type_id: todo_query.to_do_type_id,
+            to_do_tag_id: todo_query.to_do_tag_id,
+            state: todo_query.state,
+        }
+    }
+}
 // use diesel::sql_types::*;
 // use diesel::expression::AsExpression;
 // impl<'expr> AsExpression<Text> for &'expr str {
@@ -108,7 +132,6 @@ pub struct ToDoInsert {
     pub state: i32,          //状态
 }
 
-#[repr(C)]
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ToDo {
     pub id: i32,
@@ -145,4 +168,21 @@ impl<'b> PJSerdeDeserialize<'b> for ToDoInsert {
     fn new() -> Self::Item {
         Self::Item::default()
     }
+}
+
+/*** extern "C" ***/
+
+#[no_mangle]
+pub unsafe extern "C" fn createToDoInsert() -> *mut ToDoInsert {
+    Box::into_raw(Box::new(ToDoInsert::new()))
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn createToDo() -> *mut ToDo {
+    Box::into_raw(Box::new(ToDo::new()))
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn createToDoQuery() -> *mut ToDoQuery {
+    Box::into_raw(Box::new(ToDoQuery::new()))
 }

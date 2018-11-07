@@ -96,19 +96,3 @@ pub unsafe extern "C" fn getToDoTagInsertName(ptr: *const ToDoTagInsert) -> *con
     let tag_name = CString::new(todo_tag.tag_name.clone()).unwrap(); //unsafe
     tag_name.into_raw()
 }
-
-#[no_mangle]
-pub unsafe extern "C" fn free_rust_ToDoTag(ptr: *mut ToDoTag) {
-    if ptr.is_null() {
-        return;
-    };
-    Box::from_raw(ptr); //unsafe
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn free_rust_ToDoTagInsert(ptr: *mut ToDoTagInsert) {
-    if ptr.is_null() {
-        return;
-    };
-    Box::from_raw(ptr); //unsafe
-}
