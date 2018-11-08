@@ -52,6 +52,8 @@ typedef struct Vec_ToDoTag Vec_ToDoTag;
 
 typedef struct Vec_ToDoType Vec_ToDoType;
 
+typedef struct Vec_Vec_ToDoQuery Vec_Vec_ToDoQuery;
+
 typedef struct {
   void *user;
   void (*destroy)(void*);
@@ -62,6 +64,8 @@ typedef struct {
   void (*find_byTitle_result)(void*, ToDoQuery*, bool);
   void (*fetch_data_result)(void*, bool);
   void (*find_byLike_result)(void*, bool);
+  void (*todo_date_future_day_more_than_result)(void*, bool);
+  void (*fetch_todos_order_by_state_result)(void*, bool);
 } IPJToDoDelegate;
 
 typedef struct {
@@ -73,6 +77,8 @@ typedef struct {
   Vec_ToDoType *todo_types;
   Vec_ToDoTag *todo_tags;
   Vec_ToDoQuery *like_title_result_todos;
+  Vec_ToDoQuery *todo_date_future_day_more_than_result_todos;
+  Vec_Vec_ToDoQuery *todos_order_by_state;
 } PJToDoController;
 
 typedef struct {
@@ -141,11 +147,15 @@ void deleteToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
 
 void fetchToDoData(PJToDoController *ptr);
 
+void fetchToDoOrderByState(PJToDoController *ptr);
+
 void fetchToDoTagData(PJToDoTagController *ptr);
 
 void fetchToDoTypeData(PJToDoTypeController *ptr);
 
 void findToDo(PJToDoController *ptr, int32_t toDoId);
+
+void findToDoByDatefutureDayMoreThan(PJToDoController *ptr, const char *from_day, const char *to_day, int32_t comparison_days);
 
 void findToDoByTitle(PJToDoController *ptr, const char *title);
 

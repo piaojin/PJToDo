@@ -9,11 +9,10 @@
 import UIKit
 
 public enum PJToDoState: Int {
-    case completed
-    case cancel
-    case reToDo
     case determined
     case inProgress
+    case completed
+    case overdue
 }
 
 public class PJ_ToDo {

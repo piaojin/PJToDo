@@ -1,5 +1,5 @@
 use delegates::to_do_delegate::{IPJToDoDelegate, IPJToDoDelegateWrapper};
-use service::to_do_service::{PJToDoService, insert_todo, delete_todo, update_todo, find_todo_by_id, find_todo_by_title, fetch_data, find_todo_like_title};
+use service::to_do_service::{PJToDoService, insert_todo, delete_todo, update_todo, find_todo_by_id, find_todo_by_title, fetch_data, find_todo_like_title, find_todo_date_future_day_more_than, fetch_todos_order_by_state};
 use service::service_impl::to_do_service_impl::{createPJToDoServiceImpl};
 use to_do::to_do::{ToDoInsert, ToDoQuery, createToDoInsert, createToDoQuery};
 use to_do_type::to_do_type::ToDoType;
@@ -12,6 +12,10 @@ use libc::{c_char};
 use std::thread;
 use std::marker::{Send, Sync};
 use common::pj_serialize::PJSerdeDeserialize;
+use service::to_do_type_service::PJToDoTypeService;
+use service::to_do_tag_service::PJToDoTagService;
+use service::service_impl::to_do_type_service_impl::{createPJToDoTypeServiceImpl};
+use service::service_impl::to_do_tag_service_impl::{createPJToDoTagServiceImpl};
 
 /*
 * cbindgen didn't support Box<dyn PJToDoService> type,so I need to use PJToDoServiceController to define Box<dyn PJToDoService>.
@@ -44,12 +48,14 @@ unsafe impl Sync for PJToDoServiceController {}
 pub struct PJToDoController {
     pub delegate: IPJToDoDelegate,
     pub todo_service_controller: *mut PJToDoServiceController,
-    pub find_result_todo: *mut ToDoQuery,
+    pub find_result_todo: *mut ToDoQuery, //find by id or by title will save in find_result_todo
     pub insert_todo: *mut ToDoInsert,
-    pub todos: *mut Vec<ToDoQuery>,
-    pub todo_types: *mut Vec<ToDoType>,
-    pub todo_tags: *mut Vec<ToDoTag>,
+    pub todos: *mut Vec<ToDoQuery>, // all todos without order by state
+    pub todo_types: *mut Vec<ToDoType>, // all todo types
+    pub todo_tags: *mut Vec<ToDoTag>, // all todo tag
     pub like_title_result_todos: *mut Vec<ToDoQuery>,
+    pub todo_date_future_day_more_than_result_todos: *mut Vec<ToDoQuery>,
+    pub todos_order_by_state: *mut Vec<Vec<ToDoQuery>>,
 }
 
 unsafe impl Send for PJToDoController {}
@@ -67,6 +73,8 @@ impl PJToDoController {
                 todo_types: Box::into_raw(Box::new(Vec::new())),
                 todo_tags: Box::into_raw(Box::new(Vec::new())),
                 like_title_result_todos: Box::into_raw(Box::new(Vec::new())),
+                todo_date_future_day_more_than_result_todos: Box::into_raw(Box::new(Vec::new())),
+                todos_order_by_state: Box::into_raw(Box::new(Vec::new())),
             }
         };
         controller
@@ -167,24 +175,117 @@ impl PJToDoController {
         }
     }
 
-    pub unsafe fn fetch_data(&mut self) {
-        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
-
-        let result = fetch_data(&(&(*self.todo_service_controller)).todo_service);
-
-        match result {
-            Ok(to_dos) => {
-                /*free the old todos before set the new one*/
-                free_rust_any_object(self.todos);
-                self.todos = Box::into_raw(Box::new(to_dos));
-                (i_delegate.fetch_data_result)(i_delegate.user, true);
+    pub unsafe fn prepare_types_and_tags(&mut self) -> bool {
+        let mut is_prepare_success = true;
+        let todo_type_result = self.prepare_types();
+        match todo_type_result {
+            Ok(todo_types) => {
+                /*free the old todo before set the new one*/
+                free_rust_any_object(self.todo_types);
+                self.todo_types = Box::into_raw(Box::new(todo_types));
             }
             Err(_e) => {
-                (i_delegate.fetch_data_result)(i_delegate.user, false);
+                is_prepare_success = false;
+            }
+        }
+
+        let todo_tag_result = self.prepare_tags();
+        match todo_tag_result {
+            Ok(todo_tags) => {
+                /*free the old todo before set the new one*/
+                free_rust_any_object(self.todo_tags);
+                self.todo_tags = Box::into_raw(Box::new(todo_tags));
+            }
+            Err(_e) => {
+                is_prepare_success = false;
+            }
+        }
+
+        is_prepare_success
+    }
+
+    pub unsafe fn prepare_types(&mut self) -> Result<Vec<ToDoType>, diesel::result::Error> {
+        let todo_type_service: Box<dyn PJToDoTypeService> = Box::new(createPJToDoTypeServiceImpl());
+        let todo_type_result = todo_type_service.fetch_data();
+        match todo_type_result {
+            Ok(todo_types) => {
+                pj_info!("prepare_types success!");
+                Ok(todo_types)
+            }
+            Err(e) => {
+                pj_error!("prepare_types faild!");
+                Err(e)
             }
         }
     }
 
+    pub unsafe fn prepare_tags(&mut self) -> Result<Vec<ToDoTag>, diesel::result::Error> {
+        let todo_tag_service: Box<dyn PJToDoTagService> = Box::new(createPJToDoTagServiceImpl());
+        let todo_tag_result = todo_tag_service.fetch_data();
+        match todo_tag_result {
+            Ok(todo_tags) => {
+                pj_info!("prepare_tags success!");
+                Ok(todo_tags)
+            }
+            Err(e) => {
+                pj_error!("prepare_tags faild!");
+                Err(e)
+            }
+        }
+    }
+
+    pub unsafe fn fetch_data(&mut self) {
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+
+        /*before fetch all todo datas we need to fecth all types and tags*/
+        let is_prepare_types_and_tags_success = self.prepare_types_and_tags();
+
+        if is_prepare_types_and_tags_success {
+            let result = fetch_data(&(&(*self.todo_service_controller)).todo_service);
+
+            match result {
+                Ok(to_dos) => {
+                    /*free the old todos before set the new one*/
+                    free_rust_any_object(self.todos);
+                    self.todos = Box::into_raw(Box::new(to_dos));
+                    (i_delegate.fetch_data_result)(i_delegate.user, true);
+                }
+                Err(_e) => {
+                    (i_delegate.fetch_data_result)(i_delegate.user, false);
+                }
+            }
+        } else {
+            (i_delegate.fetch_data_result)(i_delegate.user, false);
+        }
+    }
+
+    pub unsafe fn fetch_todos_order_by_state(&mut self) {
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+
+        /*before fetch all todo datas we need to fecth all types and tags*/
+        let is_prepare_types_and_tags_success = self.prepare_types_and_tags();
+
+        if is_prepare_types_and_tags_success {
+            let result =
+                fetch_todos_order_by_state(&(&(*self.todo_service_controller)).todo_service);
+
+            match result {
+                Ok(todos) => {
+                    /*free the old todos before set the new one*/
+                    free_rust_any_object(self.todos_order_by_state);
+                    self.todos_order_by_state = Box::into_raw(Box::new(todos));
+                    (i_delegate.fetch_todos_order_by_state_result)(i_delegate.user, true);
+                }
+                Err(_e) => {
+                    (i_delegate.fetch_todos_order_by_state_result)(i_delegate.user, false);
+                }
+            }
+        } else {
+            (i_delegate.fetch_todos_order_by_state_result)(i_delegate.user, false);
+        }
+    }
+
+    /*the func will move to ToDoSearchController*/
     pub unsafe fn find_todo_like_title(&mut self, title: String) {
         let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
 
@@ -199,6 +300,34 @@ impl PJToDoController {
             }
             Err(_e) => {
                 (i_delegate.find_byLike_result)(i_delegate.user, false);
+            }
+        }
+    }
+
+    pub unsafe fn find_todo_date_future_day_more_than(
+        &mut self,
+        from_day: String,
+        to_day: String,
+        comparison_days: i32,
+    ) {
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+
+        let result = find_todo_date_future_day_more_than(
+            &(&(*self.todo_service_controller)).todo_service,
+            from_day,
+            to_day,
+            comparison_days,
+        );
+
+        match result {
+            Ok(todos) => {
+                /*free the old todos before set the new one*/
+                free_rust_any_object(self.todo_date_future_day_more_than_result_todos);
+                self.todo_date_future_day_more_than_result_todos = Box::into_raw(Box::new(todos));
+                (i_delegate.todo_date_future_day_more_than_result)(i_delegate.user, true);
+            }
+            Err(_e) => {
+                (i_delegate.todo_date_future_day_more_than_result)(i_delegate.user, false);
             }
         }
     }
@@ -225,10 +354,7 @@ impl PJToDoController {
                 .iter()
                 .find(|ref mut todo_type| todo_type.id == type_id);
             match result {
-                Some(todo_type) => {
-                    // println!("{:?}", todo_type.type_name);
-                    todo_type
-                }
+                Some(todo_type) => todo_type,
                 None => {
                     println!("todo_type_with_id didn't find!");
                     std::ptr::null()
@@ -271,6 +397,7 @@ impl Drop for PJToDoController {
             free_rust_any_object(self.todo_types);
             free_rust_any_object(self.todo_tags);
             free_rust_any_object(self.like_title_result_todos);
+            free_rust_any_object(self.todo_date_future_day_more_than_result_todos);
         }
         println!("PJToDoController -> drop");
     }
@@ -365,11 +492,31 @@ pub unsafe extern "C" fn findToDoByTitle(ptr: *mut PJToDoController, title: *con
 #[no_mangle]
 pub unsafe extern "C" fn fetchToDoData(ptr: *mut PJToDoController) {
     if ptr.is_null() {
-        pj_error!("ptr or toDo: *mut fetchData is null!");
+        pj_error!("ptr : *mut fetchData is null!");
         assert!(!ptr.is_null());
     }
+
     let controler = &mut *ptr;
-    controler.fetch_data()
+
+    thread::spawn(move || {
+        println!("fetchToDoData thread::spawn");
+        controler.fetch_data();
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn fetchToDoOrderByState(ptr: *mut PJToDoController) {
+    if ptr.is_null() {
+        pj_error!("ptr : *mut fetchToDoOrderByState is null!");
+        assert!(!ptr.is_null());
+    }
+
+    let controler = &mut *ptr;
+
+    thread::spawn(move || {
+        println!("fetchToDoOrderByState thread::spawn");
+        controler.fetch_todos_order_by_state();
+    });
 }
 
 #[no_mangle]
@@ -385,6 +532,28 @@ pub unsafe extern "C" fn findToDoLikeTitle(ptr: *mut PJToDoController, title: *c
     thread::spawn(move || {
         println!("insertToDo thread::spawn");
         controler.find_todo_like_title(title)
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn findToDoByDatefutureDayMoreThan(
+    ptr: *mut PJToDoController,
+    from_day: *const c_char,
+    to_day: *const c_char,
+    comparison_days: i32,
+) {
+    if ptr.is_null() || from_day.is_null() || to_day.is_null() {
+        pj_error!("ptr or from_day or to_day: *mut find_todo_date_future_day_more_than is null!");
+        assert!(!ptr.is_null() && !from_day.is_null() && !to_day.is_null());
+    }
+
+    let controler = &mut *ptr;
+    let from_day = CStr::from_ptr(from_day).to_string_lossy().into_owned();
+    let to_day = CStr::from_ptr(to_day).to_string_lossy().into_owned();
+
+    thread::spawn(move || {
+        println!("insertToDo thread::spawn");
+        controler.find_todo_date_future_day_more_than(from_day, to_day, comparison_days);
     });
 }
 

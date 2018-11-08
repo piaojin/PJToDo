@@ -16,6 +16,8 @@ pub struct IPJToDoDelegate {
         extern "C" fn(user: *mut c_void, toDo: *mut ToDoQuery, isSuccess: bool),
     pub fetch_data_result: extern "C" fn(user: *mut c_void, isSuccess: bool),
     pub find_byLike_result: extern "C" fn(user: *mut c_void, isSuccess: bool),
+    pub todo_date_future_day_more_than_result: extern "C" fn(user: *mut c_void, isSuccess: bool),
+    pub fetch_todos_order_by_state_result: extern "C" fn(user: *mut c_void, isSuccess: bool),
 }
 
 impl Drop for IPJToDoDelegate {

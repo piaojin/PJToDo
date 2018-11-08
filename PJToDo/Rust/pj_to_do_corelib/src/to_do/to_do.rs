@@ -18,7 +18,7 @@ use db::tables::schema::todo;
 pub enum ToDoState {
     Determined,
     InProgress,
-    Finished,
+    Completed,
     Overdue,
 }
 
@@ -62,6 +62,7 @@ impl Default for ToDoState {
     Queryable,
     Associations,
     AsChangeset,
+    QueryableByName,
 )]
 #[belongs_to(ToDoType, foreign_key = "to_do_type_id")]
 #[belongs_to(ToDoTag, foreign_key = "to_do_tag_id")]

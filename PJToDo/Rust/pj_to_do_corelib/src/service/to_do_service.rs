@@ -17,6 +17,15 @@ pub trait PJToDoService {
         &self,
         todo_title: String,
     ) -> Result<Vec<ToDoQuery>, diesel::result::Error>;
+
+    fn find_todo_date_future_day_more_than(
+        &self,
+        from_day: String,
+        to_day: String,
+        comparison_days: i32,
+    ) -> Result<Vec<ToDoQuery>, diesel::result::Error>;
+
+    fn fetch_todos_order_by_state(&self) -> Result<Vec<Vec<ToDoQuery>>, diesel::result::Error>;
 }
 
 pub fn insert_todo(
@@ -65,4 +74,19 @@ pub fn find_todo_like_title(
     title: String,
 ) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
     todo_service.find_todo_like_title(title)
+}
+
+pub fn find_todo_date_future_day_more_than(
+    todo_service: &Box<dyn PJToDoService>,
+    from_day: String,
+    to_day: String,
+    comparison_days: i32,
+) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
+    todo_service.find_todo_date_future_day_more_than(from_day, to_day, comparison_days)
+}
+
+pub fn fetch_todos_order_by_state(
+    todo_service: &Box<dyn PJToDoService>,
+) -> Result<Vec<Vec<ToDoQuery>>, diesel::result::Error> {
+    todo_service.fetch_todos_order_by_state()
 }

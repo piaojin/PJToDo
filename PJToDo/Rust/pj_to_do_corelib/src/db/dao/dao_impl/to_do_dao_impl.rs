@@ -6,6 +6,7 @@ use diesel::prelude::*;
 #[allow(unused_imports)]
 use common::pj_logger::PJLogger;
 use db::tables::schema::todo::dsl::*;
+use diesel::dsl::sql_query;
 
 pub struct PJToDoDAOImpl;
 
@@ -102,7 +103,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
         pj_info!("find_todo_by_title: {}", todo_title);
 
         let to_dos_result = schema::todo::table
-            .filter(title.eq(title))
+            .filter(title.eq(todo_title))
             .load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
 
         match to_dos_result {
@@ -153,6 +154,113 @@ impl PJToDoDAO for PJToDoDAOImpl {
                 pj_error!("fetchData failure {}", e);
                 Err(e)
             }
+        }
+    }
+
+    fn find_todo_date_future_day_more_than(
+        &self,
+        from_day: String,
+        to_day: String,
+        comparison_days: i32,
+    ) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
+        let sql = format!(
+            "SELECT * FROM todo WHERE (julianday({})-julianday({})) <= {}",
+            to_day, from_day, comparison_days
+        );
+        let result = sql_query(sql).load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+        match result {
+            Ok(to_dos) => {
+                pj_info!("find_todo_date_future_day_more_than success!");
+                Ok(to_dos)
+            }
+            Err(e) => {
+                pj_error!("find_todo_date_future_day_more_than failure {}", e);
+                Err(e)
+            }
+        }
+    }
+
+    fn fetch_todos_order_by_state(&self) -> Result<Vec<Vec<ToDoQuery>>, diesel::result::Error> {
+        pj_info!("fetch_todos_order_by_state");
+
+        let mut todos: Vec<Vec<ToDoQuery>> = Vec::new();
+        let mut error: diesel::result::Error = diesel::result::Error::NotFound;
+        let mut hasError = false;
+
+        let todos_determined_result = schema::todo::table
+            .filter(state.eq(0))
+            .load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+
+        match todos_determined_result {
+            Ok(todos_determined) => {
+                pj_info!("fetch_todos_order_by_state in type determined success!");
+                todos.push(todos_determined);
+            }
+            Err(e) => {
+                pj_error!(
+                    "fetch_todos_order_by_state in type determined failure {}",
+                    e
+                );
+                hasError = true;
+                error = e;
+            }
+        }
+
+        let todos_inprogress_result = schema::todo::table
+            .filter(state.eq(1))
+            .load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+
+        match todos_inprogress_result {
+            Ok(todos_inprogress) => {
+                pj_info!("fetch_todos_order_by_state in type inprogress success!");
+                todos.push(todos_inprogress);
+            }
+            Err(e) => {
+                pj_error!(
+                    "fetch_todos_order_by_state in type inprogress failure {}",
+                    e
+                );
+                hasError = true;
+                error = e;
+            }
+        }
+
+        let todos_completed_result = schema::todo::table
+            .filter(state.eq(2))
+            .load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+
+        match todos_completed_result {
+            Ok(todos_completed) => {
+                pj_info!("fetch_todos_order_by_state in type completed success!");
+                todos.push(todos_completed);
+            }
+            Err(e) => {
+                pj_error!("fetch_todos_order_by_state in type completed failure {}", e);
+                hasError = true;
+                error = e;
+            }
+        }
+
+        let todos_overdue_result = schema::todo::table
+            .filter(state.eq(3))
+            .load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+
+        match todos_overdue_result {
+            Ok(todos_overdue) => {
+                pj_info!("fetch_todos_order_by_state in type overdue success!");
+                todos.push(todos_overdue);
+            }
+            Err(e) => {
+                pj_error!("fetch_todos_order_by_state in type overdue failure {}", e);
+                hasError = true;
+                error = e;
+            }
+        }
+
+        if !hasError {
+            Ok(todos)
+        } else {
+            Err(error)
         }
     }
 }
