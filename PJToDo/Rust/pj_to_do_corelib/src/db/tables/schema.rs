@@ -27,6 +27,14 @@ table! {
     }
 }
 
+table! {
+    todosettings (id) {
+        id -> Integer,
+        remind_email -> Text,
+        remind_days -> Integer,
+    }
+}
+
 // pub struct ToDo<'a> {
 //     pub id: i64,
 //     pub content: &'a str, //待办事项内容

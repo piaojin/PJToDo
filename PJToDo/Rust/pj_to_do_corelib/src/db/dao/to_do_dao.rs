@@ -21,7 +21,6 @@ pub trait PJToDoDAO {
     fn find_todo_date_future_day_more_than(
         &self,
         from_day: String,
-        to_day: String,
         comparison_days: i32,
     ) -> Result<Vec<ToDoQuery>, diesel::result::Error>;
 

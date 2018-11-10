@@ -28,6 +28,8 @@
 
 typedef struct PJToDoServiceController PJToDoServiceController;
 
+typedef struct PJToDoSettingsServiceController PJToDoSettingsServiceController;
+
 typedef struct PJToDoTagServiceController PJToDoTagServiceController;
 
 typedef struct PJToDoTypeServiceController PJToDoTypeServiceController;
@@ -38,6 +40,10 @@ typedef struct ToDoInsert ToDoInsert;
 
 typedef struct ToDoQuery ToDoQuery;
 
+typedef struct ToDoSettings ToDoSettings;
+
+typedef struct ToDoSettingsInsert ToDoSettingsInsert;
+
 typedef struct ToDoTag ToDoTag;
 
 typedef struct ToDoTagInsert ToDoTagInsert;
@@ -47,6 +53,8 @@ typedef struct ToDoType ToDoType;
 typedef struct ToDoTypeInsert ToDoTypeInsert;
 
 typedef struct Vec_ToDoQuery Vec_ToDoQuery;
+
+typedef struct Vec_ToDoSettings Vec_ToDoSettings;
 
 typedef struct Vec_ToDoTag Vec_ToDoTag;
 
@@ -80,6 +88,22 @@ typedef struct {
   Vec_ToDoQuery *todo_date_future_day_more_than_result_todos;
   Vec_Vec_ToDoQuery *todos_order_by_state;
 } PJToDoController;
+
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
+  void (*insert_result)(void*, bool);
+  void (*delete_result)(void*, bool);
+  void (*update_result)(void*, bool);
+  void (*fetch_data_result)(void*, bool);
+} IPJToDoSettingsDelegate;
+
+typedef struct {
+  IPJToDoSettingsDelegate delegate;
+  PJToDoSettingsServiceController *todo_settings_service_controller;
+  ToDoSettingsInsert *insert_todo_settings;
+  Vec_ToDoSettings *todo_settings;
+} PJToDoSettingsController;
 
 typedef struct {
   void *user;
@@ -121,6 +145,8 @@ typedef struct {
 
 PJToDoController *createPJToDoController(IPJToDoDelegate delegate);
 
+PJToDoSettingsController *createPJToDoSettingsController(IPJToDoSettingsDelegate delegate);
+
 PJToDoTagController *createPJToDoTagController(IPJToDoTagDelegate delegate);
 
 PJToDoTypeController *createPJToDoTypeController(IPJToDoTypeDelegate delegate);
@@ -130,6 +156,10 @@ ToDo *createToDo(void);
 ToDoInsert *createToDoInsert(void);
 
 ToDoQuery *createToDoQuery(void);
+
+ToDoSettings *createToDoSettings(const char *remind_email, int32_t remind_days);
+
+ToDoSettingsInsert *createToDoSettingsInsert(const char *remind_email, int32_t remind_days);
 
 ToDoTag *createToDoTag(const char *tag_name);
 
@@ -141,6 +171,8 @@ ToDoTypeInsert *createToDoTypeInsert(const char *type_name);
 
 void deleteToDo(PJToDoController *ptr, int32_t toDoId);
 
+void deleteToDoSettings(PJToDoSettingsController *ptr, int32_t toDoSettingsId);
+
 void deleteToDoTag(PJToDoTagController *ptr, int32_t toDoTagId);
 
 void deleteToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
@@ -149,13 +181,15 @@ void fetchToDoData(PJToDoController *ptr);
 
 void fetchToDoOrderByState(PJToDoController *ptr);
 
+void fetchToDoSettingsData(PJToDoSettingsController *ptr);
+
 void fetchToDoTagData(PJToDoTagController *ptr);
 
 void fetchToDoTypeData(PJToDoTypeController *ptr);
 
 void findToDo(PJToDoController *ptr, int32_t toDoId);
 
-void findToDoByDatefutureDayMoreThan(PJToDoController *ptr, const char *from_day, const char *to_day, int32_t comparison_days);
+void findToDoByDatefutureDayMoreThan(PJToDoController *ptr, const char *from_day, int32_t comparison_days);
 
 void findToDoByTitle(PJToDoController *ptr, const char *title);
 
@@ -170,6 +204,8 @@ void findToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
 void findToDoTypeByName(PJToDoTypeController *ptr, const char *type_name);
 
 void free_rust_PJToDoController(PJToDoController *ptr);
+
+void free_rust_PJToDoSettingsController(PJToDoSettingsController *ptr);
 
 void free_rust_PJToDoTagController(PJToDoTagController *ptr);
 
@@ -217,6 +253,18 @@ int32_t getToDoQuery_ToDoTagId(ToDoQuery *ptr);
 
 int32_t getToDoQuery_ToDoTypeId(ToDoQuery *ptr);
 
+int32_t getToDoSettingsCount(const PJToDoSettingsController *ptr);
+
+int32_t getToDoSettingsId(ToDoSettings *ptr);
+
+int32_t getToDoSettingsInsertRemindDays(ToDoSettingsInsert *ptr);
+
+const char *getToDoSettingsInsertRemindEmail(const ToDoSettingsInsert *ptr);
+
+int32_t getToDoSettingsRemindDays(ToDoSettings *ptr);
+
+const char *getToDoSettingsRemindEmail(const ToDoSettings *ptr);
+
 int32_t getToDoTagCount(const PJToDoTagController *ptr);
 
 int32_t getToDoTagId(ToDoTag *ptr);
@@ -248,6 +296,8 @@ void init_hello_piaojin(void);
 void init_tables(void);
 
 void insertToDo(PJToDoController *ptr, ToDoInsert *toDo);
+
+void insertToDoSettings(PJToDoSettingsController *ptr, ToDoSettingsInsert *toDoSettings);
 
 void insertToDoTag(PJToDoTagController *ptr, ToDoTagInsert *toDoTag);
 
@@ -291,6 +341,16 @@ void setToDoQuery_ToDoTagId(ToDoQuery *ptr, int32_t to_do_tag_id);
 
 void setToDoQuery_ToDoTypeId(ToDoQuery *ptr, int32_t to_do_type_id);
 
+void setToDoSettingsId(ToDoSettings *ptr, int32_t settins_id);
+
+void setToDoSettingsInsertRemindDays(ToDoSettingsInsert *ptr, int32_t remind_days);
+
+void setToDoSettingsInsertRemindEmail(ToDoSettingsInsert *ptr, const char *remind_email);
+
+void setToDoSettingsRemindDays(ToDoSettings *ptr, int32_t remind_days);
+
+void setToDoSettingsRemindEmail(ToDoSettings *ptr, const char *remind_email);
+
 void setToDoTagId(ToDoTag *ptr, int32_t type_id);
 
 void setToDoTagInsertName(ToDoTagInsert *ptr, const char *tag_name);
@@ -313,11 +373,15 @@ const ToDoType *toDoTypeWithId(const PJToDoController *ptr, int32_t type_id);
 
 const ToDoQuery *todoAtIndex(const PJToDoController *ptr, int32_t index);
 
+const ToDoSettings *todoSettingsAtIndex(const PJToDoSettingsController *ptr, int32_t index);
+
 const ToDoTag *todoTagAtIndex(const PJToDoTagController *ptr, int32_t index);
 
 const ToDoType *todoTypeAtIndex(const PJToDoTypeController *ptr, int32_t index);
 
 void updateToDo(PJToDoController *ptr, const ToDoQuery *toDo);
+
+void updateToDoSettings(PJToDoSettingsController *ptr, const ToDoSettings *toDoSettings);
 
 void updateToDoTag(PJToDoTagController *ptr, const ToDoTag *toDoTag);
 

@@ -307,7 +307,6 @@ impl PJToDoController {
     pub unsafe fn find_todo_date_future_day_more_than(
         &mut self,
         from_day: String,
-        to_day: String,
         comparison_days: i32,
     ) {
         let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
@@ -315,7 +314,6 @@ impl PJToDoController {
         let result = find_todo_date_future_day_more_than(
             &(&(*self.todo_service_controller)).todo_service,
             from_day,
-            to_day,
             comparison_days,
         );
 
@@ -539,21 +537,19 @@ pub unsafe extern "C" fn findToDoLikeTitle(ptr: *mut PJToDoController, title: *c
 pub unsafe extern "C" fn findToDoByDatefutureDayMoreThan(
     ptr: *mut PJToDoController,
     from_day: *const c_char,
-    to_day: *const c_char,
     comparison_days: i32,
 ) {
-    if ptr.is_null() || from_day.is_null() || to_day.is_null() {
-        pj_error!("ptr or from_day or to_day: *mut find_todo_date_future_day_more_than is null!");
-        assert!(!ptr.is_null() && !from_day.is_null() && !to_day.is_null());
+    if ptr.is_null() || from_day.is_null() {
+        pj_error!("ptr or from_day: *mut find_todo_date_future_day_more_than is null!");
+        assert!(!ptr.is_null() && !from_day.is_null());
     }
 
     let controler = &mut *ptr;
     let from_day = CStr::from_ptr(from_day).to_string_lossy().into_owned();
-    let to_day = CStr::from_ptr(to_day).to_string_lossy().into_owned();
 
     thread::spawn(move || {
         println!("insertToDo thread::spawn");
-        controler.find_todo_date_future_day_more_than(from_day, to_day, comparison_days);
+        controler.find_todo_date_future_day_more_than(from_day, comparison_days);
     });
 }
 

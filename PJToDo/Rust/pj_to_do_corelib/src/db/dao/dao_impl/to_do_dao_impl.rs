@@ -160,12 +160,11 @@ impl PJToDoDAO for PJToDoDAOImpl {
     fn find_todo_date_future_day_more_than(
         &self,
         from_day: String,
-        to_day: String,
         comparison_days: i32,
     ) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
         let sql = format!(
-            "SELECT * FROM todo WHERE (julianday({})-julianday({})) <= {}",
-            to_day, from_day, comparison_days
+            "SELECT * FROM todo WHERE due_time < date({},'{} days')",
+            from_day, comparison_days
         );
         let result = sql_query(sql).load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
         match result {
