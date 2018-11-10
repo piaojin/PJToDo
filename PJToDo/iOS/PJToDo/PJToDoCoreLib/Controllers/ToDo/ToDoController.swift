@@ -125,12 +125,12 @@ class ToDoController {
         fetchToDoData(self.controller)
     }
     
-    public func getCount() -> Int32 {
-        return getToDoCount(self.controller)
+    public func getToDoCountAtSection(section: Int32) -> Int32 {
+        return getToDoCountsAtSection(self.controller, section)
     }
     
-    public func toDoAt(index: Int32) -> PJ_ToDo {
-        let iToDoQuery = todoAtIndex(self.controller, index)
+    public func toDoAt(section: Int32, index: Int32) -> PJ_ToDo {
+        let iToDoQuery = todoAtSection(self.controller, section, index)
         let typeId = getToDoQuery_ToDoTypeId(iToDoQuery)
         let tagId = getToDoQuery_ToDoTagId(iToDoQuery)
         let iToDoType = toDoTypeWithId(self.controller, typeId)

@@ -81,12 +81,10 @@ typedef struct {
   PJToDoServiceController *todo_service_controller;
   ToDoQuery *find_result_todo;
   ToDoInsert *insert_todo;
-  Vec_ToDoQuery *todos;
+  Vec_Vec_ToDoQuery *todos;
   Vec_ToDoType *todo_types;
   Vec_ToDoTag *todo_tags;
   Vec_ToDoQuery *like_title_result_todos;
-  Vec_ToDoQuery *todo_date_future_day_more_than_result_todos;
-  Vec_Vec_ToDoQuery *todos_order_by_state;
 } PJToDoController;
 
 typedef struct {
@@ -179,8 +177,6 @@ void deleteToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
 
 void fetchToDoData(PJToDoController *ptr);
 
-void fetchToDoOrderByState(PJToDoController *ptr);
-
 void fetchToDoSettingsData(PJToDoSettingsController *ptr);
 
 void fetchToDoTagData(PJToDoTagController *ptr);
@@ -188,8 +184,6 @@ void fetchToDoTagData(PJToDoTagController *ptr);
 void fetchToDoTypeData(PJToDoTypeController *ptr);
 
 void findToDo(PJToDoController *ptr, int32_t toDoId);
-
-void findToDoByDatefutureDayMoreThan(PJToDoController *ptr, const char *from_day, int32_t comparison_days);
 
 void findToDoByTitle(PJToDoController *ptr, const char *title);
 
@@ -213,7 +207,9 @@ void free_rust_PJToDoTypeController(PJToDoTypeController *ptr);
 
 void free_rust_object(void *ptr);
 
-int32_t getToDoCount(const PJToDoController *ptr);
+int32_t getToDoCountOfSections(const PJToDoController *ptr);
+
+int32_t getToDoCountsAtSection(const PJToDoController *ptr, int32_t section);
 
 const char *getToDoInsertContent(const ToDoInsert *ptr);
 
@@ -371,7 +367,7 @@ const ToDoTag *toDoTagWithId(const PJToDoController *ptr, int32_t tag_id);
 
 const ToDoType *toDoTypeWithId(const PJToDoController *ptr, int32_t type_id);
 
-const ToDoQuery *todoAtIndex(const PJToDoController *ptr, int32_t index);
+const ToDoQuery *todoAtSection(const PJToDoController *ptr, int32_t section, int32_t index);
 
 const ToDoSettings *todoSettingsAtIndex(const PJToDoSettingsController *ptr, int32_t index);
 
