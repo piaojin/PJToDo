@@ -13,7 +13,7 @@ public protocol ToDoDelegate: NSObjectProtocol {
     func deleteToDoResult(isSuccess: Bool)
     func updateToDoResult(isSuccess: Bool)
     func fetchToDoDataResult(isSuccess: Bool)
-    func findToDoByIdResult(toDo: PJ_ToDo, isSuccess: Bool)
+    func findToDoByIdResult(toDo: PJ_ToDo?, isSuccess: Bool)
     func fetchToDoDateFutureDayMoreThanResult(isSuccess: Bool)
     func fetchTodosOrderByStateResult(isSuccess: Bool)
 }
@@ -122,47 +122,50 @@ class ToDoController {
     
     //Rust回调Swift
     fileprivate func insertResult(isSuccess: Bool) {
-        print("ToDoTypeController: received insertResult callback with  \(isSuccess)")
+        print("ToDoController: received insertResult callback with  \(isSuccess)")
         self.delegate?.insertToDoResult(isSuccess: isSuccess)
     }
     
     fileprivate func deleteResult(isSuccess: Bool) {
-        print("ToDoTypeController: received deleteResult callback with  \(isSuccess)")
+        print("ToDoController: received deleteResult callback with  \(isSuccess)")
         self.delegate?.deleteToDoResult(isSuccess: isSuccess)
     }
     
     fileprivate func updateResult(isSuccess: Bool) {
-        print("ToDoTypeController: received updateResult callback with  \(isSuccess)")
+        print("ToDoController: received updateResult callback with  \(isSuccess)")
         self.delegate?.updateToDoResult(isSuccess: isSuccess)
     }
     
     fileprivate func findByIdResult(toDo: OpaquePointer?, isSuccess: Bool) {
-        print("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
-        let typeId = getToDoQuery_ToDoTypeId(toDo)
-        let tagId = getToDoQuery_ToDoTagId(toDo)
-        let iToDoType = toDoTypeWithId(self.controller, typeId)
-        let iToDoTag = toDoTagWithId(self.controller, tagId)
-        let tempToDo = PJ_ToDo(iToDoQuery: toDo, iToDoType: iToDoType, iToDoTag: iToDoTag)
+        print("ToDoController: received findByIdResult callback with  \(isSuccess)")
+        var tempToDo: PJ_ToDo? = nil
+        if isSuccess {
+            let typeId = getToDoQuery_ToDoTypeId(toDo)
+            let tagId = getToDoQuery_ToDoTagId(toDo)
+            let iToDoType = toDoTypeWithId(self.controller, typeId)
+            let iToDoTag = toDoTagWithId(self.controller, tagId)
+            tempToDo = PJ_ToDo(iToDoQuery: toDo, iToDoType: iToDoType, iToDoTag: iToDoTag)
+        }
         self.delegate?.findToDoByIdResult(toDo: tempToDo, isSuccess: isSuccess)
     }
     
     fileprivate func fetchDataResult(isSuccess: Bool) {
-        print("ToDoTypeController: received fetchDataResult callback with  \(isSuccess)")
+        print("ToDoController: received fetchDataResult callback with  \(isSuccess)")
         self.delegate?.fetchToDoDataResult(isSuccess: isSuccess)
     }
     
     fileprivate func fetchToDoDateFutureDayMoreThanResult(isSuccess: Bool) {
-        print("ToDoTypeController: received fetchDataResult callback with  \(isSuccess)")
+        print("ToDoController: received fetchDataResult callback with  \(isSuccess)")
         self.delegate?.fetchToDoDateFutureDayMoreThanResult(isSuccess: isSuccess)
     }
     
     fileprivate func fetchTodosOrderByStateResult(isSuccess: Bool) {
-        print("ToDoTypeController: received fetchDataResult callback with  \(isSuccess)")
+        print("ToDoController: received fetchDataResult callback with  \(isSuccess)")
         self.delegate?.fetchTodosOrderByStateResult(isSuccess: isSuccess)
     }
     
     deinit {
-        print("deinit -> ToDoTypeController")
+        print("deinit -> ToDoController")
         free_rust_PJToDoController(self.controller)
     }
 }

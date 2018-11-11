@@ -40,7 +40,7 @@
 		766E6E2A21930BC800BC9DFE /* PJToDoMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766E6E2921930BC800BC9DFE /* PJToDoMode.swift */; };
 		76746D98216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c in Sources */ = {isa = PBXBuildFile; fileRef = 76746D97216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c */; };
 		76746D9E216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m in Sources */ = {isa = PBXBuildFile; fileRef = 76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */; };
-		767B5D6A21972AF500713393 /* MySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B5D6921972AF500713393 /* MySettings.swift */; };
+		767B5D6A21972AF500713393 /* PJMySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B5D6921972AF500713393 /* PJMySettings.swift */; };
 		76B5226D21809EC200D51AE8 /* PJToDoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5226C21809EC200D51AE8 /* PJToDoType.swift */; };
 		76B522702180BB8700D51AE8 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5226F2180BB8700D51AE8 /* HomeViewController.swift */; };
 		90B883A67742CBA20B227A90 /* Pods_PJToDoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */; };
@@ -136,7 +136,7 @@
 		76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PJToDoCoreLibPAL_C_Bridging_OC.m; sourceTree = "<group>"; };
 		767A10D421772DC800B1A179 /* PJToDoCoreLibPAL_C.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C.h; sourceTree = "<group>"; };
 		767A10D821772E4800B1A179 /* PJToDoCoreLibPAL_C_Bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C_Bindings.h; sourceTree = "<group>"; };
-		767B5D6921972AF500713393 /* MySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MySettings.swift; sourceTree = "<group>"; };
+		767B5D6921972AF500713393 /* PJMySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJMySettings.swift; sourceTree = "<group>"; };
 		76B5226C21809EC200D51AE8 /* PJToDoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoType.swift; sourceTree = "<group>"; };
 		76B5226F2180BB8700D51AE8 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		7CFB5B5F9AE9D85494D81D5D /* Pods-PJToDoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDoUITests/Pods-PJToDoUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -537,7 +537,7 @@
 		76FD55ED2187073100989102 /* Mine */ = {
 			isa = PBXGroup;
 			children = (
-				767B5D6921972AF500713393 /* MySettings.swift */,
+				767B5D6921972AF500713393 /* PJMySettings.swift */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -827,7 +827,7 @@
 				7648831721675AF700F11106 /* ReposService.swift in Sources */,
 				76488309216759CA00F11106 /* PJToDoCoreLibPAL.swift in Sources */,
 				7625021D2170A6D9001043AF /* PJCacheManager.swift in Sources */,
-				767B5D6A21972AF500713393 /* MySettings.swift in Sources */,
+				767B5D6A21972AF500713393 /* PJMySettings.swift in Sources */,
 				764883052167598000F11106 /* PJToDoCoreLibFactory.swift in Sources */,
 				7648830F21675A7600F11106 /* ToDoController.swift in Sources */,
 				766E6E2A21930BC800BC9DFE /* PJToDoMode.swift in Sources */,

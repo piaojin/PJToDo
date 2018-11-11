@@ -10,7 +10,7 @@ import UIKit
 
 public protocol ToDoSearchDelegate: NSObjectProtocol {
     func findToDoLikeTitleResult(isSuccess: Bool)
-    func findToDoByTitleResult(toDo: PJ_ToDo, isSuccess: Bool)
+    func findToDoByTitleResult(toDo: PJ_ToDo?, isSuccess: Bool)
 }
 
 class ToDoSearchController {
@@ -75,22 +75,25 @@ class ToDoSearchController {
     //Rust回调Swift
     
     public func findByTitleResult(toDo: OpaquePointer?, isSuccess: Bool) {
-        print("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
-        let typeId = getToDoQuery_ToDoTypeId(toDo)
-        let tagId = getToDoQuery_ToDoTagId(toDo)
-        let iToDoType = getSearchToDoTypeWithId(self.controller, typeId)
-        let iToDoTag = getSearchToDoTagWithId(self.controller, tagId)
-        let tempToDo = PJ_ToDo(iToDoQuery: toDo, iToDoType: iToDoType, iToDoTag: iToDoTag)
+        print("ToDoSearchController: received findByIdResult callback with  \(isSuccess)")
+        var tempToDo: PJ_ToDo? = nil
+        if isSuccess {
+            let typeId = getToDoQuery_ToDoTypeId(toDo)
+            let tagId = getToDoQuery_ToDoTagId(toDo)
+            let iToDoType = getSearchToDoTypeWithId(self.controller, typeId)
+            let iToDoTag = getSearchToDoTagWithId(self.controller, tagId)
+            tempToDo = PJ_ToDo(iToDoQuery: toDo, iToDoType: iToDoType, iToDoTag: iToDoTag)
+        }
         self.delegate?.findToDoByTitleResult(toDo: tempToDo, isSuccess: isSuccess)
     }
     
     public func findToDoLikeTitleResult(isSuccess: Bool) {
-        print("ToDoTypeController: received fetchDataResult callback with  \(isSuccess)")
+        print("ToDoSearchController: received fetchDataResult callback with  \(isSuccess)")
         self.delegate?.findToDoLikeTitleResult(isSuccess: isSuccess)
     }
     
     deinit {
-        print("deinit -> ToDoTypeController")
+        print("deinit -> ToDoSearchController")
         free_rust_PJToDoSearchController(self.controller)
     }
 }

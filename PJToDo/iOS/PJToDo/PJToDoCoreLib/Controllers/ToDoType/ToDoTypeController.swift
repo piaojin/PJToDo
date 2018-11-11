@@ -13,8 +13,8 @@ public protocol ToDoTypeDelegate: NSObjectProtocol {
     func deleteTypeResult(isSuccess: Bool)
     func updateTypeResult(isSuccess: Bool)
     func fetchTypeDataResult(isSuccess: Bool)
-    func findTypeByIdResult(toDoType: PJToDoType, isSuccess: Bool)
-    func findTypeByNameResult(toDoType: PJToDoType, isSuccess: Bool)
+    func findTypeByIdResult(toDoType: PJToDoType?, isSuccess: Bool)
+    func findTypeByNameResult(toDoType: PJToDoType?, isSuccess: Bool)
 }
 
 class ToDoTypeController {
@@ -131,13 +131,13 @@ class ToDoTypeController {
     
     fileprivate func findByIdResult(toDoType: OpaquePointer?, isSuccess: Bool) {
         print("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
-        let tempToDoType = PJToDoType(iToDoType: toDoType)
+        let tempToDoType = isSuccess ? PJToDoType(iToDoType: toDoType) : nil
         self.delegate?.findTypeByIdResult(toDoType: tempToDoType, isSuccess: isSuccess)
     }
     
     fileprivate func findByNameResult(toDoType: OpaquePointer?, isSuccess: Bool) {
         print("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
-        let tempToDoType = PJToDoType(iToDoType: toDoType)
+        let tempToDoType = isSuccess ? PJToDoType(iToDoType: toDoType) : nil
         self.delegate?.findTypeByNameResult(toDoType: tempToDoType, isSuccess: isSuccess)
     }
     

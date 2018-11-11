@@ -57,77 +57,83 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: ToDoTypeDelegate {
     func fetchTypeDataResult(isSuccess: Bool) {
-        if isSuccess {
-            
-        }
+        
     }
     
-    func findTypeByNameResult(toDoType: PJToDoType, isSuccess: Bool) {
+
+    func findTypeByNameResult(toDoType: PJToDoType?, isSuccess: Bool) {
         if isSuccess {
-            print("typeName: \(toDoType.typeName)")
+            print("typeName: \(String(describing: toDoType?.typeName))")
         }
     }
-    
-    func findTypeByIdResult(toDoType: PJToDoType, isSuccess: Bool) {
+
+    func findTypeByIdResult(toDoType: PJToDoType?, isSuccess: Bool) {
         if isSuccess {
-            print("typeName: \(toDoType.typeName)")
+            print("typeName: \(String(describing: toDoType?.typeName))")
         }
     }
-    
+
     func updateTypeResult(isSuccess: Bool) {
         if isSuccess {
-            
+
         }
     }
-    
+
     func deleteTypeResult(isSuccess: Bool) {
         if isSuccess {
-            
+
         }
     }
-    
+
     func insertTypeResult(isSuccess: Bool) {
         if isSuccess {
-            
+
         }
     }
 }
 
 extension HomeViewController: ToDoTagDelegate {
+    func findTagByIdResult(toDoTag: PJToDoTag?, isSuccess: Bool) {
+        
+    }
+    
+    func findTagByNameResult(toDoTag: PJToDoTag?, isSuccess: Bool) {
+        
+    }
+    
     func fetchTagDataResult(isSuccess: Bool) {
         if isSuccess {
-            
+
         }
     }
-    
+
     func findTagByNameResult(toDoTag: PJToDoTag, isSuccess: Bool) {
         if isSuccess {
-            
+
         }
     }
-    
+
     func findTagByIdResult(toDoTag: PJToDoTag, isSuccess: Bool) {
         if isSuccess {
-//            self.tagController.update(toDoTag: PJToDoTag(tagId: 1, tagName: "hello zlq!"))
             self.tagController.findByName(tagName: toDoTag.tagName)
         }
     }
-    
+
     func updateTagResult(isSuccess: Bool) {
         if isSuccess {
-            
+
         }
     }
-    
+
     func deleteTagResult(isSuccess: Bool) {
         if isSuccess {
-            
+
         }
     }
-    
+
     func insertTagResult(isSuccess: Bool) {
         if isSuccess {
-            
+
         }
     }
 }

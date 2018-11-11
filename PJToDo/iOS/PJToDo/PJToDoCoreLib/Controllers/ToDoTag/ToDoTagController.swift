@@ -13,8 +13,8 @@ public protocol ToDoTagDelegate: NSObjectProtocol {
     func deleteTagResult(isSuccess: Bool)
     func updateTagResult(isSuccess: Bool)
     func fetchTagDataResult(isSuccess: Bool)
-    func findTagByIdResult(toDoTag: PJToDoTag, isSuccess: Bool)
-    func findTagByNameResult(toDoTag: PJToDoTag, isSuccess: Bool)
+    func findTagByIdResult(toDoTag: PJToDoTag?, isSuccess: Bool)
+    func findTagByNameResult(toDoTag: PJToDoTag?, isSuccess: Bool)
 }
 
 class ToDoTagController {
@@ -131,13 +131,13 @@ class ToDoTagController {
     
     fileprivate func findByIdResult(toDoTag: OpaquePointer?, isSuccess: Bool) {
         print("ToDoTagController: received findByIdResult callback with  \(isSuccess)")
-        let tempToDoTag = PJToDoTag(iToDoTag: toDoTag)
+        let tempToDoTag = isSuccess ? PJToDoTag(iToDoTag: toDoTag) : nil
         self.delegate?.findTagByIdResult(toDoTag: tempToDoTag, isSuccess: isSuccess)
     }
     
     fileprivate func findByNameResult(toDoTag: OpaquePointer?, isSuccess: Bool) {
         print("ToDoTagController: received findByIdResult callback with  \(isSuccess)")
-        let tempToDoTag = PJToDoTag(iToDoTag: toDoTag)
+        let tempToDoTag = isSuccess ? PJToDoTag(iToDoTag: toDoTag) : nil
         self.delegate?.findTagByNameResult(toDoTag: tempToDoTag, isSuccess: isSuccess)
     }
     
