@@ -13,9 +13,7 @@ public protocol ToDoDelegate: NSObjectProtocol {
     func deleteToDoResult(isSuccess: Bool)
     func updateToDoResult(isSuccess: Bool)
     func fetchToDoDataResult(isSuccess: Bool)
-    func fetchToDoLikeTitleResult(isSuccess: Bool)
     func findToDoByIdResult(toDo: PJ_ToDo, isSuccess: Bool)
-    func findToDoByTitleResult(toDo: PJ_ToDo, isSuccess: Bool)
     func fetchToDoDateFutureDayMoreThanResult(isSuccess: Bool)
     func fetchTodosOrderByStateResult(isSuccess: Bool)
 }
@@ -60,21 +58,9 @@ class ToDoController {
             }
         }
         
-        let findByTitleBackBlock: (@convention(c) (UnsafeMutableRawPointer?, OpaquePointer?, Bool) -> Void)! = { (pointer, toDoPointer, isSuccess) in
-            if let tempPointer = pointer {
-                PJToDo.findByTitleResult(user: tempPointer, toDo: toDoPointer, isSuccess: isSuccess)
-            }
-        }
-        
         let fetchDataBackBlock: (@convention(c) (UnsafeMutableRawPointer?, Bool) -> Void)! = { (pointer, isSuccess) in
             if let tempPointer = pointer {
                 PJToDo.fetchDataResult(user: tempPointer, isSuccess: isSuccess)
-            }
-        }
-        
-        let fetchToDoLikeTitleBackBlock: (@convention(c) (UnsafeMutableRawPointer?, Bool) -> Void)! = { (pointer, isSuccess) in
-            if let tempPointer = pointer {
-                PJToDo.fetchToDoLikeTitleResult(user: tempPointer, isSuccess: isSuccess)
             }
         }
         
@@ -90,7 +76,7 @@ class ToDoController {
             }
         }
         
-        let iDelegate = IPJToDoDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, find_byTitle_result: findByTitleBackBlock, fetch_data_result: fetchDataBackBlock, find_byLike_result: fetchToDoLikeTitleBackBlock, todo_date_future_day_more_than_result: fetchToDoDateFutureDayMoreThanBackBlock, fetch_todos_order_by_state_result: fetchTodosOrderByStateBackBlock)
+        let iDelegate = IPJToDoDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, fetch_data_result: fetchDataBackBlock, todo_date_future_day_more_than_result: fetchToDoDateFutureDayMoreThanBackBlock, fetch_todos_order_by_state_result: fetchTodosOrderByStateBackBlock)
         return iDelegate
     }()
     
@@ -115,10 +101,6 @@ class ToDoController {
     
     public func findById(toDoId: Int32) {
         findToDo(self.controller, toDoId)
-    }
-    
-    public func findByTitle(title: String) {
-        findToDoByTitle(self.controller, title)
     }
     
     public func fetchData() {
@@ -164,24 +146,9 @@ class ToDoController {
         self.delegate?.findToDoByIdResult(toDo: tempToDo, isSuccess: isSuccess)
     }
     
-    fileprivate func findByTitleResult(toDo: OpaquePointer?, isSuccess: Bool) {
-        print("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
-        let typeId = getToDoQuery_ToDoTypeId(toDo)
-        let tagId = getToDoQuery_ToDoTagId(toDo)
-        let iToDoType = toDoTypeWithId(self.controller, typeId)
-        let iToDoTag = toDoTagWithId(self.controller, tagId)
-        let tempToDo = PJ_ToDo(iToDoQuery: toDo, iToDoType: iToDoType, iToDoTag: iToDoTag)
-        self.delegate?.findToDoByTitleResult(toDo: tempToDo, isSuccess: isSuccess)
-    }
-    
     fileprivate func fetchDataResult(isSuccess: Bool) {
         print("ToDoTypeController: received fetchDataResult callback with  \(isSuccess)")
         self.delegate?.fetchToDoDataResult(isSuccess: isSuccess)
-    }
-    
-    fileprivate func fetchToDoLikeTitleResult(isSuccess: Bool) {
-        print("ToDoTypeController: received fetchDataResult callback with  \(isSuccess)")
-        self.delegate?.fetchToDoLikeTitleResult(isSuccess: isSuccess)
     }
     
     fileprivate func fetchToDoDateFutureDayMoreThanResult(isSuccess: Bool) {
@@ -221,19 +188,9 @@ fileprivate func findByIdResult(user: UnsafeMutableRawPointer, toDo: OpaquePoint
     obj.findByIdResult(toDo: toDo, isSuccess: isSuccess)
 }
 
-fileprivate func findByTitleResult(user: UnsafeMutableRawPointer, toDo: OpaquePointer?, isSuccess: Bool) {
-    let obj: ToDoController = Unmanaged.fromOpaque(user).takeUnretainedValue()
-    obj.findByTitleResult(toDo: toDo, isSuccess: isSuccess)
-}
-
 fileprivate func fetchDataResult(user: UnsafeMutableRawPointer, isSuccess: Bool) {
     let obj: ToDoController = Unmanaged.fromOpaque(user).takeUnretainedValue()
     obj.fetchDataResult(isSuccess: isSuccess)
-}
-
-fileprivate func fetchToDoLikeTitleResult(user: UnsafeMutableRawPointer, isSuccess: Bool) {
-    let obj: ToDoController = Unmanaged.fromOpaque(user).takeUnretainedValue()
-    obj.fetchToDoLikeTitleResult(isSuccess: isSuccess)
 }
 
 fileprivate func fetchToDoDateFutureDayMoreThanResult(user: UnsafeMutableRawPointer, isSuccess: Bool) {

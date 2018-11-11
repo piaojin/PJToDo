@@ -26,6 +26,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+typedef struct PJToDoSearchServiceController PJToDoSearchServiceController;
+
 typedef struct PJToDoServiceController PJToDoServiceController;
 
 typedef struct PJToDoSettingsServiceController PJToDoSettingsServiceController;
@@ -65,13 +67,27 @@ typedef struct Vec_Vec_ToDoQuery Vec_Vec_ToDoQuery;
 typedef struct {
   void *user;
   void (*destroy)(void*);
+  void (*find_byTitle_result)(void*, ToDoQuery*, bool);
+  void (*find_byLike_result)(void*, bool);
+} IPJToDoSearchDelegate;
+
+typedef struct {
+  IPJToDoSearchDelegate delegate;
+  PJToDoSearchServiceController *todo_search_service_controller;
+  Vec_ToDoQuery *todos;
+  Vec_ToDoType *todo_types;
+  Vec_ToDoTag *todo_tags;
+  ToDoQuery *find_result_todo;
+} PJToDoSearchController;
+
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
   void (*insert_result)(void*, bool);
   void (*delete_result)(void*, bool);
   void (*update_result)(void*, bool);
   void (*find_byId_result)(void*, ToDoQuery*, bool);
-  void (*find_byTitle_result)(void*, ToDoQuery*, bool);
   void (*fetch_data_result)(void*, bool);
-  void (*find_byLike_result)(void*, bool);
   void (*todo_date_future_day_more_than_result)(void*, bool);
   void (*fetch_todos_order_by_state_result)(void*, bool);
 } IPJToDoDelegate;
@@ -84,7 +100,6 @@ typedef struct {
   Vec_Vec_ToDoQuery *todos;
   Vec_ToDoType *todo_types;
   Vec_ToDoTag *todo_tags;
-  Vec_ToDoQuery *like_title_result_todos;
 } PJToDoController;
 
 typedef struct {
@@ -141,7 +156,17 @@ typedef struct {
   Vec_ToDoType *todo_types;
 } PJToDoTypeController;
 
+void PJ_FindToDoByTitle(PJToDoSearchController *ptr, const char *title);
+
+void PJ_FindToDoLikeTitle(PJToDoSearchController *ptr, const char *title);
+
+const ToDoQuery *PJ_SearchToDoResultAtIndex(const PJToDoSearchController *ptr, int32_t index);
+
+int32_t PJ_SearchToDoResultCount(const PJToDoSearchController *ptr);
+
 PJToDoController *createPJToDoController(IPJToDoDelegate delegate);
+
+PJToDoSearchController *createPJToDoSearchController(IPJToDoSearchDelegate delegate);
 
 PJToDoSettingsController *createPJToDoSettingsController(IPJToDoSettingsDelegate delegate);
 
@@ -185,10 +210,6 @@ void fetchToDoTypeData(PJToDoTypeController *ptr);
 
 void findToDo(PJToDoController *ptr, int32_t toDoId);
 
-void findToDoByTitle(PJToDoController *ptr, const char *title);
-
-void findToDoLikeTitle(PJToDoController *ptr, const char *title);
-
 void findToDoTag(PJToDoTagController *ptr, int32_t toDoTagId);
 
 void findToDoTagByName(PJToDoTagController *ptr, const char *tag_name);
@@ -199,6 +220,8 @@ void findToDoTypeByName(PJToDoTypeController *ptr, const char *type_name);
 
 void free_rust_PJToDoController(PJToDoController *ptr);
 
+void free_rust_PJToDoSearchController(PJToDoSearchController *ptr);
+
 void free_rust_PJToDoSettingsController(PJToDoSettingsController *ptr);
 
 void free_rust_PJToDoTagController(PJToDoTagController *ptr);
@@ -206,6 +229,10 @@ void free_rust_PJToDoTagController(PJToDoTagController *ptr);
 void free_rust_PJToDoTypeController(PJToDoTypeController *ptr);
 
 void free_rust_object(void *ptr);
+
+const ToDoTag *getSearchToDoTagWithId(const PJToDoSearchController *ptr, int32_t tag_id);
+
+const ToDoType *getSearchToDoTypeWithId(const PJToDoSearchController *ptr, int32_t type_id);
 
 int32_t getToDoCountOfSections(const PJToDoController *ptr);
 

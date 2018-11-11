@@ -1,5 +1,5 @@
 use delegates::to_do_delegate::{IPJToDoDelegate, IPJToDoDelegateWrapper};
-use service::to_do_service::{PJToDoService, insert_todo, delete_todo, update_todo, find_todo_by_id, find_todo_by_title, find_todo_like_title, find_todo_date_future_day_more_than, fetch_todos_order_by_state};
+use service::to_do_service::{PJToDoService, insert_todo, delete_todo, update_todo, find_todo_by_id, find_todo_date_future_day_more_than, fetch_todos_order_by_state};
 use service::service_impl::to_do_service_impl::{createPJToDoServiceImpl};
 use to_do::to_do::{ToDoInsert, ToDoQuery, createToDoInsert, createToDoQuery};
 use to_do_type::to_do_type::ToDoType;
@@ -7,8 +7,6 @@ use to_do_tag::to_do_tag::ToDoTag;
 use common::{free_rust_any_object};
 #[allow(unused_imports)]
 use common::pj_logger::PJLogger;
-use std::ffi::{CStr};
-use libc::{c_char};
 use std::thread;
 use std::marker::{Send, Sync};
 use common::pj_serialize::PJSerdeDeserialize;
@@ -53,7 +51,6 @@ pub struct PJToDoController {
     pub todos: *mut Vec<Vec<ToDoQuery>>, // all todos without order by state
     pub todo_types: *mut Vec<ToDoType>,  // all todo types
     pub todo_tags: *mut Vec<ToDoTag>,    // all todo tag
-    pub like_title_result_todos: *mut Vec<ToDoQuery>, //will move to toDoSearchController
 }
 
 unsafe impl Send for PJToDoController {}
@@ -70,7 +67,6 @@ impl PJToDoController {
                 todos: Box::into_raw(Box::new(Vec::new())),
                 todo_types: Box::into_raw(Box::new(Vec::new())),
                 todo_tags: Box::into_raw(Box::new(Vec::new())),
-                like_title_result_todos: Box::into_raw(Box::new(Vec::new())),
             }
         };
         controller
@@ -146,27 +142,6 @@ impl PJToDoController {
                 let mut to_do = ToDoQuery::new();
                 let to_do_ptr = &mut to_do as *mut ToDoQuery;
                 (i_delegate.find_byId_result)(i_delegate.user, to_do_ptr, false);
-            }
-        }
-    }
-
-    pub unsafe fn find_todo_by_title(&mut self, title: String) {
-        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
-
-        let result = find_todo_by_title(&(&(*self.todo_service_controller)).todo_service, title);
-
-        match result {
-            Ok(to_do) => {
-                /*free the old todo before set the new one*/
-                free_rust_any_object(self.find_result_todo);
-                let to_do_ptr = Box::into_raw(Box::new(to_do));
-                self.find_result_todo = to_do_ptr;
-                (i_delegate.find_byTitle_result)(i_delegate.user, to_do_ptr, true);
-            }
-            Err(_e) => {
-                let mut to_do = ToDoQuery::new();
-                let to_do_ptr = &mut to_do as *mut ToDoQuery;
-                (i_delegate.find_byTitle_result)(i_delegate.user, to_do_ptr, false);
             }
         }
     }
@@ -301,25 +276,6 @@ impl PJToDoController {
         }
     }
 
-    /*the func will move to ToDoSearchController*/
-    pub unsafe fn find_todo_like_title(&mut self, title: String) {
-        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
-
-        let result = find_todo_like_title(&(&(*self.todo_service_controller)).todo_service, title);
-
-        match result {
-            Ok(like_title_result_todos) => {
-                /*free the old todos before set the new one*/
-                free_rust_any_object(self.like_title_result_todos);
-                self.like_title_result_todos = Box::into_raw(Box::new(like_title_result_todos));
-                (i_delegate.find_byLike_result)(i_delegate.user, true);
-            }
-            Err(_e) => {
-                (i_delegate.find_byLike_result)(i_delegate.user, false);
-            }
-        }
-    }
-
     pub unsafe fn fecth_todo_will_due_with_in_future_days(
         &mut self,
         from_day: String,
@@ -426,7 +382,6 @@ impl Drop for PJToDoController {
             free_rust_any_object(self.todos);
             free_rust_any_object(self.todo_types);
             free_rust_any_object(self.todo_tags);
-            free_rust_any_object(self.like_title_result_todos);
         }
         println!("PJToDoController -> drop");
     }
@@ -503,22 +458,6 @@ pub unsafe extern "C" fn findToDo(ptr: *mut PJToDoController, toDoId: i32) {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn findToDoByTitle(ptr: *mut PJToDoController, title: *const c_char) {
-    if ptr.is_null() || title.is_null() {
-        pj_error!("ptr or title: *mut findToDoByTitle is null!");
-        assert!(!ptr.is_null() && !title.is_null());
-    }
-
-    let controler = &mut *ptr;
-    let title = CStr::from_ptr(title).to_string_lossy().into_owned();
-
-    thread::spawn(move || {
-        println!("insertToDo thread::spawn");
-        controler.find_todo_by_title(title);
-    });
-}
-
-#[no_mangle]
 pub unsafe extern "C" fn fetchToDoData(ptr: *mut PJToDoController) {
     if ptr.is_null() {
         pj_error!("ptr : *mut fetchData is null!");
@@ -530,22 +469,6 @@ pub unsafe extern "C" fn fetchToDoData(ptr: *mut PJToDoController) {
     thread::spawn(move || {
         println!("fetchToDoData thread::spawn");
         controler.fetch_data();
-    });
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn findToDoLikeTitle(ptr: *mut PJToDoController, title: *const c_char) {
-    if ptr.is_null() || title.is_null() {
-        pj_error!("ptr or title: *mut findToDoLikeTitle is null!");
-        assert!(!ptr.is_null() && !title.is_null());
-    }
-
-    let controler = &mut *ptr;
-    let title = CStr::from_ptr(title).to_string_lossy().into_owned();
-
-    thread::spawn(move || {
-        println!("insertToDo thread::spawn");
-        controler.find_todo_like_title(title)
     });
 }
 

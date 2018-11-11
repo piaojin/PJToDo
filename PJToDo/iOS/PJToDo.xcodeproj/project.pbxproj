@@ -26,7 +26,7 @@
 		7648830B21675A3400F11106 /* ReposController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648830A21675A3400F11106 /* ReposController.swift */; };
 		7648830D21675A4D00F11106 /* ToDoTagController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648830C21675A4D00F11106 /* ToDoTagController.swift */; };
 		7648830F21675A7600F11106 /* ToDoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648830E21675A7600F11106 /* ToDoController.swift */; };
-		7648831121675A9000F11106 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648831021675A9000F11106 /* SearchController.swift */; };
+		7648831121675A9000F11106 /* ToDoSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648831021675A9000F11106 /* ToDoSearchController.swift */; };
 		7648831321675AAC00F11106 /* ToDoTypeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648831221675AAC00F11106 /* ToDoTypeController.swift */; };
 		7648831521675AC500F11106 /* MineController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648831421675AC500F11106 /* MineController.swift */; };
 		7648831721675AF700F11106 /* ReposService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648831621675AF700F11106 /* ReposService.swift */; };
@@ -119,7 +119,7 @@
 		7648830A21675A3400F11106 /* ReposController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposController.swift; sourceTree = "<group>"; };
 		7648830C21675A4D00F11106 /* ToDoTagController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTagController.swift; sourceTree = "<group>"; };
 		7648830E21675A7600F11106 /* ToDoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoController.swift; sourceTree = "<group>"; };
-		7648831021675A9000F11106 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		7648831021675A9000F11106 /* ToDoSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoSearchController.swift; sourceTree = "<group>"; };
 		7648831221675AAC00F11106 /* ToDoTypeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTypeController.swift; sourceTree = "<group>"; };
 		7648831421675AC500F11106 /* MineController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineController.swift; sourceTree = "<group>"; };
 		7648831621675AF700F11106 /* ReposService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposService.swift; sourceTree = "<group>"; };
@@ -360,7 +360,7 @@
 		764882F12167592800F11106 /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				7648831021675A9000F11106 /* SearchController.swift */,
+				7648831021675A9000F11106 /* ToDoSearchController.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -816,7 +816,7 @@
 				7648831D21675B3500F11106 /* ServiceService.swift in Sources */,
 				764883302168B4F600F11106 /* PJToDoDBManager.swift in Sources */,
 				7648830B21675A3400F11106 /* ReposController.swift in Sources */,
-				7648831121675A9000F11106 /* SearchController.swift in Sources */,
+				7648831121675A9000F11106 /* ToDoSearchController.swift in Sources */,
 				76B522702180BB8700D51AE8 /* HomeViewController.swift in Sources */,
 				76746D98216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c in Sources */,
 				7648831521675AC500F11106 /* MineController.swift in Sources */,
