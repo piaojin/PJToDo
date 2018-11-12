@@ -83,6 +83,12 @@ typedef struct {
 typedef struct {
   void *user;
   void (*destroy)(void*);
+  void (*request_result)(void*, void*, bool);
+} IPJToDoHttpRequestDelegate;
+
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
   void (*insert_result)(void*, bool);
   void (*delete_result)(void*, bool);
   void (*update_result)(void*, bool);
@@ -159,6 +165,8 @@ typedef struct {
 void PJ_FindToDoByTitle(PJToDoSearchController *ptr, const char *title);
 
 void PJ_FindToDoLikeTitle(PJToDoSearchController *ptr, const char *title);
+
+void PJ_Login(IPJToDoHttpRequestDelegate delegate, const char *name, const char *password);
 
 const ToDoQuery *PJ_SearchToDoResultAtIndex(const PJToDoSearchController *ptr, int32_t index);
 

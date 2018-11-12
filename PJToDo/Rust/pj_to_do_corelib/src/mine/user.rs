@@ -50,7 +50,6 @@ extern crate serde_json;
 
 use common::pj_serialize::PJSerdeDeserialize;
 
-#[repr(C)]
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct User<'a> {
     pub login: &'a str,
@@ -76,11 +75,6 @@ pub struct User<'a> {
     pub name: &'a str,
     pub company: &'a str,
     pub blog: &'a str,
-    // #[serde(default = "no location")]
-    // location: &'a str,
-    // #[serde(default = "no email")]
-    // email: &'a str,
-    pub hireable: bool,
     pub bio: &'a str,
     pub public_repos: i64,
     pub public_gists: i64,
@@ -88,21 +82,6 @@ pub struct User<'a> {
     pub following: i64,
     pub created_at: &'a str,
     pub updated_at: &'a str,
-    // private_gists: i64,
-    // total_private_repos: i64,
-    // owned_private_repos: i64,
-    // disk_usage: i64,
-    // collaborators: i64,
-    // two_factor_authentication: bool,
-    // plan: Plan
-}
-
-#[derive(Serialize, Deserialize, Debug)]
-pub struct Plan {
-    name: String,
-    space: i64,
-    collaborators: i64,
-    private_repos: i64,
 }
 
 impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for User<'a> {

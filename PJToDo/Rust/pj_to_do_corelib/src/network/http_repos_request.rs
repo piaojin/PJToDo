@@ -120,7 +120,7 @@ impl PJHttpReposRequest {
         }
     }
 
-    pub fn do_repos_request<F>(request: Request<Body>, completion_handler: F)
+    fn do_repos_request<F>(request: Request<Body>, completion_handler: F)
     where
         F: FnOnce(Result<Repos, FetchError>)
             + std::marker::Sync
@@ -196,7 +196,7 @@ impl PJHttpReposRequest {
         });
     }
 
-    pub fn crud_file<F>(
+    fn crud_file<F>(
         file_request_body: ReposFileBody,
         file_action_type: FileActionType,
         completion_handler: F,
@@ -238,7 +238,7 @@ impl PJHttpReposRequest {
         }
     }
 
-    pub fn crud_file_request<F>(
+    fn crud_file_request<F>(
         file_request_body: ReposFileBody,
         file_action_type: FileActionType,
         completion_handler: F,
@@ -292,7 +292,7 @@ impl PJHttpReposRequest {
     }
 
     #[warn(dead_code)]
-    pub fn do_crud_file_request<F>(request: Request<Body>, completion_handler: F)
+    fn do_crud_file_request<F>(request: Request<Body>, completion_handler: F)
     where
         F: FnOnce(Result<ReposFile, FetchError>)
             + std::marker::Sync

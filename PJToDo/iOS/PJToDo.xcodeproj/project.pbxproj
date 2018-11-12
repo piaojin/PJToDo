@@ -17,6 +17,9 @@
 		76348C152116F2F40009455C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76348C0C2116F2F30009455C /* LaunchScreen.storyboard */; };
 		76348C162116F2F40009455C /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76348C0E2116F2F30009455C /* Main.storyboard */; };
 		76348C182116F2F40009455C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76348C132116F2F40009455C /* AppDelegate.swift */; };
+		76384BFB2199A5DC00C677BB /* PJHttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76384BFA2199A5DC00C677BB /* PJHttpRequest.swift */; };
+		76384BFD2199A61400C677BB /* PJHttpRequestConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76384BFC2199A61400C677BB /* PJHttpRequestConfig.swift */; };
+		76384BFF2199C0DB00C677BB /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76384BFE2199C0DB00C677BB /* User.swift */; };
 		764882C12165C66A00F11106 /* libpj_to_do_corelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 764882C02165C66A00F11106 /* libpj_to_do_corelib.a */; };
 		764882C32165C72B00F11106 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 764882C22165C72B00F11106 /* libsqlite3.tbd */; };
 		764882D021666A0A00F11106 /* Rust in Resources */ = {isa = PBXBuildFile; fileRef = 764882BF2165C0B300F11106 /* Rust */; };
@@ -41,6 +44,7 @@
 		76746D98216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c in Sources */ = {isa = PBXBuildFile; fileRef = 76746D97216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c */; };
 		76746D9E216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m in Sources */ = {isa = PBXBuildFile; fileRef = 76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */; };
 		767B5D6A21972AF500713393 /* PJMySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B5D6921972AF500713393 /* PJMySettings.swift */; };
+		767B5D6E21987F9E00713393 /* ToDoModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B5D6D21987F9E00713393 /* ToDoModelProtocol.swift */; };
 		76B5226D21809EC200D51AE8 /* PJToDoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5226C21809EC200D51AE8 /* PJToDoType.swift */; };
 		76B522702180BB8700D51AE8 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5226F2180BB8700D51AE8 /* HomeViewController.swift */; };
 		90B883A67742CBA20B227A90 /* Pods_PJToDoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */; };
@@ -107,6 +111,9 @@
 		76348C132116F2F40009455C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7636201D21645B5C0018008D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		7636201F216463C20018008D /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		76384BFA2199A5DC00C677BB /* PJHttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJHttpRequest.swift; sourceTree = "<group>"; };
+		76384BFC2199A61400C677BB /* PJHttpRequestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpRequestConfig.swift; sourceTree = "<group>"; };
+		76384BFE2199C0DB00C677BB /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		764882B82165BB0200F11106 /* PJToDo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PJToDo-Bridging-Header.h"; sourceTree = "<group>"; };
 		764882BD2165BBDA00F11106 /* app_bindings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = app_bindings.h; sourceTree = "<group>"; };
 		764882BE2165BC3D00F11106 /* struct_heads.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = struct_heads.h; sourceTree = "<group>"; };
@@ -137,6 +144,7 @@
 		767A10D421772DC800B1A179 /* PJToDoCoreLibPAL_C.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C.h; sourceTree = "<group>"; };
 		767A10D821772E4800B1A179 /* PJToDoCoreLibPAL_C_Bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C_Bindings.h; sourceTree = "<group>"; };
 		767B5D6921972AF500713393 /* PJMySettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJMySettings.swift; sourceTree = "<group>"; };
+		767B5D6D21987F9E00713393 /* ToDoModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoModelProtocol.swift; sourceTree = "<group>"; };
 		76B5226C21809EC200D51AE8 /* PJToDoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoType.swift; sourceTree = "<group>"; };
 		76B5226F2180BB8700D51AE8 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		7CFB5B5F9AE9D85494D81D5D /* Pods-PJToDoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDoUITests/Pods-PJToDoUITests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -287,6 +295,15 @@
 				76348C132116F2F40009455C /* AppDelegate.swift */,
 			);
 			path = AppDelegate;
+			sourceTree = "<group>";
+		};
+		76384BF92199A5DC00C677BB /* Http */ = {
+			isa = PBXGroup;
+			children = (
+				76384BFA2199A5DC00C677BB /* PJHttpRequest.swift */,
+				76384BFC2199A61400C677BB /* PJHttpRequestConfig.swift */,
+			);
+			path = Http;
 			sourceTree = "<group>";
 		};
 		764882BC2165BBDA00F11106 /* RustBindings */ = {
@@ -474,9 +491,11 @@
 		764883322168C27A00F11106 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				76384BF92199A5DC00C677BB /* Http */,
 				7625021E2170AA69001043AF /* Consts */,
 				7625021A2170A6D9001043AF /* Tools */,
 				766E6E2921930BC800BC9DFE /* PJToDoMode.swift */,
+				767B5D6D21987F9E00713393 /* ToDoModelProtocol.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -538,6 +557,7 @@
 			isa = PBXGroup;
 			children = (
 				767B5D6921972AF500713393 /* PJMySettings.swift */,
+				76384BFE2199C0DB00C677BB /* User.swift */,
 			);
 			path = Mine;
 			sourceTree = "<group>";
@@ -815,12 +835,14 @@
 				76348C182116F2F40009455C /* AppDelegate.swift in Sources */,
 				7648831D21675B3500F11106 /* ServiceService.swift in Sources */,
 				764883302168B4F600F11106 /* PJToDoDBManager.swift in Sources */,
+				76384BFF2199C0DB00C677BB /* User.swift in Sources */,
 				7648830B21675A3400F11106 /* ReposController.swift in Sources */,
 				7648831121675A9000F11106 /* ToDoSearchController.swift in Sources */,
 				76B522702180BB8700D51AE8 /* HomeViewController.swift in Sources */,
 				76746D98216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c in Sources */,
 				7648831521675AC500F11106 /* MineController.swift in Sources */,
 				76488307216759AE00F11106 /* PJToDoCoreLibInit.swift in Sources */,
+				76384BFB2199A5DC00C677BB /* PJHttpRequest.swift in Sources */,
 				7648832121675B5C00F11106 /* MineService.swift in Sources */,
 				766E6E282193090E00BC9DFE /* PJ_ToDo.swift in Sources */,
 				7648831321675AAC00F11106 /* ToDoTypeController.swift in Sources */,
@@ -831,12 +853,14 @@
 				764883052167598000F11106 /* PJToDoCoreLibFactory.swift in Sources */,
 				7648830F21675A7600F11106 /* ToDoController.swift in Sources */,
 				766E6E2A21930BC800BC9DFE /* PJToDoMode.swift in Sources */,
+				76384BFD2199A61400C677BB /* PJHttpRequestConfig.swift in Sources */,
 				762502202170AA69001043AF /* PJToDoConst.swift in Sources */,
 				76B5226D21809EC200D51AE8 /* PJToDoType.swift in Sources */,
 				7648831B21675B2300F11106 /* ToDoService.swift in Sources */,
 				7648831921675B1100F11106 /* ToDoTagService.swift in Sources */,
 				7648831F21675B4A00F11106 /* ToDoTypeService.swift in Sources */,
 				7625A99C218D36EF0014FA6E /* PJToDoTag.swift in Sources */,
+				767B5D6E21987F9E00713393 /* ToDoModelProtocol.swift in Sources */,
 				7648830D21675A4D00F11106 /* ToDoTagController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

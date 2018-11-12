@@ -14,6 +14,10 @@ use common::request_config::PJRequestConfig;
 use mine::user::User;
 use mine::authorizations::Authorizations;
 use common::pj_utils::PJUtils;
+use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
+use std::ffi::{CStr};
+use libc::{c_char, c_void};
+use common::{free_rust_any_object};
 
 pub struct PJHttpUserRequest;
 
@@ -112,4 +116,68 @@ impl PJHttpUserRequest {
             }
         });
     }
+}
+
+// #[no_mangle]
+// pub unsafe extern "C" fn PJ_Login(
+//     delegate: *const IPJToDoHttpRequestDelegate,
+//     name: *const c_char,
+//     password: *const c_char,
+// ) {
+//     if name.is_null() || password.is_null() || delegate.is_null() {
+//         pj_error!("name or password or delegate: *mut login is null!");
+//         assert!(!name.is_null() && !password.is_null());
+//     }
+
+//     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
+//     let name = CStr::from_ptr(name).to_string_lossy().into_owned();
+//     let password = CStr::from_ptr(password).to_string_lossy().into_owned();
+
+//     PJHttpUserRequest::login(&name, &password, move |result| match result {
+//         Ok(user) => {
+//             pj_info!("user: {:?}", user);
+//             let user = Box::into_raw(Box::new(user));
+//             let ptr: *mut c_void = user as *mut c_void;
+//             (i_delegate.request_result)(i_delegate.user, ptr, true);
+//         }
+//         Err(e) => {
+//             pj_error!("request error: {:?}", e);
+//             let user = Box::into_raw(Box::new(0));
+//             let ptr: *mut c_void = user as *mut c_void;
+//             (i_delegate.request_result)(i_delegate.user, ptr, false);
+//             free_rust_any_object(user);
+//         }
+//     });
+// }
+
+#[no_mangle]
+pub unsafe extern "C" fn PJ_Login(
+    delegate: IPJToDoHttpRequestDelegate,
+    name: *const c_char,
+    password: *const c_char,
+) {
+    if name.is_null() || password.is_null() {
+        pj_error!("name or password: *mut login is null!");
+        assert!(!name.is_null() && !password.is_null());
+    }
+
+    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
+    let name = CStr::from_ptr(name).to_string_lossy().into_owned();
+    let password = CStr::from_ptr(password).to_string_lossy().into_owned();
+
+    PJHttpUserRequest::login(&name, &password, move |result| match result {
+        Ok(user) => {
+            pj_info!("user: {:?}", user);
+            let user = Box::into_raw(Box::new(user));
+            let ptr: *mut c_void = user as *mut c_void;
+            (i_delegate.request_result)(i_delegate.user, ptr, true);
+        }
+        Err(e) => {
+            pj_error!("request error: {:?}", e);
+            let user = Box::into_raw(Box::new(0));
+            let ptr: *mut c_void = user as *mut c_void;
+            (i_delegate.request_result)(i_delegate.user, ptr, false);
+            free_rust_any_object(user);
+        }
+    });
 }
