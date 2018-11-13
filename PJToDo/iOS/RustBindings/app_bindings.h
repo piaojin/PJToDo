@@ -83,7 +83,7 @@ typedef struct {
 typedef struct {
   void *user;
   void (*destroy)(void*);
-  void (*request_result)(void*, void*, bool);
+  void (*request_result)(void*, const char*, bool);
 } IPJToDoHttpRequestDelegate;
 
 typedef struct {

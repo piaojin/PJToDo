@@ -1,5 +1,5 @@
 use std::ops::Deref;
-use libc::{c_void};
+use libc::{c_void, c_char};
 use std::marker::{Send, Sync};
 
 #[repr(C)]
@@ -8,7 +8,7 @@ pub struct IPJToDoHttpRequestDelegate {
     pub user: *mut c_void, //当前持有IPJToDoHttpRequestDelegate对象的所有权者
     //释放内存回调，告诉当前持有IPJToDoHttpRequestDelegate对象的所有权者做相应的处理
     pub destroy: extern "C" fn(user: *mut c_void),
-    pub request_result: extern "C" fn(user: *mut c_void, data: *mut c_void, isSuccess: bool),
+    pub request_result: extern "C" fn(user: *mut c_void, data: *const c_char, isSuccess: bool),
 }
 
 impl Drop for IPJToDoHttpRequestDelegate {

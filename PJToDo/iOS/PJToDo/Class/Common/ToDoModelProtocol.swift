@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol ToDoModelProtocol: NSObjectProtocol {
+public protocol ToDoModelProtocol: class {
 //    associatedtype ObjectType
-    func transformData(pointer: UnsafeMutableRawPointer) -> Self
+    static func transfromRustPointerData(pointer: UnsafeMutableRawPointer) -> Self
 }

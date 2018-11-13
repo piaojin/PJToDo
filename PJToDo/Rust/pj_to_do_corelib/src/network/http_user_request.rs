@@ -3,6 +3,8 @@ extern crate hyper;
 extern crate hyper_tls;
 extern crate tokio;
 extern crate rustc_serialize;
+extern crate serde;
+extern crate serde_json;
 
 use self::rustc_serialize::base64::{STANDARD, ToBase64};
 
@@ -15,7 +17,7 @@ use mine::user::User;
 use mine::authorizations::Authorizations;
 use common::pj_utils::PJUtils;
 use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
-use std::ffi::{CStr};
+use std::ffi::{CStr, CString};
 use libc::{c_char, c_void};
 use common::{free_rust_any_object};
 
@@ -118,38 +120,6 @@ impl PJHttpUserRequest {
     }
 }
 
-// #[no_mangle]
-// pub unsafe extern "C" fn PJ_Login(
-//     delegate: *const IPJToDoHttpRequestDelegate,
-//     name: *const c_char,
-//     password: *const c_char,
-// ) {
-//     if name.is_null() || password.is_null() || delegate.is_null() {
-//         pj_error!("name or password or delegate: *mut login is null!");
-//         assert!(!name.is_null() && !password.is_null());
-//     }
-
-//     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
-//     let name = CStr::from_ptr(name).to_string_lossy().into_owned();
-//     let password = CStr::from_ptr(password).to_string_lossy().into_owned();
-
-//     PJHttpUserRequest::login(&name, &password, move |result| match result {
-//         Ok(user) => {
-//             pj_info!("user: {:?}", user);
-//             let user = Box::into_raw(Box::new(user));
-//             let ptr: *mut c_void = user as *mut c_void;
-//             (i_delegate.request_result)(i_delegate.user, ptr, true);
-//         }
-//         Err(e) => {
-//             pj_error!("request error: {:?}", e);
-//             let user = Box::into_raw(Box::new(0));
-//             let ptr: *mut c_void = user as *mut c_void;
-//             (i_delegate.request_result)(i_delegate.user, ptr, false);
-//             free_rust_any_object(user);
-//         }
-//     });
-// }
-
 #[no_mangle]
 pub unsafe extern "C" fn PJ_Login(
     delegate: IPJToDoHttpRequestDelegate,
@@ -165,19 +135,31 @@ pub unsafe extern "C" fn PJ_Login(
     let name = CStr::from_ptr(name).to_string_lossy().into_owned();
     let password = CStr::from_ptr(password).to_string_lossy().into_owned();
 
-    PJHttpUserRequest::login(&name, &password, move |result| match result {
-        Ok(user) => {
-            pj_info!("user: {:?}", user);
-            let user = Box::into_raw(Box::new(user));
-            let ptr: *mut c_void = user as *mut c_void;
-            (i_delegate.request_result)(i_delegate.user, ptr, true);
-        }
-        Err(e) => {
-            pj_error!("request error: {:?}", e);
-            let user = Box::into_raw(Box::new(0));
-            let ptr: *mut c_void = user as *mut c_void;
-            (i_delegate.request_result)(i_delegate.user, ptr, false);
-            free_rust_any_object(user);
+    PJHttpUserRequest::login(&name, &password, move |result| {
+        let mut c_str = CString::new("").unwrap();
+        match result {
+            Ok(user) => {
+                pj_info!("user: {:?}", user);
+                // Serialize it to a JSON string.
+                let json_string_result = serde_json::to_string(&user);
+                match json_string_result {
+                    Ok(json_string) => {
+                        c_str = CString::new(json_string).unwrap();
+                        let c_char = c_str.into_raw();
+                        (i_delegate.request_result)(i_delegate.user, c_char, true);
+                    },
+                    Err(e) => {
+                        c_str = CString::new("{error: parse user to json data error!}").unwrap();
+                        let c_char = c_str.into_raw();
+                        (i_delegate.request_result)(i_delegate.user, c_char, true);
+                    }
+                }
+            },
+            Err(e) => {
+                pj_error!("request error: {:?}", e);
+                let c_char = c_str.into_raw();
+                (i_delegate.request_result)(i_delegate.user, c_char, false);
+            }
         }
     });
 }
