@@ -56,7 +56,6 @@ public struct PJCacheManager {
         if let data = try? encoder.encode(object) {
             print(String(data: data, encoding: .utf8)!)
             self.userDefaults.set(data, forKey: key)
-            self.userDefaults.synchronize()
         }
     }
     

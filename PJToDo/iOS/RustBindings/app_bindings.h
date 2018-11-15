@@ -67,6 +67,12 @@ typedef struct Vec_Vec_ToDoQuery Vec_Vec_ToDoQuery;
 typedef struct {
   void *user;
   void (*destroy)(void*);
+  void (*request_result)(void*, const char*, bool);
+} IPJToDoHttpRequestDelegate;
+
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
   void (*find_byTitle_result)(void*, ToDoQuery*, bool);
   void (*find_byLike_result)(void*, bool);
 } IPJToDoSearchDelegate;
@@ -79,12 +85,6 @@ typedef struct {
   Vec_ToDoTag *todo_tags;
   ToDoQuery *find_result_todo;
 } PJToDoSearchController;
-
-typedef struct {
-  void *user;
-  void (*destroy)(void*);
-  void (*request_result)(void*, const char*, bool);
-} IPJToDoHttpRequestDelegate;
 
 typedef struct {
   void *user;
@@ -162,11 +162,19 @@ typedef struct {
   Vec_ToDoType *todo_types;
 } PJToDoTypeController;
 
+void PJ_Authorizations(IPJToDoHttpRequestDelegate delegate, const char *authorization);
+
+void PJ_CreateRepos(IPJToDoHttpRequestDelegate delegate);
+
 void PJ_FindToDoByTitle(PJToDoSearchController *ptr, const char *title);
 
 void PJ_FindToDoLikeTitle(PJToDoSearchController *ptr, const char *title);
 
+void PJ_GetRepos(IPJToDoHttpRequestDelegate delegate, const char *repos_url);
+
 void PJ_Login(IPJToDoHttpRequestDelegate delegate, const char *name, const char *password);
+
+void PJ_Request_user_info(IPJToDoHttpRequestDelegate delegate);
 
 const ToDoQuery *PJ_SearchToDoResultAtIndex(const PJToDoSearchController *ptr, int32_t index);
 

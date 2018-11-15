@@ -19,7 +19,6 @@ use common::pj_utils::PJUtils;
 use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
 use std::ffi::{CStr, CString};
 use libc::{c_char, c_void};
-use common::{free_rust_any_object};
 
 pub struct PJHttpUserRequest;
 
@@ -127,7 +126,7 @@ pub unsafe extern "C" fn PJ_Login(
     password: *const c_char,
 ) {
     if name.is_null() || password.is_null() {
-        pj_error!("name or password: *mut login is null!");
+        pj_error!("name or password: *mut PJ_Login is null!");
         assert!(!name.is_null() && !password.is_null());
     }
 
@@ -147,16 +146,101 @@ pub unsafe extern "C" fn PJ_Login(
                         c_str = CString::new(json_string).unwrap();
                         let c_char = c_str.into_raw();
                         (i_delegate.request_result)(i_delegate.user, c_char, true);
-                    },
+                    }
                     Err(e) => {
-                        c_str = CString::new("{error: parse user to json data error!}").unwrap();
+                        pj_error!("PJ_Login request parse error: {:?}", e);
+                        c_str = CString::new("{error: PJ_Login parse user to json data error!}")
+                            .unwrap();
                         let c_char = c_str.into_raw();
                         (i_delegate.request_result)(i_delegate.user, c_char, true);
                     }
                 }
-            },
+            }
             Err(e) => {
-                pj_error!("request error: {:?}", e);
+                pj_error!("PJ_Login request error: {:?}", e);
+                let c_char = c_str.into_raw();
+                (i_delegate.request_result)(i_delegate.user, c_char, false);
+            }
+        }
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn PJ_Authorizations(
+    delegate: IPJToDoHttpRequestDelegate,
+    authorization: *const c_char,
+) {
+    if authorization.is_null() {
+        pj_error!("authorization: *mut PJ_Authorizations is null!");
+        assert!(!authorization.is_null());
+    }
+
+    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
+    let authorization = CStr::from_ptr(authorization).to_string_lossy().into_owned();
+
+    PJHttpUserRequest::authorizations(&authorization, move |result| {
+        let mut c_str = CString::new("").unwrap();
+        match result {
+            Ok(authorization) => {
+                pj_info!("authorization: {:?}", authorization);
+                // Serialize it to a JSON string.
+                let json_string_result = serde_json::to_string(&authorization);
+                match json_string_result {
+                    Ok(json_string) => {
+                        c_str = CString::new(json_string).unwrap();
+                        let c_char = c_str.into_raw();
+                        (i_delegate.request_result)(i_delegate.user, c_char, true);
+                    }
+                    Err(e) => {
+                        pj_error!("PJ_Authorizations request parse error: {:?}", e);
+                        c_str = CString::new(
+                            "{error: PJ_Authorizations parse authorization to json data error!}",
+                        )
+                        .unwrap();
+                        let c_char = c_str.into_raw();
+                        (i_delegate.request_result)(i_delegate.user, c_char, true);
+                    }
+                }
+            }
+            Err(e) => {
+                pj_error!("PJ_Authorizations request error: {:?}", e);
+                let c_char = c_str.into_raw();
+                (i_delegate.request_result)(i_delegate.user, c_char, false);
+            }
+        }
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn PJ_Request_user_info(delegate: IPJToDoHttpRequestDelegate) {
+    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
+
+    PJHttpUserRequest::request_user_info(move |result| {
+        let mut c_str = CString::new("").unwrap();
+        match result {
+            Ok(user) => {
+                pj_info!("user: {:?}", user);
+                // Serialize it to a JSON string.
+                let json_string_result = serde_json::to_string(&user);
+                match json_string_result {
+                    Ok(json_string) => {
+                        c_str = CString::new(json_string).unwrap();
+                        let c_char = c_str.into_raw();
+                        (i_delegate.request_result)(i_delegate.user, c_char, true);
+                    }
+                    Err(e) => {
+                        pj_error!("PJ_Request_user_info request parse error: {:?}", e);
+                        c_str = CString::new(
+                            "{error: PJ_Request_user_info parse user to json data error!}",
+                        )
+                        .unwrap();
+                        let c_char = c_str.into_raw();
+                        (i_delegate.request_result)(i_delegate.user, c_char, true);
+                    }
+                }
+            }
+            Err(e) => {
+                pj_error!("PJ_Request_user_info request error: {:?}", e);
                 let c_char = c_str.into_raw();
                 (i_delegate.request_result)(i_delegate.user, c_char, false);
             }

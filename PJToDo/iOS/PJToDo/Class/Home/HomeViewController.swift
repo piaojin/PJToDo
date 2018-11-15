@@ -29,9 +29,13 @@ class HomeViewController: UIViewController {
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        self.tagController.findById(toDoTagId: 1)
 //        self.tagController.fetchData()
-        PJHttpRequest.login(name: "piaojin", passWord: "weng804488815", responseBlock: { (data, isSuccess) -> Void in
-            print("isSuccess: \(isSuccess)")
-        })
+//        PJHttpRequest.login(name: "piaojin", passWord: "weng804488815", responseBlock: { (data, isSuccess) -> Void in
+//            print("isSuccess: \(isSuccess)")
+//        })
+        
+//        PJHttpRequest.authorization(authorization: "Basic cGlhb2ppbjp3ZW5nODA0NDg4ODE1") { (authorization, isSuccess) in
+//            print("isSuccess: \(isSuccess)")
+//        }
     }
     
     private func initView() {

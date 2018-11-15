@@ -9,10 +9,6 @@
 import Foundation
 
 public class User: Codable {
-//    public static func transfromRustPointerData(pointer: UnsafeMutableRawPointer) -> User {
-//        /*free Rust pointer here*/
-//        return User()
-//    }
     
     var login: String = ""
     var id: Int = -1
