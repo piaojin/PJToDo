@@ -17,9 +17,6 @@ use repos::repos_content::{ReposFile};
 use common::pj_logger::PJLogger;
 use network;
 use common::pj_serialize::PJSerdeDeserialize;
-use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
-use std::ffi::{CStr, CString};
-use libc::{c_char, c_void};
 
 #[derive(PartialEq, Debug)]
 pub enum FileActionType {
@@ -317,80 +314,4 @@ impl PJHttpReposRequest {
             }
         });
     }
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn PJ_CreateRepos(delegate: IPJToDoHttpRequestDelegate) {
-    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
-
-    PJHttpReposRequest::create_repos(PJRequestConfig::repos_request_body(), move |result| {
-        let mut c_str = CString::new("").unwrap();
-        match result {
-            Ok(repos) => {
-                pj_info!("repos: {:?}", repos);
-                // Serialize it to a JSON string.
-                let json_string_result = serde_json::to_string(&repos);
-                match json_string_result {
-                    Ok(json_string) => {
-                        c_str = CString::new(json_string).unwrap();
-                        let c_char = c_str.into_raw();
-                        (i_delegate.request_result)(i_delegate.user, c_char, true);
-                    }
-                    Err(e) => {
-                        pj_error!("PJ_CreateRepos request parse error: {:?}", e);
-                        c_str =
-                            CString::new("{error: PJ_CreateRepos parse user to json data error!}")
-                                .unwrap();
-                        let c_char = c_str.into_raw();
-                        (i_delegate.request_result)(i_delegate.user, c_char, true);
-                    }
-                }
-            }
-            Err(e) => {
-                pj_error!("PJ_CreateRepos request error: {:?}", e);
-            }
-        }
-    });
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn PJ_GetRepos(
-    delegate: IPJToDoHttpRequestDelegate,
-    repos_url: *const c_char,
-) {
-    if repos_url.is_null() {
-        pj_error!("repos_url: *mut PJ_GetRepos is null!");
-        assert!(!repos_url.is_null());
-    }
-
-    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
-    let repos_url = CStr::from_ptr(repos_url).to_string_lossy().into_owned();
-
-    PJHttpReposRequest::get_repos(&repos_url, move |result| {
-        let mut c_str = CString::new("").unwrap();
-        match result {
-            Ok(repos) => {
-                pj_info!("repos: {:?}", repos);
-                // Serialize it to a JSON string.
-                let json_string_result = serde_json::to_string(&repos);
-                match json_string_result {
-                    Ok(json_string) => {
-                        c_str = CString::new(json_string).unwrap();
-                        let c_char = c_str.into_raw();
-                        (i_delegate.request_result)(i_delegate.user, c_char, true);
-                    }
-                    Err(e) => {
-                        pj_error!("PJ_GetRepos request parse error: {:?}", e);
-                        c_str = CString::new("{error: PJ_GetRepos parse user to json data error!}")
-                            .unwrap();
-                        let c_char = c_str.into_raw();
-                        (i_delegate.request_result)(i_delegate.user, c_char, true);
-                    }
-                }
-            }
-            Err(e) => {
-                pj_error!("PJ_GetRepos request error: {:?}", e);
-            }
-        }
-    });
 }

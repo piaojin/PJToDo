@@ -18,7 +18,7 @@ use mine::authorizations::Authorizations;
 use common::pj_utils::PJUtils;
 use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
 use std::ffi::{CStr, CString};
-use libc::{c_char, c_void};
+use libc::{c_char};
 
 pub struct PJHttpUserRequest;
 
