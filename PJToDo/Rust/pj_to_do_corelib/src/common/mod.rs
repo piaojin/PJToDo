@@ -8,6 +8,7 @@ pub mod pj_serialize;
 pub mod pj_utils;
 
 use libc::{c_void};
+use std::ptr;
 
 //析构对象
 #[no_mangle]
@@ -18,8 +19,13 @@ pub unsafe extern "C" fn free_rust_object(ptr: *mut c_void) {
     };
 }
 
-pub unsafe fn free_rust_any_object(ptr: *mut std::any::Any) {
-    if !ptr.is_null() {
-        Box::from_raw(ptr); //unsafe
+pub unsafe fn free_rust_any_object<T>(pointer: *mut T)
+where
+    T: std::any::Any,
+{
+    let is_null = pointer.is_null();
+    pj_info!("free_rust_any_object is_null: {}", is_null);
+    if !is_null {
+        Box::from_raw(pointer); //unsafe
     };
 }

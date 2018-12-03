@@ -212,7 +212,7 @@ pub unsafe extern "C" fn PJ_Authorizations(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_Request_user_info(delegate: IPJToDoHttpRequestDelegate) {
+pub unsafe extern "C" fn PJ_RequestUserInfo(delegate: IPJToDoHttpRequestDelegate) {
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
 
     PJHttpUserRequest::request_user_info(move |result| {

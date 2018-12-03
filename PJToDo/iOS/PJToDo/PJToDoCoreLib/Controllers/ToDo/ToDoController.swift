@@ -14,8 +14,6 @@ public protocol ToDoDelegate: NSObjectProtocol {
     func updateToDoResult(isSuccess: Bool)
     func fetchToDoDataResult(isSuccess: Bool)
     func findToDoByIdResult(toDo: PJ_ToDo?, isSuccess: Bool)
-    func fetchToDoDateFutureDayMoreThanResult(isSuccess: Bool)
-    func fetchTodosOrderByStateResult(isSuccess: Bool)
 }
 
 class ToDoController {
@@ -64,19 +62,7 @@ class ToDoController {
             }
         }
         
-        let fetchToDoDateFutureDayMoreThanBackBlock: (@convention(c) (UnsafeMutableRawPointer?, Bool) -> Void)! = { (pointer, isSuccess) in
-            if let tempPointer = pointer {
-                PJToDo.fetchToDoDateFutureDayMoreThanResult(user: tempPointer, isSuccess: isSuccess)
-            }
-        }
-        
-        let fetchTodosOrderByStateBackBlock: (@convention(c) (UnsafeMutableRawPointer?, Bool) -> Void)! = { (pointer, isSuccess) in
-            if let tempPointer = pointer {
-                PJToDo.fetchTodosOrderByStateResult(user: tempPointer, isSuccess: isSuccess)
-            }
-        }
-        
-        let iDelegate = IPJToDoDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, fetch_data_result: fetchDataBackBlock, todo_date_future_day_more_than_result: fetchToDoDateFutureDayMoreThanBackBlock, fetch_todos_order_by_state_result: fetchTodosOrderByStateBackBlock)
+        let iDelegate = IPJToDoDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, fetch_data_result: fetchDataBackBlock)
         return iDelegate
     }()
     
@@ -154,16 +140,6 @@ class ToDoController {
         self.delegate?.fetchToDoDataResult(isSuccess: isSuccess)
     }
     
-    fileprivate func fetchToDoDateFutureDayMoreThanResult(isSuccess: Bool) {
-        print("ToDoController: received fetchDataResult callback with  \(isSuccess)")
-        self.delegate?.fetchToDoDateFutureDayMoreThanResult(isSuccess: isSuccess)
-    }
-    
-    fileprivate func fetchTodosOrderByStateResult(isSuccess: Bool) {
-        print("ToDoController: received fetchDataResult callback with  \(isSuccess)")
-        self.delegate?.fetchTodosOrderByStateResult(isSuccess: isSuccess)
-    }
-    
     deinit {
         print("deinit -> ToDoController")
         free_rust_PJToDoController(self.controller)
@@ -194,16 +170,6 @@ fileprivate func findByIdResult(user: UnsafeMutableRawPointer, toDo: OpaquePoint
 fileprivate func fetchDataResult(user: UnsafeMutableRawPointer, isSuccess: Bool) {
     let obj: ToDoController = Unmanaged.fromOpaque(user).takeUnretainedValue()
     obj.fetchDataResult(isSuccess: isSuccess)
-}
-
-fileprivate func fetchToDoDateFutureDayMoreThanResult(user: UnsafeMutableRawPointer, isSuccess: Bool) {
-    let obj: ToDoController = Unmanaged.fromOpaque(user).takeUnretainedValue()
-    obj.fetchToDoDateFutureDayMoreThanResult(isSuccess: isSuccess)
-}
-
-fileprivate func fetchTodosOrderByStateResult(user: UnsafeMutableRawPointer, isSuccess: Bool) {
-    let obj: ToDoController = Unmanaged.fromOpaque(user).takeUnretainedValue()
-    obj.fetchTodosOrderByStateResult(isSuccess: isSuccess)
 }
 
 //Rust回调Swift用以销毁Swift对象

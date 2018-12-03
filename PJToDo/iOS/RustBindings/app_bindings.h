@@ -94,8 +94,6 @@ typedef struct {
   void (*update_result)(void*, bool);
   void (*find_byId_result)(void*, ToDoQuery*, bool);
   void (*fetch_data_result)(void*, bool);
-  void (*todo_date_future_day_more_than_result)(void*, bool);
-  void (*fetch_todos_order_by_state_result)(void*, bool);
 } IPJToDoDelegate;
 
 typedef struct {
@@ -180,7 +178,7 @@ void PJ_GetRepos(IPJToDoHttpRequestDelegate delegate, const char *repos_url);
 
 void PJ_Login(IPJToDoHttpRequestDelegate delegate, const char *name, const char *password);
 
-void PJ_Request_user_info(IPJToDoHttpRequestDelegate delegate);
+void PJ_RequestUserInfo(IPJToDoHttpRequestDelegate delegate);
 
 const ToDoQuery *PJ_SearchToDoResultAtIndex(const PJToDoSearchController *ptr, int32_t index);
 

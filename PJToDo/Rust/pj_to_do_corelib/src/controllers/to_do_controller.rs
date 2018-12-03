@@ -14,6 +14,7 @@ use service::to_do_type_service::PJToDoTypeService;
 use service::to_do_tag_service::PJToDoTagService;
 use service::service_impl::to_do_type_service_impl::{createPJToDoTypeServiceImpl};
 use service::service_impl::to_do_tag_service_impl::{createPJToDoTagServiceImpl};
+use std::ptr;
 
 /*
 * cbindgen didn't support Box<dyn PJToDoService> type,so I need to use PJToDoServiceController to define Box<dyn PJToDoService>.
@@ -62,11 +63,11 @@ impl PJToDoController {
             PJToDoController {
                 delegate: delegate,
                 todo_service_controller: Box::into_raw(Box::new(PJToDoServiceController::new())),
-                find_result_todo: createToDoQuery(),
-                insert_todo: createToDoInsert(),
-                todos: Box::into_raw(Box::new(Vec::new())),
-                todo_types: Box::into_raw(Box::new(Vec::new())),
-                todo_tags: Box::into_raw(Box::new(Vec::new())),
+                find_result_todo: ptr::null_mut(),
+                insert_todo: ptr::null_mut(),
+                todos: ptr::null_mut(),
+                todo_types: ptr::null_mut(),
+                todo_tags: ptr::null_mut(),
             }
         };
         controller
@@ -258,18 +259,14 @@ impl PJToDoController {
     pub unsafe fn fetch_todos_order_by_state(
         &mut self,
     ) -> Result<Vec<Vec<ToDoQuery>>, diesel::result::Error> {
-        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
-
         let result = fetch_todos_order_by_state(&(&(*self.todo_service_controller)).todo_service);
 
         match result {
             Ok(todos) => {
-                (i_delegate.fetch_todos_order_by_state_result)(i_delegate.user, true);
-                pj_error!("fetch_todos_order_by_state success!");
+                pj_info!("fetch_todos_order_by_state success!");
                 Ok(todos)
             }
             Err(e) => {
-                (i_delegate.fetch_todos_order_by_state_result)(i_delegate.user, false);
                 pj_error!("fetch_todos_order_by_state faild!");
                 Err(e)
             }
@@ -281,8 +278,6 @@ impl PJToDoController {
         from_day: String,
         comparison_days: i32,
     ) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
-        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
-
         let result = find_todo_date_future_day_more_than(
             &(&(*self.todo_service_controller)).todo_service,
             from_day,
@@ -291,12 +286,10 @@ impl PJToDoController {
 
         match result {
             Ok(todos) => {
-                (i_delegate.todo_date_future_day_more_than_result)(i_delegate.user, true);
                 pj_error!("fecth_todo_will_due_with_in_future_days success!");
                 Ok(todos)
             }
             Err(e) => {
-                (i_delegate.todo_date_future_day_more_than_result)(i_delegate.user, false);
                 pj_error!("fecth_todo_will_due_with_in_future_days faild!");
                 Err(e)
             }

@@ -9,6 +9,7 @@
 import UIKit
 import CocoaLumberjack
 import SSZipArchive
+import CYLTabBarController
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,11 +23,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         PJToDoCoreLibInit.initRustCoreLib()
 //        SSZipArchive.createZipFile(atPath: PJToDoConst.dbGZipPath, withFilesAtPaths: [PJToDoConst.dbPath])
 //        let isSuccess = try? SSZipArchive.unzipFile(atPath: PJToDoConst.dbGZipPath, toDestination: PJCacheManager.shared.documnetPath, overwrite: true, password: nil)
-        let homeViewController = HomeViewController()
-        let nav = UINavigationController(rootViewController: homeViewController)
+//        let homeViewController = HomeViewController()
+//        let nav = UINavigationController(rootViewController: homeViewController)
+//        let loginViewController = LoginViewController()
+//        let nav = UINavigationController(rootViewController: loginViewController)
         self.window = UIWindow(frame: UIScreen.main.bounds)
-        self.window?.rootViewController = nav
         self.window?.makeKeyAndVisible()
+        self.initRootViewController()
         return true
     }
 
@@ -51,8 +54,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-
 }
 
 extension AppDelegate {
@@ -64,6 +65,27 @@ extension AppDelegate {
         fileLogger.rollingFrequency = TimeInterval(60 * 60 * 24)  // 24 hours
         fileLogger.logFileManager.maximumNumberOfLogFiles = 7
         DDLog.add(fileLogger)
+    }
+    
+    func initRootViewController() {
+        PJAddToDoButton.register()
+        let rootTabBarViewController = PJTabBarViewController()
+//        let homeViewController = HomeViewController()
+//        let homeNav = UINavigationController(rootViewController: homeViewController)
+//
+//        let mineViewControler = MineViewController()
+//        let mineNav = UINavigationController(rootViewController: mineViewControler)
+//
+//        let rootTabBarViewController = CYLTabBarController()
+//        rootTabBarViewController.setViewControllers([homeNav, mineNav], animated: true)
+//
+//        let homeTabBarDic = [CYLTabBarItemTitle: "Home", CYLTabBarItemImage: "home_unselected", CYLTabBarItemSelectedImage: "home_selected"]
+//
+//        let mineTabBarDic = [CYLTabBarItemTitle: "Mine", CYLTabBarItemImage: "me_unselected", CYLTabBarItemSelectedImage: "me_selected"]
+//
+//        rootTabBarViewController.tabBarItemsAttributes = [homeTabBarDic, mineTabBarDic]
+        
+        self.window?.rootViewController = rootTabBarViewController
     }
 }
 
