@@ -18,9 +18,9 @@ public class PJToDoType {
     public var typeName: String {
         get {
             if self.mode == .insert {
-                return String(cString: getToDoTypeInsertName(self.iToDoTypeInsert))
+                return String.create(cString: getToDoTypeInsertName(self.iToDoTypeInsert))
             } else {
-                return String(cString: getToDoTypeName(self.iToDoType))
+                return String.create(cString: getToDoTypeName(self.iToDoType))
             }
         }
         

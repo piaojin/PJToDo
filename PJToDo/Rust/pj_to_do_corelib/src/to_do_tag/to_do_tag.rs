@@ -60,7 +60,7 @@ pub unsafe extern "C" fn setToDoTagName(ptr: *mut ToDoTag, tag_name: *const c_ch
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTagName(ptr: *const ToDoTag) -> *const c_char {
+pub unsafe extern "C" fn getToDoTagName(ptr: *const ToDoTag) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo_tag = &*ptr;
     let tag_name = CString::new(todo_tag.tag_name.clone()).unwrap(); //unsafe
@@ -90,7 +90,7 @@ pub unsafe extern "C" fn setToDoTagInsertName(ptr: *mut ToDoTagInsert, tag_name:
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTagInsertName(ptr: *const ToDoTagInsert) -> *const c_char {
+pub unsafe extern "C" fn getToDoTagInsertName(ptr: *const ToDoTagInsert) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo_tag = &*ptr;
     let tag_name = CString::new(todo_tag.tag_name.clone()).unwrap(); //unsafe

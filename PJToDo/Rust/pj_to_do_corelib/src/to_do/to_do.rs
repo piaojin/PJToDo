@@ -10,15 +10,15 @@ use db::tables::schema::todo;
 
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub enum ToDoState {
-    Determined,
     InProgress,
+    UnDetermined,
     Completed,
     Overdue,
 }
 
 impl Default for ToDoState {
     fn default() -> ToDoState {
-        ToDoState::Determined
+        ToDoState::UnDetermined
     }
 }
 

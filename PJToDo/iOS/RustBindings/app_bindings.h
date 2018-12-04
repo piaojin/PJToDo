@@ -54,6 +54,8 @@ typedef struct ToDoType ToDoType;
 
 typedef struct ToDoTypeInsert ToDoTypeInsert;
 
+typedef struct Vec_String Vec_String;
+
 typedef struct Vec_ToDoQuery Vec_ToDoQuery;
 
 typedef struct Vec_ToDoSettings Vec_ToDoSettings;
@@ -67,7 +69,7 @@ typedef struct Vec_Vec_ToDoQuery Vec_Vec_ToDoQuery;
 typedef struct {
   void *user;
   void (*destroy)(void*);
-  void (*request_result)(void*, const char*, bool);
+  void (*request_result)(void*, char*, bool);
 } IPJToDoHttpRequestDelegate;
 
 typedef struct {
@@ -104,6 +106,7 @@ typedef struct {
   Vec_Vec_ToDoQuery *todos;
   Vec_ToDoType *todo_types;
   Vec_ToDoTag *todo_tags;
+  const Vec_String *sectionTitles;
 } PJToDoController;
 
 typedef struct {
@@ -252,6 +255,8 @@ void free_rust_PJToDoTypeController(PJToDoTypeController *ptr);
 
 void free_rust_object(void *ptr);
 
+void free_rust_string(char *ptr);
+
 const ToDoTag *getSearchToDoTagWithId(const PJToDoSearchController *ptr, int32_t tag_id);
 
 const ToDoType *getSearchToDoTypeWithId(const PJToDoSearchController *ptr, int32_t type_id);
@@ -260,39 +265,39 @@ int32_t getToDoCountOfSections(const PJToDoController *ptr);
 
 int32_t getToDoCountsAtSection(const PJToDoController *ptr, int32_t section);
 
-const char *getToDoInsertContent(const ToDoInsert *ptr);
+char *getToDoInsertContent(const ToDoInsert *ptr);
 
-const char *getToDoInsertCreateTime(const ToDoInsert *ptr);
+char *getToDoInsertCreateTime(const ToDoInsert *ptr);
 
-const char *getToDoInsertDueTime(const ToDoInsert *ptr);
+char *getToDoInsertDueTime(const ToDoInsert *ptr);
 
-const char *getToDoInsertRemindTime(const ToDoInsert *ptr);
+char *getToDoInsertRemindTime(const ToDoInsert *ptr);
 
 int32_t getToDoInsertState(ToDoInsert *ptr);
 
-const char *getToDoInsertTitle(const ToDoInsert *ptr);
+char *getToDoInsertTitle(const ToDoInsert *ptr);
 
-const char *getToDoInsertUpdateTime(const ToDoInsert *ptr);
+char *getToDoInsertUpdateTime(const ToDoInsert *ptr);
 
 int32_t getToDoInsert_ToDoTagId(ToDoInsert *ptr);
 
 int32_t getToDoInsert_ToDoTypeId(ToDoInsert *ptr);
 
-const char *getToDoQueryContent(const ToDoQuery *ptr);
+char *getToDoQueryContent(const ToDoQuery *ptr);
 
-const char *getToDoQueryCreateTime(const ToDoQuery *ptr);
+char *getToDoQueryCreateTime(const ToDoQuery *ptr);
 
-const char *getToDoQueryDueTime(const ToDoQuery *ptr);
+char *getToDoQueryDueTime(const ToDoQuery *ptr);
 
 int32_t getToDoQueryId(ToDoQuery *ptr);
 
-const char *getToDoQueryRemindTime(const ToDoQuery *ptr);
+char *getToDoQueryRemindTime(const ToDoQuery *ptr);
 
 int32_t getToDoQueryState(ToDoQuery *ptr);
 
-const char *getToDoQueryTitle(const ToDoQuery *ptr);
+char *getToDoQueryTitle(const ToDoQuery *ptr);
 
-const char *getToDoQueryUpdateTime(const ToDoQuery *ptr);
+char *getToDoQueryUpdateTime(const ToDoQuery *ptr);
 
 int32_t getToDoQuery_ToDoTagId(ToDoQuery *ptr);
 
@@ -304,27 +309,27 @@ int32_t getToDoSettingsId(ToDoSettings *ptr);
 
 int32_t getToDoSettingsInsertRemindDays(ToDoSettingsInsert *ptr);
 
-const char *getToDoSettingsInsertRemindEmail(const ToDoSettingsInsert *ptr);
+char *getToDoSettingsInsertRemindEmail(const ToDoSettingsInsert *ptr);
 
 int32_t getToDoSettingsRemindDays(ToDoSettings *ptr);
 
-const char *getToDoSettingsRemindEmail(const ToDoSettings *ptr);
+char *getToDoSettingsRemindEmail(const ToDoSettings *ptr);
 
 int32_t getToDoTagCount(const PJToDoTagController *ptr);
 
 int32_t getToDoTagId(ToDoTag *ptr);
 
-const char *getToDoTagInsertName(const ToDoTagInsert *ptr);
+char *getToDoTagInsertName(const ToDoTagInsert *ptr);
 
-const char *getToDoTagName(const ToDoTag *ptr);
+char *getToDoTagName(const ToDoTag *ptr);
 
 int32_t getToDoTypeCount(const PJToDoTypeController *ptr);
 
 int32_t getToDoTypeId(ToDoType *ptr);
 
-const char *getToDoTypeInsertName(const ToDoTypeInsert *ptr);
+char *getToDoTypeInsertName(const ToDoTypeInsert *ptr);
 
-const char *getToDoTypeName(const ToDoType *ptr);
+char *getToDoTypeName(const ToDoType *ptr);
 
 extern const char *get_db_gzip_path(void);
 
@@ -421,6 +426,8 @@ const ToDoQuery *todoAtSection(const PJToDoController *ptr, int32_t section, int
 const ToDoSettings *todoSettingsAtIndex(const PJToDoSettingsController *ptr, int32_t index);
 
 const ToDoTag *todoTagAtIndex(const PJToDoTagController *ptr, int32_t index);
+
+char *todoTitleAtSection(const PJToDoController *ptr, int32_t section);
 
 const ToDoType *todoTypeAtIndex(const PJToDoTypeController *ptr, int32_t index);
 

@@ -7,14 +7,21 @@ pub mod pj_serialize;
 
 pub mod pj_utils;
 
-use libc::{c_void};
-use std::ptr;
+use libc::{c_void, c_char};
 
 //析构对象
 #[no_mangle]
 pub unsafe extern "C" fn free_rust_object(ptr: *mut c_void) {
     if !ptr.is_null() {
         // Box::from_raw(ptr); //unsafe
+        free_rust_any_object(ptr);
+    };
+}
+
+//析构对象
+#[no_mangle]
+pub unsafe extern "C" fn free_rust_string(ptr: *mut c_char) {
+    if !ptr.is_null() {
         free_rust_any_object(ptr);
     };
 }

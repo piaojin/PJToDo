@@ -1,7 +1,7 @@
 use delegates::to_do_delegate::{IPJToDoDelegate, IPJToDoDelegateWrapper};
 use service::to_do_service::{PJToDoService, insert_todo, delete_todo, update_todo, find_todo_by_id, find_todo_date_future_day_more_than, fetch_todos_order_by_state};
 use service::service_impl::to_do_service_impl::{createPJToDoServiceImpl};
-use to_do::to_do::{ToDoInsert, ToDoQuery, createToDoInsert, createToDoQuery};
+use to_do::to_do::{ToDoInsert, ToDoQuery};
 use to_do_type::to_do_type::ToDoType;
 use to_do_tag::to_do_tag::ToDoTag;
 use common::{free_rust_any_object};
@@ -15,6 +15,8 @@ use service::to_do_tag_service::PJToDoTagService;
 use service::service_impl::to_do_type_service_impl::{createPJToDoTypeServiceImpl};
 use service::service_impl::to_do_tag_service_impl::{createPJToDoTagServiceImpl};
 use std::ptr;
+use libc::c_char;
+use std::ffi::{CString};
 
 /*
 * cbindgen didn't support Box<dyn PJToDoService> type,so I need to use PJToDoServiceController to define Box<dyn PJToDoService>.
@@ -52,6 +54,7 @@ pub struct PJToDoController {
     pub todos: *mut Vec<Vec<ToDoQuery>>, // all todos without order by state
     pub todo_types: *mut Vec<ToDoType>,  // all todo types
     pub todo_tags: *mut Vec<ToDoTag>,    // all todo tag
+    pub sectionTitles: *const Vec<String>,
 }
 
 unsafe impl Send for PJToDoController {}
@@ -59,16 +62,21 @@ unsafe impl Sync for PJToDoController {}
 
 impl PJToDoController {
     fn new(delegate: IPJToDoDelegate) -> PJToDoController {
-        let controller = unsafe {
-            PJToDoController {
-                delegate: delegate,
-                todo_service_controller: Box::into_raw(Box::new(PJToDoServiceController::new())),
-                find_result_todo: ptr::null_mut(),
-                insert_todo: ptr::null_mut(),
-                todos: ptr::null_mut(),
-                todo_types: ptr::null_mut(),
-                todo_tags: ptr::null_mut(),
-            }
+        let controller = PJToDoController {
+            delegate: delegate,
+            todo_service_controller: Box::into_raw(Box::new(PJToDoServiceController::new())),
+            find_result_todo: ptr::null_mut(),
+            insert_todo: ptr::null_mut(),
+            todos: ptr::null_mut(),
+            todo_types: ptr::null_mut(),
+            todo_tags: ptr::null_mut(),
+            sectionTitles: Box::into_raw(Box::new(vec![
+                "即将过期".to_string(),
+                "进行中".to_string(),
+                "待定".to_string(),
+                "完成".to_string(),
+                "已经过期".to_string(),
+            ])),
         };
         controller
     }
@@ -296,6 +304,15 @@ impl PJToDoController {
         }
     }
 
+    pub unsafe fn todo_title_at_section(&self, section: i32) -> *mut c_char {
+        let section: usize = section as usize;
+
+        assert!(section <= (*(self.sectionTitles)).len());
+
+        let title = CString::new((*(self.sectionTitles))[section].clone()).unwrap(); //unsafe
+        title.into_raw()
+    }
+
     pub unsafe fn todo_at_section(&self, section: i32, index: i32) -> *const ToDoQuery {
         let section: usize = section as usize;
         let index: usize = index as usize;
@@ -463,6 +480,19 @@ pub unsafe extern "C" fn fetchToDoData(ptr: *mut PJToDoController) {
         println!("fetchToDoData thread::spawn");
         controler.fetch_data();
     });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn todoTitleAtSection(
+    ptr: *const PJToDoController,
+    section: i32,
+) -> *mut c_char {
+    if ptr.is_null() {
+        pj_error!("ptr : *const todo_title_at_section is null!");
+        assert!(!ptr.is_null());
+    }
+    let controler = &*ptr;
+    controler.todo_title_at_section(section)
 }
 
 #[no_mangle]

@@ -11,7 +11,7 @@ pub unsafe extern "C" fn setToDoQueryTitle(ptr: *mut ToDoQuery, title: *const c_
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoQueryTitle(ptr: *const ToDoQuery) -> *const c_char {
+pub unsafe extern "C" fn getToDoQueryTitle(ptr: *const ToDoQuery) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo = &*ptr;
     let title = CString::new(todo.title.clone()).unwrap(); //unsafe
@@ -41,7 +41,7 @@ pub unsafe extern "C" fn setToDoQueryContent(ptr: *mut ToDoQuery, content: *cons
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoQueryContent(ptr: *const ToDoQuery) -> *const c_char {
+pub unsafe extern "C" fn getToDoQueryContent(ptr: *const ToDoQuery) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo = &*ptr;
     let content = CString::new(todo.content.clone()).unwrap(); //unsafe
@@ -57,7 +57,7 @@ pub unsafe extern "C" fn setToDoQueryDueTime(ptr: *mut ToDoQuery, due_time: *con
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoQueryDueTime(ptr: *const ToDoQuery) -> *const c_char {
+pub unsafe extern "C" fn getToDoQueryDueTime(ptr: *const ToDoQuery) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo = &*ptr;
     let due_time = CString::new(todo.due_time.clone()).unwrap(); //unsafe
@@ -73,7 +73,7 @@ pub unsafe extern "C" fn setToDoQueryRemindTime(ptr: *mut ToDoQuery, remind_time
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoQueryRemindTime(ptr: *const ToDoQuery) -> *const c_char {
+pub unsafe extern "C" fn getToDoQueryRemindTime(ptr: *const ToDoQuery) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo = &*ptr;
     let remind_time = CString::new(todo.remind_time.clone()).unwrap(); //unsafe
@@ -89,7 +89,7 @@ pub unsafe extern "C" fn setToDoQueryCreateTime(ptr: *mut ToDoQuery, create_time
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoQueryCreateTime(ptr: *const ToDoQuery) -> *const c_char {
+pub unsafe extern "C" fn getToDoQueryCreateTime(ptr: *const ToDoQuery) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo = &*ptr;
     let create_time = CString::new(todo.create_time.clone()).unwrap(); //unsafe
@@ -105,7 +105,7 @@ pub unsafe extern "C" fn setToDoQueryUpdateTime(ptr: *mut ToDoQuery, update_time
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoQueryUpdateTime(ptr: *const ToDoQuery) -> *const c_char {
+pub unsafe extern "C" fn getToDoQueryUpdateTime(ptr: *const ToDoQuery) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo = &*ptr;
     let update_time = CString::new(todo.update_time.clone()).unwrap(); //unsafe

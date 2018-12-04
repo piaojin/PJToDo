@@ -8,7 +8,7 @@
 
 import Foundation
 
-public typealias PJResponseBlock = (_ data: UnsafePointer<Int8>?, _ isSuccess : Bool) -> Void
+public typealias PJResponseBlock = (_ data: UnsafeMutablePointer<Int8>?, _ isSuccess : Bool) -> Void
 
 class PJHttpRequestConfig {
     
@@ -24,7 +24,7 @@ class PJHttpRequestConfig {
             }
         }
         
-        let requestResultBackBlock: (@convention(c) (UnsafeMutableRawPointer?, UnsafePointer<Int8>?, Bool) -> Void)! = { (pointer, dataPointer, isSuccess) in
+        let requestResultBackBlock: (@convention(c) (UnsafeMutableRawPointer?, UnsafeMutablePointer<Int8>?, Bool) -> Void)! = { (pointer, dataPointer, isSuccess) in
             if let tempPointer = pointer {
                 PJToDo.requestResult(user: tempPointer, data: dataPointer, isSuccess: isSuccess)
             }
@@ -39,7 +39,7 @@ class PJHttpRequestConfig {
     }
     
     //Rust回调Swift
-    fileprivate func requestResult(data: UnsafePointer<Int8>?, isSuccess: Bool) {
+    fileprivate func requestResult(data: UnsafeMutablePointer<Int8>?, isSuccess: Bool) {
         print("PJHttpRequestConfig: received findByIdResult callback with  \(isSuccess)")
         if let dataPointer = data {
             self.responseBlock?(dataPointer, isSuccess)
@@ -52,7 +52,7 @@ class PJHttpRequestConfig {
 }
 
 //Rust回调Swift
-fileprivate func requestResult(user: UnsafeMutableRawPointer, data: UnsafePointer<Int8>?, isSuccess: Bool) {
+fileprivate func requestResult(user: UnsafeMutableRawPointer, data: UnsafeMutablePointer<Int8>?, isSuccess: Bool) {
     let obj: PJHttpRequestConfig = Unmanaged.fromOpaque(user).takeUnretainedValue()
     obj.requestResult(data: data, isSuccess: isSuccess)
     destroy(user: user)

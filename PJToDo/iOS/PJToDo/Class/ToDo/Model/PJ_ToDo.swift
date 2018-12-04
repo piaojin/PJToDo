@@ -43,9 +43,9 @@ public class PJ_ToDo {
     public var title: String {
         get {
             if self.mode == .insert {
-                return String(cString: getToDoInsertTitle(self.iToDoInsert))
+                return String.create(cString: getToDoInsertTitle(self.iToDoInsert))
             } else {
-                return String(cString: getToDoQueryTitle(self.iToDoQuery))
+                return String.create(cString: getToDoQueryTitle(self.iToDoQuery))
             }
         }
         
@@ -61,9 +61,9 @@ public class PJ_ToDo {
     public var content: String {
         get {
             if self.mode == .insert {
-                return String(cString: getToDoInsertContent(self.iToDoInsert))
+                return String.create(cString: getToDoInsertContent(self.iToDoInsert))
             } else {
-                return String(cString: getToDoQueryContent(self.iToDoQuery))
+                return String.create(cString: getToDoQueryContent(self.iToDoQuery))
             }
         }
         
@@ -79,9 +79,9 @@ public class PJ_ToDo {
     public var dueTime: String {
         get {
             if self.mode == .insert {
-                return String(cString: getToDoInsertDueTime(self.iToDoInsert))
+                return String.create(cString: getToDoInsertDueTime(self.iToDoInsert))
             } else {
-                return String(cString: getToDoQueryDueTime(self.iToDoQuery))
+                return String.create(cString: getToDoQueryDueTime(self.iToDoQuery))
             }
         }
         
@@ -97,9 +97,9 @@ public class PJ_ToDo {
     public var remindTime: String {
         get {
             if self.mode == .insert {
-                return String(cString: getToDoInsertRemindTime(self.iToDoInsert))
+                return String.create(cString: getToDoInsertRemindTime(self.iToDoInsert))
             } else {
-                return String(cString: getToDoQueryRemindTime(self.iToDoQuery))
+                return String.create(cString: getToDoQueryRemindTime(self.iToDoQuery))
             }
         }
         
@@ -115,9 +115,9 @@ public class PJ_ToDo {
     public var createTime: String {
         get {
             if self.mode == .insert {
-                return String(cString: getToDoInsertCreateTime(self.iToDoInsert))
+                return String.create(cString: getToDoInsertCreateTime(self.iToDoInsert))
             } else {
-                return String(cString: getToDoQueryCreateTime(self.iToDoQuery))
+                return String.create(cString: getToDoQueryCreateTime(self.iToDoQuery))
             }
         }
         
@@ -133,9 +133,9 @@ public class PJ_ToDo {
     public var updateTime: String {
         get {
             if self.mode == .insert {
-                return String(cString: getToDoInsertUpdateTime(self.iToDoInsert))
+                return String.create(cString: getToDoInsertUpdateTime(self.iToDoInsert))
             } else {
-                return String(cString: getToDoQueryUpdateTime(self.iToDoQuery))
+                return String.create(cString: getToDoQueryUpdateTime(self.iToDoQuery))
             }
         }
         

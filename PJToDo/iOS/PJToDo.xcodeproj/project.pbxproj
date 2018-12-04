@@ -62,6 +62,7 @@
 		76A43CBB219DB5530041B7AC /* PJKeyCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A43CBA219DB5530041B7AC /* PJKeyCenter.swift */; };
 		76A43CBD219DBB430041B7AC /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A43CBC219DBB430041B7AC /* Authorization.swift */; };
 		76B5226D21809EC200D51AE8 /* PJToDoType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76B5226C21809EC200D51AE8 /* PJToDoType.swift */; };
+		76BED24021B6C35100E86B59 /* PJStringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76BED23F21B6C35100E86B59 /* PJStringExtension.swift */; };
 		90B883A67742CBA20B227A90 /* Pods_PJToDoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */; };
 		E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */; };
 /* End PBXBuildFile section */
@@ -177,6 +178,7 @@
 		76A43CBA219DB5530041B7AC /* PJKeyCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJKeyCenter.swift; sourceTree = "<group>"; };
 		76A43CBC219DBB430041B7AC /* Authorization.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
 		76B5226C21809EC200D51AE8 /* PJToDoType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoType.swift; sourceTree = "<group>"; };
+		76BED23F21B6C35100E86B59 /* PJStringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJStringExtension.swift; sourceTree = "<group>"; };
 		7CFB5B5F9AE9D85494D81D5D /* Pods-PJToDoUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDoUITests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDoUITests/Pods-PJToDoUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD3758FA50254166E4D59F88 /* Pods_PJToDoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -243,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				762E939621A58B1D0002FED3 /* PJCommonExtension.swift */,
+				76BED23F21B6C35100E86B59 /* PJStringExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -951,6 +954,7 @@
 				766E6E2A21930BC800BC9DFE /* PJToDoMode.swift in Sources */,
 				76384BFD2199A61400C677BB /* PJHttpRequestConfig.swift in Sources */,
 				762E939721A58B1D0002FED3 /* PJCommonExtension.swift in Sources */,
+				76BED24021B6C35100E86B59 /* PJStringExtension.swift in Sources */,
 				762502202170AA69001043AF /* PJToDoConst.swift in Sources */,
 				76B5226D21809EC200D51AE8 /* PJToDoType.swift in Sources */,
 				7648831B21675B2300F11106 /* ToDoService.swift in Sources */,

@@ -18,9 +18,9 @@ public class PJMySettings {
     public var remindEmail: String {
         get {
             if self.mode == .insert {
-                return String(cString: getToDoSettingsInsertRemindEmail(self.iToDoSettingsInsert))
+                return String.create(cString: getToDoSettingsInsertRemindEmail(self.iToDoSettingsInsert))
             } else {
-                return String(cString: getToDoSettingsRemindEmail(self.iToDoSettings))
+                return String.create(cString: getToDoSettingsRemindEmail(self.iToDoSettings))
             }
         }
         

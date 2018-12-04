@@ -70,7 +70,7 @@ pub unsafe extern "C" fn setToDoTypeName(ptr: *mut ToDoType, type_name: *const c
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTypeName(ptr: *const ToDoType) -> *const c_char {
+pub unsafe extern "C" fn getToDoTypeName(ptr: *const ToDoType) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo_type = &*ptr;
     let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe
@@ -100,7 +100,7 @@ pub unsafe extern "C" fn setToDoTypeInsertName(ptr: *mut ToDoTypeInsert, type_na
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTypeInsertName(ptr: *const ToDoTypeInsert) -> *const c_char {
+pub unsafe extern "C" fn getToDoTypeInsertName(ptr: *const ToDoTypeInsert) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo_type = &*ptr;
     let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe

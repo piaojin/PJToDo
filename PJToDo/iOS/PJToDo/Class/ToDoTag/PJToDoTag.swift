@@ -18,9 +18,9 @@ public class PJToDoTag {
     public var tagName: String {
         get {
             if self.mode == .insert {
-                return String(cString: getToDoTagInsertName(self.iToDoTagInsert))
+                return String.create(cString: getToDoTagInsertName(self.iToDoTagInsert))
             } else {
-                return String(cString: getToDoTagName(self.iToDoTag))
+                return String.create(cString: getToDoTagName(self.iToDoTag))
             }
         }
         

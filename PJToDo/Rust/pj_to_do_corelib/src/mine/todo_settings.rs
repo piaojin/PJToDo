@@ -75,7 +75,7 @@ pub unsafe extern "C" fn setToDoSettingsRemindEmail(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoSettingsRemindEmail(ptr: *const ToDoSettings) -> *const c_char {
+pub unsafe extern "C" fn getToDoSettingsRemindEmail(ptr: *const ToDoSettings) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo_settins = &*ptr;
     let remind_email = CString::new(todo_settins.remind_email.clone()).unwrap(); //unsafe
@@ -124,7 +124,7 @@ pub unsafe extern "C" fn setToDoSettingsInsertRemindEmail(
 #[no_mangle]
 pub unsafe extern "C" fn getToDoSettingsInsertRemindEmail(
     ptr: *const ToDoSettingsInsert,
-) -> *const c_char {
+) -> *mut c_char {
     assert!(!ptr.is_null());
     let todo_settins = &*ptr;
     let remind_email = CString::new(todo_settins.remind_email.clone()).unwrap(); //unsafe
