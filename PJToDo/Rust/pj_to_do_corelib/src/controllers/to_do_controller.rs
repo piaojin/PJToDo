@@ -209,12 +209,10 @@ impl PJToDoController {
 
         let todos_order_by_state_result = self.fetch_todos_order_by_state();
         match todos_order_by_state_result {
-            Ok(todos) => {
+            Ok(mut todos) => {
                 /*free the old todos before set the new one*/
                 free_rust_any_object(self.todos);
-                for todo_vec in todos {
-                    all_datas.push(todo_vec);
-                }
+                all_datas.append(&mut todos);
                 self.todos = Box::into_raw(Box::new(all_datas));
             }
             Err(_e) => {
