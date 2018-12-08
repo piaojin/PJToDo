@@ -1,36 +1,29 @@
 //
-//  MineCell.swift
+//  TextCell.swift
 //  PJToDo
 //
-//  Created by Zoey Weng on 2018/12/6.
+//  Created by Zoey Weng on 2018/12/8.
 //  Copyright © 2018年 piaojin. All rights reserved.
 //
 
 import UIKit
 
-class MineCell: UITableViewCell {
-    
-    var item: MineItem? {
+class TextCell: UITableViewCell {
+
+    var textItem: TextItem? {
         didSet {
-            if let tempItem = item {
-                self.imageView?.image = UIImage(named: tempItem.imageName)
-                self.textLabel?.text = tempItem.title
-                self.detailTextLabel?.text = tempItem.detailText
+            if let item = textItem {
+                self.textLabel?.text = item.text
             }
         }
     }
     
     required override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        self.initView()
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-    
-    private func initView() {
-        self.accessoryType = .disclosureIndicator
     }
     
     override func awakeFromNib() {

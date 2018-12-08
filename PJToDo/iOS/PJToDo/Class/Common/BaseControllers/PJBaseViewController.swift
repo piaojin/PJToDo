@@ -24,10 +24,10 @@ open class PJBaseViewController: UIViewController, PJBaseEmptyViewDelegate, PJBa
     open var query: [String : Any]?
     
     //是否显示空视图
-    open var canShowEmpty = false
+    open var canShowEmpty = true
     
     //是否显示错误视图
-    open var canShowError = false
+    open var canShowError = true
     
     //空视图子类可重写
     open lazy var emptyView: PJBaseEmptyView = {

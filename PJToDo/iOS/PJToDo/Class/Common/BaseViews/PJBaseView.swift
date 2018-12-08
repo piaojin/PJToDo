@@ -33,7 +33,7 @@ open class PJBaseView: UIView {
      方法
      */
     private func initView(){
-        self.label.text = "设置提示文字"
+        self.label.text = ""
         self.addSubview(self.label)
         self.label.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         self.label.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true

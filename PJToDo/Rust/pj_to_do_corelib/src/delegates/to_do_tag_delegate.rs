@@ -38,7 +38,9 @@ impl Deref for IPJToDoTagDelegateWrapper {
 impl Drop for IPJToDoTagDelegateWrapper {
     fn drop(&mut self) {
         //IPJToDoTagDelegate被释放，告诉当前持有IPJToDoTagDelegate对象的所有权者做相应的处理
-        (self.destroy)(self.user);
+        if !self.user.is_null() {
+            (self.destroy)(self.user);
+        }
         println!("IPJToDoTagDelegateWrapper -> drop");
     }
 }

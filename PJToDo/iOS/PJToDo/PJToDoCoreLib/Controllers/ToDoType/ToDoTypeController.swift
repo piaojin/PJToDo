@@ -25,7 +25,7 @@ class ToDoTypeController {
     }()
     
     private lazy var iDelegate: IPJToDoTypeDelegate = {
-        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
+//        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
         
         /*call back for C*/
         let destroyBlock: @convention(c) (UnsafeMutableRawPointer?) -> Void = {(pointer) in
@@ -70,7 +70,7 @@ class ToDoTypeController {
             }
         }
         
-        let iDelegate = IPJToDoTypeDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, find_byName_result: findByNameBackBlock, fetch_data_result: fetchDataBackBlock)
+        let iDelegate = IPJToDoTypeDelegate(user: nil, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, find_byName_result: findByNameBackBlock, fetch_data_result: fetchDataBackBlock)
         return iDelegate
     }()
     
@@ -82,26 +82,38 @@ class ToDoTypeController {
     
     //插入数据成功后再更新数据到当前的PJToDoType对象
     public func insert(toDoType: PJToDoType) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         insertToDoType(self.controller, toDoType.iToDoTypeInsert)
     }
     
     public func delete(toDoTypeId: Int32) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         deleteToDoType(self.controller, toDoTypeId)
     }
     
     public func update(toDoType: PJToDoType) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         updateToDoType(self.controller, toDoType.iToDoType)
     }
     
     public func findById(toDoTypeId: Int32) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         findToDoType(self.controller, toDoTypeId)
     }
     
     public func findByName(typeName: String) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         findToDoTypeByName(self.controller, typeName)
     }
     
     public func fetchData() {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         fetchToDoTypeData(self.controller)
     }
     

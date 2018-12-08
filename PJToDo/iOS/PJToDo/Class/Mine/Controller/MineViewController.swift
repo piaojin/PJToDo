@@ -147,9 +147,13 @@ extension MineViewController: UITableViewDelegate, UITableViewDataSource {
         let item = self.items[indexPath.section][indexPath.row]
         switch item.type {
         case .type:
-            break
+            let textViewController = TextViewController(textType: .type)
+            textViewController.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(textViewController, animated: true)
         case .tag:
-            break
+            let textViewController = TextViewController(textType: .tag)
+            textViewController.hidesBottomBarWhenPushed = true
+            self.navigationController?.pushViewController(textViewController, animated: true)
         case .email, .remindDays:
             self.editEmailOrRemindDays(item: item)
         case .blog:
@@ -234,8 +238,7 @@ extension MineViewController: ToDoSettingsDelegate {
                 }
             }
             DispatchQueue.main.async {
-//                self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
-                self.tableView.reloadData()
+                self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
             }
         }
     }
