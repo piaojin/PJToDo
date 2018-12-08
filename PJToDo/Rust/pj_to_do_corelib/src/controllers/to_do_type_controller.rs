@@ -207,7 +207,11 @@ impl PJToDoTypeController {
     pub unsafe fn todo_type_at_index(&self, index: i32) -> *const ToDoType {
         let index: usize = index as usize;
         assert!(index <= self.get_count());
-        let todo_type: *const ToDoType = &((*(self.todo_types))[index]);
+
+        let mut todo_type: *const ToDoType = std::ptr::null_mut();
+        if self.get_count() > 0 {
+            todo_type = &((*(self.todo_types))[index]);
+        }
         todo_type
     }
 

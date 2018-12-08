@@ -318,8 +318,13 @@ impl PJToDoController {
         assert!(section <= self.get_count_of_sections());
         assert!(index <= self.get_count_at_section(section as i32));
 
-        let section_todos = &(*(self.todos))[section];
-        let todo: *const ToDoQuery = &(section_todos[index]);
+        let mut todo: *const ToDoQuery = std::ptr::null_mut();
+        if self.get_count_of_sections() > 0 {
+            let section_todos = &(*(self.todos))[section];
+            if self.get_count_at_section(section as i32) > 0 {
+                todo = &(section_todos[index]);
+            }
+        }
         todo
     }
 

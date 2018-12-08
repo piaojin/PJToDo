@@ -8,7 +8,7 @@ use super::pj_database::Database;
 use pal::pj_to_do_pal::PJToDoPal;
 use c_binding_extern::c_binding_extern::*;
 
-use db::tables::schema::{Table_ToDoType, Table_ToDoTag, Table_ToDo, Table_ToDoType_Create_Sql, Table_ToDoTag_Create_Sql, Table_ToDo_Create_Sql};
+use db::tables::schema::{Table_ToDoType, Table_ToDoTag, Table_ToDo, Table_ToDoSettings,Table_ToDoType_Create_Sql, Table_ToDoTag_Create_Sql, Table_ToDo_Create_Sql, Table_ToDoSettings_Create_Sql};
 
 use std::collections::HashMap;
 
@@ -71,10 +71,17 @@ impl PJDBConnectionUtil {
             Table_ToDoType.to_string(),
             Table_ToDoType_Create_Sql.to_string(),
         );
+
         tables.insert(
             Table_ToDoTag.to_string(),
             Table_ToDoTag_Create_Sql.to_string(),
         );
+
+        tables.insert(
+            Table_ToDoSettings.to_string(),
+            Table_ToDoSettings_Create_Sql.to_string(),
+        );
+
         tables.insert(Table_ToDo.to_string(), Table_ToDo_Create_Sql.to_string());
 
         for (table, table_create_sql) in tables {

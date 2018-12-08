@@ -190,7 +190,10 @@ impl PJToDoSearchController {
 
         assert!(index <= self.get_count());
 
-        let todo: *const ToDoQuery = &((*(self.todos))[index]);
+        let mut todo: *const ToDoQuery = std::ptr::null_mut();
+        if self.get_count() > 0 {
+            todo = &((*(self.todos))[index]);
+        }
         todo
     }
 

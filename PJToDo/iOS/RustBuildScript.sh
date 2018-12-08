@@ -48,7 +48,7 @@ unset $(env | grep '^SDK' | cut -d'=' -f1)
 if [[ "$CONFIGURATION" == "Debug" ]]
 then
     echo "******cargo lipo:"
-    cargo lipo --verbose
+    cargo lipo --verbose --targets=aarch64-apple-ios,x86_64-apple-ios
     # cargo build --verbose
     # LLVM_SYS_70_PREFIX=/path/to/llvm cargo build
 
@@ -57,7 +57,7 @@ then
     cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR
 else
     echo "******cargo lipo --release:"
-    cargo lipo --release -vv
+    cargo lipo --release -vv --targets=aarch64-apple-ios,armv7s-apple-ios
 
     cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR
 fi

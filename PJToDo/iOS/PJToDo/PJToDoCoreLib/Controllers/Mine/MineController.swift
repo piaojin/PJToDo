@@ -67,18 +67,22 @@ class MineController {
     }
     
     public func insert(toDoSettings: PJMySettings) {
+        ARCManager.retain(object: self)
         insertToDoSettings(self.controller, toDoSettings.iToDoSettingsInsert)
     }
     
     public func delete(toDoSettingsId: Int32) {
+        ARCManager.retain(object: self)
         deleteToDoSettings(self.controller, toDoSettingsId)
     }
     
     public func update(toDoSettings: PJMySettings) {
+        ARCManager.retain(object: self)
         updateToDoSettings(self.controller, toDoSettings.iToDoSettings)
     }
     
     public func fetchData() {
+        ARCManager.retain(object: self)
         fetchToDoSettingsData(self.controller)
     }
     

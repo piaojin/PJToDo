@@ -205,7 +205,11 @@ impl PJToDoTagController {
     pub unsafe fn todo_tag_at_index(&self, index: i32) -> *const ToDoTag {
         let index: usize = index as usize;
         assert!(index <= self.get_count());
-        let todo_tag: *const ToDoTag = &((*(self.todo_tags))[index]);
+
+        let mut todo_tag: *const ToDoTag = std::ptr::null_mut();
+        if self.get_count() > 0 {
+            todo_tag = &((*(self.todo_tags))[index]);
+        }
         todo_tag
     }
 

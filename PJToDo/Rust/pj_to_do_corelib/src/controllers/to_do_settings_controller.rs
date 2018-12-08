@@ -1,11 +1,10 @@
 use delegates::to_do_settings_delegate::{IPJToDoSettingsDelegate, IPJToDoSettingsDelegateWrapper};
 use service::to_do_settings_service::{PJToDoSettingsService, insert_todo_settings, delete_todo_settings, update_todo_settings, fetch_data};
 use service::service_impl::to_do_settings_service_impl::{createPJToDoSettingsServiceImpl};
-use mine::todo_settings::{ToDoSettingsInsert, ToDoSettings, createToDoSettingsInsert};
+use mine::todo_settings::{ToDoSettings, ToDoSettingsInsert, createToDoSettingsInsert};
 use common::{free_rust_any_object};
 #[allow(unused_imports)]
 use common::pj_logger::PJLogger;
-use std::ffi::{CString};
 use std::thread;
 use std::marker::{Send, Sync};
 
@@ -49,16 +48,13 @@ unsafe impl Sync for PJToDoSettingsController {}
 
 impl PJToDoSettingsController {
     fn new(delegate: IPJToDoSettingsDelegate) -> PJToDoSettingsController {
-        let c_str_settings_insert = CString::new("".to_string()).unwrap();
-        let controller = unsafe {
-            PJToDoSettingsController {
-                delegate: delegate,
-                todo_settings_service_controller: Box::into_raw(Box::new(
-                    PJToDoSettingsServiceController::new(),
-                )),
-                insert_todo_settings: createToDoSettingsInsert(c_str_settings_insert.into_raw(), 0),
-                todo_settings: Box::into_raw(Box::new(Vec::new())),
-            }
+        let controller = PJToDoSettingsController {
+            delegate: delegate,
+            todo_settings_service_controller: Box::into_raw(Box::new(
+                PJToDoSettingsServiceController::new(),
+            )),
+            insert_todo_settings: std::ptr::null_mut(),
+            todo_settings: std::ptr::null_mut(),
         };
         controller
     }
@@ -153,7 +149,11 @@ impl PJToDoSettingsController {
     pub unsafe fn todo_settings_at_index(&self, index: i32) -> *const ToDoSettings {
         let index: usize = index as usize;
         assert!(index <= self.get_count());
-        let todo_settings: *const ToDoSettings = &((*(self.todo_settings))[index]);
+
+        let mut todo_settings: *const ToDoSettings = std::ptr::null_mut();
+        if self.get_count() > 0 {
+            todo_settings = &((*(self.todo_settings))[index]);
+        }
         todo_settings
     }
 

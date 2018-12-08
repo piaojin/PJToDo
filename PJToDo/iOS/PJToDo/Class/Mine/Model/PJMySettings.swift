@@ -20,7 +20,10 @@ public class PJMySettings {
             if self.mode == .insert {
                 return String.create(cString: getToDoSettingsInsertRemindEmail(self.iToDoSettingsInsert))
             } else {
-                return String.create(cString: getToDoSettingsRemindEmail(self.iToDoSettings))
+                if let pointer = self.iToDoSettings {
+                    return String.create(cString: getToDoSettingsRemindEmail(pointer))
+                }
+                return ""
             }
         }
         
@@ -38,7 +41,10 @@ public class PJMySettings {
             if self.mode == .insert {
                 return getToDoSettingsInsertRemindDays(self.iToDoSettingsInsert)
             } else {
-                return getToDoSettingsRemindDays(self.iToDoSettings)
+                if let pointer = self.iToDoSettings {
+                    return getToDoSettingsRemindDays(pointer)
+                }
+                return -1
             }
         }
         
@@ -53,7 +59,10 @@ public class PJMySettings {
     
     public var settingsId: Int32 {
         get {
-            return getToDoSettingsId(self.iToDoSettings)
+            if let pointer = self.iToDoSettings {
+                return getToDoSettingsId(pointer)
+            }
+            return -1
         }
         
         set {
@@ -69,12 +78,12 @@ public class PJMySettings {
     
     /*This constructor is used by ToDoTypeController when getting data from db.*/
     public init(iToDoSettings: OpaquePointer?) {
-        self.iToDoSettings = iToDoSettings;
+        self.iToDoSettings = iToDoSettings
     }
     
     public init(settingsId: Int32, remindEmail: String, remindDays: Int32) {
         self.iToDoSettings = createToDoSettings(remindEmail, remindDays)
-        self.settingsId = settingsId;
+        self.settingsId = settingsId
     }
 }
 
