@@ -1,7 +1,7 @@
 use delegates::to_do_settings_delegate::{IPJToDoSettingsDelegate, IPJToDoSettingsDelegateWrapper};
 use service::to_do_settings_service::{PJToDoSettingsService, insert_todo_settings, delete_todo_settings, update_todo_settings, fetch_data};
 use service::service_impl::to_do_settings_service_impl::{createPJToDoSettingsServiceImpl};
-use mine::todo_settings::{ToDoSettings, ToDoSettingsInsert, createToDoSettingsInsert};
+use mine::todo_settings::{ToDoSettings, ToDoSettingsInsert};
 use common::{free_rust_any_object};
 #[allow(unused_imports)]
 use common::pj_logger::PJLogger;

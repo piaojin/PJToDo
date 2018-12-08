@@ -17,9 +17,16 @@ enum MineItemType {
     case about
 }
 
-struct MineItem {
-    var imageName: String
-    var title: String
+class MineItem {
+    var imageName: String = ""
+    var title: String = ""
     var detailText: String = ""
     var type: MineItemType = .type
+    
+    init(imageName: String, title: String, detailText: String, type: MineItemType) {
+        self.imageName = imageName
+        self.title = title
+        self.detailText = detailText
+        self.type = type
+    }
 }

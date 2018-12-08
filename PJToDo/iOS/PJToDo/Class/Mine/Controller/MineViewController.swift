@@ -89,10 +89,6 @@ class MineViewController: PJBaseViewController {
         
         self.mineController.fetchData()
     }
-    
-    deinit {
-        ARCManager.retain(object: self.mineController)
-    }
 }
 
 extension MineViewController: UITableViewDelegate, UITableViewDataSource {
@@ -155,64 +151,64 @@ extension MineViewController: UITableViewDelegate, UITableViewDataSource {
         case .tag:
             break
         case .email, .remindDays:
-            
-            let editAlert = UIAlertController(title: "Set text", message: "", preferredStyle: UIAlertControllerStyle.alert)
-            editAlert.addTextField { (textField) in
-                if item.type == .remindDays {
-                    textField.keyboardType = .numberPad
-                } else {
-                    textField.keyboardType = .emailAddress
-                }
-            }
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { (action) in
-                
-            }
-            
-            let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
-                let text = editAlert.textFields?.first?.text ?? ""
-                let id = self.mySettings?.settingsId ?? -1
-                if id < 0{
-                    if item.type == .email {
-                        let settings = PJMySettings(remindEmail: text, remindDays: 0)
-                        self.mineController.insert(toDoSettings: settings)
-                    } else {
-                        let settings = PJMySettings(remindEmail: "", remindDays: Int32(text) ?? 0)
-                        self.mineController.insert(toDoSettings: settings)
-                    }
-                } else {
-                    if let tempSettings = self.mySettings {
-                        if item.type == .email {
-                            let settings = PJMySettings(settingsId: tempSettings.settingsId, remindEmail: text, remindDays: tempSettings.remindDays)
-                            self.mineController.update(toDoSettings: settings)
-                        } else {
-                            let settings = PJMySettings(settingsId: tempSettings.settingsId, remindEmail: tempSettings.remindEmail, remindDays: Int32(text) ?? 0)
-                            self.mineController.update(toDoSettings: settings)
-                        }
-                    } else {
-                        SVProgressHUD.showError(withStatus: "Update email or remind days error!")
-                    }
-                }
-            }
-            
-            editAlert.addAction(cancelAction)
-            editAlert.addAction(okAction)
-            self.present(editAlert, animated: true, completion: nil)
-            
+            self.editEmailOrRemindDays(item: item)
         case .blog:
             break
         case .about:
             break
         }
     }
+    
+    private func editEmailOrRemindDays(item: MineItem) {
+        let editAlert = UIAlertController(title: "Set Text", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        editAlert.addTextField { (textField) in
+            if item.type == .remindDays {
+                textField.keyboardType = .numberPad
+            } else {
+                textField.keyboardType = .emailAddress
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { (action) in
+            
+        }
+        
+        let okAction = UIAlertAction(title: "OK", style: .default) { (action) in
+            let text = editAlert.textFields?.first?.text ?? ""
+            let id = self.mySettings?.settingsId ?? -1
+            if id < 0{
+                if item.type == .email {
+                    let settings = PJMySettings(remindEmail: text, remindDays: 0)
+                    self.mineController.insert(toDoSettings: settings)
+                } else {
+                    let settings = PJMySettings(remindEmail: "", remindDays: Int32(text) ?? 0)
+                    self.mineController.insert(toDoSettings: settings)
+                }
+            } else {
+                if let tempSettings = self.mySettings {
+                    if item.type == .email {
+                        let settings = PJMySettings(settingsId: tempSettings.settingsId, remindEmail: text, remindDays: tempSettings.remindDays)
+                        self.mineController.update(toDoSettings: settings)
+                    } else {
+                        let settings = PJMySettings(settingsId: tempSettings.settingsId, remindEmail: tempSettings.remindEmail, remindDays: Int32(text) ?? 0)
+                        self.mineController.update(toDoSettings: settings)
+                    }
+                } else {
+                    SVProgressHUD.showError(withStatus: "Update email or remind days error!")
+                }
+            }
+        }
+        
+        editAlert.addAction(cancelAction)
+        editAlert.addAction(okAction)
+        self.present(editAlert, animated: true, completion: nil)
+    }
 }
 
 extension MineViewController: ToDoSettingsDelegate {
     func insertSettingsResult(isSuccess: Bool) {
         if isSuccess {
-            DispatchQueue.main.async {
-                self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
-            }
+            self.mineController.fetchData()
         }
     }
     
@@ -222,9 +218,7 @@ extension MineViewController: ToDoSettingsDelegate {
     
     func updateSettingsResult(isSuccess: Bool) {
         if isSuccess {
-            DispatchQueue.main.async {
-                self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
-            }
+            self.mineController.fetchData()
         }
     }
     
@@ -232,7 +226,7 @@ extension MineViewController: ToDoSettingsDelegate {
         if isSuccess, let settings = mySettings {
             self.mySettings = mySettings
             let tempItems = self.items[1]
-            for var item in tempItems {
+            for item in tempItems {
                 if item.type == .email {
                     item.detailText = settings.remindEmail
                 } else {
@@ -240,7 +234,8 @@ extension MineViewController: ToDoSettingsDelegate {
                 }
             }
             DispatchQueue.main.async {
-                self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+//                self.tableView.reloadSections(IndexSet(integer: 1), with: .none)
+                self.tableView.reloadData()
             }
         }
     }

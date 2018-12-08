@@ -27,7 +27,7 @@ class MineCell: UITableViewCell {
     }
     
     required override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         self.initView()
     }
     

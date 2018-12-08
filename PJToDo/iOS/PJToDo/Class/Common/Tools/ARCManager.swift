@@ -9,7 +9,8 @@
 import UIKit
 
 open class ARCManager: NSObject {
-    public static func retain(object: AnyObject) {
-        _ = UnsafeMutableRawPointer(Unmanaged.passRetained(object).toOpaque())
+    public static func retain(object: AnyObject) -> UnsafeMutableRawPointer {
+        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(object).toOpaque())
+        return ownedPointer
     }
 }

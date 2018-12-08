@@ -23,7 +23,7 @@ class MineController {
     }()
     
     private lazy var iDelegate: IPJToDoSettingsDelegate = {
-        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
+//        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
         
         /*call back for C*/
         let destroyBlock: @convention(c) (UnsafeMutableRawPointer?) -> Void = {(pointer) in
@@ -56,7 +56,7 @@ class MineController {
             }
         }
         
-        let iDelegate = IPJToDoSettingsDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, fetch_data_result: fetchDataBackBlock)
+        let iDelegate = IPJToDoSettingsDelegate(user: nil, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, fetch_data_result: fetchDataBackBlock)
         return iDelegate
     }()
     
@@ -67,22 +67,26 @@ class MineController {
     }
     
     public func insert(toDoSettings: PJMySettings) {
-        ARCManager.retain(object: self)
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         insertToDoSettings(self.controller, toDoSettings.iToDoSettingsInsert)
     }
     
     public func delete(toDoSettingsId: Int32) {
-        ARCManager.retain(object: self)
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         deleteToDoSettings(self.controller, toDoSettingsId)
     }
     
     public func update(toDoSettings: PJMySettings) {
-        ARCManager.retain(object: self)
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         updateToDoSettings(self.controller, toDoSettings.iToDoSettings)
     }
     
     public func fetchData() {
-        ARCManager.retain(object: self)
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         fetchToDoSettingsData(self.controller)
     }
     
