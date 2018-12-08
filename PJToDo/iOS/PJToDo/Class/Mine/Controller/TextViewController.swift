@@ -152,6 +152,22 @@ extension TextViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "Delete") { (action, indexPath) in
+            let item = self.item(at: indexPath.row)
+            if self.textType == .type {
+                self.typeController.delete(toDoTypeId: Int32(item.id))
+            } else {
+                self.tagController.delete(toDoTagId: Int32(item.id))
+            }
+        }
+        return [deleteAction]
+    }
 }
 
 extension TextViewController: ToDoTypeDelegate {
@@ -171,45 +187,36 @@ extension TextViewController: ToDoTypeDelegate {
     }
     
     func findTypeByNameResult(toDoType: PJToDoType?, isSuccess: Bool) {
-        if isSuccess {
-            print("typeName: \(String(describing: toDoType?.typeName))")
-        }
     }
     
     func findTypeByIdResult(toDoType: PJToDoType?, isSuccess: Bool) {
-        if isSuccess {
-            print("typeName: \(String(describing: toDoType?.typeName))")
-        }
     }
     
     func updateTypeResult(isSuccess: Bool) {
-        if isSuccess {
-            
-        }
     }
     
     func deleteTypeResult(isSuccess: Bool) {
-        if isSuccess {
-            
-        }
+        self.handleTypeResult(isSuccess: isSuccess, error: "Delete Type Error!")
     }
     
     func insertTypeResult(isSuccess: Bool) {
+        self.handleTypeResult(isSuccess: isSuccess, error: "Add Type Error!")
+    }
+    
+    private func handleTypeResult(isSuccess: Bool, error: String?) {
         if isSuccess {
             self.typeController.fetchData()
         } else {
-            SVProgressHUD.showError(withStatus: "Add Type Error!")
+            SVProgressHUD.showError(withStatus: error)
         }
     }
 }
 
 extension TextViewController: ToDoTagDelegate {
     func findTagByIdResult(toDoTag: PJToDoTag?, isSuccess: Bool) {
-        
     }
     
     func findTagByNameResult(toDoTag: PJToDoTag?, isSuccess: Bool) {
-        
     }
     
     func fetchTagDataResult(isSuccess: Bool) {
@@ -228,34 +235,27 @@ extension TextViewController: ToDoTagDelegate {
     }
     
     func findTagByNameResult(toDoTag: PJToDoTag, isSuccess: Bool) {
-        if isSuccess {
-            
-        }
     }
     
     func findTagByIdResult(toDoTag: PJToDoTag, isSuccess: Bool) {
-        if isSuccess {
-            
-        }
     }
     
     func updateTagResult(isSuccess: Bool) {
-        if isSuccess {
-            
-        }
     }
     
     func deleteTagResult(isSuccess: Bool) {
-        if isSuccess {
-            
-        }
+        self.handleTagResult(isSuccess: isSuccess, error: "Delete Tag Error!")
     }
     
     func insertTagResult(isSuccess: Bool) {
+        self.handleTagResult(isSuccess: isSuccess, error: "Add Tag Error!")
+    }
+    
+    private func handleTagResult(isSuccess: Bool, error: String?) {
         if isSuccess {
             self.tagController.fetchData()
         } else {
-            SVProgressHUD.showError(withStatus: "Add Tag Error!")
+            SVProgressHUD.showError(withStatus: error)
         }
     }
 }
