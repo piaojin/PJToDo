@@ -333,6 +333,10 @@ impl PJToDoController {
             ()
         }
 
+        if self.todos.is_null() {
+            ()
+        }
+
         let sections = (*(self.todos)).len();
         sections
     }

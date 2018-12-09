@@ -7,20 +7,9 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class AddToDoViewController: PJBaseViewController {
-    
-    private lazy var tableView: UITableView = {
-        let tempTableView = UITableView(frame: .zero, style: .plain)
-        tempTableView.translatesAutoresizingMaskIntoConstraints = false
-        tempTableView.backgroundColor = .white
-        tempTableView.estimatedRowHeight = 44.0
-        tempTableView.rowHeight = UITableViewAutomaticDimension
-        tempTableView.tableFooterView = UIView()
-        tempTableView.tableFooterView?.backgroundColor = .white
-        tempTableView.cellLayoutMarginsFollowReadableWidth = false
-        return tempTableView
-    }()
     
     lazy var inputBox: PJInputBox = {
         let inputBox = PJInputBox()
@@ -28,10 +17,32 @@ class AddToDoViewController: PJBaseViewController {
         return inputBox
     }()
     
-    var tableViewHeightAnchorLayoutConstraint: NSLayoutConstraint?
+    lazy var selectComposeTypeView: SelectComposeTypeView = {
+        let selectComposeTypeView = SelectComposeTypeView()
+        selectComposeTypeView.translatesAutoresizingMaskIntoConstraints = false
+        return selectComposeTypeView
+    }()
+    
+    var selectComposeTypeViewHeightConstraint: NSLayoutConstraint?
     var bottomAnchorLayoutConstraint: NSLayoutConstraint?
     
-    static let tableViewHeight = 100
+    static let selectComposeTypeViewHeight: CGFloat = 130
+    
+    lazy var typeController: ToDoTypeController = {
+        let controller = ToDoTypeController(delegate: self)
+        return controller
+    }()
+    
+    lazy var tagController: ToDoTagController = {
+        let controller = ToDoTagController(delegate: self)
+        return controller
+    }()
+    
+    var priorityItems: [(Int, String)] = []
+    
+    var typeCompose: ComposeTypeItem = ComposeTypeItem(id: -1, title: "", composeType: .type)
+    var tagCompose: ComposeTypeItem = ComposeTypeItem(id: -1, title: "", composeType: .tag)
+    var priorityCompose: ComposeTypeItem = ComposeTypeItem(id: -1, title: "", composeType: .priority)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,21 +66,57 @@ class AddToDoViewController: PJBaseViewController {
             self.bottomAnchorLayoutConstraint?.isActive = true
         }
         
-        self.view.addSubview(self.tableView)
-        self.tableView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
-        self.tableView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        self.tableView.bottomAnchor.constraint(equalTo: self.inputBox.topAnchor).isActive = true
-        self.tableViewHeightAnchorLayoutConstraint = self.tableView.heightAnchor.constraint(equalToConstant: 0)
-        self.tableViewHeightAnchorLayoutConstraint?.isActive = true
+        self.view.addSubview(self.selectComposeTypeView)
+        self.selectComposeTypeView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.selectComposeTypeView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        self.selectComposeTypeView.bottomAnchor.constraint(equalTo: self.inputBox.topAnchor).isActive = true
+        self.selectComposeTypeViewHeightConstraint = self.selectComposeTypeView.heightAnchor.constraint(equalToConstant: 0)
+        self.selectComposeTypeViewHeightConstraint?.isActive = true
     }
     
     private func initData() {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(note:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHidden(note:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
         
-        self.tableView.delegate = self
-        self.tableView.dataSource = self
+        self.selectComposeTypeView.delegate = self
         self.inputBox.textField.becomeFirstResponder()
+        
+        self.inputBox.inputBoxActionClosure = { [weak self] (box, type) in
+            switch type {
+                case ActionType.type:
+                    self?.showSelectComposeTypeView(show: true)
+                    self?.typeController.fetchData()
+                case ActionType.tag:
+                    self?.showSelectComposeTypeView(show: true)
+                    self?.tagController.fetchData()
+                case ActionType.remind:
+                    break
+                case ActionType.priority:
+                    self?.showSelectComposeTypeView(show: true)
+                    self?.handlePriorityAction()
+                case ActionType.send:
+                    self?.addToDo()
+            }
+        }
+        
+        priorityItems = [(0, "priority_0"), (1, "priority_1"), (2, "priority_2"), (3, "priority_3"), (4, "priority_4"), (5, "priority_5")]
+    }
+    
+    func handlePriorityAction() {
+        var items: [ComposeTypeItem] = []
+        for (id, title) in priorityItems {
+            let item = ComposeTypeItem(id: id, title: title, composeType: .priority)
+            items.append(item)
+        }
+        self.selectComposeTypeView.composeTypeItems = items
+        self.selectComposeTypeView.reloadData()
+    }
+    
+    func addToDo() {
+        if self.typeCompose.id == -1 || self.tagCompose.id == -1 || self.priorityCompose.id == -1 {
+            SVProgressHUD.showError(withStatus: "Are you sure had selected Type, Tag or Priority?")
+        }
+        //Add ToDo
     }
     
     @objc func keyboardWillShow(note: NSNotification) {
@@ -94,14 +141,73 @@ class AddToDoViewController: PJBaseViewController {
         self.inputBox.textField.resignFirstResponder()
         self.dismiss(animated: true, completion: nil)
     }
+    
+    private func showSelectComposeTypeView(show: Bool) {
+        UIView.animate(withDuration: 0.3) {
+            if show {
+                if let height = self.selectComposeTypeViewHeightConstraint?.constant {
+                    if height <= 0 {
+                        self.selectComposeTypeViewHeightConstraint?.constant = AddToDoViewController.selectComposeTypeViewHeight
+                    }
+                }
+            } else {
+                self.selectComposeTypeViewHeightConstraint?.constant = 0
+            }
+        }
+    }
 }
 
-extension AddToDoViewController: UITableViewDelegate, UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+extension AddToDoViewController: SelectComposeTypeViewDelegate {
+    func didSelectItem(selectComposeTypeView: SelectComposeTypeView, composeTypeItem: ComposeTypeItem) {
+        switch composeTypeItem.composeType {
+            case .type:
+                self.typeCompose = composeTypeItem
+            case .tag:
+                self.tagCompose = composeTypeItem
+            case .priority:
+                self.priorityCompose = composeTypeItem
+        }
+        UIView.animate(withDuration: 0.3) {
+            self.selectComposeTypeViewHeightConstraint?.constant = 0
+        }
     }
+}
+
+extension AddToDoViewController: ToDoTagDelegate {
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+    func fetchTagDataResult(isSuccess: Bool) {
+        if isSuccess {
+            var items: [ComposeTypeItem] = []
+            for index in 0..<self.tagController.getCount() {
+                let tagItem = self.tagController.toDoTagAt(index: Int32(index))
+                let item = ComposeTypeItem(id: Int(tagItem.tagId), title: tagItem.tagName, composeType: .tag)
+                items.append(item)
+            }
+            self.selectComposeTypeView.composeTypeItems = items
+            DispatchQueue.main.async {
+                self.selectComposeTypeView.reloadData()
+            }
+        } else {
+            SVProgressHUD.showError(withStatus: "Fetch Tag Data Error!")
+        }
+    }
+}
+
+extension AddToDoViewController: ToDoTypeDelegate {
+    func fetchTypeDataResult(isSuccess: Bool) {
+        if isSuccess {
+            var items: [ComposeTypeItem] = []
+            for index in 0..<self.typeController.getCount() {
+                let typeItem = self.typeController.toDoTypeAt(index: Int32(index))
+                let item = ComposeTypeItem(id: Int(typeItem.typeId), title: typeItem.typeName, composeType: .type)
+                items.append(item)
+            }
+            self.selectComposeTypeView.composeTypeItems = items
+            DispatchQueue.main.async {
+                self.selectComposeTypeView.reloadData()
+            }
+        } else {
+            SVProgressHUD.showError(withStatus: "Fetch Type Data Error!")
+        }
     }
 }

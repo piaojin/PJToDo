@@ -8,13 +8,13 @@
 
 import UIKit
 
-public protocol ToDoTypeDelegate: NSObjectProtocol {
-    func insertTypeResult(isSuccess: Bool)
-    func deleteTypeResult(isSuccess: Bool)
-    func updateTypeResult(isSuccess: Bool)
+@objc public protocol ToDoTypeDelegate: NSObjectProtocol {
+    @objc optional func insertTypeResult(isSuccess: Bool)
+    @objc optional func deleteTypeResult(isSuccess: Bool)
+    @objc optional func updateTypeResult(isSuccess: Bool)
     func fetchTypeDataResult(isSuccess: Bool)
-    func findTypeByIdResult(toDoType: PJToDoType?, isSuccess: Bool)
-    func findTypeByNameResult(toDoType: PJToDoType?, isSuccess: Bool)
+    @objc optional func findTypeByIdResult(toDoType: PJToDoType?, isSuccess: Bool)
+    @objc optional func findTypeByNameResult(toDoType: PJToDoType?, isSuccess: Bool)
 }
 
 class ToDoTypeController {
@@ -128,29 +128,32 @@ class ToDoTypeController {
     //Rust回调Swift
     fileprivate func insertResult(isSuccess: Bool) {
         print("ToDoTypeController: received insertResult callback with  \(isSuccess)")
-        self.delegate?.insertTypeResult(isSuccess: isSuccess)
+        self.delegate?.insertTypeResult?(isSuccess: isSuccess)
     }
     
     fileprivate func deleteResult(isSuccess: Bool) {
         print("ToDoTypeController: received deleteResult callback with  \(isSuccess)")
-        self.delegate?.deleteTypeResult(isSuccess: isSuccess)
+        self.delegate?.deleteTypeResult?(isSuccess: isSuccess)
     }
     
     fileprivate func updateResult(isSuccess: Bool) {
         print("ToDoTypeController: received updateResult callback with  \(isSuccess)")
-        self.delegate?.updateTypeResult(isSuccess: isSuccess)
+        self.delegate?.updateTypeResult?(isSuccess: isSuccess)
     }
     
     fileprivate func findByIdResult(toDoType: OpaquePointer?, isSuccess: Bool) {
         print("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
         let tempToDoType = isSuccess ? PJToDoType(iToDoType: toDoType) : nil
-        self.delegate?.findTypeByIdResult(toDoType: tempToDoType, isSuccess: isSuccess)
+        self.delegate?.findTypeByIdResult?(toDoType: tempToDoType, isSuccess: isSuccess)
     }
     
     fileprivate func findByNameResult(toDoType: OpaquePointer?, isSuccess: Bool) {
         print("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
         let tempToDoType = isSuccess ? PJToDoType(iToDoType: toDoType) : nil
-        self.delegate?.findTypeByNameResult(toDoType: tempToDoType, isSuccess: isSuccess)
+        self.delegate?.findTypeByNameResult?(toDoType: tempToDoType, isSuccess: isSuccess)
+//        if self.delegate?.responds(to: #selector(ToDoDelegate.findTypeByNameResult)) {
+//
+//        }
     }
     
     fileprivate func fetchDataResult(isSuccess: Bool) {

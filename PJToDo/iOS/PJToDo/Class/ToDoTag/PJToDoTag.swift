@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class PJToDoTag {
+public class PJToDoTag: NSObject {
     private(set) var iToDoTagInsert: OpaquePointer?
     
     private(set) var iToDoTag: OpaquePointer?
@@ -45,16 +45,19 @@ public class PJToDoTag {
     
     /*This constructor is used when inserting data.*/
     public init(insertTagName: String) {
+        super.init()
         self.iToDoTagInsert = createToDoTagInsert(insertTagName)
         self.mode = .insert
     }
     
     /*This constructor is used by ToDoTagController when getting data from db.*/
     public init(iToDoTag: OpaquePointer?) {
+        super.init()
         self.iToDoTag = iToDoTag;
     }
     
     public init(tagId: Int32, tagName: String) {
+        super.init()
         self.iToDoTag = createToDoTag(tagName)
         self.tagId = tagId;
     }

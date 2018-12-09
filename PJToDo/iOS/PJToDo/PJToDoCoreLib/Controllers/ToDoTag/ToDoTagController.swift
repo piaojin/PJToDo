@@ -8,13 +8,13 @@
 
 import UIKit
 
-public protocol ToDoTagDelegate: NSObjectProtocol {
-    func insertTagResult(isSuccess: Bool)
-    func deleteTagResult(isSuccess: Bool)
-    func updateTagResult(isSuccess: Bool)
+@objc public protocol ToDoTagDelegate: NSObjectProtocol {
+    @objc optional func insertTagResult(isSuccess: Bool)
+    @objc optional func deleteTagResult(isSuccess: Bool)
+    @objc optional func updateTagResult(isSuccess: Bool)
     func fetchTagDataResult(isSuccess: Bool)
-    func findTagByIdResult(toDoTag: PJToDoTag?, isSuccess: Bool)
-    func findTagByNameResult(toDoTag: PJToDoTag?, isSuccess: Bool)
+    @objc optional func findTagByIdResult(toDoTag: PJToDoTag?, isSuccess: Bool)
+    @objc optional func findTagByNameResult(toDoTag: PJToDoTag?, isSuccess: Bool)
 }
 
 class ToDoTagController {
@@ -128,29 +128,29 @@ class ToDoTagController {
     //Rust回调Swift
     fileprivate func insertResult(isSuccess: Bool) {
         print("ToDoTagController: received insertResult callback with  \(isSuccess)")
-        self.delegate?.insertTagResult(isSuccess: isSuccess)
+        self.delegate?.insertTagResult?(isSuccess: isSuccess)
     }
     
     fileprivate func deleteResult(isSuccess: Bool) {
         print("ToDoTagController: received deleteResult callback with  \(isSuccess)")
-        self.delegate?.deleteTagResult(isSuccess: isSuccess)
+        self.delegate?.deleteTagResult?(isSuccess: isSuccess)
     }
     
     fileprivate func updateResult(isSuccess: Bool) {
         print("ToDoTagController: received updateResult callback with  \(isSuccess)")
-        self.delegate?.updateTagResult(isSuccess: isSuccess)
+        self.delegate?.updateTagResult?(isSuccess: isSuccess)
     }
     
     fileprivate func findByIdResult(toDoTag: OpaquePointer?, isSuccess: Bool) {
         print("ToDoTagController: received findByIdResult callback with  \(isSuccess)")
         let tempToDoTag = isSuccess ? PJToDoTag(iToDoTag: toDoTag) : nil
-        self.delegate?.findTagByIdResult(toDoTag: tempToDoTag, isSuccess: isSuccess)
+        self.delegate?.findTagByIdResult?(toDoTag: tempToDoTag, isSuccess: isSuccess)
     }
     
     fileprivate func findByNameResult(toDoTag: OpaquePointer?, isSuccess: Bool) {
         print("ToDoTagController: received findByIdResult callback with  \(isSuccess)")
         let tempToDoTag = isSuccess ? PJToDoTag(iToDoTag: toDoTag) : nil
-        self.delegate?.findTagByNameResult(toDoTag: tempToDoTag, isSuccess: isSuccess)
+        self.delegate?.findTagByNameResult?(toDoTag: tempToDoTag, isSuccess: isSuccess)
     }
     
     fileprivate func fetchDataResult(isSuccess: Bool) {

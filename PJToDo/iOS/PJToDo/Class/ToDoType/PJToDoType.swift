@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class PJToDoType {
+public class PJToDoType: NSObject {
     private(set) var iToDoTypeInsert: OpaquePointer?
     
     private(set) var iToDoType: OpaquePointer?
@@ -45,16 +45,19 @@ public class PJToDoType {
     
     /*This constructor is used when inserting data.*/
     public init(typeName: String) {
+        super.init()
         self.iToDoTypeInsert = createToDoTypeInsert(typeName)
         self.mode = .insert
     }
     
     /*This constructor is used by ToDoTypeController when getting data from db.*/
     public init(iToDoType: OpaquePointer?) {
+        super.init()
         self.iToDoType = iToDoType;
     }
     
     public init(typeId: Int32, typeName: String) {
+        super.init()
         self.iToDoType = createToDoType(typeName)
         self.typeId = typeId;
     }

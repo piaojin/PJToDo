@@ -46,9 +46,10 @@ pub struct ToDoQuery {
     // #[sql_type="Text"]
     pub create_time: String, //创建时间
     pub update_time: String, //更新时间
-    pub to_do_type_id: i32,  //标签
-    pub to_do_tag_id: i32,   //分类
-    pub state: i32,          //状态
+    pub priority: i32,
+    pub to_do_type_id: i32, //标签
+    pub to_do_tag_id: i32,  //分类
+    pub state: i32,         //状态
 }
 
 impl ToDoQuery {
@@ -61,6 +62,7 @@ impl ToDoQuery {
             remind_time: todo_query.remind_time.clone(),
             create_time: todo_query.create_time.clone(),
             update_time: todo_query.update_time.clone(),
+            priority: todo_query.priority,
             to_do_type_id: todo_query.to_do_type_id,
             to_do_tag_id: todo_query.to_do_tag_id,
             state: todo_query.state,
@@ -77,20 +79,22 @@ pub struct ToDoInsert {
     pub remind_time: String, //提醒时间
     pub create_time: String, //创建时间
     pub update_time: String, //更新时间
-    pub to_do_type_id: i32,  //标签
-    pub to_do_tag_id: i32,   //分类
-    pub state: i32,          //状态
+    pub priority: i32,
+    pub to_do_type_id: i32, //标签
+    pub to_do_tag_id: i32,  //分类
+    pub state: i32,         //状态
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
 pub struct ToDo {
     pub id: i32,
-    pub content: String,      //待办事项内容
-    pub title: String,        //待办事项标题
-    pub due_time: String,     //到期时间
-    pub remind_time: String,  //提醒时间
-    pub create_time: String,  //创建时间
-    pub update_time: String,  //更新时间
+    pub content: String,     //待办事项内容
+    pub title: String,       //待办事项标题
+    pub due_time: String,    //到期时间
+    pub remind_time: String, //提醒时间
+    pub create_time: String, //创建时间
+    pub update_time: String, //更新时间
+    pub priority: i32,
     pub to_do_type_id: i32,   //标签
     pub to_do_tag_id: i32,    //分类
     pub to_do_tag: ToDoTag,   //标签

@@ -51,6 +51,9 @@
 		7654A8A021BBF944003464E9 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7654A89F21BBF944003464E9 /* TextViewController.swift */; };
 		7654A8A221BBFD23003464E9 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7654A8A121BBFD23003464E9 /* TextCell.swift */; };
 		7654A8A421BBFD88003464E9 /* TextItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7654A8A321BBFD88003464E9 /* TextItem.swift */; };
+		7654A8A621BC185C003464E9 /* SelectComposeTypeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7654A8A521BC185C003464E9 /* SelectComposeTypeView.swift */; };
+		7654A8A821BCF0AD003464E9 /* ComposeTypeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7654A8A721BCF0AD003464E9 /* ComposeTypeItem.swift */; };
+		7654A8AA21BCF2F9003464E9 /* ComposeTypeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7654A8A921BCF2F9003464E9 /* ComposeTypeCell.swift */; };
 		766E6E2A21930BC800BC9DFE /* PJToDoMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766E6E2921930BC800BC9DFE /* PJToDoMode.swift */; };
 		76746D98216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c in Sources */ = {isa = PBXBuildFile; fileRef = 76746D97216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c */; };
 		76746D9E216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m in Sources */ = {isa = PBXBuildFile; fileRef = 76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */; };
@@ -172,6 +175,9 @@
 		7654A89F21BBF944003464E9 /* TextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
 		7654A8A121BBFD23003464E9 /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		7654A8A321BBFD88003464E9 /* TextItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextItem.swift; sourceTree = "<group>"; };
+		7654A8A521BC185C003464E9 /* SelectComposeTypeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectComposeTypeView.swift; sourceTree = "<group>"; };
+		7654A8A721BCF0AD003464E9 /* ComposeTypeItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeTypeItem.swift; sourceTree = "<group>"; };
+		7654A8A921BCF2F9003464E9 /* ComposeTypeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComposeTypeCell.swift; sourceTree = "<group>"; };
 		766E6E2921930BC800BC9DFE /* PJToDoMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoMode.swift; sourceTree = "<group>"; };
 		76746D97216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = PJToDoCoreLibPAL_C.c; sourceTree = "<group>"; };
 		76746D9C216E60A200BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C_Bridging_OC.h; sourceTree = "<group>"; };
@@ -598,6 +604,8 @@
 			isa = PBXGroup;
 			children = (
 				7693784621B3EF5900473382 /* TasksHeaderView.swift */,
+				7654A8A521BC185C003464E9 /* SelectComposeTypeView.swift */,
+				7654A8A921BCF2F9003464E9 /* ComposeTypeCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -636,6 +644,7 @@
 			isa = PBXGroup;
 			children = (
 				769769BA21B102D300AB3569 /* PJ_ToDo.swift */,
+				7654A8A721BCF0AD003464E9 /* ComposeTypeItem.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -983,6 +992,7 @@
 				769769B221B0CE9A00AB3569 /* PJBaseErrorView.swift in Sources */,
 				7654A8A221BBFD23003464E9 /* TextCell.swift in Sources */,
 				76348C182116F2F40009455C /* AppDelegate.swift in Sources */,
+				7654A8A621BC185C003464E9 /* SelectComposeTypeView.swift in Sources */,
 				7648831D21675B3500F11106 /* ServiceService.swift in Sources */,
 				7693784421B3EEF600473382 /* HomeTasksViewController.swift in Sources */,
 				769769B321B0CE9A00AB3569 /* PJBaseTableViewCell.swift in Sources */,
@@ -995,6 +1005,7 @@
 				7648831521675AC500F11106 /* MineController.swift in Sources */,
 				76488307216759AE00F11106 /* PJToDoCoreLibInit.swift in Sources */,
 				76384BFB2199A5DC00C677BB /* PJHttpRequest.swift in Sources */,
+				7654A8A821BCF0AD003464E9 /* ComposeTypeItem.swift in Sources */,
 				7648832121675B5C00F11106 /* MineService.swift in Sources */,
 				764EF2E221B8CB04000F4417 /* MineCell.swift in Sources */,
 				7648831321675AAC00F11106 /* ToDoTypeController.swift in Sources */,
@@ -1015,6 +1026,7 @@
 				766E6E2A21930BC800BC9DFE /* PJToDoMode.swift in Sources */,
 				76384BFD2199A61400C677BB /* PJHttpRequestConfig.swift in Sources */,
 				762E939721A58B1D0002FED3 /* PJCommonExtension.swift in Sources */,
+				7654A8AA21BCF2F9003464E9 /* ComposeTypeCell.swift in Sources */,
 				76BED24021B6C35100E86B59 /* PJStringExtension.swift in Sources */,
 				762502202170AA69001043AF /* PJToDoConst.swift in Sources */,
 				76B5226D21809EC200D51AE8 /* PJToDoType.swift in Sources */,

@@ -21,6 +21,7 @@ table! {
         remind_time -> Text,
         create_time -> Text,
         update_time -> Text,
+        priority -> Integer,
         to_do_type_id -> Integer,
         to_do_tag_id -> Integer,
         state -> Integer,
@@ -60,5 +61,5 @@ lazy_static! {
 
     pub static ref Table_ToDoSettings_Create_Sql: String = "CREATE TABLE IF NOT EXISTS `todosettings` (`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`remind_email`	TEXT NOT NULL DEFAULT \"\" UNIQUE, `remind_days`	INTEGER NOT NULL DEFAULT 7);".to_string();
 
-    pub static ref Table_ToDo_Create_Sql: String = "CREATE TABLE IF NOT EXISTS `todo` (`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`title`	TEXT NOT NULL DEFAULT \"\",`content`	TEXT NOT NULL DEFAULT \"\",`due_time`	TEXT NOT NULL,`remind_time`	TEXT NOT NULL,`create_time`	TEXT NOT NULL,`update_time`	TEXT NOT NULL DEFAULT \"\",`to_do_tag_id`	INTEGER NOT NULL DEFAULT -1,`to_do_type_id`	INTEGER NOT NULL DEFAULT -1,`state`	INTEGER NOT NULL DEFAULT 0,CONSTRAINT `fk_to_do_type` FOREIGN KEY(`to_do_type_id`) REFERENCES `todotype`(`id`),CONSTRAINT `fk_to_do_tag` FOREIGN KEY(`to_do_tag_id`) REFERENCES `todotag`(`id`));".to_string();
+    pub static ref Table_ToDo_Create_Sql: String = "CREATE TABLE IF NOT EXISTS `todo` (`id`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,`title`	TEXT NOT NULL DEFAULT \"\",`content`	TEXT NOT NULL DEFAULT \"\",`due_time`	TEXT NOT NULL,`remind_time`	TEXT NOT NULL,`create_time`	TEXT NOT NULL,`update_time`	TEXT NOT NULL DEFAULT \"\", `priority`	INTEGER NOT NULL DEFAULT -1,`to_do_tag_id`	INTEGER NOT NULL DEFAULT -1,`to_do_type_id`	INTEGER NOT NULL DEFAULT -1,`state`	INTEGER NOT NULL DEFAULT 0,CONSTRAINT `fk_to_do_type` FOREIGN KEY(`to_do_type_id`) REFERENCES `todotype`(`id`),CONSTRAINT `fk_to_do_tag` FOREIGN KEY(`to_do_tag_id`) REFERENCES `todotag`(`id`));".to_string();
 }

@@ -67,7 +67,7 @@ class PJInputBox: UIView {
         let sendButton = PJInputBoxButton()
         sendButton.translatesAutoresizingMaskIntoConstraints = false
         sendButton.setImage(UIImage(named: "send"), for: .normal)
-        sendButton.imageView?.contentMode = .scaleToFill
+        sendButton.imageView?.contentMode = .scaleAspectFill
         sendButton.backgroundColor = UIColor.colorWithRGB(red: 0, green: 123, blue: 249)
         sendButton.actionType = .send
         return sendButton
