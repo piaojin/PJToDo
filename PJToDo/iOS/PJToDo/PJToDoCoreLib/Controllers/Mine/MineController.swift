@@ -23,7 +23,7 @@ class MineController {
     }()
     
     private lazy var iDelegate: IPJToDoSettingsDelegate = {
-//        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
+        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
         
         /*call back for C*/
         let destroyBlock: @convention(c) (UnsafeMutableRawPointer?) -> Void = {(pointer) in
@@ -56,7 +56,7 @@ class MineController {
             }
         }
         
-        let iDelegate = IPJToDoSettingsDelegate(user: nil, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, fetch_data_result: fetchDataBackBlock)
+        let iDelegate = IPJToDoSettingsDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, fetch_data_result: fetchDataBackBlock)
         return iDelegate
     }()
     

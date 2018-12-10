@@ -25,7 +25,7 @@ class ToDoTagController {
     }()
     
     private lazy var iDelegate: IPJToDoTagDelegate = {
-//        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
+        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
         
         /*call back for C*/
         let destroyBlock: @convention(c) (UnsafeMutableRawPointer?) -> Void = {(pointer) in
@@ -70,7 +70,7 @@ class ToDoTagController {
             }
         }
         
-        let iDelegate = IPJToDoTagDelegate(user: nil, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, find_byName_result: findByNameBackBlock, fetch_data_result: fetchDataBackBlock)
+        let iDelegate = IPJToDoTagDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, find_byName_result: findByNameBackBlock, fetch_data_result: fetchDataBackBlock)
         return iDelegate
     }()
     

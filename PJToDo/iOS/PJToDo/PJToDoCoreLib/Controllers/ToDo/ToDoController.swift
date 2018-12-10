@@ -23,7 +23,7 @@ class ToDoController {
     }()
     
     private lazy var iDelegate: IPJToDoDelegate = {
-        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
+        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
         
         /*call back for C*/
         let destroyBlock: @convention(c) (UnsafeMutableRawPointer?) -> Void = {(pointer) in
@@ -74,22 +74,32 @@ class ToDoController {
     
     //插入数据成功后再更新数据到当前的PJToDo对象
     public func insert(toDo: PJ_ToDo) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         insertToDo(self.controller, toDo.iToDoInsert)
     }
     
     public func delete(toDoId: Int32) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         deleteToDo(self.controller, toDoId)
     }
     
     public func update(toDo: PJ_ToDo) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         updateToDo(self.controller, toDo.iToDoQuery)
     }
     
     public func findById(toDoId: Int32) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         findToDo(self.controller, toDoId)
     }
     
     public func fetchData() {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         fetchToDoData(self.controller)
     }
     

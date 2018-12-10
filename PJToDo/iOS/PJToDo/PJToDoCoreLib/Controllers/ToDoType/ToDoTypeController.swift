@@ -25,7 +25,7 @@ class ToDoTypeController {
     }()
     
     private lazy var iDelegate: IPJToDoTypeDelegate = {
-//        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
+        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
         
         /*call back for C*/
         let destroyBlock: @convention(c) (UnsafeMutableRawPointer?) -> Void = {(pointer) in
@@ -70,7 +70,7 @@ class ToDoTypeController {
             }
         }
         
-        let iDelegate = IPJToDoTypeDelegate(user: nil, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, find_byName_result: findByNameBackBlock, fetch_data_result: fetchDataBackBlock)
+        let iDelegate = IPJToDoTypeDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, find_byName_result: findByNameBackBlock, fetch_data_result: fetchDataBackBlock)
         return iDelegate
     }()
     
@@ -151,9 +151,6 @@ class ToDoTypeController {
         print("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
         let tempToDoType = isSuccess ? PJToDoType(iToDoType: toDoType) : nil
         self.delegate?.findTypeByNameResult?(toDoType: tempToDoType, isSuccess: isSuccess)
-//        if self.delegate?.responds(to: #selector(ToDoDelegate.findTypeByNameResult)) {
-//
-//        }
     }
     
     fileprivate func fetchDataResult(isSuccess: Bool) {
