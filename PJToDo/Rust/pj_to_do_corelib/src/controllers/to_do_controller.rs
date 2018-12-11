@@ -328,11 +328,8 @@ impl PJToDoController {
         todo
     }
 
+    /*let sections = (*(self.todos)).len(); here may crash*/
     pub unsafe fn get_count_of_sections(&self) -> usize {
-        if self.todos.is_null() {
-            ()
-        }
-
         if self.todos.is_null() {
             ()
         }

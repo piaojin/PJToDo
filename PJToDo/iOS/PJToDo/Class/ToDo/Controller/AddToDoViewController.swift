@@ -23,6 +23,30 @@ class AddToDoViewController: PJBaseViewController {
         return selectComposeTypeView
     }()
     
+    lazy var dataPicker: UIDatePicker = {
+        let dataPicker = UIDatePicker()
+        dataPicker.translatesAutoresizingMaskIntoConstraints = false
+        return dataPicker
+    }()
+    
+    lazy var doneView: UIView = {
+        let doneView = UIView()
+        doneView.isUserInteractionEnabled = true
+        doneView.frame = CGRect(x: 0, y: 0, width: 0, height: 40)
+        
+        let doneButton = UIButton()
+        doneButton.setTitle("Done", for: .normal)
+        doneButton.setTitleColor(UIColor.colorWithRGB(red: 0, green: 123, blue: 249), for: .normal)
+        doneButton.translatesAutoresizingMaskIntoConstraints = false
+        doneView.addSubview(doneButton)
+        doneButton.topAnchor.constraint(equalTo: doneView.topAnchor).isActive = true
+        doneButton.bottomAnchor.constraint(equalTo: doneView.bottomAnchor).isActive = true
+        doneButton.trailingAnchor.constraint(equalTo: doneView.trailingAnchor, constant: -5).isActive = true
+        doneButton.widthAnchor.constraint(equalToConstant: 60).isActive = true
+        doneButton.addTarget(self, action: #selector(doneAction), for: .touchUpInside)
+        return doneView
+    }()
+    
     var selectComposeTypeViewHeightConstraint: NSLayoutConstraint?
     var bottomAnchorLayoutConstraint: NSLayoutConstraint?
     
@@ -90,7 +114,7 @@ class AddToDoViewController: PJBaseViewController {
                     self?.showSelectComposeTypeView(show: true)
                     self?.tagController.fetchData()
                 case ActionType.remind:
-                    break
+                    self?.showDatePicker(show: true)
                 case ActionType.priority:
                     self?.showSelectComposeTypeView(show: true)
                     self?.handlePriorityAction()
@@ -100,6 +124,8 @@ class AddToDoViewController: PJBaseViewController {
         }
         
         priorityItems = [(0, "priority_0"), (1, "priority_1"), (2, "priority_2"), (3, "priority_3"), (4, "priority_4"), (5, "priority_5")]
+        
+        self.dataPicker.addTarget(self, action: #selector(dateChangeAction(datePicker:)), for: .valueChanged)
     }
     
     func handlePriorityAction() {
@@ -117,6 +143,27 @@ class AddToDoViewController: PJBaseViewController {
             SVProgressHUD.showError(withStatus: "Are you sure had selected Type, Tag or Priority?")
         }
         //Add ToDo
+    }
+    
+    private func showDatePicker(show: Bool) {
+        self.inputBox.textField.resignFirstResponder()
+        if show {
+            self.inputBox.textField.inputAccessoryView = self.doneView
+            self.inputBox.textField.inputView = self.dataPicker
+            self.inputBox.textField.becomeFirstResponder()
+        } else {
+            self.inputBox.textField.inputAccessoryView = nil
+            self.inputBox.textField.inputView = nil
+        }
+    }
+    
+    @objc func dateChangeAction(datePicker: UIDatePicker) {
+        
+    }
+    
+    @objc func doneAction() {
+        self.showDatePicker(show: false)
+        self.inputBox.textField.becomeFirstResponder()
     }
     
     @objc func keyboardWillShow(note: NSNotification) {
