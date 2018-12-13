@@ -53,7 +53,7 @@ pub unsafe extern "C" fn createToDoTag(tag_name: *const c_char) -> *mut ToDoTag 
 
 #[no_mangle]
 pub unsafe extern "C" fn setToDoTagName(ptr: *mut ToDoTag, tag_name: *const c_char) {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_tag = &mut *ptr;
     let tag_name = CStr::from_ptr(tag_name).to_string_lossy().into_owned();
     todo_tag.tag_name = tag_name;
@@ -61,7 +61,7 @@ pub unsafe extern "C" fn setToDoTagName(ptr: *mut ToDoTag, tag_name: *const c_ch
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoTagName(ptr: *const ToDoTag) -> *mut c_char {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_tag = &*ptr;
     let tag_name = CString::new(todo_tag.tag_name.clone()).unwrap(); //unsafe
     tag_name.into_raw()
@@ -69,21 +69,21 @@ pub unsafe extern "C" fn getToDoTagName(ptr: *const ToDoTag) -> *mut c_char {
 
 #[no_mangle]
 pub unsafe extern "C" fn setToDoTagId(ptr: *mut ToDoTag, type_id: i32) {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_tag = &mut *ptr;
     todo_tag.id = type_id;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoTagId(ptr: *mut ToDoTag) -> i32 {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_tag = &mut *ptr;
     todo_tag.id
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn setToDoTagInsertName(ptr: *mut ToDoTagInsert, tag_name: *const c_char) {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_tag = &mut *ptr;
     let tag_name = CStr::from_ptr(tag_name).to_string_lossy().into_owned();
     todo_tag.tag_name = tag_name;
@@ -91,7 +91,7 @@ pub unsafe extern "C" fn setToDoTagInsertName(ptr: *mut ToDoTagInsert, tag_name:
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoTagInsertName(ptr: *const ToDoTagInsert) -> *mut c_char {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_tag = &*ptr;
     let tag_name = CString::new(todo_tag.tag_name.clone()).unwrap(); //unsafe
     tag_name.into_raw()

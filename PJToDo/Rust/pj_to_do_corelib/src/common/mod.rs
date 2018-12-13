@@ -12,7 +12,7 @@ use libc::{c_void, c_char};
 //析构对象
 #[no_mangle]
 pub unsafe extern "C" fn free_rust_object(ptr: *mut c_void) {
-    if !ptr.is_null() {
+    if ptr != std::ptr::null_mut() {
         // Box::from_raw(ptr); //unsafe
         free_rust_any_object(ptr);
     };
@@ -21,7 +21,7 @@ pub unsafe extern "C" fn free_rust_object(ptr: *mut c_void) {
 //析构对象
 #[no_mangle]
 pub unsafe extern "C" fn free_rust_string(ptr: *mut c_char) {
-    if !ptr.is_null() {
+    if ptr != std::ptr::null_mut() {
         free_rust_any_object(ptr);
     };
 }

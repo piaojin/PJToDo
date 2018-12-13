@@ -38,7 +38,7 @@ impl Deref for IPJToDoTagDelegateWrapper {
 impl Drop for IPJToDoTagDelegateWrapper {
     fn drop(&mut self) {
         //IPJToDoTagDelegate被释放，告诉当前持有IPJToDoTagDelegate对象的所有权者做相应的处理
-        if !self.user.is_null() {
+        if self.user != std::ptr::null_mut() {
             (self.destroy)(self.user);
         }
         println!("IPJToDoTagDelegateWrapper -> drop");

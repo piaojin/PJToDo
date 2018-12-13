@@ -198,16 +198,16 @@ impl PJToDoSearchController {
     }
 
     pub unsafe fn get_count(&self) -> usize {
-        if self.todos.is_null() {
-            ()
+        if self.todos == std::ptr::null_mut() {
+            0
+        } else {
+            let count = (*(self.todos)).len();
+            count
         }
-
-        let count = (*(self.todos)).len();
-        count
     }
 
     pub unsafe fn todo_type_with_id(&self, type_id: i32) -> *const ToDoType {
-        if !self.todo_types.is_null() {
+        if self.todo_types != std::ptr::null_mut() {
             let result = (*self.todo_types)
                 .iter()
                 .find(|ref mut todo_type| todo_type.id == type_id);
@@ -224,7 +224,7 @@ impl PJToDoSearchController {
     }
 
     pub unsafe fn todo_tag_with_id(&self, tag_id: i32) -> *const ToDoTag {
-        if !self.todo_tags.is_null() {
+        if self.todo_tags != std::ptr::null_mut() {
             let result = (*self.todo_tags)
                 .iter()
                 .find(|ref mut todo_tag| todo_tag.id == tag_id);
@@ -270,9 +270,9 @@ pub unsafe extern "C" fn PJ_FindToDoByTitle(
     ptr: *mut PJToDoSearchController,
     title: *const c_char,
 ) {
-    if ptr.is_null() || title.is_null() {
+    if ptr == std::ptr::null_mut() || title == std::ptr::null_mut() {
         pj_error!("ptr or title: *mut findToDoByTitle is null!");
-        assert!(!ptr.is_null() && !title.is_null());
+        assert!(ptr != std::ptr::null_mut() && title != std::ptr::null_mut());
     }
 
     let controler = &mut *ptr;
@@ -289,9 +289,9 @@ pub unsafe extern "C" fn PJ_FindToDoLikeTitle(
     ptr: *mut PJToDoSearchController,
     title: *const c_char,
 ) {
-    if ptr.is_null() || title.is_null() {
+    if ptr == std::ptr::null_mut() || title == std::ptr::null_mut() {
         pj_error!("ptr or title: *mut findToDoLikeTitle is null!");
-        assert!(!ptr.is_null() && !title.is_null());
+        assert!(ptr != std::ptr::null_mut() && title != std::ptr::null_mut());
     }
 
     let controler = &mut *ptr;
@@ -308,9 +308,9 @@ pub unsafe extern "C" fn PJ_SearchToDoResultAtIndex(
     ptr: *const PJToDoSearchController,
     index: i32,
 ) -> *const ToDoQuery {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut todoAtIndex is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.todo_at_index(index)
@@ -318,9 +318,9 @@ pub unsafe extern "C" fn PJ_SearchToDoResultAtIndex(
 
 #[no_mangle]
 pub unsafe extern "C" fn PJ_SearchToDoResultCount(ptr: *const PJToDoSearchController) -> i32 {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut getToDoCount is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.get_count() as i32
@@ -331,9 +331,9 @@ pub unsafe extern "C" fn getSearchToDoTypeWithId(
     ptr: *const PJToDoSearchController,
     type_id: i32,
 ) -> *const ToDoType {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut todo_type_with_id is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.todo_type_with_id(type_id)
@@ -344,9 +344,9 @@ pub unsafe extern "C" fn getSearchToDoTagWithId(
     ptr: *const PJToDoSearchController,
     tag_id: i32,
 ) -> *const ToDoTag {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut todo_tag_with_id is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.todo_tag_with_id(tag_id)
@@ -354,7 +354,7 @@ pub unsafe extern "C" fn getSearchToDoTagWithId(
 
 #[no_mangle]
 pub unsafe extern "C" fn free_rust_PJToDoSearchController(ptr: *mut PJToDoSearchController) {
-    if !ptr.is_null() {
+    if ptr != std::ptr::null_mut() {
         Box::from_raw(ptr); //unsafe
     }
 }

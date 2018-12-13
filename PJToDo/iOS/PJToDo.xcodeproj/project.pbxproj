@@ -923,7 +923,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-PJToDo/Pods-PJToDo-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/CYLTabBarController/CYLTabBarController.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
@@ -940,7 +940,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PJToDo/Pods-PJToDo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		377D81D1D9FF2BF88D7228E3 /* [CP] Check Pods Manifest.lock */ = {

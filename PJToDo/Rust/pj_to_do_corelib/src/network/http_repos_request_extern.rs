@@ -22,9 +22,9 @@ pub unsafe extern "C" fn PJ_GetRepos(
     delegate: IPJToDoHttpRequestDelegate,
     repos_url: *const c_char,
 ) {
-    if repos_url.is_null() {
+    if repos_url == std::ptr::null_mut() {
         pj_error!("repos_url: *mut PJ_GetRepos is null!");
-        assert!(!repos_url.is_null());
+        assert!(repos_url != std::ptr::null_mut());
     }
 
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
@@ -40,9 +40,9 @@ pub unsafe extern "C" fn PJ_DeleteRepos(
     delegate: IPJToDoHttpRequestDelegate,
     repos_url: *const c_char,
 ) {
-    if repos_url.is_null() {
+    if repos_url == std::ptr::null_mut() {
         pj_error!("repos_url: *mut PJ_DeleteRepos is null!");
-        assert!(!repos_url.is_null());
+        assert!(repos_url != std::ptr::null_mut());
     }
 
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
@@ -61,9 +61,9 @@ pub unsafe extern "C" fn PJ_CreateFile(
     content: *const c_char,
     sha: *const c_char,
 ) {
-    if path.is_null() || message.is_null() || content.is_null() || sha.is_null() {
+    if path == std::ptr::null_mut() || message == std::ptr::null_mut() || content == std::ptr::null_mut() || sha == std::ptr::null_mut() {
         pj_error!("path or message or content or sha: *mut PJ_CreateFile is null!");
-        assert!(!path.is_null() && !message.is_null() && !content.is_null() && !sha.is_null());
+        assert!(path != std::ptr::null_mut() && message != std::ptr::null_mut() && content != std::ptr::null_mut() && sha != std::ptr::null_mut());
     }
 
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
@@ -82,9 +82,9 @@ pub unsafe extern "C" fn PJ_UpdateFile(
     content: *const c_char,
     sha: *const c_char,
 ) {
-    if path.is_null() || message.is_null() || content.is_null() || sha.is_null() {
+    if path == std::ptr::null_mut() || message == std::ptr::null_mut() || content == std::ptr::null_mut() || sha == std::ptr::null_mut() {
         pj_error!("path or message or content or sha: *mut PJ_UpdateFile is null!");
-        assert!(!path.is_null() && !message.is_null() && !content.is_null() && !sha.is_null());
+        assert!(path != std::ptr::null_mut() && message != std::ptr::null_mut() && content != std::ptr::null_mut() && sha != std::ptr::null_mut());
     }
 
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
@@ -103,9 +103,9 @@ pub unsafe extern "C" fn PJ_DeleteFile(
     content: *const c_char,
     sha: *const c_char,
 ) {
-    if path.is_null() || message.is_null() || content.is_null() || sha.is_null() {
+    if path == std::ptr::null_mut() || message == std::ptr::null_mut() || content == std::ptr::null_mut() || sha == std::ptr::null_mut() {
         pj_error!("path or message or content or sha: *mut PJ_UpdateFile is null!");
-        assert!(!path.is_null() && !message.is_null() && !content.is_null() && !sha.is_null());
+        assert!(path != std::ptr::null_mut() && message != std::ptr::null_mut() && content != std::ptr::null_mut() && sha != std::ptr::null_mut());
     }
 
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);

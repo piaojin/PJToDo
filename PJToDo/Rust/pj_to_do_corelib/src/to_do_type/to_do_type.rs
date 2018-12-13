@@ -63,7 +63,7 @@ pub unsafe extern "C" fn createToDoType(type_name: *const c_char) -> *mut ToDoTy
 
 #[no_mangle]
 pub unsafe extern "C" fn setToDoTypeName(ptr: *mut ToDoType, type_name: *const c_char) {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_type = &mut *ptr;
     let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned();
     todo_type.type_name = type_name;
@@ -71,7 +71,7 @@ pub unsafe extern "C" fn setToDoTypeName(ptr: *mut ToDoType, type_name: *const c
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoTypeName(ptr: *const ToDoType) -> *mut c_char {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_type = &*ptr;
     let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe
     type_name.into_raw()
@@ -79,21 +79,21 @@ pub unsafe extern "C" fn getToDoTypeName(ptr: *const ToDoType) -> *mut c_char {
 
 #[no_mangle]
 pub unsafe extern "C" fn setToDoTypeId(ptr: *mut ToDoType, type_id: i32) {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_type = &mut *ptr;
     todo_type.id = type_id;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoTypeId(ptr: *mut ToDoType) -> i32 {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_type = &mut *ptr;
     todo_type.id
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn setToDoTypeInsertName(ptr: *mut ToDoTypeInsert, type_name: *const c_char) {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_type = &mut *ptr;
     let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned();
     todo_type.type_name = type_name;
@@ -101,7 +101,7 @@ pub unsafe extern "C" fn setToDoTypeInsertName(ptr: *mut ToDoTypeInsert, type_na
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoTypeInsertName(ptr: *const ToDoTypeInsert) -> *mut c_char {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_type = &*ptr;
     let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe
     type_name.into_raw()

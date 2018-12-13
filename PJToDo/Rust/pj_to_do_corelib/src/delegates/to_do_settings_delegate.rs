@@ -34,7 +34,7 @@ impl Deref for IPJToDoSettingsDelegateWrapper {
 impl Drop for IPJToDoSettingsDelegateWrapper {
     fn drop(&mut self) {
         //IPJToDoSettingsDelegate被释放，告诉当前持有IPJToDoSettingsDelegate对象的所有权者做相应的处理
-        if !self.user.is_null() {
+        if self.user != std::ptr::null_mut() {
             (self.destroy)(self.user);
         }
         println!("IPJToDoSettingsDelegateWrapper -> drop");

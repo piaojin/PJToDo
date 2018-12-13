@@ -64,7 +64,7 @@ impl PJToDoSettingsController {
      */
     pub unsafe fn insert_todo_settings(&mut self, to_do_settings: *mut ToDoSettingsInsert) {
         pj_info!("insert_todo_settings: {}", (*to_do_settings).remind_email);
-        assert!(!to_do_settings.is_null());
+        assert!(to_do_settings != std::ptr::null_mut());
         let i_delegate =
             IPJToDoSettingsDelegateWrapper((&self.delegate) as *const IPJToDoSettingsDelegate);
 
@@ -107,7 +107,7 @@ impl PJToDoSettingsController {
     }
 
     pub unsafe fn update_todo_settings(&self, to_do_settings: *const ToDoSettings) {
-        assert!(!to_do_settings.is_null());
+        assert!(to_do_settings != std::ptr::null_mut());
 
         let i_delegate =
             IPJToDoSettingsDelegateWrapper((&self.delegate) as *const IPJToDoSettingsDelegate);
@@ -158,12 +158,12 @@ impl PJToDoSettingsController {
     }
 
     pub unsafe fn get_count(&self) -> usize {
-        if self.todo_settings.is_null() {
-            ()
+        if self.todo_settings == std::ptr::null_mut() {
+            0
+        } else {
+            let count = (*(self.todo_settings)).len();
+            count
         }
-
-        let count = (*(self.todo_settings)).len();
-        count
     }
 }
 
@@ -194,9 +194,9 @@ pub unsafe extern "C" fn insertToDoSettings(
     ptr: *mut PJToDoSettingsController,
     toDoSettings: *mut ToDoSettingsInsert,
 ) {
-    if ptr.is_null() || toDoSettings.is_null() {
+    if ptr == std::ptr::null_mut() || toDoSettings == std::ptr::null_mut() {
         pj_error!("ptr or toDoSettings: *mut insertToDoSettings is null!");
-        assert!(!ptr.is_null() && !toDoSettings.is_null());
+        assert!(ptr != std::ptr::null_mut() && toDoSettings != std::ptr::null_mut());
     }
 
     let controler = &mut *ptr;
@@ -213,9 +213,9 @@ pub unsafe extern "C" fn deleteToDoSettings(
     ptr: *mut PJToDoSettingsController,
     toDoSettingsId: i32,
 ) {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr: *mut deleteToDoSettings is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
 
     let controler = &mut *ptr;
@@ -231,9 +231,9 @@ pub unsafe extern "C" fn updateToDoSettings(
     ptr: *mut PJToDoSettingsController,
     toDoSettings: *const ToDoSettings,
 ) {
-    if ptr.is_null() || toDoSettings.is_null() {
+    if ptr == std::ptr::null_mut() || toDoSettings == std::ptr::null_mut() {
         pj_error!("ptr or toDoSettings: *mut updateToDoSettings is null!");
-        assert!(!ptr.is_null() && !toDoSettings.is_null());
+        assert!(ptr != std::ptr::null_mut() && toDoSettings != std::ptr::null_mut());
     }
 
     let controler = &mut *ptr;
@@ -247,9 +247,9 @@ pub unsafe extern "C" fn updateToDoSettings(
 
 #[no_mangle]
 pub unsafe extern "C" fn fetchToDoSettingsData(ptr: *mut PJToDoSettingsController) {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDoSettings: *mut fetchData is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &mut *ptr;
     controler.fetch_data()
@@ -260,9 +260,9 @@ pub unsafe extern "C" fn todoSettingsAtIndex(
     ptr: *const PJToDoSettingsController,
     index: i32,
 ) -> *const ToDoSettings {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDoSettings: *mut todoSettingsAtIndex is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.todo_settings_at_index(index)
@@ -270,9 +270,9 @@ pub unsafe extern "C" fn todoSettingsAtIndex(
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoSettingsCount(ptr: *const PJToDoSettingsController) -> i32 {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDoSettings: *mut getToDoSettingsCount is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.get_count() as i32
@@ -280,7 +280,7 @@ pub unsafe extern "C" fn getToDoSettingsCount(ptr: *const PJToDoSettingsControll
 
 #[no_mangle]
 pub unsafe extern "C" fn free_rust_PJToDoSettingsController(ptr: *mut PJToDoSettingsController) {
-    if !ptr.is_null() {
+    if ptr != std::ptr::null_mut() {
         Box::from_raw(ptr); //unsafe
     };
 }

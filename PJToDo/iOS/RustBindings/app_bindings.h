@@ -7,7 +7,7 @@
 #ifndef app_bindings_h
 #define app_bindings_h
 
-/* Generated with cbindgen:0.6.3 */
+/* Generated with cbindgen:0.6.7 */
 
 /* Generated with cbindgen */
 

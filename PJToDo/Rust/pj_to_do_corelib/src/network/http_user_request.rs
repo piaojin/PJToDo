@@ -125,9 +125,9 @@ pub unsafe extern "C" fn PJ_Login(
     name: *const c_char,
     password: *const c_char,
 ) {
-    if name.is_null() || password.is_null() {
+    if name == std::ptr::null_mut() || password == std::ptr::null_mut() {
         pj_error!("name or password: *mut PJ_Login is null!");
-        assert!(!name.is_null() && !password.is_null());
+        assert!(name != std::ptr::null_mut() && password != std::ptr::null_mut());
     }
 
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
@@ -170,9 +170,9 @@ pub unsafe extern "C" fn PJ_Authorizations(
     delegate: IPJToDoHttpRequestDelegate,
     authorization: *const c_char,
 ) {
-    if authorization.is_null() {
+    if authorization == std::ptr::null_mut() {
         pj_error!("authorization: *mut PJ_Authorizations is null!");
-        assert!(!authorization.is_null());
+        assert!(authorization != std::ptr::null_mut());
     }
 
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);

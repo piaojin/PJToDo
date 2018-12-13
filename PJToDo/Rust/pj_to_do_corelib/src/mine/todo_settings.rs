@@ -68,7 +68,7 @@ pub unsafe extern "C" fn setToDoSettingsRemindEmail(
     ptr: *mut ToDoSettings,
     remind_email: *const c_char,
 ) {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_settins = &mut *ptr;
     let remind_email = CStr::from_ptr(remind_email).to_string_lossy().into_owned();
     todo_settins.remind_email = remind_email;
@@ -76,7 +76,7 @@ pub unsafe extern "C" fn setToDoSettingsRemindEmail(
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoSettingsRemindEmail(ptr: *const ToDoSettings) -> *mut c_char {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_settins = &*ptr;
     let remind_email = CString::new(todo_settins.remind_email.clone()).unwrap(); //unsafe
     remind_email.into_raw()
@@ -84,28 +84,28 @@ pub unsafe extern "C" fn getToDoSettingsRemindEmail(ptr: *const ToDoSettings) ->
 
 #[no_mangle]
 pub unsafe extern "C" fn setToDoSettingsId(ptr: *mut ToDoSettings, settins_id: i32) {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_settins = &mut *ptr;
     todo_settins.id = settins_id;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoSettingsId(ptr: *mut ToDoSettings) -> i32 {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_settins = &mut *ptr;
     todo_settins.id
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn setToDoSettingsRemindDays(ptr: *mut ToDoSettings, remind_days: i32) {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_settins = &mut *ptr;
     todo_settins.remind_days = remind_days;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoSettingsRemindDays(ptr: *mut ToDoSettings) -> i32 {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_settins = &mut *ptr;
     todo_settins.remind_days
 }
@@ -115,7 +115,7 @@ pub unsafe extern "C" fn setToDoSettingsInsertRemindEmail(
     ptr: *mut ToDoSettingsInsert,
     remind_email: *const c_char,
 ) {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_settins = &mut *ptr;
     let remind_email = CStr::from_ptr(remind_email).to_string_lossy().into_owned();
     todo_settins.remind_email = remind_email;
@@ -125,7 +125,7 @@ pub unsafe extern "C" fn setToDoSettingsInsertRemindEmail(
 pub unsafe extern "C" fn getToDoSettingsInsertRemindEmail(
     ptr: *const ToDoSettingsInsert,
 ) -> *mut c_char {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_settins = &*ptr;
     let remind_email = CString::new(todo_settins.remind_email.clone()).unwrap(); //unsafe
     remind_email.into_raw()
@@ -136,14 +136,14 @@ pub unsafe extern "C" fn setToDoSettingsInsertRemindDays(
     ptr: *mut ToDoSettingsInsert,
     remind_days: i32,
 ) {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_settins = &mut *ptr;
     todo_settins.remind_days = remind_days;
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoSettingsInsertRemindDays(ptr: *mut ToDoSettingsInsert) -> i32 {
-    assert!(!ptr.is_null());
+    assert!(ptr != std::ptr::null_mut());
     let todo_settins = &mut *ptr;
     todo_settins.remind_days
 }

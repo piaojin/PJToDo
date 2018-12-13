@@ -83,7 +83,7 @@ impl PJToDoController {
 
     pub unsafe fn insert_todo(&mut self, to_do: *mut ToDoInsert) {
         pj_info!("insert_todo: {}", (*to_do).title);
-        assert!(!to_do.is_null());
+        assert!(to_do != std::ptr::null_mut());
         let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
 
         let result = insert_todo(&(&(*self.todo_service_controller)).todo_service, &(*to_do));
@@ -118,7 +118,7 @@ impl PJToDoController {
     }
 
     pub unsafe fn update_todo(&self, to_do: *const ToDoQuery) {
-        assert!(!to_do.is_null());
+        assert!(to_do != std::ptr::null_mut());
 
         let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
 
@@ -330,29 +330,33 @@ impl PJToDoController {
 
     /*let sections = (*(self.todos)).len(); here may crash*/
     pub unsafe fn get_count_of_sections(&self) -> usize {
-        if self.todos.is_null() {
-            ()
+        let is_null: bool = self.todos == std::ptr::null_mut();
+        println!("self.todos == null: {}", is_null);
+        if is_null {
+            0
+        } else {
+            /*let sections = (*(self.todos)).len(); here may crash*/
+            let sections = (*(self.todos)).len();
+            sections
         }
-
-        let sections = (*(self.todos)).len();
-        sections
     }
 
     pub unsafe fn get_count_at_section(&self, section: i32) -> usize {
-        if self.todos.is_null() {
-            ()
+        if self.todos == std::ptr::null_mut() {
+            0
+        } else {
+            let section: usize = section as usize;
+            /*let sections = (*(self.todos)).len(); here may crash*/
+            assert!(section <= self.get_count_of_sections());
+            
+            let todos = &(*(self.todos))[section];
+            let count = todos.len();
+            count
         }
-
-        let section: usize = section as usize;
-        assert!(section <= self.get_count_of_sections());
-
-        let todos = &(*(self.todos))[section];
-        let count = todos.len();
-        count
     }
 
     pub unsafe fn todo_type_with_id(&self, type_id: i32) -> *const ToDoType {
-        if !self.todo_types.is_null() {
+        if self.todo_types != std::ptr::null_mut() {
             let result = (*self.todo_types)
                 .iter()
                 .find(|ref mut todo_type| todo_type.id == type_id);
@@ -369,7 +373,7 @@ impl PJToDoController {
     }
 
     pub unsafe fn todo_tag_with_id(&self, tag_id: i32) -> *const ToDoTag {
-        if !self.todo_tags.is_null() {
+        if self.todo_tags != std::ptr::null_mut() {
             let result = (*self.todo_tags)
                 .iter()
                 .find(|ref mut todo_tag| todo_tag.id == tag_id);
@@ -411,9 +415,9 @@ pub extern "C" fn createPJToDoController(delegate: IPJToDoDelegate) -> *mut PJTo
 
 #[no_mangle]
 pub unsafe extern "C" fn insertToDo(ptr: *mut PJToDoController, toDo: *mut ToDoInsert) {
-    if ptr.is_null() || toDo.is_null() {
+    if ptr == std::ptr::null_mut() || toDo == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut insertToDo is null!");
-        assert!(!ptr.is_null() && !toDo.is_null());
+        assert!(ptr != std::ptr::null_mut() && toDo != std::ptr::null_mut());
     }
 
     let controler = &mut *ptr;
@@ -427,9 +431,9 @@ pub unsafe extern "C" fn insertToDo(ptr: *mut PJToDoController, toDo: *mut ToDoI
 
 #[no_mangle]
 pub unsafe extern "C" fn deleteToDo(ptr: *mut PJToDoController, toDoId: i32) {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr: *mut deleteToDo is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
 
     let controler = &mut *ptr;
@@ -442,9 +446,9 @@ pub unsafe extern "C" fn deleteToDo(ptr: *mut PJToDoController, toDoId: i32) {
 
 #[no_mangle]
 pub unsafe extern "C" fn updateToDo(ptr: *mut PJToDoController, toDo: *const ToDoQuery) {
-    if ptr.is_null() || toDo.is_null() {
+    if ptr == std::ptr::null_mut() || toDo == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut updateToDo is null!");
-        assert!(!ptr.is_null() && !toDo.is_null());
+        assert!(ptr != std::ptr::null_mut() && toDo != std::ptr::null_mut());
     }
 
     let controler = &mut *ptr;
@@ -458,9 +462,9 @@ pub unsafe extern "C" fn updateToDo(ptr: *mut PJToDoController, toDo: *const ToD
 
 #[no_mangle]
 pub unsafe extern "C" fn findToDo(ptr: *mut PJToDoController, toDoId: i32) {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr: *mut findToDo is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
 
     let controler = &mut *ptr;
@@ -473,9 +477,9 @@ pub unsafe extern "C" fn findToDo(ptr: *mut PJToDoController, toDoId: i32) {
 
 #[no_mangle]
 pub unsafe extern "C" fn fetchToDoData(ptr: *mut PJToDoController) {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr : *mut fetchData is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
 
     let controler = &mut *ptr;
@@ -491,9 +495,9 @@ pub unsafe extern "C" fn todoTitleAtSection(
     ptr: *const PJToDoController,
     section: i32,
 ) -> *mut c_char {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr : *const todo_title_at_section is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.todo_title_at_section(section)
@@ -505,9 +509,9 @@ pub unsafe extern "C" fn todoAtSection(
     section: i32,
     index: i32,
 ) -> *const ToDoQuery {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut todoAtIndex is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.todo_at_section(section, index)
@@ -515,9 +519,9 @@ pub unsafe extern "C" fn todoAtSection(
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoCountOfSections(ptr: *const PJToDoController) -> i32 {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut getToDoCount is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.get_count_of_sections() as i32
@@ -525,9 +529,9 @@ pub unsafe extern "C" fn getToDoCountOfSections(ptr: *const PJToDoController) ->
 
 #[no_mangle]
 pub unsafe extern "C" fn getToDoCountsAtSection(ptr: *const PJToDoController, section: i32) -> i32 {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut getToDoCount is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.get_count_at_section(section) as i32
@@ -538,9 +542,9 @@ pub unsafe extern "C" fn toDoTypeWithId(
     ptr: *const PJToDoController,
     type_id: i32,
 ) -> *const ToDoType {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut todo_type_with_id is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.todo_type_with_id(type_id)
@@ -551,9 +555,9 @@ pub unsafe extern "C" fn toDoTagWithId(
     ptr: *const PJToDoController,
     tag_id: i32,
 ) -> *const ToDoTag {
-    if ptr.is_null() {
+    if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut todo_tag_with_id is null!");
-        assert!(!ptr.is_null());
+        assert!(ptr != std::ptr::null_mut());
     }
     let controler = &*ptr;
     controler.todo_tag_with_id(tag_id)
@@ -561,7 +565,7 @@ pub unsafe extern "C" fn toDoTagWithId(
 
 #[no_mangle]
 pub unsafe extern "C" fn free_rust_PJToDoController(ptr: *mut PJToDoController) {
-    if !ptr.is_null() {
+    if ptr != std::ptr::null_mut() {
         Box::from_raw(ptr); //unsafe
     }
 }
