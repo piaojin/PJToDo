@@ -328,14 +328,12 @@ impl PJToDoController {
         todo
     }
 
-    /*let sections = (*(self.todos)).len(); here may crash*/
     pub unsafe fn get_count_of_sections(&self) -> usize {
         let is_null: bool = self.todos == std::ptr::null_mut();
         println!("self.todos == null: {}", is_null);
         if is_null {
             0
         } else {
-            /*let sections = (*(self.todos)).len(); here may crash*/
             let sections = (*(self.todos)).len();
             sections
         }

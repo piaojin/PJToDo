@@ -23,6 +23,12 @@ class AddToDoViewController: PJBaseViewController {
         return selectComposeTypeView
     }()
     
+    lazy var selectedComposeView: SelectedComposeView = {
+        let selectedComposeView = SelectedComposeView()
+        selectedComposeView.translatesAutoresizingMaskIntoConstraints = false
+        return selectedComposeView
+    }()
+    
     lazy var dataPicker: UIDatePicker = {
         let dataPicker = UIDatePicker()
         dataPicker.translatesAutoresizingMaskIntoConstraints = false
@@ -48,9 +54,11 @@ class AddToDoViewController: PJBaseViewController {
     }()
     
     var selectComposeTypeViewHeightConstraint: NSLayoutConstraint?
+    var selectedComposeViewHeightConstraint: NSLayoutConstraint?
     var bottomAnchorLayoutConstraint: NSLayoutConstraint?
     
     static let selectComposeTypeViewHeight: CGFloat = 130
+    static let selectedComposeViewHeight: CGFloat = 60
     
     lazy var typeController: ToDoTypeController = {
         let controller = ToDoTypeController(delegate: self)
@@ -90,12 +98,20 @@ class AddToDoViewController: PJBaseViewController {
             self.bottomAnchorLayoutConstraint?.isActive = true
         }
         
+        self.view.addSubview(self.selectedComposeView)
+        self.selectedComposeView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
+        self.selectedComposeView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
+        self.selectedComposeView.bottomAnchor.constraint(equalTo: self.inputBox.topAnchor).isActive = true
+        self.selectedComposeViewHeightConstraint = self.selectedComposeView.heightAnchor.constraint(equalToConstant: 0)
+        self.selectedComposeViewHeightConstraint?.isActive = true
+        
         self.view.addSubview(self.selectComposeTypeView)
         self.selectComposeTypeView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         self.selectComposeTypeView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
-        self.selectComposeTypeView.bottomAnchor.constraint(equalTo: self.inputBox.topAnchor).isActive = true
+        self.selectComposeTypeView.bottomAnchor.constraint(equalTo: self.selectedComposeView.topAnchor).isActive = true
         self.selectComposeTypeViewHeightConstraint = self.selectComposeTypeView.heightAnchor.constraint(equalToConstant: 0)
         self.selectComposeTypeViewHeightConstraint?.isActive = true
+        self.selectedComposeViewHeightConstraint?.constant = AddToDoViewController.selectedComposeViewHeight
     }
     
     private func initData() {

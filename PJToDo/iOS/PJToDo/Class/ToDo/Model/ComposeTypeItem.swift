@@ -14,12 +14,13 @@ enum ComposeType {
     case priority
 }
 
-class ComposeTypeItem {
+class ComposeTypeItem: NSObject {
     var id: Int = -1
     var title: String = ""
     var composeType: ComposeType = .type
     
     init(id: Int, title: String, composeType: ComposeType) {
+        super.init()
         self.id = id
         self.title = title
         self.composeType = composeType
