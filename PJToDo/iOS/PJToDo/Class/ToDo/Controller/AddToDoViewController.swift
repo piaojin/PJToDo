@@ -72,10 +72,6 @@ class AddToDoViewController: PJBaseViewController {
     
     var priorityItems: [(Int, String)] = []
     
-    var typeCompose: ComposeTypeItem = ComposeTypeItem(id: -1, title: "", composeType: .type)
-    var tagCompose: ComposeTypeItem = ComposeTypeItem(id: -1, title: "", composeType: .tag)
-    var priorityCompose: ComposeTypeItem = ComposeTypeItem(id: -1, title: "", composeType: .priority)
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initView()
@@ -104,6 +100,7 @@ class AddToDoViewController: PJBaseViewController {
         self.selectedComposeView.bottomAnchor.constraint(equalTo: self.inputBox.topAnchor).isActive = true
         self.selectedComposeViewHeightConstraint = self.selectedComposeView.heightAnchor.constraint(equalToConstant: 0)
         self.selectedComposeViewHeightConstraint?.isActive = true
+        self.selectedComposeViewHeightConstraint?.constant = 0
         
         self.view.addSubview(self.selectComposeTypeView)
         self.selectComposeTypeView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
@@ -111,7 +108,7 @@ class AddToDoViewController: PJBaseViewController {
         self.selectComposeTypeView.bottomAnchor.constraint(equalTo: self.selectedComposeView.topAnchor).isActive = true
         self.selectComposeTypeViewHeightConstraint = self.selectComposeTypeView.heightAnchor.constraint(equalToConstant: 0)
         self.selectComposeTypeViewHeightConstraint?.isActive = true
-        self.selectedComposeViewHeightConstraint?.constant = AddToDoViewController.selectedComposeViewHeight
+        self.selectComposeTypeViewHeightConstraint?.constant = 0
     }
     
     private func initData() {
@@ -142,12 +139,16 @@ class AddToDoViewController: PJBaseViewController {
         priorityItems = [(0, "priority_0"), (1, "priority_1"), (2, "priority_2"), (3, "priority_3"), (4, "priority_4"), (5, "priority_5")]
         
         self.dataPicker.addTarget(self, action: #selector(dateChangeAction(datePicker:)), for: .valueChanged)
+        
+        self.selectedComposeView.deleteBlock = { [weak self] (_, _) in
+            self?.showSelectedComposeView(show: self?.selectedComposeView.composeItems.count != 0)
+        }
     }
     
     func handlePriorityAction() {
         var items: [ComposeTypeItem] = []
         for (id, title) in priorityItems {
-            let item = ComposeTypeItem(id: id, title: title, composeType: .priority)
+            let item = ComposeTypeItem(id: id, title: title, imageNamed: "white_priority", composeType: .priority)
             items.append(item)
         }
         self.selectComposeTypeView.composeTypeItems = items
@@ -155,7 +156,7 @@ class AddToDoViewController: PJBaseViewController {
     }
     
     func addToDo() {
-        if self.typeCompose.id == -1 || self.tagCompose.id == -1 || self.priorityCompose.id == -1 {
+        if self.selectedComposeView.composeItems.count <= 4 {
             SVProgressHUD.showError(withStatus: "Are you sure had selected Type, Tag or Priority?")
         }
         //Add ToDo
@@ -218,20 +219,28 @@ class AddToDoViewController: PJBaseViewController {
             }
         }
     }
+    
+    private func showSelectedComposeView(show: Bool) {
+        UIView.animate(withDuration: 0.3) {
+            if show {
+                if let height = self.selectedComposeViewHeightConstraint?.constant {
+                    if height <= 0 {
+                        self.selectedComposeViewHeightConstraint?.constant = AddToDoViewController.selectedComposeViewHeight
+                    }
+                }
+            } else {
+                self.selectedComposeViewHeightConstraint?.constant = 0
+            }
+        }
+    }
 }
 
 extension AddToDoViewController: SelectComposeTypeViewDelegate {
     func didSelectItem(selectComposeTypeView: SelectComposeTypeView, composeTypeItem: ComposeTypeItem) {
-        switch composeTypeItem.composeType {
-            case .type:
-                self.typeCompose = composeTypeItem
-            case .tag:
-                self.tagCompose = composeTypeItem
-            case .priority:
-                self.priorityCompose = composeTypeItem
-        }
+        self.selectedComposeView.insertSelectedComposeItem(item: composeTypeItem)
         UIView.animate(withDuration: 0.3) {
             self.selectComposeTypeViewHeightConstraint?.constant = 0
+            self.showSelectedComposeView(show: true)
         }
     }
 }
@@ -243,7 +252,7 @@ extension AddToDoViewController: ToDoTagDelegate {
             var items: [ComposeTypeItem] = []
             for index in 0..<self.tagController.getCount() {
                 let tagItem = self.tagController.toDoTagAt(index: Int32(index))
-                let item = ComposeTypeItem(id: Int(tagItem.tagId), title: tagItem.tagName, composeType: .tag)
+                let item = ComposeTypeItem(id: Int(tagItem.tagId), title: tagItem.tagName, imageNamed: "white_tag", composeType: .tag)
                 items.append(item)
             }
             self.selectComposeTypeView.composeTypeItems = items
@@ -262,7 +271,7 @@ extension AddToDoViewController: ToDoTypeDelegate {
             var items: [ComposeTypeItem] = []
             for index in 0..<self.typeController.getCount() {
                 let typeItem = self.typeController.toDoTypeAt(index: Int32(index))
-                let item = ComposeTypeItem(id: Int(typeItem.typeId), title: typeItem.typeName, composeType: .type)
+                let item = ComposeTypeItem(id: Int(typeItem.typeId), title: typeItem.typeName, imageNamed: "white_type", composeType: .type)
                 items.append(item)
             }
             self.selectComposeTypeView.composeTypeItems = items

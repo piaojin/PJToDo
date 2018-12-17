@@ -17,12 +17,14 @@ enum ComposeType {
 class ComposeTypeItem: NSObject {
     var id: Int = -1
     var title: String = ""
+    var imageNamed: String = ""
     var composeType: ComposeType = .type
     
-    init(id: Int, title: String, composeType: ComposeType) {
+    init(id: Int, title: String, imageNamed: String , composeType: ComposeType) {
         super.init()
         self.id = id
         self.title = title
+        self.imageNamed = imageNamed
         self.composeType = composeType
     }
 }

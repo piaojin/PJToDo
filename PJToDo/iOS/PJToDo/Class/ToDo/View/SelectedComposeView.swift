@@ -8,36 +8,31 @@
 
 import UIKit
 
-typealias SelectedComposeViewDidSelectBlock = (SelectedComposeView, ComposeTypeItem) -> Void
+typealias SelectedComposeViewDeleteBlock = (SelectedComposeView, ComposeTypeItem) -> Void
 
 class SelectedComposeView: UIView {
-
-    var selectedComposeViewDidSelectBlock: SelectedComposeViewDidSelectBlock?
     
-    lazy var typeImageViewTitleView: ImageViewTitleView = {
-        return self.createImageViewTitleView(imageName: "white_type")
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 10
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
+       let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.backgroundColor = .white
+        return collectionView
     }()
     
-    lazy var tagImageViewTitleView: ImageViewTitleView = {
-        return self.createImageViewTitleView(imageName: "white_tag")
-    }()
+    var composeItems: [ComposeTypeItem] = []
     
-    lazy var calendarImageViewTitleView: ImageViewTitleView = {
-        return self.createImageViewTitleView(imageName: "white_calendar")
-    }()
+    static let SelectedComposeCellId = "SelectedComposeCellId"
     
-    lazy var priorityImageViewTitleView: ImageViewTitleView = {
-        return self.createImageViewTitleView(imageName: "priority_5")
-    }()
-    
-    var typeWidthConstraint: NSLayoutConstraint?
-    var tagWidthConstraint: NSLayoutConstraint?
-    var calendarWidthConstraint: NSLayoutConstraint?
-    var priorityWidthConstraint: NSLayoutConstraint?
+    var deleteBlock: SelectedComposeViewDeleteBlock?
     
     override init(frame: CGRect) {
         super.init(frame: .zero)
         self.initView()
+        self.initData()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,48 +43,68 @@ class SelectedComposeView: UIView {
         self.init(frame: .zero)
     }
     
-    private func createImageViewTitleView(imageName: String) -> ImageViewTitleView {
-        let imageViewTitleView = ImageViewTitleView()
-        imageViewTitleView.setImage(imageName: imageName)
-        imageViewTitleView.translatesAutoresizingMaskIntoConstraints = false
-        imageViewTitleView.imageViewTitleViewDeleteBlock = { [weak self] (_, composeTypeItem) in
-            self?.deleteAction(composeTypeItem: composeTypeItem)
-        }
-        return imageViewTitleView
-    }
-    
     private func initView() {
         self.backgroundColor = .white
-        self.addSubview(self.typeImageViewTitleView)
-        self.typeImageViewTitleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
-        self.typeImageViewTitleView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
-        self.typeImageViewTitleView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 5).isActive = true
-        self.typeWidthConstraint = self.typeImageViewTitleView.widthAnchor.constraint(lessThanOrEqualToConstant: 200)
-        self.typeWidthConstraint?.isActive = true
-        
-        self.addSubview(self.tagImageViewTitleView)
-        self.tagImageViewTitleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
-        self.tagImageViewTitleView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
-        self.tagImageViewTitleView.leadingAnchor.constraint(equalTo: self.typeImageViewTitleView.trailingAnchor, constant: 10).isActive = true
-        self.tagWidthConstraint = self.tagImageViewTitleView.widthAnchor.constraint(lessThanOrEqualToConstant: 200)
-        self.tagWidthConstraint?.isActive = true
-        
-        self.addSubview(self.calendarImageViewTitleView)
-        self.calendarImageViewTitleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
-        self.calendarImageViewTitleView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
-        self.calendarImageViewTitleView.leadingAnchor.constraint(equalTo: self.tagImageViewTitleView.trailingAnchor, constant: 10).isActive = true
-        self.calendarWidthConstraint = self.calendarImageViewTitleView.widthAnchor.constraint(lessThanOrEqualToConstant: 200)
-        self.calendarWidthConstraint?.isActive = true
-        
-        self.addSubview(self.priorityImageViewTitleView)
-        self.priorityImageViewTitleView.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
-        self.priorityImageViewTitleView.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
-        self.priorityImageViewTitleView.leadingAnchor.constraint(equalTo: self.calendarImageViewTitleView.trailingAnchor, constant: 10).isActive = true
-        self.priorityWidthConstraint = self.priorityImageViewTitleView.widthAnchor.constraint(lessThanOrEqualToConstant: 60)
-        self.priorityWidthConstraint?.isActive = true
+        self.addSubview(self.collectionView)
+        self.collectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        self.collectionView.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        self.collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        self.collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
     }
+    
+    private func initData() {
+        self.collectionView.register(SelectedComposeCell.classForCoder(), forCellWithReuseIdentifier: SelectedComposeView.SelectedComposeCellId)
+        self.collectionView.delegate = self
+        self.collectionView.dataSource = self
+    }
+    
+    func insertSelectedComposeItem(item: ComposeTypeItem) {
+        
+        if self.composeItems.count == 0 {
+            self.composeItems.append(item)
+        } else {
+            if let index = self.composeItems.firstIndex(where: { (tempItem) -> Bool in
+                tempItem.composeType == item.composeType
+            }) {
+                self.composeItems[index] = item
+            } else {
+                self.composeItems.append(item)
+            }
+        }
+        
+        self.collectionView.reloadData()
+    }
+    
+    private func deleteItem(at index: Int) {
+        self.composeItems.remove(at: index)
+        self.collectionView.reloadData()
+    }
+}
 
-    @objc private func deleteAction(composeTypeItem: ComposeTypeItem) {
-        self.selectedComposeViewDidSelectBlock?(self, composeTypeItem)
+extension SelectedComposeView: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return self.composeItems.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SelectedComposeView.SelectedComposeCellId, for: indexPath)
+        if let tempCell = cell as? SelectedComposeCell {
+            tempCell.composeTypeItem = self.composeItems[indexPath.item]
+            tempCell.selectedComposeDeleteBlock = { [weak self] (item) in
+                if let index = self?.composeItems.firstIndex(of: item) {
+                    self?.deleteItem(at: index)
+                    if let self = self {
+                        self.deleteBlock?(self, item)
+                    }
+                }
+            }
+        }
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let title = self.composeItems[indexPath.item].title
+        let titleWidth = title.pj_boundingSizeBySize(CGSize(width: CGFloat.greatestFiniteMagnitude, height: collectionView.frame.size.height), font: UIFont.systemFont(ofSize: 17)).width
+        return CGSize(width: titleWidth + 17 + 5, height: 40)
     }
 }

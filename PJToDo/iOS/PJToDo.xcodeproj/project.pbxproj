@@ -76,7 +76,7 @@
 		76C6354B21B96F1B006CD7D9 /* MineFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C6354A21B96F1B006CD7D9 /* MineFooterView.swift */; };
 		90B883A67742CBA20B227A90 /* Pods_PJToDoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */; };
 		CA3C428921C2875800C71C6D /* SelectedComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C428721C2875800C71C6D /* SelectedComposeView.swift */; };
-		CA3C428A21C2875800C71C6D /* ImageViewTitleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C428821C2875800C71C6D /* ImageViewTitleView.swift */; };
+		CA88DECF21C7D2DB007CFB0B /* SelectedComposeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88DECE21C7D2DB007CFB0B /* SelectedComposeCell.swift */; };
 		E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */; };
 /* End PBXBuildFile section */
 
@@ -207,7 +207,7 @@
 		8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD3758FA50254166E4D59F88 /* Pods_PJToDoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA3C428721C2875800C71C6D /* SelectedComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedComposeView.swift; sourceTree = "<group>"; };
-		CA3C428821C2875800C71C6D /* ImageViewTitleView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageViewTitleView.swift; sourceTree = "<group>"; };
+		CA88DECE21C7D2DB007CFB0B /* SelectedComposeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedComposeCell.swift; sourceTree = "<group>"; };
 		CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C7DCA9E375B4ACEF6FE7C8 /* Pods-PJToDo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -607,7 +607,7 @@
 		7693784521B3EF2700473382 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CA3C428821C2875800C71C6D /* ImageViewTitleView.swift */,
+				CA88DECE21C7D2DB007CFB0B /* SelectedComposeCell.swift */,
 				CA3C428721C2875800C71C6D /* SelectedComposeView.swift */,
 				7693784621B3EF5900473382 /* TasksHeaderView.swift */,
 				7654A8A521BC185C003464E9 /* SelectComposeTypeView.swift */,
@@ -1026,7 +1026,6 @@
 				764EF2DE21B8C794000F4417 /* MineViewController.swift in Sources */,
 				764EF2DC21B8C794000F4417 /* User.swift in Sources */,
 				769769B021B0CE9A00AB3569 /* PJTabBarViewController.swift in Sources */,
-				CA3C428A21C2875800C71C6D /* ImageViewTitleView.swift in Sources */,
 				764883052167598000F11106 /* PJToDoCoreLibFactory.swift in Sources */,
 				7648830F21675A7600F11106 /* ToDoController.swift in Sources */,
 				764EF2E421B8CDD0000F4417 /* MineItem.swift in Sources */,
@@ -1040,6 +1039,7 @@
 				76B5226D21809EC200D51AE8 /* PJToDoType.swift in Sources */,
 				7648831B21675B2300F11106 /* ToDoService.swift in Sources */,
 				7648831921675B1100F11106 /* ToDoTagService.swift in Sources */,
+				CA88DECF21C7D2DB007CFB0B /* SelectedComposeCell.swift in Sources */,
 				769769B521B0CE9A00AB3569 /* PJBaseView.swift in Sources */,
 				769769B721B0DD0A00AB3569 /* PJAddToDoButton.swift in Sources */,
 				764EF2DD21B8C794000F4417 /* PJMySettings.swift in Sources */,

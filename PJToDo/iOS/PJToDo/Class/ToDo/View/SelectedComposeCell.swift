@@ -8,19 +8,28 @@
 
 import UIKit
 
-typealias ImageViewTitleViewDeleteBlock = (ImageViewTitleView, ComposeTypeItem) -> Void
+typealias SelectedComposeDeleteBlock = (ComposeTypeItem) -> Void
 
-class ImageViewTitleView: UIView {
+class PJButton: UIButton {
+    override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
+        let margin: CGFloat = 44
+        let area = self.bounds.insetBy(dx: -margin, dy: -margin) //负值是方法响应范围
+        return area.contains(point)
+    }
+}
+
+class SelectedComposeCell: UICollectionViewCell {
 
     var imageView: UIImageView = UIImageView()
     var titleLabel: UILabel = UILabel()
-    var deleteButton: UIButton = UIButton()
+    var deleteButton: PJButton = PJButton()
     
-    var imageViewTitleViewDeleteBlock: ImageViewTitleViewDeleteBlock?
+    var selectedComposeDeleteBlock: SelectedComposeDeleteBlock?
     
-    var composeTypeItem: ComposeTypeItem = ComposeTypeItem(id: -1, title: "", composeType: .type) {
+    var composeTypeItem: ComposeTypeItem = ComposeTypeItem(id: -1, title: "", imageNamed: "", composeType: .type) {
         didSet {
-            self.setTitle(title: composeTypeItem.title)
+            self.imageView.image = UIImage(named: composeTypeItem.imageNamed)
+            self.titleLabel.text = composeTypeItem.title
         }
     }
 
@@ -47,6 +56,7 @@ class ImageViewTitleView: UIView {
         self.imageView.heightAnchor.constraint(equalToConstant: 17).isActive = true
         
         self.addSubview(self.titleLabel)
+        self.titleLabel.font = UIFont.systemFont(ofSize: 17)
         self.titleLabel.textColor = .white
         self.titleLabel.translatesAutoresizingMaskIntoConstraints = false
         self.titleLabel.leadingAnchor.constraint(equalTo: self.imageView.trailingAnchor, constant: 5).isActive = true
@@ -65,14 +75,6 @@ class ImageViewTitleView: UIView {
     }
     
     @objc private func deleteAction() {
-        self.imageViewTitleViewDeleteBlock?(self, self.composeTypeItem)
-    }
-    
-    func setImage(imageName: String) {
-        self.imageView.image = UIImage(named: imageName)
-    }
-    
-    func setTitle(title: String) {
-        self.titleLabel.text = title
+        self.selectedComposeDeleteBlock?(self.composeTypeItem)
     }
 }
