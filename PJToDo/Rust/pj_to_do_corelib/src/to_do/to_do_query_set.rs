@@ -134,6 +134,20 @@ pub unsafe extern "C" fn setToDoQuery_ToDoTagId(ptr: *mut ToDoQuery, to_do_tag_i
 }
 
 #[no_mangle]
+pub unsafe extern "C" fn getToDoQuery_ToDoPriority(ptr: *mut ToDoQuery) -> i32 {
+    assert!(ptr != std::ptr::null_mut());
+    let todo = &mut *ptr;
+    todo.priority
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn setToDoQuery_ToDoPriority(ptr: *mut ToDoQuery, priority: i32) {
+    assert!(ptr != std::ptr::null_mut());
+    let todo = &mut *ptr;
+    todo.priority = priority;
+}
+
+#[no_mangle]
 pub unsafe extern "C" fn getToDoQuery_ToDoTagId(ptr: *mut ToDoQuery) -> i32 {
     assert!(ptr != std::ptr::null_mut());
     let todo = &mut *ptr;

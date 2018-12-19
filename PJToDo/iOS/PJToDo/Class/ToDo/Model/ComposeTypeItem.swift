@@ -12,6 +12,7 @@ enum ComposeType {
     case type
     case tag
     case priority
+    case remindTime
 }
 
 class ComposeTypeItem: NSObject {

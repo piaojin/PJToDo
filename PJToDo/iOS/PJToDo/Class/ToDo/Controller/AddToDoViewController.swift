@@ -35,6 +35,12 @@ class AddToDoViewController: PJBaseViewController {
         return dataPicker
     }()
     
+    lazy var dateFormatter: DateFormatter = {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd h:m"
+        return dateFormatter
+    }()
+    
     lazy var doneView: UIView = {
         let doneView = UIView()
         doneView.isUserInteractionEnabled = true
@@ -59,6 +65,11 @@ class AddToDoViewController: PJBaseViewController {
     
     static let selectComposeTypeViewHeight: CGFloat = 130
     static let selectedComposeViewHeight: CGFloat = 60
+    
+    lazy var toDoController: ToDoController = {
+        let controller = ToDoController(delegate: self)
+        return controller
+    }()
     
     lazy var typeController: ToDoTypeController = {
         let controller = ToDoTypeController(delegate: self)
@@ -156,10 +167,49 @@ class AddToDoViewController: PJBaseViewController {
     }
     
     func addToDo() {
-        if self.selectedComposeView.composeItems.count <= 4 {
-            SVProgressHUD.showError(withStatus: "Are you sure had selected Type, Tag or Priority?")
+        if self.selectedComposeView.composeItems.count == 4, let isEmpty = self.inputBox.textField.text?.isEmpty, !isEmpty {
+            //Add ToDo
+            let alert = UIAlertController(title: "Input Title", message: "Please input todo title.", preferredStyle: .alert)
+            
+            let okAction = UIAlertAction(title: "OK", style: .default) { (_) in
+                if let title = alert.textFields?.first?.text {
+                    let toDo = PJ_ToDo(mode: .insert)
+                    for item in self.selectedComposeView.composeItems {
+                        switch item.composeType {
+                        case .type:
+                            toDo.toDoTypeId = Int32(item.id)
+                        case .tag:
+                            toDo.toDoTagId = Int32(item.id)
+                        case .priority:
+                            toDo.priority = Int32(item.id)
+                        case .remindTime:
+                            toDo.remindTime = item.title
+                            toDo.dueTime = item.title
+                        }
+                    }
+                    toDo.content = self.inputBox.textField.text ?? ""
+                    toDo.title = title
+                    let now = self.dateFormatter.string(from: Date())
+                    toDo.createTime = now
+                    toDo.updateTime = now
+                    toDo.state = .inProgress
+                    self.toDoController.insert(toDo: toDo)
+                } else {
+                    SVProgressHUD.showError(withStatus: "Please input title.")
+                }
+            }
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            alert.addTextField { (textField) in
+                textField.placeholder = "Please input todo title."
+            }
+            alert.addAction(cancelAction)
+            alert.addAction(okAction)
+            self.present(alert, animated: true, completion: nil)
+        } else {
+            SVProgressHUD.showError(withStatus: "Are you sure had selected Type, Tag or Priority and input todo content?")
         }
-        //Add ToDo
     }
     
     private func showDatePicker(show: Bool) {
@@ -181,6 +231,9 @@ class AddToDoViewController: PJBaseViewController {
     @objc func doneAction() {
         self.showDatePicker(show: false)
         self.inputBox.textField.becomeFirstResponder()
+        let dateString = self.dateFormatter.string(from: self.dataPicker.date)
+        let remindTimeComposeItem = ComposeTypeItem(id: -1, title: dateString, imageNamed: "white_calendar", composeType: .remindTime)
+        self.selectedComposeView.insertSelectedComposeItem(item: remindTimeComposeItem)
     }
     
     @objc func keyboardWillShow(note: NSNotification) {
@@ -281,5 +334,22 @@ extension AddToDoViewController: ToDoTypeDelegate {
         } else {
             SVProgressHUD.showError(withStatus: "Fetch Type Data Error!")
         }
+    }
+}
+
+extension AddToDoViewController: ToDoDelegate {
+    func insertToDoResult(isSuccess: Bool) {
+        DispatchQueue.main.async {
+            if isSuccess {
+                SVProgressHUD.showSuccess(withStatus: "Add ToDo Success!")
+            } else {
+                SVProgressHUD.showSuccess(withStatus: "Add ToDo Failure!")
+            }
+            self.dismiss(animated: true, completion: nil)
+        }
+    }
+    
+    func fetchToDoDataResult(isSuccess: Bool) {
+        
     }
 }

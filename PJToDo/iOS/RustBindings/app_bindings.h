@@ -279,6 +279,8 @@ char *getToDoInsertTitle(const ToDoInsert *ptr);
 
 char *getToDoInsertUpdateTime(const ToDoInsert *ptr);
 
+int32_t getToDoInsert_ToDoPriority(ToDoInsert *ptr);
+
 int32_t getToDoInsert_ToDoTagId(ToDoInsert *ptr);
 
 int32_t getToDoInsert_ToDoTypeId(ToDoInsert *ptr);
@@ -298,6 +300,8 @@ int32_t getToDoQueryState(ToDoQuery *ptr);
 char *getToDoQueryTitle(const ToDoQuery *ptr);
 
 char *getToDoQueryUpdateTime(const ToDoQuery *ptr);
+
+int32_t getToDoQuery_ToDoPriority(ToDoQuery *ptr);
 
 int32_t getToDoQuery_ToDoTagId(ToDoQuery *ptr);
 
@@ -367,6 +371,8 @@ void setToDoInsertTitle(ToDoInsert *ptr, const char *title);
 
 void setToDoInsertUpdateTime(ToDoInsert *ptr, const char *update_time);
 
+void setToDoInsert_ToDoPriority(ToDoInsert *ptr, int32_t priority);
+
 void setToDoInsert_ToDoTagId(ToDoInsert *ptr, int32_t to_do_tag_id);
 
 void setToDoInsert_ToDoTypeId(ToDoInsert *ptr, int32_t to_do_type_id);
@@ -386,6 +392,8 @@ void setToDoQueryState(ToDoQuery *ptr, int32_t state);
 void setToDoQueryTitle(ToDoQuery *ptr, const char *title);
 
 void setToDoQueryUpdateTime(ToDoQuery *ptr, const char *update_time);
+
+void setToDoQuery_ToDoPriority(ToDoQuery *ptr, int32_t priority);
 
 void setToDoQuery_ToDoTagId(ToDoQuery *ptr, int32_t to_do_tag_id);
 

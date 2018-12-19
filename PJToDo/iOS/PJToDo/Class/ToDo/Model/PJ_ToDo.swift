@@ -15,7 +15,7 @@ public enum PJToDoState: Int {
     case overdue
 }
 
-public class PJ_ToDo {
+public class PJ_ToDo: NSObject {
     private(set) var iToDoInsert: OpaquePointer?
     
     private(set) var iToDoQuery: OpaquePointer?
@@ -148,48 +148,97 @@ public class PJ_ToDo {
         }
     }
     
-    public var toDoTypeId: Int32 {
+    public var priority: Int32 {
         get {
-            return getToDoQuery_ToDoTypeId(self.iToDoQuery)
+            if self.mode == .insert {
+                return getToDoInsert_ToDoPriority(self.iToDoInsert)
+            } else {
+                return getToDoQuery_ToDoPriority(self.iToDoQuery)
+            }
         }
         
         set {
-            setToDoQuery_ToDoTypeId(self.iToDoQuery, newValue)
+            if self.mode == .insert {
+                setToDoInsert_ToDoPriority(self.iToDoInsert, newValue)
+            } else {
+                setToDoQuery_ToDoPriority(self.iToDoQuery, newValue)
+            }
+        }
+    }
+    
+    public var toDoTypeId: Int32 {
+        get {
+            if self.mode == .insert {
+                return getToDoInsert_ToDoTypeId(self.iToDoInsert)
+            } else {
+                return getToDoQuery_ToDoTypeId(self.iToDoQuery)
+            }
+        }
+        
+        set {
+            if self.mode == .insert {
+                setToDoInsert_ToDoTypeId(self.iToDoInsert, newValue)
+            } else {
+                setToDoQuery_ToDoTypeId(self.iToDoQuery, newValue)
+            }
         }
     }
     
     public var toDoTagId: Int32 {
         get {
-            return getToDoQuery_ToDoTagId(self.iToDoQuery)
+            if self.mode == .insert {
+                return getToDoInsert_ToDoTagId(self.iToDoInsert)
+            } else {
+                return getToDoQuery_ToDoTagId(self.iToDoQuery)
+            }
         }
         
         set {
-            setToDoQuery_ToDoTagId(self.iToDoQuery, newValue)
+            if self.mode == .insert {
+                setToDoInsert_ToDoTagId(self.iToDoInsert, newValue)
+            } else {
+                setToDoQuery_ToDoTagId(self.iToDoQuery, newValue)
+            }
         }
     }
     
     public var state: PJToDoState {
         get {
-            if let value = PJToDoState(rawValue: Int(getToDoQueryState(self.iToDoQuery))) {
-                return value
+            if self.mode == .insert {
+                if let value = PJToDoState(rawValue: Int(getToDoInsertState(self.iToDoInsert))) {
+                    return value
+                }
+            } else {
+                if let value = PJToDoState(rawValue: Int(getToDoQueryState(self.iToDoQuery))) {
+                    return value
+                }
             }
             return .determined
         }
         
         set {
-            setToDoQueryState(self.iToDoQuery, Int32(newValue.rawValue))
+            if self.mode == .insert {
+                setToDoInsertState(self.iToDoInsert, Int32(newValue.rawValue))
+            } else {
+                setToDoQueryState(self.iToDoQuery, Int32(newValue.rawValue))
+            }
         }
     }
     
     /*This constructor is used when inserting data.*/
     public init(mode: PJToDoMode = .model) {
         self.mode = mode
+        if mode == .insert {
+            self.iToDoInsert = createToDoInsert()
+        } else {
+            self.iToDoQuery = createToDoQuery()
+        }
     }
     
     /*This constructor is used by ToDoTypeController when getting data from db.*/
     public init(iToDoQuery: OpaquePointer?, iToDoType: OpaquePointer?, iToDoTag: OpaquePointer?) {
-        self.iToDoQuery = iToDoQuery;
-        self.iToDoType = iToDoType;
-        self.iToDoTag = iToDoTag;
+        self.iToDoQuery = iToDoQuery
+        self.iToDoType = iToDoType
+        self.iToDoTag = iToDoTag
     }
 }

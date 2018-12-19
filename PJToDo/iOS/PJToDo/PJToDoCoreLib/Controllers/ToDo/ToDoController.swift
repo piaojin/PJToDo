@@ -8,12 +8,12 @@
 
 import Foundation
 
-public protocol ToDoDelegate: NSObjectProtocol {
-    func insertToDoResult(isSuccess: Bool)
-    func deleteToDoResult(isSuccess: Bool)
-    func updateToDoResult(isSuccess: Bool)
+@objc public protocol ToDoDelegate: NSObjectProtocol {
+    @objc optional func insertToDoResult(isSuccess: Bool)
+    @objc optional func deleteToDoResult(isSuccess: Bool)
+    @objc optional func updateToDoResult(isSuccess: Bool)
     func fetchToDoDataResult(isSuccess: Bool)
-    func findToDoByIdResult(toDo: PJ_ToDo?, isSuccess: Bool)
+    @objc optional func findToDoByIdResult(toDo: PJ_ToDo?, isSuccess: Bool)
 }
 
 class ToDoController {
@@ -119,17 +119,17 @@ class ToDoController {
     //Rust回调Swift
     fileprivate func insertResult(isSuccess: Bool) {
         print("ToDoController: received insertResult callback with  \(isSuccess)")
-        self.delegate?.insertToDoResult(isSuccess: isSuccess)
+        self.delegate?.insertToDoResult?(isSuccess: isSuccess)
     }
     
     fileprivate func deleteResult(isSuccess: Bool) {
         print("ToDoController: received deleteResult callback with  \(isSuccess)")
-        self.delegate?.deleteToDoResult(isSuccess: isSuccess)
+        self.delegate?.deleteToDoResult?(isSuccess: isSuccess)
     }
     
     fileprivate func updateResult(isSuccess: Bool) {
         print("ToDoController: received updateResult callback with  \(isSuccess)")
-        self.delegate?.updateToDoResult(isSuccess: isSuccess)
+        self.delegate?.updateToDoResult?(isSuccess: isSuccess)
     }
     
     fileprivate func findByIdResult(toDo: OpaquePointer?, isSuccess: Bool) {
@@ -142,7 +142,7 @@ class ToDoController {
             let iToDoTag = toDoTagWithId(self.controller, tagId)
             tempToDo = PJ_ToDo(iToDoQuery: toDo, iToDoType: iToDoType, iToDoTag: iToDoTag)
         }
-        self.delegate?.findToDoByIdResult(toDo: tempToDo, isSuccess: isSuccess)
+        self.delegate?.findToDoByIdResult?(toDo: tempToDo, isSuccess: isSuccess)
     }
     
     fileprivate func fetchDataResult(isSuccess: Bool) {

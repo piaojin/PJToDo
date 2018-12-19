@@ -127,6 +127,20 @@ pub unsafe extern "C" fn getToDoInsert_ToDoTagId(ptr: *mut ToDoInsert) -> i32 {
 }
 
 #[no_mangle]
+pub unsafe extern "C" fn getToDoInsert_ToDoPriority(ptr: *mut ToDoInsert) -> i32 {
+    assert!(ptr != std::ptr::null_mut());
+    let todo = &mut *ptr;
+    todo.priority
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn setToDoInsert_ToDoPriority(ptr: *mut ToDoInsert, priority: i32) {
+    assert!(ptr != std::ptr::null_mut());
+    let todo = &mut *ptr;
+    todo.priority = priority;
+}
+
+#[no_mangle]
 pub unsafe extern "C" fn setToDoInsertState(ptr: *mut ToDoInsert, state: i32) {
     assert!(ptr != std::ptr::null_mut());
     let todo = &mut *ptr;
