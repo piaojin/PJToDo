@@ -21,6 +21,9 @@ class SelectedComposeView: UIView {
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .white
         collectionView.showsHorizontalScrollIndicator = false
+        if #available(iOS 11.0, *) {
+            collectionView.contentInsetAdjustmentBehavior = .never
+        }
         return collectionView
     }()
     

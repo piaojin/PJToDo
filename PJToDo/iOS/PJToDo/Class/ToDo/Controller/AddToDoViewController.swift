@@ -120,6 +120,8 @@ class AddToDoViewController: PJBaseViewController {
         self.selectComposeTypeViewHeightConstraint = self.selectComposeTypeView.heightAnchor.constraint(equalToConstant: 0)
         self.selectComposeTypeViewHeightConstraint?.isActive = true
         self.selectComposeTypeViewHeightConstraint?.constant = 0
+        
+        self.automaticallyAdjustsScrollViewInsets = false
     }
     
     private func initData() {
@@ -231,6 +233,7 @@ class AddToDoViewController: PJBaseViewController {
     @objc func doneAction() {
         self.showDatePicker(show: false)
         self.inputBox.textField.becomeFirstResponder()
+        self.showSelectedComposeView(show: true)
         let dateString = self.dateFormatter.string(from: self.dataPicker.date)
         let remindTimeComposeItem = ComposeTypeItem(id: -1, title: dateString, imageNamed: "white_calendar", composeType: .remindTime)
         self.selectedComposeView.insertSelectedComposeItem(item: remindTimeComposeItem)
@@ -260,41 +263,35 @@ class AddToDoViewController: PJBaseViewController {
     }
     
     private func showSelectComposeTypeView(show: Bool) {
-        UIView.animate(withDuration: 0.3) {
-            if show {
-                if let height = self.selectComposeTypeViewHeightConstraint?.constant {
-                    if height <= 0 {
-                        self.selectComposeTypeViewHeightConstraint?.constant = AddToDoViewController.selectComposeTypeViewHeight
-                    }
+        if show {
+            if let height = self.selectComposeTypeViewHeightConstraint?.constant {
+                if height <= 0 {
+                    self.selectComposeTypeViewHeightConstraint?.constant = AddToDoViewController.selectComposeTypeViewHeight
                 }
-            } else {
-                self.selectComposeTypeViewHeightConstraint?.constant = 0
             }
+        } else {
+            self.selectComposeTypeViewHeightConstraint?.constant = 0
         }
     }
     
     private func showSelectedComposeView(show: Bool) {
-        UIView.animate(withDuration: 0.3) {
-            if show {
-                if let height = self.selectedComposeViewHeightConstraint?.constant {
-                    if height <= 0 {
-                        self.selectedComposeViewHeightConstraint?.constant = AddToDoViewController.selectedComposeViewHeight
-                    }
+        if show {
+            if let height = self.selectedComposeViewHeightConstraint?.constant {
+                if height <= 0 {
+                    self.selectedComposeViewHeightConstraint?.constant = AddToDoViewController.selectedComposeViewHeight
                 }
-            } else {
-                self.selectedComposeViewHeightConstraint?.constant = 0
             }
+        } else {
+            self.selectedComposeViewHeightConstraint?.constant = 0
         }
     }
 }
 
 extension AddToDoViewController: SelectComposeTypeViewDelegate {
     func didSelectItem(selectComposeTypeView: SelectComposeTypeView, composeTypeItem: ComposeTypeItem) {
+        self.selectComposeTypeViewHeightConstraint?.constant = 0
+        self.showSelectedComposeView(show: true)
         self.selectedComposeView.insertSelectedComposeItem(item: composeTypeItem)
-        UIView.animate(withDuration: 0.3) {
-            self.selectComposeTypeViewHeightConstraint?.constant = 0
-            self.showSelectedComposeView(show: true)
-        }
     }
 }
 
