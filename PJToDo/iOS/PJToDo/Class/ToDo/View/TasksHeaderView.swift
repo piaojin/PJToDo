@@ -8,23 +8,40 @@
 
 import UIKit
 
-class TasksHeaderView: UITableViewHeaderFooterView {
-    static let TasksHeaderViewId = "TasksHeaderView"
+class TasksHeaderView: UIView {
     
-    static func initWith(tableView: UITableView) -> TasksHeaderView {
-        if let headerView = tableView.dequeueReusableHeaderFooterView(withIdentifier: TasksHeaderView.TasksHeaderViewId), let header = headerView as? TasksHeaderView {
-            return header
-        } else {
-            let headerView = TasksHeaderView(reuseIdentifier: TasksHeaderView.TasksHeaderViewId)
-            return headerView
+    var titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        return titleLabel
+    }()
+    
+    var title: String = "" {
+        didSet {
+            self.titleLabel.text = title
         }
     }
     
-    func setTitle(title: String?) {
-        self.textLabel?.text = title
+    init() {
+        super.init(frame: .zero)
+        self.initView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+    }
+    
+    private func initView() {
+        self.backgroundColor = UIColor.colorWithRGB(red: 242, green: 242, blue: 242)
+        self.addSubview(self.titleLabel)
+        self.titleLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 10).isActive = true
+        self.titleLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 15).isActive = true
+        self.titleLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -10).isActive = true
+        self.titleLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -15).isActive = true
     }
     
     func setTitleColor(color: UIColor) {
-        self.textLabel?.textColor = color
+        self.titleLabel.textColor = color
     }
 }

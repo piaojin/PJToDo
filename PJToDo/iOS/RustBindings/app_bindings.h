@@ -36,8 +36,6 @@ typedef struct PJToDoTagServiceController PJToDoTagServiceController;
 
 typedef struct PJToDoTypeServiceController PJToDoTypeServiceController;
 
-typedef struct ToDo ToDo;
-
 typedef struct ToDoInsert ToDoInsert;
 
 typedef struct ToDoQuery ToDoQuery;
@@ -198,8 +196,6 @@ PJToDoSettingsController *createPJToDoSettingsController(IPJToDoSettingsDelegate
 PJToDoTagController *createPJToDoTagController(IPJToDoTagDelegate delegate);
 
 PJToDoTypeController *createPJToDoTypeController(IPJToDoTypeDelegate delegate);
-
-ToDo *createToDo(void);
 
 ToDoInsert *createToDoInsert(void);
 

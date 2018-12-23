@@ -9,8 +9,8 @@
 import UIKit
 
 public enum PJToDoState: Int {
-    case determined
     case inProgress
+    case unDetermined
     case completed
     case overdue
 }
@@ -20,13 +20,9 @@ public class PJ_ToDo: NSObject {
     
     private(set) var iToDoQuery: OpaquePointer?
     
-    private(set) var iToDoType: OpaquePointer?
+    public var toDoType: PJToDoType = PJToDoType(typeId: -1, typeName: "")
     
-    private(set) var iToDoTag: OpaquePointer?
-    
-    public var toDoType: PJToDoType?
-    
-    public var toDoTag: PJToDoTag?
+    public var toDoTag: PJToDoTag = PJToDoTag(tagId: -1, tagName: "")
     
     private var mode: PJToDoMode = .model
     
@@ -213,7 +209,7 @@ public class PJ_ToDo: NSObject {
                     return value
                 }
             }
-            return .determined
+            return .unDetermined
         }
         
         set {
@@ -238,7 +234,7 @@ public class PJ_ToDo: NSObject {
     /*This constructor is used by ToDoTypeController when getting data from db.*/
     public init(iToDoQuery: OpaquePointer?, iToDoType: OpaquePointer?, iToDoTag: OpaquePointer?) {
         self.iToDoQuery = iToDoQuery
-        self.iToDoType = iToDoType
-        self.iToDoTag = iToDoTag
+        self.toDoType = PJToDoType(iToDoType: iToDoType)
+        self.toDoTag = PJToDoTag(iToDoTag: iToDoTag)
     }
 }

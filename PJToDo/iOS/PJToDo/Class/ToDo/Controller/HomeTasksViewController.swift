@@ -18,6 +18,7 @@ class HomeTasksViewController: PJBaseViewController {
         tempTableView.rowHeight = UITableViewAutomaticDimension
         tempTableView.estimatedSectionHeaderHeight = UITableViewAutomaticDimension
         tempTableView.tableFooterView = UIView()
+        tempTableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
         tempTableView.keyboardDismissMode = .onDrag
         tempTableView.sectionIndexBackgroundColor = UIColor.clear
         tempTableView.tableFooterView?.backgroundColor = .white
@@ -32,15 +33,7 @@ class HomeTasksViewController: PJBaseViewController {
         return controller
     }()
     
-    lazy var typeController: ToDoTypeController = {
-        let controller = ToDoTypeController(delegate: self)
-        return controller
-    }()
-    
-    lazy var tagController: ToDoTagController = {
-        let controller = ToDoTagController(delegate: self)
-        return controller
-    }()
+    static let ToDoId = "ToDoId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,27 +41,20 @@ class HomeTasksViewController: PJBaseViewController {
         self.initData()
     }
     
-    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-//        self.tagController.findById(toDoTagId: 1)
-//        self.tagController.fetchData()
-//        PJHttpRequest.login(name: "piaojin", passWord: "weng804488815", responseBlock: { (data, isSuccess) -> Void in
-//            print("isSuccess: \(isSuccess)")
-//        })
-        
-//        PJHttpRequest.authorization(authorization: "Basic cGlhb2ppbjp3ZW5nODA0NDg4ODE1") { (authorization, isSuccess) in
-//            print("isSuccess: \(isSuccess)")
-//        }
-    }
-    
     private func initView() {
         self.view.backgroundColor = .white
         self.title = "Tasks"
         self.view.addSubview(tableView)
+        if #available(iOS 11.0, *) {
+            tableView.contentInsetAdjustmentBehavior = .never
+        } else {
+            self.automaticallyAdjustsScrollViewInsets = false
+        }
         tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         if #available(iOS 11.0, *) {
-            self.tableView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-            self.tableView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+            self.tableView.topAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.topAnchor).isActive = true
+            self.tableView.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         } else {
             tableView.topAnchor.constraint(equalTo: bottomLayoutGuide.topAnchor).isActive = true
             tableView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.bottomAnchor).isActive = true
@@ -88,23 +74,27 @@ class HomeTasksViewController: PJBaseViewController {
     }
     
     private func initData() {
-//        let typeController = ToDoTypeController(delegate: self)
-//        typeController.fetchData()
-//        let toDoType = PJToDoType(typeName: "piaojin3!")
-//        self.typeController.insert(toDoType: toDoType)
-//        self.typeController.findById(toDoTypeId: 3)
-//        self.typeController.findByName(typeName: "piaojin2!")
-//        self.typeController.fetchData()
-//        let toDoTag = PJToDoTag(tagName: "piaojin tag")
-//        self.tagController.insert(toDoTag: toDoTag)
-//        self.tagController.findById(toDoTagId: 1)
-//        self.tagController.findByName(tagName: "piaojin tag")
+        self.tableView.register(ToDoCell.classForCoder(), forCellReuseIdentifier: HomeTasksViewController.ToDoId)
         self.tableView.delegate = self
         self.tableView.dataSource = self
-//        self.tagController.fetchData()
         self.toDoController.fetchData()
-//        let controller = ToDoController(delegate: self)
-//        controller.fetchData()
+        NotificationCenter.default.addObserver(self, selector: #selector(updateDate), name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
+    }
+    
+    @objc private func updateDate() {
+        self.toDoController.fetchData()
+    }
+    
+    private func deleteAction(indexPath: IndexPath) {
+        
+    }
+    
+    private func completeAction(indexPath: IndexPath) {
+        
+    }
+    
+    private func unDeterminedAction(indexPath: IndexPath) {
+        
     }
 
     override func didReceiveMemoryWarning() {
@@ -115,32 +105,81 @@ class HomeTasksViewController: PJBaseViewController {
 
 extension HomeTasksViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Int(self.toDoController.getToDoCountAtSection(section: Int32(section)))
+        return Int(self.toDoController.getToDoCountAtSection(section: section))
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        return UITableViewCell()
+        let cell = tableView.dequeueReusableCell(withIdentifier: HomeTasksViewController.ToDoId, for: indexPath)
+        if let tempCell = cell as? ToDoCell {
+            tempCell.item = self.toDoController.toDoAt(section: indexPath.section, index: indexPath.row)
+        }
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        var actions: [UITableViewRowAction] = []
+        let model = self.toDoController.toDoAt(section: indexPath.section, index: indexPath.row)
+        let unDeterminedAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "待定") { (action, tempIndexPath) in
+            self.unDeterminedAction(indexPath: tempIndexPath)
+        }
+        unDeterminedAction.backgroundColor = .orange
+        
+        let completeAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "完成") { (action, tempIndexPath) in
+            self.completeAction(indexPath: tempIndexPath)
+        }
+        completeAction.backgroundColor = .green
+        
+        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "删除") { (action, tempIndexPath) in
+            self.deleteAction(indexPath: tempIndexPath)
+        }
+        deleteAction.backgroundColor = .red
+        
+        switch model.state {
+            case .inProgress:
+                actions.append(completeAction)
+                actions.append(unDeterminedAction)
+                actions.append(deleteAction)
+            case .unDetermined:
+                actions.append(completeAction)
+                actions.append(deleteAction)
+            case .completed:
+                actions.append(unDeterminedAction)
+                actions.append(deleteAction)
+            case .overdue:
+                actions.append(completeAction)
+                actions.append(unDeterminedAction)
+                actions.append(deleteAction)
+        }
+        
+        return actions
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let headerView = TasksHeaderView.initWith(tableView: tableView)
-        let model = self.toDoController.toDoAt(section: Int32(section), index: 0)
-        if model.state == .determined {
-            headerView.setTitleColor(color: .red)
-            headerView.setTitle(title: "title")
+        if self.toDoController.getToDoCountAtSection(section: section) > 0 {
+            let headerView = TasksHeaderView()
+            headerView.title = self.toDoController.toDoTitle(section: section)
+            let model = self.toDoController.toDoAt(section: section, index: 0)
+            if model.state == .overdue {
+                headerView.setTitleColor(color: .red)
+            } else {
+                headerView.setTitleColor(color: .black)
+            }
+            return headerView
         }
-        return headerView
+        return nil
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        let count = self.toDoController.getToDoCountAtSection(section: section)
+        return count == 0 ? CGFloat.leastNormalMagnitude : UITableViewAutomaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
     }
 }
 
 extension HomeTasksViewController: ToDoDelegate {
-    func insertToDoResult(isSuccess: Bool) {
-        
-    }
     
     func deleteToDoResult(isSuccess: Bool) {
         
@@ -152,95 +191,14 @@ extension HomeTasksViewController: ToDoDelegate {
     
     func fetchToDoDataResult(isSuccess: Bool) {
         if isSuccess {
-            self.tableView.reloadData()
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
         }
     }
     
     func findToDoByIdResult(toDo: PJ_ToDo?, isSuccess: Bool) {
         
-    }
-}
-
-extension HomeTasksViewController: ToDoTypeDelegate {
-    func fetchTypeDataResult(isSuccess: Bool) {
-        
-    }
-    
-
-    func findTypeByNameResult(toDoType: PJToDoType?, isSuccess: Bool) {
-        if isSuccess {
-            print("typeName: \(String(describing: toDoType?.typeName))")
-        }
-    }
-
-    func findTypeByIdResult(toDoType: PJToDoType?, isSuccess: Bool) {
-        if isSuccess {
-            print("typeName: \(String(describing: toDoType?.typeName))")
-        }
-    }
-
-    func updateTypeResult(isSuccess: Bool) {
-        if isSuccess {
-
-        }
-    }
-
-    func deleteTypeResult(isSuccess: Bool) {
-        if isSuccess {
-
-        }
-    }
-
-    func insertTypeResult(isSuccess: Bool) {
-        if isSuccess {
-
-        }
-    }
-}
-
-extension HomeTasksViewController: ToDoTagDelegate {
-    func findTagByIdResult(toDoTag: PJToDoTag?, isSuccess: Bool) {
-        
-    }
-    
-    func findTagByNameResult(toDoTag: PJToDoTag?, isSuccess: Bool) {
-        
-    }
-    
-    func fetchTagDataResult(isSuccess: Bool) {
-        if isSuccess {
-
-        }
-    }
-
-    func findTagByNameResult(toDoTag: PJToDoTag, isSuccess: Bool) {
-        if isSuccess {
-
-        }
-    }
-
-    func findTagByIdResult(toDoTag: PJToDoTag, isSuccess: Bool) {
-        if isSuccess {
-            self.tagController.findByName(tagName: toDoTag.tagName)
-        }
-    }
-
-    func updateTagResult(isSuccess: Bool) {
-        if isSuccess {
-
-        }
-    }
-
-    func deleteTagResult(isSuccess: Bool) {
-        if isSuccess {
-
-        }
-    }
-
-    func insertTagResult(isSuccess: Bool) {
-        if isSuccess {
-
-        }
     }
 }
 

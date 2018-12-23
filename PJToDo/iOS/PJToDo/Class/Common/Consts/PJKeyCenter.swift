@@ -9,6 +9,7 @@
 import Foundation
 
 struct PJKeyCenter {
-    static let userInfo: String = "userInfo"
-    static let authorization: String = "authorization"
+    static let UserInfo: String = "userInfo"
+    static let Authorization: String = "authorization"
+    static let InsertToDoNotification = "InsertToDoNotification"
 }

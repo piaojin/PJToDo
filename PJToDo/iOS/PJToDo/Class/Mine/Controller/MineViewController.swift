@@ -19,7 +19,7 @@ class MineViewController: PJBaseViewController {
         tempTableView.rowHeight = UITableViewAutomaticDimension
         tempTableView.estimatedSectionHeaderHeight = UITableViewAutomaticDimension
         tempTableView.estimatedSectionFooterHeight = UITableViewAutomaticDimension
-        tempTableView.tableHeaderView = UIView()
+        tempTableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
         tempTableView.tableFooterView = UIView()
         tempTableView.keyboardDismissMode = .onDrag
         tempTableView.sectionIndexBackgroundColor = UIColor.clear

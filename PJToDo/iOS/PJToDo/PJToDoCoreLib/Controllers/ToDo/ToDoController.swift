@@ -79,10 +79,10 @@ class ToDoController {
         insertToDo(self.controller, toDo.iToDoInsert)
     }
     
-    public func delete(toDoId: Int32) {
+    public func delete(toDoId: Int) {
         let ownedPointer = ARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        deleteToDo(self.controller, toDoId)
+        deleteToDo(self.controller, Int32(toDoId))
     }
     
     public func update(toDo: PJ_ToDo) {
@@ -91,10 +91,10 @@ class ToDoController {
         updateToDo(self.controller, toDo.iToDoQuery)
     }
     
-    public func findById(toDoId: Int32) {
+    public func findById(toDoId: Int) {
         let ownedPointer = ARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        findToDo(self.controller, toDoId)
+        findToDo(self.controller, Int32(toDoId))
     }
     
     public func fetchData() {
@@ -103,17 +103,21 @@ class ToDoController {
         fetchToDoData(self.controller)
     }
     
-    public func getToDoCountAtSection(section: Int32) -> Int32 {
-        return getToDoCountsAtSection(self.controller, section)
+    public func getToDoCountAtSection(section: Int) -> Int {
+        return Int(getToDoCountsAtSection(self.controller, Int32(section)))
     }
     
-    public func toDoAt(section: Int32, index: Int32) -> PJ_ToDo {
-        let iToDoQuery = todoAtSection(self.controller, section, index)
+    public func toDoAt(section: Int, index: Int) -> PJ_ToDo {
+        let iToDoQuery = todoAtSection(self.controller, Int32(section), Int32(index))
         let typeId = getToDoQuery_ToDoTypeId(iToDoQuery)
         let tagId = getToDoQuery_ToDoTagId(iToDoQuery)
         let iToDoType = toDoTypeWithId(self.controller, typeId)
         let iToDoTag = toDoTagWithId(self.controller, tagId)
         return PJ_ToDo(iToDoQuery: iToDoQuery, iToDoType: iToDoType, iToDoTag: iToDoTag)
+    }
+    
+    public func toDoTitle(section: Int) -> String {
+        return String.create(cString: todoTitleAtSection(self.controller, Int32(section)))
     }
     
     //Rust回调Swift

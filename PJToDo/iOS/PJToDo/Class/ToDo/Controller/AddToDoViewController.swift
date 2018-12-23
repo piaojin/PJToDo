@@ -338,6 +338,7 @@ extension AddToDoViewController: ToDoDelegate {
     func insertToDoResult(isSuccess: Bool) {
         DispatchQueue.main.async {
             if isSuccess {
+                NotificationCenter.default.post(name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
                 SVProgressHUD.showSuccess(withStatus: "Add ToDo Success!")
             } else {
                 SVProgressHUD.showSuccess(withStatus: "Add ToDo Failure!")

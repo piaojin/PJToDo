@@ -17,7 +17,7 @@ public struct PJHttpRequest {
                     let jsonString = String.create(cString: tempPointer)
                     if let jsonData = jsonString.data(using: .utf8) {
                         let user = try JSONDecoder().decode(User.self, from: jsonData)
-                        PJCacheManager.saveCustomObject(customObject: user, key: PJKeyCenter.userInfo)
+                        PJCacheManager.saveCustomObject(customObject: user, key: PJKeyCenter.UserInfo)
                         responseBlock?(user, isSuccess)
                     } else {
                         responseBlock?(nil, isSuccess)
@@ -45,7 +45,7 @@ public struct PJHttpRequest {
                     let jsonString = String.create(cString: tempPointer)
                     if let jsonData = jsonString.data(using: .utf8) {
                         let authorization = try JSONDecoder().decode(Authorization.self, from: jsonData)
-                        PJCacheManager.saveCustomObject(customObject: authorization, key: PJKeyCenter.authorization)
+                        PJCacheManager.saveCustomObject(customObject: authorization, key: PJKeyCenter.Authorization)
                         responseBlock?(authorization, isSuccess)
                     } else {
                         responseBlock?(nil, isSuccess)
