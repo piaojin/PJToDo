@@ -163,7 +163,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
         comparison_days: i32,
     ) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
         let sql = format!(
-            "SELECT * FROM todo WHERE due_time < date('{}','{} days')",
+            "SELECT * FROM todo WHERE due_time < date('{}','{} days') and state == 0",
             from_day, comparison_days
         );
         let result = sql_query(sql).load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
@@ -260,6 +260,24 @@ impl PJToDoDAO for PJToDoDAOImpl {
             Ok(todos)
         } else {
             Err(error)
+        }
+    }
+
+    fn update_overdue_todos(&self) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
+        let sql = format!(
+            "UPDATE todo set state = 3 WHERE due_time < date('now') and state == 0",
+        );
+
+        let result = sql_query(sql).load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+        match result {
+            Ok(update_rows) => {
+                pj_info!("update_overdue_todos success!");
+                Ok(update_rows)
+            }
+            Err(e) => {
+                pj_error!("update_overdue_todos failure {}", e);
+                Err(e)
+            }
         }
     }
 }

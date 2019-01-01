@@ -7,11 +7,12 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 class HomeTasksViewController: PJBaseViewController {
 
     private lazy var tableView: UITableView = {
-        let tempTableView = UITableView(frame: .zero, style: .grouped)
+        let tempTableView = UITableView(frame: .zero, style: .plain)
         tempTableView.translatesAutoresizingMaskIntoConstraints = false
         tempTableView.backgroundColor = .white
         tempTableView.estimatedRowHeight = 44.0
@@ -74,27 +75,40 @@ class HomeTasksViewController: PJBaseViewController {
     }
     
     private func initData() {
+        self.toDoController.updateOverdueToDos()
         self.tableView.register(ToDoCell.classForCoder(), forCellReuseIdentifier: HomeTasksViewController.ToDoId)
         self.tableView.delegate = self
         self.tableView.dataSource = self
-        self.toDoController.fetchData()
-        NotificationCenter.default.addObserver(self, selector: #selector(updateDate), name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateData), name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
     }
     
-    @objc private func updateDate() {
+    @objc private func updateData() {
         self.toDoController.fetchData()
     }
     
     private func deleteAction(indexPath: IndexPath) {
-        
+        let model = self.toDoController.toDoAt(section: indexPath.section, index: indexPath.row)
+        self.toDoController.delete(section: indexPath.section, index: indexPath.row, toDoId: Int(model.toDoId))
+        SVProgressHUD.show(withStatus: "Please wait...")
     }
     
     private func completeAction(indexPath: IndexPath) {
-        
+        self.updateToDoState(state: .completed, at: indexPath)
     }
     
     private func unDeterminedAction(indexPath: IndexPath) {
-        
+        self.updateToDoState(state: .unDetermined, at: indexPath)
+    }
+    
+    private func inProgressAction(indexPath: IndexPath) {
+        self.updateToDoState(state: .inProgress, at: indexPath)
+    }
+    
+    private func updateToDoState(state: PJToDoState, at indexPath: IndexPath) {
+        let model = self.toDoController.toDoAt(section: indexPath.section, index: indexPath.row)
+        model.state = state
+        self.toDoController.update(toDo: model)
+        SVProgressHUD.show(withStatus: "Please wait...")
     }
 
     override func didReceiveMemoryWarning() {
@@ -104,6 +118,11 @@ class HomeTasksViewController: PJBaseViewController {
 }
 
 extension HomeTasksViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return self.toDoController.getToDoNumberOfSections()
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Int(self.toDoController.getToDoCountAtSection(section: section))
     }
@@ -134,12 +153,18 @@ extension HomeTasksViewController: UITableViewDelegate, UITableViewDataSource {
         }
         deleteAction.backgroundColor = .red
         
+        let inProgressAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "开始") { (action, tempIndexPath) in
+            self.inProgressAction(indexPath: tempIndexPath)
+        }
+        inProgressAction.backgroundColor = .blue
+        
         switch model.state {
             case .inProgress:
                 actions.append(completeAction)
                 actions.append(unDeterminedAction)
                 actions.append(deleteAction)
             case .unDetermined:
+                actions.append(inProgressAction)
                 actions.append(completeAction)
                 actions.append(deleteAction)
             case .completed:
@@ -182,11 +207,25 @@ extension HomeTasksViewController: UITableViewDelegate, UITableViewDataSource {
 extension HomeTasksViewController: ToDoDelegate {
     
     func deleteToDoResult(isSuccess: Bool) {
-        
+        DispatchQueue.main.async {
+            if !isSuccess {
+                SVProgressHUD.showError(withStatus: "Delete ToDo error!")
+            } else {
+                SVProgressHUD.dismiss()
+            }
+            self.tableView.reloadData()
+        }
     }
     
     func updateToDoResult(isSuccess: Bool) {
-        
+        DispatchQueue.main.async {
+            if !isSuccess {
+                SVProgressHUD.showError(withStatus: "Update ToDo error!")
+            } else {
+                SVProgressHUD.dismiss()
+            }
+            self.toDoController.fetchData()
+        }
     }
     
     func fetchToDoDataResult(isSuccess: Bool) {
@@ -194,6 +233,12 @@ extension HomeTasksViewController: ToDoDelegate {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
+        }
+    }
+    
+    func updateOverDueToDosResult(isSuccess: Bool) {
+        DispatchQueue.main.async {
+            self.toDoController.fetchData()
         }
     }
     

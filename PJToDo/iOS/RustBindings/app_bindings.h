@@ -94,6 +94,7 @@ typedef struct {
   void (*update_result)(void*, bool);
   void (*find_byId_result)(void*, ToDoQuery*, bool);
   void (*fetch_data_result)(void*, bool);
+  void (*update_overdue_todos)(void*, bool);
 } IPJToDoDelegate;
 
 typedef struct {
@@ -213,7 +214,7 @@ ToDoType *createToDoType(const char *type_name);
 
 ToDoTypeInsert *createToDoTypeInsert(const char *type_name);
 
-void deleteToDo(PJToDoController *ptr, int32_t toDoId);
+void deleteToDo(PJToDoController *ptr, int32_t section, int32_t index, int32_t toDoId);
 
 void deleteToDoSettings(PJToDoSettingsController *ptr, int32_t toDoSettingsId);
 
@@ -256,8 +257,6 @@ void free_rust_string(char *ptr);
 const ToDoTag *getSearchToDoTagWithId(const PJToDoSearchController *ptr, int32_t tag_id);
 
 const ToDoType *getSearchToDoTypeWithId(const PJToDoSearchController *ptr, int32_t type_id);
-
-int32_t getToDoCountOfSections(const PJToDoController *ptr);
 
 int32_t getToDoCountsAtSection(const PJToDoController *ptr, int32_t section);
 
@@ -353,6 +352,8 @@ void insertToDoTag(PJToDoTagController *ptr, ToDoTagInsert *toDoTag);
 
 void insertToDoType(PJToDoTypeController *ptr, ToDoTypeInsert *toDoType);
 
+int32_t pj_getToDoNumberOfSections(const PJToDoController *ptr);
+
 void setToDoInsertContent(ToDoInsert *ptr, const char *content);
 
 void setToDoInsertCreateTime(ToDoInsert *ptr, const char *create_time);
@@ -434,6 +435,8 @@ const ToDoTag *todoTagAtIndex(const PJToDoTagController *ptr, int32_t index);
 char *todoTitleAtSection(const PJToDoController *ptr, int32_t section);
 
 const ToDoType *todoTypeAtIndex(const PJToDoTypeController *ptr, int32_t index);
+
+void updateOverDueToDos(const PJToDoController *ptr);
 
 void updateToDo(PJToDoController *ptr, const ToDoQuery *toDo);
 

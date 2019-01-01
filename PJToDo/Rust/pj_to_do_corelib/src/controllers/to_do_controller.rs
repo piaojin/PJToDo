@@ -1,5 +1,5 @@
 use delegates::to_do_delegate::{IPJToDoDelegate, IPJToDoDelegateWrapper};
-use service::to_do_service::{PJToDoService, insert_todo, delete_todo, update_todo, find_todo_by_id, find_todo_date_future_day_more_than, fetch_todos_order_by_state};
+use service::to_do_service::{PJToDoService, insert_todo, delete_todo, update_todo, find_todo_by_id, find_todo_date_future_day_more_than, fetch_todos_order_by_state, update_overdue_todos};
 use service::service_impl::to_do_service_impl::{createPJToDoServiceImpl};
 use to_do::to_do::{ToDoInsert, ToDoQuery};
 use to_do_type::to_do_type::ToDoType;
@@ -102,14 +102,22 @@ impl PJToDoController {
         }
     }
 
-    pub unsafe fn delete_todo(&self, to_do_id: i32) {
+    pub unsafe fn delete_todo(&self, section: i32, index: i32, to_do_id: i32) {
         let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
 
         let result = delete_todo(&(&(*self.todo_service_controller)).todo_service, to_do_id);
 
         match result {
             Ok(_) => {
-                (i_delegate.delete_result)(i_delegate.user, true);
+
+                let todo: *const ToDoQuery = self.todo_at_section(section, index);
+                if (*todo).id == to_do_id {
+                    ((*(self.todos))[section as usize]).remove(index as usize);
+                    (i_delegate.delete_result)(i_delegate.user, true);
+                } else {
+                    pj_info!("to_do_id didn't match!");
+                    (i_delegate.delete_result)(i_delegate.user, false);
+                }
             }
             Err(_e) => {
                 (i_delegate.delete_result)(i_delegate.user, false);
@@ -302,6 +310,23 @@ impl PJToDoController {
         }
     }
 
+    pub unsafe fn update_overdue_todos(
+        &self,
+    ) {
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+        let result = update_overdue_todos(&(&(*self.todo_service_controller)).todo_service);
+        match result {
+            Ok(_) => {
+                pj_info!("update_overdue_todos success!");
+                (i_delegate.update_overdue_todos)(i_delegate.user, true);
+            }
+            Err(_) => {
+                pj_error!("update_overdue_todos faild!");
+                (i_delegate.update_overdue_todos)(i_delegate.user, false);
+            }
+        }
+    }
+
     pub unsafe fn todo_title_at_section(&self, section: i32) -> *mut c_char {
         let section: usize = section as usize;
 
@@ -428,7 +453,7 @@ pub unsafe extern "C" fn insertToDo(ptr: *mut PJToDoController, toDo: *mut ToDoI
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn deleteToDo(ptr: *mut PJToDoController, toDoId: i32) {
+pub unsafe extern "C" fn deleteToDo(ptr: *mut PJToDoController, section: i32, index: i32, toDoId: i32) {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr: *mut deleteToDo is null!");
         assert!(ptr != std::ptr::null_mut());
@@ -438,7 +463,7 @@ pub unsafe extern "C" fn deleteToDo(ptr: *mut PJToDoController, toDoId: i32) {
 
     thread::spawn(move || {
         println!("insertToDo thread::spawn");
-        controler.delete_todo(toDoId);
+        controler.delete_todo(section, index, toDoId);
     });
 }
 
@@ -489,6 +514,21 @@ pub unsafe extern "C" fn fetchToDoData(ptr: *mut PJToDoController) {
 }
 
 #[no_mangle]
+pub unsafe extern "C" fn updateOverDueToDos(ptr: *const PJToDoController) {
+    if ptr == std::ptr::null_mut() {
+        pj_error!("ptr: *mut updateToDo is null!");
+        assert!(ptr != std::ptr::null_mut());
+    }
+
+    let controler = &*ptr;
+
+    thread::spawn(move || {
+        println!("updateOverDueToDos thread::spawn");
+        controler.update_overdue_todos();
+    });
+}
+
+#[no_mangle]
 pub unsafe extern "C" fn todoTitleAtSection(
     ptr: *const PJToDoController,
     section: i32,
@@ -516,7 +556,7 @@ pub unsafe extern "C" fn todoAtSection(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoCountOfSections(ptr: *const PJToDoController) -> i32 {
+pub unsafe extern "C" fn pj_getToDoNumberOfSections(ptr: *const PJToDoController) -> i32 {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut getToDoCount is null!");
         assert!(ptr != std::ptr::null_mut());

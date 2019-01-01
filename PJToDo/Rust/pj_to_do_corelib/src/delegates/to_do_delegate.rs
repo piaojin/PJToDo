@@ -13,6 +13,7 @@ pub struct IPJToDoDelegate {
     pub update_result: extern "C" fn(user: *mut c_void, isSuccess: bool),
     pub find_byId_result: extern "C" fn(user: *mut c_void, toDo: *mut ToDoQuery, isSuccess: bool),
     pub fetch_data_result: extern "C" fn(user: *mut c_void, isSuccess: bool),
+    pub update_overdue_todos: extern "C" fn(user: *mut c_void, isSuccess: bool),
 }
 
 impl Drop for IPJToDoDelegate {

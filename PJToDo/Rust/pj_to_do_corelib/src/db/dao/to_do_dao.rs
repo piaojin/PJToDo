@@ -25,4 +25,6 @@ pub trait PJToDoDAO {
     ) -> Result<Vec<ToDoQuery>, diesel::result::Error>;
 
     fn fetch_todos_order_by_state(&self) -> Result<Vec<Vec<ToDoQuery>>, diesel::result::Error>;
+
+    fn update_overdue_todos(&self) -> Result<Vec<ToDoQuery>, diesel::result::Error>;
 }

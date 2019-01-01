@@ -55,6 +55,10 @@ impl PJToDoService for PJToDoServiceImpl {
     fn fetch_todos_order_by_state(&self) -> Result<Vec<Vec<ToDoQuery>>, diesel::result::Error> {
         self.todo_dao.fetch_todos_order_by_state()
     }
+
+    fn update_overdue_todos(&self) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
+        self.todo_dao.update_overdue_todos()
+    }
 }
 
 impl Drop for PJToDoServiceImpl {

@@ -25,6 +25,8 @@ pub trait PJToDoService {
     ) -> Result<Vec<ToDoQuery>, diesel::result::Error>;
 
     fn fetch_todos_order_by_state(&self) -> Result<Vec<Vec<ToDoQuery>>, diesel::result::Error>;
+
+    fn update_overdue_todos(&self) -> Result<Vec<ToDoQuery>, diesel::result::Error>;
 }
 
 pub fn insert_todo(
@@ -87,4 +89,8 @@ pub fn fetch_todos_order_by_state(
     todo_service: &Box<dyn PJToDoService>,
 ) -> Result<Vec<Vec<ToDoQuery>>, diesel::result::Error> {
     todo_service.fetch_todos_order_by_state()
+}
+
+pub fn update_overdue_todos(todo_service: &Box<dyn PJToDoService>) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
+    todo_service.update_overdue_todos()
 }

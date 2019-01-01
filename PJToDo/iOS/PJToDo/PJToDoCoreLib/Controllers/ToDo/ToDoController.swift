@@ -14,6 +14,7 @@ import Foundation
     @objc optional func updateToDoResult(isSuccess: Bool)
     func fetchToDoDataResult(isSuccess: Bool)
     @objc optional func findToDoByIdResult(toDo: PJ_ToDo?, isSuccess: Bool)
+    @objc optional func updateOverDueToDosResult(isSuccess: Bool)
 }
 
 class ToDoController {
@@ -62,11 +63,23 @@ class ToDoController {
             }
         }
         
-        let iDelegate = IPJToDoDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, fetch_data_result: fetchDataBackBlock)
+        let updateOverDueToDosBlock: (@convention(c) (UnsafeMutableRawPointer?, Bool) -> Void)! = { (pointer, isSuccess) in
+            if let tempPointer = pointer {
+                PJToDo.updateOverDueToDosResult(user: tempPointer, isSuccess: isSuccess)
+            }
+        }
+        
+        let iDelegate = IPJToDoDelegate(user: ownedPointer, destroy: destroyBlock, insert_result: insertBackBlock, delete_result: deleteBackBlock, update_result: updateBackBlock, find_byId_result: findByIdBackBlock, fetch_data_result: fetchDataBackBlock, update_overdue_todos: updateOverDueToDosBlock)
         return iDelegate
     }()
     
     public weak var delegate: ToDoDelegate?
+    
+    private lazy var formatter: DateFormatter = {
+       let formatter = DateFormatter()
+        formatter.dateFormat = "YYYY-MM-DD hh:mm"
+        return formatter
+    }()
     
     init(delegate: ToDoDelegate) {
         self.delegate = delegate
@@ -79,10 +92,10 @@ class ToDoController {
         insertToDo(self.controller, toDo.iToDoInsert)
     }
     
-    public func delete(toDoId: Int) {
+    public func delete(section: Int, index: Int, toDoId: Int) {
         let ownedPointer = ARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        deleteToDo(self.controller, Int32(toDoId))
+        deleteToDo(self.controller, Int32(section), Int32(index), Int32(toDoId))
     }
     
     public func update(toDo: PJ_ToDo) {
@@ -103,8 +116,18 @@ class ToDoController {
         fetchToDoData(self.controller)
     }
     
+    public func updateOverdueToDos() {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
+        updateOverDueToDos(self.controller)
+    }
+    
     public func getToDoCountAtSection(section: Int) -> Int {
         return Int(getToDoCountsAtSection(self.controller, Int32(section)))
+    }
+    
+    public func getToDoNumberOfSections() -> Int {
+        return Int(pj_getToDoNumberOfSections(self.controller))
     }
     
     public func toDoAt(section: Int, index: Int) -> PJ_ToDo {
@@ -154,6 +177,11 @@ class ToDoController {
         self.delegate?.fetchToDoDataResult(isSuccess: isSuccess)
     }
     
+    fileprivate func updateOverDueToDosResult(isSuccess: Bool) {
+        print("ToDoController: received fetchDataResult callback with  \(isSuccess)")
+        self.delegate?.updateOverDueToDosResult?(isSuccess: isSuccess)
+    }
+    
     deinit {
         print("deinit -> ToDoController")
         free_rust_PJToDoController(self.controller)
@@ -184,6 +212,11 @@ fileprivate func findByIdResult(user: UnsafeMutableRawPointer, toDo: OpaquePoint
 fileprivate func fetchDataResult(user: UnsafeMutableRawPointer, isSuccess: Bool) {
     let obj: ToDoController = Unmanaged.fromOpaque(user).takeUnretainedValue()
     obj.fetchDataResult(isSuccess: isSuccess)
+}
+
+fileprivate func updateOverDueToDosResult(user: UnsafeMutableRawPointer, isSuccess: Bool) {
+    let obj: ToDoController = Unmanaged.fromOpaque(user).takeUnretainedValue()
+    obj.updateOverDueToDosResult(isSuccess: isSuccess)
 }
 
 //Rust回调Swift用以销毁Swift对象
