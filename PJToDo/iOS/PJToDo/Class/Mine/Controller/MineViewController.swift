@@ -30,7 +30,7 @@ class MineViewController: PJBaseViewController {
     
     var items: [[MineItem]] = []
     
-    static let MineCellId = "MineCell"
+    static let MineCellId = "MineCellId"
     
     lazy var mineController: MineController = {
         let mineController = MineController(delegate: self)

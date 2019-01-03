@@ -201,6 +201,9 @@ extension HomeTasksViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let toDo = self.toDoController.toDoAt(section: indexPath.section, index: indexPath.row)
+        let detailViewController = DetailViewController(toDo: toDo)
+        self.navigationController?.pushViewController(detailViewController, animated: true)
     }
 }
 

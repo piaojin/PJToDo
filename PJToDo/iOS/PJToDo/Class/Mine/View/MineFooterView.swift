@@ -10,15 +10,15 @@ import UIKit
 
 class MineFooterView: UIView {
     
-    lazy var loginOutLabel: UILabel = {
-        let loginOutLabel = UILabel()
-        loginOutLabel.translatesAutoresizingMaskIntoConstraints = false
-        loginOutLabel.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.regular)
-        loginOutLabel.textAlignment = .center
-        loginOutLabel.textColor = .red
-        loginOutLabel.text = "退出登录"
-        loginOutLabel.backgroundColor = .white
-        return loginOutLabel
+    lazy var loginOutButton: UIButton = {
+        let loginOutButton = UIButton()
+        loginOutButton.translatesAutoresizingMaskIntoConstraints = false
+        loginOutButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.regular)
+        loginOutButton.titleLabel?.textAlignment = .center
+        loginOutButton.setTitleColor(.red, for: .normal)
+        loginOutButton.setTitle("退出登录", for: .normal)
+        loginOutButton.backgroundColor = .white
+        return loginOutButton
     }()
     
     override init(frame: CGRect) {
@@ -35,10 +35,10 @@ class MineFooterView: UIView {
     }
     
     private func initView() {
-        self.addSubview(self.loginOutLabel)
-        self.loginOutLabel.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        self.loginOutLabel.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
-        self.loginOutLabel.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
-        self.loginOutLabel.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        self.addSubview(self.loginOutButton)
+        self.loginOutButton.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        self.loginOutButton.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        self.loginOutButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
+        self.loginOutButton.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }
 }
