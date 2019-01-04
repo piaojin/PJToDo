@@ -70,6 +70,8 @@ class DetailViewController: PJBaseViewController {
         } else {
             self.automaticallyAdjustsScrollViewInsets = false
         }
+        
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: UIBarButtonItemStyle.done, target: self, action: #selector(saveAction))
     }
     
     private func initData() {
@@ -86,7 +88,8 @@ class DetailViewController: PJBaseViewController {
         let remindTimeItem = DetailItem(imageName: "clock", title: "提醒日", detailText: self.toDo.remindTime, type: .remindTime)
         self.items.append([dueTimeItem, remindTimeItem])
         
-        let priorityTimeItem = DetailItem(imageName: "priority_5", title: "优先级", detailText: "\(self.toDo.priority)", type: .priority)
+        let imageName = "priority_\(self.toDo.priority)"
+        let priorityTimeItem = DetailItem(imageName: imageName, title: "优先级", detailText: "\(self.toDo.priority)", type: .priority)
         self.items.append([priorityTimeItem])
         
         self.tableView.register(DetailTextCell.classForCoder(), forCellReuseIdentifier: DetailViewController.DetailTextCellId)
@@ -95,6 +98,10 @@ class DetailViewController: PJBaseViewController {
         
         self.tableView.delegate = self
         self.tableView.dataSource = self
+    }
+    
+    @objc private func saveAction() {
+        
     }
 }
 

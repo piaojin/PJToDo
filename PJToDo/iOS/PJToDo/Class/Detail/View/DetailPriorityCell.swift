@@ -15,14 +15,15 @@ class PriorityImageButton: UIButton {
 class DetailPriorityCell: DetailItemCell {
     
     var lastSelectPriorityTag: Int = -1
+    static let PriorityImageButtonBaseTag = 1000
     
     override var item: DetailItem {
         didSet {
             self.imageView?.image = UIImage(named: item.imageName)
             self.textLabel?.text = item.title
             if let priorityTag = Int(item.detailText) {
-                if let view = self.contentView.viewWithTag(priorityTag), let priorityImageButton = view as? PriorityImageButton {
-                    priorityImageButton.backgroundColor = UIColor.colorWithRGB(red: 159, green: 159, blue: 162)
+                if let view = self.contentView.viewWithTag(priorityTag + DetailPriorityCell.PriorityImageButtonBaseTag), let priorityImageButton = view as? PriorityImageButton {
+                    priorityImageButton.backgroundColor = UIColor.colorWithRGB(red: 160, green: 160, blue: 160)
                 }
                 self.lastSelectPriorityTag = priorityTag
             }
@@ -72,14 +73,13 @@ class DetailPriorityCell: DetailItemCell {
     @objc private func clickAction(sender: UIButton) {
         var priorityTag: Int = -1
         if let priorityImageButton = sender as? PriorityImageButton {
-            priorityImageButton.backgroundColor = UIColor.colorWithRGB(red: 159, green: 159, blue: 162)
+            priorityImageButton.backgroundColor = UIColor.colorWithRGB(red: 160, green: 160, blue: 160)
             priorityTag = priorityImageButton.priorityTag
+            self.imageView?.image = priorityImageButton.imageView?.image
         }
         
-        if let priorityTag = Int(self.item.detailText) {
-            if let view = self.contentView.viewWithTag(priorityTag), let lastSelectPriorityImageButton = view as? PriorityImageButton {
-                lastSelectPriorityImageButton.backgroundColor = .white
-            }
+        if let view = self.contentView.viewWithTag(self.lastSelectPriorityTag + DetailPriorityCell.PriorityImageButtonBaseTag), let lastSelectPriorityImageButton = view as? PriorityImageButton {
+            lastSelectPriorityImageButton.backgroundColor = .white
         }
         self.lastSelectPriorityTag = priorityTag
         self.item.detailText = "\(priorityTag)"
@@ -88,6 +88,7 @@ class DetailPriorityCell: DetailItemCell {
     private func createPriorityImageButton(imageNamed: String, priorityTag: Int) -> PriorityImageButton {
         let priorityImageButton = PriorityImageButton()
         priorityImageButton.priorityTag = priorityTag
+        priorityImageButton.tag = priorityTag + DetailPriorityCell.PriorityImageButtonBaseTag
         priorityImageButton.layer.borderColor = UIColor.lightGray.cgColor
         priorityImageButton.setImage(UIImage(named: imageNamed), for: .normal)
         priorityImageButton.translatesAutoresizingMaskIntoConstraints = false

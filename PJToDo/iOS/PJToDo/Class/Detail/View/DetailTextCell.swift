@@ -10,6 +10,13 @@ import UIKit
 
 class DetailTextCell: DetailItemCell {
     
+    var titleLabel: UILabel = {
+        let titleLabel = UILabel()
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        titleLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
+        return titleLabel
+    }()
+    
     var textField: UITextField = {
         let textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -19,7 +26,7 @@ class DetailTextCell: DetailItemCell {
     
     override var item: DetailItem {
         didSet {
-            self.textLabel?.text = item.type == .title ? "Title:" : "Content:"
+            self.titleLabel.text = item.type == .title ? "Title" : "Content"
             self.textField.text = item.detailText
         }
     }
@@ -34,11 +41,15 @@ class DetailTextCell: DetailItemCell {
     }
     
     private func initView() {
+        self.contentView.addSubview(self.titleLabel)
+        self.titleLabel.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15).isActive = true
+        self.titleLabel.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -15).isActive = true
+        self.titleLabel.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 10).isActive = true
+        
         self.contentView.addSubview(self.textField)
-        self.textField.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        self.textField.topAnchor.constraint(equalTo: self.contentView.topAnchor).isActive = true
-        self.textField.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 65).isActive = true
-        self.textField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor).isActive = true
-        self.textField.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -5).isActive = true
+        self.textField.topAnchor.constraint(equalTo: self.titleLabel.bottomAnchor, constant: 5).isActive = true
+        self.textField.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: 15).isActive = true
+        self.textField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10).isActive = true
+        self.textField.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -15).isActive = true
     }
 }
