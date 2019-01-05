@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailTextCell: DetailItemCell {
+class DetailTextCell: DetailItemCell, UITextFieldDelegate {
     
     var titleLabel: UILabel = {
         let titleLabel = UILabel()
@@ -34,6 +34,7 @@ class DetailTextCell: DetailItemCell {
     required override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         self.initView()
+        self.initData()
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -52,4 +53,17 @@ class DetailTextCell: DetailItemCell {
         self.textField.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10).isActive = true
         self.textField.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -15).isActive = true
     }
+    
+    private func initData() {
+        self.textField.addTarget(self, action: #selector(textFieldValueChanged(sender:)), for: .editingChanged)
+//        self.textField.delegate = self
+    }
+    
+    @objc private func textFieldValueChanged(sender: UIView) {
+        self.item.detailText = self.textField.text ?? ""
+    }
+    
+//    func textFieldDidBeginEditing(_ textField: UITextField) {
+//        self.item.detailText = textField.text ?? ""
+//    }
 }

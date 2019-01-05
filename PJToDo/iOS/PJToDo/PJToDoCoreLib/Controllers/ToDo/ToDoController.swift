@@ -98,6 +98,12 @@ class ToDoController {
         deleteToDo(self.controller, Int32(section), Int32(index), Int32(toDoId))
     }
     
+    public func delete(toDoId: Int) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
+        deleteToDoById(self.controller, Int32(toDoId))
+    }
+    
     public func update(toDo: PJ_ToDo) {
         let ownedPointer = ARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer

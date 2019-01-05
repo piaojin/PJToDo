@@ -203,7 +203,23 @@ extension HomeTasksViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         let toDo = self.toDoController.toDoAt(section: indexPath.section, index: indexPath.row)
         let detailViewController = DetailViewController(toDo: toDo)
+        detailViewController.hidesBottomBarWhenPushed = true
+        detailViewController.delegate = self
         self.navigationController?.pushViewController(detailViewController, animated: true)
+    }
+}
+
+extension HomeTasksViewController: DetailViewControllerDelegate {
+    func didUpdateToDo(detailViewController: DetailViewController, isSuccess: Bool) {
+        if isSuccess {
+            self.toDoController.fetchData()
+        }
+    }
+    
+    func didDeleteToDo(detailViewController: DetailViewController, isSuccess: Bool) {
+        if isSuccess {
+            self.toDoController.fetchData()
+        }
     }
 }
 

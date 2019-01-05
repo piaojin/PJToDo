@@ -125,6 +125,21 @@ impl PJToDoController {
         }
     }
 
+    pub unsafe fn delete_todo_by_id(&self, to_do_id: i32) {
+        let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
+
+        let result = delete_todo(&(&(*self.todo_service_controller)).todo_service, to_do_id);
+
+        match result {
+            Ok(_) => {
+                (i_delegate.delete_result)(i_delegate.user, true);
+            }
+            Err(_e) => {
+                (i_delegate.delete_result)(i_delegate.user, false);
+            }
+        }
+    }
+
     pub unsafe fn update_todo(&self, to_do: *const ToDoQuery) {
         assert!(to_do != std::ptr::null_mut());
 
@@ -464,6 +479,21 @@ pub unsafe extern "C" fn deleteToDo(ptr: *mut PJToDoController, section: i32, in
     thread::spawn(move || {
         println!("insertToDo thread::spawn");
         controler.delete_todo(section, index, toDoId);
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn deleteToDoById(ptr: *mut PJToDoController, toDoId: i32) {
+    if ptr == std::ptr::null_mut() {
+        pj_error!("ptr: *mut deleteToDo is null!");
+        assert!(ptr != std::ptr::null_mut());
+    }
+
+    let controler = &mut *ptr;
+
+    thread::spawn(move || {
+        println!("insertToDo thread::spawn");
+        controler.delete_todo_by_id(toDoId);
     });
 }
 

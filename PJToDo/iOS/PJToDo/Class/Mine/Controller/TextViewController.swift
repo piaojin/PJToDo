@@ -40,6 +40,8 @@ class TextViewController: PJBaseViewController {
         return controller
     }()
     
+    var didSelectItemBlock: ((TextViewController, TextItem) -> ())?
+    
     var textType: TextType = .type
     
     static let TextCellId = "TextCellId"
@@ -151,6 +153,9 @@ extension TextViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let item = self.item(at: indexPath.row)
+        self.didSelectItemBlock?(self, item)
+        self.navigationController?.popViewController(animated: true)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

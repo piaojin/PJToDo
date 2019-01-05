@@ -7,12 +7,18 @@
 //
 
 import UIKit
+import SVProgressHUD
 
 enum DetailSectionType: Int {
     case titleSection
     case typeSection
     case timeSection
     case prioritySection
+}
+
+protocol DetailViewControllerDelegate {
+    func didUpdateToDo(detailViewController: DetailViewController, isSuccess: Bool)
+    func didDeleteToDo(detailViewController: DetailViewController, isSuccess: Bool)
 }
 
 class DetailViewController: PJBaseViewController {
@@ -40,6 +46,13 @@ class DetailViewController: PJBaseViewController {
     static let DetailTextCellId = "DetailTextCellId"
     static let DetailValueCellId = "DetailValueCellId"
     static let DetailPriorityCellId = "DetailPriorityCellId"
+    
+    var delegate: DetailViewControllerDelegate?
+    
+    lazy var toDoController: ToDoController = {
+        let controller = ToDoController(delegate: self)
+        return controller
+    }()
     
     convenience init(toDo: PJ_ToDo) {
         self.init()
@@ -80,8 +93,8 @@ class DetailViewController: PJBaseViewController {
         let contentItem = DetailItem(imageName: "", title: "Content", detailText: self.toDo.content, type: .content)
         self.items.append([titleItem, contentItem])
         
-        let typeItem = DetailItem(imageName: "type_setting", title: "分类", detailText: self.toDo.toDoType.typeName, type: .type)
-        let tagItem = DetailItem(imageName: "tag_setting", title: "标签", detailText: self.toDo.toDoTag.tagName, type: .tag)
+        let typeItem = DetailItem(imageName: "type_setting", title: "分类", detailText: self.toDo.toDoType.typeName, type: .type, value: Int(self.toDo.toDoTypeId))
+        let tagItem = DetailItem(imageName: "tag_setting", title: "标签", detailText: self.toDo.toDoTag.tagName, type: .tag, value: Int(self.toDo.toDoTagId))
         self.items.append([typeItem, tagItem])
         
         let dueTimeItem = DetailItem(imageName: "calendar", title: "到期日", detailText: self.toDo.dueTime, type: .dueTime)
@@ -89,7 +102,7 @@ class DetailViewController: PJBaseViewController {
         self.items.append([dueTimeItem, remindTimeItem])
         
         let imageName = "priority_\(self.toDo.priority)"
-        let priorityTimeItem = DetailItem(imageName: imageName, title: "优先级", detailText: "\(self.toDo.priority)", type: .priority)
+        let priorityTimeItem = DetailItem(imageName: imageName, title: "优先级", detailText: "\(self.toDo.priority)", type: .priority, value: Int(self.toDo.priority))
         self.items.append([priorityTimeItem])
         
         self.tableView.register(DetailTextCell.classForCoder(), forCellReuseIdentifier: DetailViewController.DetailTextCellId)
@@ -101,7 +114,35 @@ class DetailViewController: PJBaseViewController {
     }
     
     @objc private func saveAction() {
-        
+        self.updateToDoModel()
+        self.toDoController.update(toDo: self.toDo)
+    }
+    
+    private func updateToDoModel() {
+        for sectionItems in self.items {
+            for item in sectionItems {
+                self.saveValueToModel(item: item)
+            }
+        }
+    }
+    
+    private func saveValueToModel(item: DetailItem) {
+        switch item.type {
+            case .title:
+                self.toDo.title = item.detailText
+            case .content:
+                self.toDo.content = item.detailText
+            case .type:
+                self.toDo.toDoTypeId = Int32(item.value)
+            case .tag:
+                self.toDo.toDoTagId = Int32(item.value)
+            case .remindTime:
+                self.toDo.remindTime = item.detailText
+            case .dueTime:
+                self.toDo.dueTime = item.detailText
+            case .priority:
+                self.toDo.priority = Int32(item.value)
+        }
     }
 }
 
@@ -138,12 +179,40 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        let item: DetailItem = self.items[indexPath.section][indexPath.row]
+        switch item.type {
+            case .type:
+                let textViewController = TextViewController(textType: .type)
+                textViewController.didSelectItemBlock = { (_, textItem) in
+                    item.detailText = textItem.text
+                    item.value = textItem.id
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                }
+                self.navigationController?.pushViewController(textViewController, animated: true)
+            case .tag:
+                let textViewController = TextViewController(textType: .tag)
+                textViewController.didSelectItemBlock = { (_, textItem) in
+                    item.detailText = textItem.text
+                    item.value = textItem.id
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                }
+                self.navigationController?.pushViewController(textViewController, animated: true)
+            case .remindTime:
+                break
+            case .dueTime:
+                break
+            default:
+                break
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         if let sectionType = DetailSectionType(rawValue: section) {
             if sectionType == .prioritySection {
-                let footerView: UIView = DetailFooterView()
+                let footerView: DetailFooterView = DetailFooterView()
+                footerView.deleteToDoBlock = {
+                    self.toDoController.delete(toDoId: Int(self.toDo.toDoId))
+                }
                 return footerView
             }
         }
@@ -157,5 +226,35 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         return CGFloat.leastNormalMagnitude
+    }
+}
+
+extension DetailViewController: ToDoDelegate {
+    func fetchToDoDataResult(isSuccess: Bool) {
+        
+    }
+    
+    func updateToDoResult(isSuccess: Bool) {
+        DispatchQueue.main.async {
+            if isSuccess {
+                self.delegate?.didUpdateToDo(detailViewController: self, isSuccess: isSuccess)
+                SVProgressHUD.showSuccess(withStatus: "更新成功!")
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                SVProgressHUD.showError(withStatus: "更新失败!")
+            }
+        }
+    }
+    
+    func deleteToDoResult(isSuccess: Bool) {
+        DispatchQueue.main.async {
+            if isSuccess {
+                self.delegate?.didDeleteToDo(detailViewController: self, isSuccess: isSuccess)
+                SVProgressHUD.showSuccess(withStatus: "删除成功!")
+                self.navigationController?.popViewController(animated: true)
+            } else {
+                SVProgressHUD.showError(withStatus: "删除失败!")
+            }
+        }
     }
 }

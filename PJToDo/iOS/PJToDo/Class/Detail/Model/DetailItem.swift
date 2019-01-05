@@ -22,12 +22,14 @@ class DetailItem: NSObject {
     var imageName: String = ""
     var title: String = ""
     var detailText: String = ""
+    var value: Int = -1
     var type: DetailItemType = .type
     
-    init(imageName: String, title: String, detailText: String, type: DetailItemType) {
+    init(imageName: String, title: String, detailText: String, type: DetailItemType, value: Int = -1) {
         self.imageName = imageName
         self.title = title
         self.detailText = detailText
         self.type = type
+        self.value = value
     }
 }

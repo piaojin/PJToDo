@@ -146,20 +146,20 @@ extension MineViewController: UITableViewDelegate, UITableViewDataSource {
         tableView.deselectRow(at: indexPath, animated: true)
         let item = self.items[indexPath.section][indexPath.row]
         switch item.type {
-        case .type:
-            let textViewController = TextViewController(textType: .type)
-            textViewController.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(textViewController, animated: true)
-        case .tag:
-            let textViewController = TextViewController(textType: .tag)
-            textViewController.hidesBottomBarWhenPushed = true
-            self.navigationController?.pushViewController(textViewController, animated: true)
-        case .email, .remindDays:
-            self.editEmailOrRemindDays(item: item)
-        case .blog:
-            break
-        case .about:
-            break
+            case .type:
+                let textViewController = TextViewController(textType: .type)
+                textViewController.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(textViewController, animated: true)
+            case .tag:
+                let textViewController = TextViewController(textType: .tag)
+                textViewController.hidesBottomBarWhenPushed = true
+                self.navigationController?.pushViewController(textViewController, animated: true)
+            case .email, .remindDays:
+                self.editEmailOrRemindDays(item: item)
+            case .blog:
+                break
+            case .about:
+                break
         }
     }
     

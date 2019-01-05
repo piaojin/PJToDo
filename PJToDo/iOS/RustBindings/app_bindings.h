@@ -216,6 +216,8 @@ ToDoTypeInsert *createToDoTypeInsert(const char *type_name);
 
 void deleteToDo(PJToDoController *ptr, int32_t section, int32_t index, int32_t toDoId);
 
+void deleteToDoById(PJToDoController *ptr, int32_t toDoId);
+
 void deleteToDoSettings(PJToDoSettingsController *ptr, int32_t toDoSettingsId);
 
 void deleteToDoTag(PJToDoTagController *ptr, int32_t toDoTagId);

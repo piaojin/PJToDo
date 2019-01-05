@@ -83,6 +83,7 @@ class DetailPriorityCell: DetailItemCell {
         }
         self.lastSelectPriorityTag = priorityTag
         self.item.detailText = "\(priorityTag)"
+        self.item.value = priorityTag
     }
     
     private func createPriorityImageButton(imageNamed: String, priorityTag: Int) -> PriorityImageButton {

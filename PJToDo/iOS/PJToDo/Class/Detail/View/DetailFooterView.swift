@@ -21,9 +21,12 @@ class DetailFooterView: UIView {
         return deleteButton
     }()
     
+    var deleteToDoBlock: (() -> ())?
+    
     override init(frame: CGRect) {
         super.init(frame: .zero)
         self.initView()
+        self.initData()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -41,5 +44,12 @@ class DetailFooterView: UIView {
         self.deleteButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
         self.deleteButton.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
     }
+    
+    private func initData() {
+        self.deleteButton.addTarget(self, action: #selector(deleteAction), for: .touchUpInside)
+    }
 
+    @objc private func deleteAction() {
+        self.deleteToDoBlock?()
+    }
 }
