@@ -27,14 +27,28 @@ class HomeTasksViewController: PJBaseViewController {
         return tempTableView
     }()
     
-    let searchController = UISearchController(searchResultsController: nil)
+    lazy var searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: self.searchToDoViewController)
+        searchController.dimsBackgroundDuringPresentation = true
+        searchController.searchResultsUpdater = self.searchToDoViewController
+        searchController.obscuresBackgroundDuringPresentation = true
+        searchController.searchBar.placeholder = "Search Tasks"
+        searchController.delegate = self.searchToDoViewController
+        return searchController
+    }()
+    
+    lazy var searchToDoViewController: SearchToDoViewController = {
+        let searchToDoViewController = SearchToDoViewController()
+        searchToDoViewController.superNavigationController = self.navigationController
+        return searchToDoViewController
+    }()
     
     lazy var toDoController: ToDoController = {
         let controller = ToDoController(delegate: self)
         return controller
     }()
     
-    static let ToDoId = "ToDoId"
+    static let ToDoCellId = "ToDoCellId"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -61,10 +75,6 @@ class HomeTasksViewController: PJBaseViewController {
             tableView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.bottomAnchor).isActive = true
         }
         
-        // Setup the Search Controller
-        searchController.searchResultsUpdater = self
-        searchController.obscuresBackgroundDuringPresentation = false
-        searchController.searchBar.placeholder = "Search Tasks"
         if #available(iOS 11.0, *) {
             navigationItem.searchController = searchController
         } else {
@@ -76,7 +86,7 @@ class HomeTasksViewController: PJBaseViewController {
     
     private func initData() {
         self.toDoController.updateOverdueToDos()
-        self.tableView.register(ToDoCell.classForCoder(), forCellReuseIdentifier: HomeTasksViewController.ToDoId)
+        self.tableView.register(ToDoCell.classForCoder(), forCellReuseIdentifier: HomeTasksViewController.ToDoCellId)
         self.tableView.delegate = self
         self.tableView.dataSource = self
         NotificationCenter.default.addObserver(self, selector: #selector(updateData), name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
@@ -110,6 +120,19 @@ class HomeTasksViewController: PJBaseViewController {
         self.toDoController.update(toDo: model)
         SVProgressHUD.show(withStatus: "Please wait...")
     }
+    
+    var isEmpty: Bool {
+        var value = true
+        let sectionCount = self.toDoController.getToDoNumberOfSections()
+        for section in 0..<sectionCount {
+            let count = Int(self.toDoController.getToDoCountAtSection(section: section))
+            if count > 0 {
+                value = false
+                break
+            }
+        }
+        return value
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -128,7 +151,7 @@ extension HomeTasksViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: HomeTasksViewController.ToDoId, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: HomeTasksViewController.ToDoCellId, for: indexPath)
         if let tempCell = cell as? ToDoCell {
             tempCell.item = self.toDoController.toDoAt(section: indexPath.section, index: indexPath.row)
         }
@@ -233,6 +256,7 @@ extension HomeTasksViewController: ToDoDelegate {
                 SVProgressHUD.dismiss()
             }
             self.tableView.reloadData()
+            self.showEmpty(show: self.isEmpty)
         }
     }
     
@@ -251,6 +275,7 @@ extension HomeTasksViewController: ToDoDelegate {
         if isSuccess {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
+                self.showEmpty(show: self.isEmpty)
             }
         }
     }
@@ -263,12 +288,5 @@ extension HomeTasksViewController: ToDoDelegate {
     
     func findToDoByIdResult(toDo: PJ_ToDo?, isSuccess: Bool) {
         
-    }
-}
-
-extension HomeTasksViewController: UISearchResultsUpdating {
-    // MARK: - UISearchResultsUpdating Delegate
-    func updateSearchResults(for searchController: UISearchController) {
-        // TODO
     }
 }

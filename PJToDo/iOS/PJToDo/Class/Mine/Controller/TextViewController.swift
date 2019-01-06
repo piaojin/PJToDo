@@ -46,6 +46,10 @@ class TextViewController: PJBaseViewController {
     
     static let TextCellId = "TextCellId"
     
+    var isEmpty: Bool {
+        return self.getCount() == 0
+    }
+    
     convenience init(textType: TextType) {
         self.init()
         self.textType = textType
@@ -143,12 +147,12 @@ extension TextViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: TextViewController.TextCellId)
+        let cell = tableView.dequeueReusableCell(withIdentifier: TextViewController.TextCellId, for: indexPath)
         if let tempCell = cell as? TextCell {
             tempCell.textItem = self.item(at: indexPath.row)
             return tempCell
         }
-        return UITableViewCell()
+        return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -179,10 +183,8 @@ extension TextViewController: ToDoTypeDelegate {
     func fetchTypeDataResult(isSuccess: Bool) {
         DispatchQueue.main.async {
             if isSuccess {
-                if self.getCount() == 0 {
-                    self.showEmpty(show: true)
-                } else {
-                    self.showEmpty(show: false)
+                self.showEmpty(show: self.isEmpty)
+                if !self.isEmpty {
                     self.tableView.reloadData()
                 }
             } else {
@@ -227,10 +229,8 @@ extension TextViewController: ToDoTagDelegate {
     func fetchTagDataResult(isSuccess: Bool) {
         DispatchQueue.main.async {
             if isSuccess {
-                if self.getCount() == 0 {
-                    self.showEmpty(show: true)
-                } else {
-                    self.showEmpty(show: false)
+                self.showEmpty(show: self.isEmpty)
+                if !self.isEmpty {
                     self.tableView.reloadData()
                 }
             } else {

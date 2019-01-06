@@ -20,7 +20,7 @@ class ToDoSearchController {
     }()
     
     private lazy var iDelegate: IPJToDoSearchDelegate = {
-        let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(self).toOpaque())
+         let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passUnretained(self).toOpaque())
         
         /*call back for C*/
         let destroyBlock: @convention(c) (UnsafeMutableRawPointer?) -> Void = {(pointer) in
@@ -52,10 +52,14 @@ class ToDoSearchController {
     }
     
     public func findByTitle(title: String) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         PJ_FindToDoByTitle(self.controller, title)
     }
     
     public func findToDoLikeTitle(title: String) {
+        let ownedPointer = ARCManager.retain(object: self)
+        self.iDelegate.user = ownedPointer
         PJ_FindToDoLikeTitle(self.controller, title)
     }
     

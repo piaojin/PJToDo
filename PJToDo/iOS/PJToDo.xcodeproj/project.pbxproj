@@ -85,6 +85,8 @@
 		CAD07CAA21DE3F250067AD23 /* DetailItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CA921DE3F250067AD23 /* DetailItemCell.swift */; };
 		CAD07CAD21DE4F420067AD23 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CAC21DE4F420067AD23 /* DetailViewController.swift */; };
 		CAD07CAF21DE5F100067AD23 /* DetailFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CAE21DE5F100067AD23 /* DetailFooterView.swift */; };
+		CAD07CB521E08D0D0067AD23 /* SearchToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CB421E08D0D0067AD23 /* SearchToDoViewController.swift */; };
+		CAD07CB721E090EB0067AD23 /* SearchToDoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CB621E090EB0067AD23 /* SearchToDoCell.swift */; };
 		E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */; };
 /* End PBXBuildFile section */
 
@@ -224,6 +226,8 @@
 		CAD07CA921DE3F250067AD23 /* DetailItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailItemCell.swift; sourceTree = "<group>"; };
 		CAD07CAC21DE4F420067AD23 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		CAD07CAE21DE5F100067AD23 /* DetailFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailFooterView.swift; sourceTree = "<group>"; };
+		CAD07CB421E08D0D0067AD23 /* SearchToDoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchToDoViewController.swift; sourceTree = "<group>"; };
+		CAD07CB621E090EB0067AD23 /* SearchToDoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchToDoCell.swift; sourceTree = "<group>"; };
 		CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C7DCA9E375B4ACEF6FE7C8 /* Pods-PJToDo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -361,10 +365,10 @@
 		76348C102116F2F30009455C /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				CAD07CB021E08C620067AD23 /* Search */,
 				CAD07C9E21DD00620067AD23 /* Detail */,
 				76FD55EB2187073100989102 /* Login */,
 				76FD55ED2187073100989102 /* Mine */,
-				76FD55EA2187073100989102 /* Search */,
 				76FD55E82187073100989102 /* ToDo */,
 				76FD55E92187073100989102 /* ToDoTag */,
 				76B5226B21809EA800D51AE8 /* ToDoType */,
@@ -705,13 +709,6 @@
 			path = ToDoTag;
 			sourceTree = "<group>";
 		};
-		76FD55EA2187073100989102 /* Search */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Search;
-			sourceTree = "<group>";
-		};
 		76FD55EB2187073100989102 /* Login */ = {
 			isa = PBXGroup;
 			children = (
@@ -779,6 +776,39 @@
 				CAD07CAC21DE4F420067AD23 /* DetailViewController.swift */,
 			);
 			path = Controller;
+			sourceTree = "<group>";
+		};
+		CAD07CB021E08C620067AD23 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				CAD07CB121E08C620067AD23 /* Controller */,
+				CAD07CB221E08C620067AD23 /* Model */,
+				CAD07CB321E08C620067AD23 /* View */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		CAD07CB121E08C620067AD23 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CAD07CB421E08D0D0067AD23 /* SearchToDoViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CAD07CB221E08C620067AD23 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		CAD07CB321E08C620067AD23 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CAD07CB621E090EB0067AD23 /* SearchToDoCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		D7B6BE488F9FA8DC6E6E1C35 /* Frameworks */ = {
@@ -1081,6 +1111,7 @@
 				764EF2DE21B8C794000F4417 /* MineViewController.swift in Sources */,
 				764EF2DC21B8C794000F4417 /* User.swift in Sources */,
 				769769B021B0CE9A00AB3569 /* PJTabBarViewController.swift in Sources */,
+				CAD07CB721E090EB0067AD23 /* SearchToDoCell.swift in Sources */,
 				764883052167598000F11106 /* PJToDoCoreLibFactory.swift in Sources */,
 				7648830F21675A7600F11106 /* ToDoController.swift in Sources */,
 				764EF2E421B8CDD0000F4417 /* MineItem.swift in Sources */,
@@ -1089,6 +1120,7 @@
 				76384BFD2199A61400C677BB /* PJHttpRequestConfig.swift in Sources */,
 				762E939721A58B1D0002FED3 /* PJCommonExtension.swift in Sources */,
 				7654A8AA21BCF2F9003464E9 /* ComposeTypeCell.swift in Sources */,
+				CAD07CB521E08D0D0067AD23 /* SearchToDoViewController.swift in Sources */,
 				76BED24021B6C35100E86B59 /* PJStringExtension.swift in Sources */,
 				762502202170AA69001043AF /* PJToDoConst.swift in Sources */,
 				76B5226D21809EC200D51AE8 /* PJToDoType.swift in Sources */,

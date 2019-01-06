@@ -1,7 +1,7 @@
 use delegates::to_do_search_delegate::{IPJToDoSearchDelegate, IPJToDoSearchDelegateWrapper};
 use service::to_do_service::{PJToDoService, find_todo_by_title, find_todo_like_title};
 use service::service_impl::to_do_service_impl::{createPJToDoServiceImpl};
-use to_do::to_do::{ToDoQuery, createToDoQuery};
+use to_do::to_do::{ToDoQuery};
 use to_do_type::to_do_type::ToDoType;
 use to_do_tag::to_do_tag::ToDoTag;
 use common::{free_rust_any_object};
@@ -11,6 +11,7 @@ use std::ffi::{CStr};
 use libc::{c_char};
 use std::thread;
 use std::marker::{Send, Sync};
+use std::ptr;
 use common::pj_serialize::PJSerdeDeserialize;
 use service::to_do_type_service::PJToDoTypeService;
 use service::to_do_tag_service::PJToDoTagService;
@@ -59,18 +60,19 @@ unsafe impl Sync for PJToDoSearchController {}
 
 impl PJToDoSearchController {
     fn new(delegate: IPJToDoSearchDelegate) -> PJToDoSearchController {
-        let controller = unsafe {
-            PJToDoSearchController {
+        let mut controller = PJToDoSearchController {
                 delegate: delegate,
                 todo_search_service_controller: Box::into_raw(Box::new(
                     PJToDoSearchServiceController::new(),
                 )),
-                todos: Box::into_raw(Box::new(Vec::new())),
-                todo_types: Box::into_raw(Box::new(Vec::new())),
-                todo_tags: Box::into_raw(Box::new(Vec::new())),
-                find_result_todo: createToDoQuery(),
-            }
-        };
+                todos: ptr::null_mut(),
+                todo_types: ptr::null_mut(),
+                todo_tags: ptr::null_mut(),
+                find_result_todo: ptr::null_mut(),
+            };
+        unsafe {
+            controller.prepare_datas();
+        }
         controller
     }
 
@@ -162,7 +164,6 @@ impl PJToDoSearchController {
         }
     }
 
-    /*the func will move to ToDoSearchController*/
     pub unsafe fn find_todo_like_title(&mut self, title: String) {
         let i_delegate =
             IPJToDoSearchDelegateWrapper((&self.delegate) as *const IPJToDoSearchDelegate);
