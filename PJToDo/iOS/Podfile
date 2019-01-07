@@ -10,7 +10,7 @@ target 'PJToDo' do
   pod 'SVProgressHUD', '~> 2.2.5'
   pod 'ReachabilitySwift', '~> 4.1.0'
   pod 'SSZipArchive', '~> 2.1.3'
-  pod 'CYLTabBarController', '~> 1.17.21'
+  pod 'PJPresentation'
 
   target 'PJToDoTests' do
     inherit! :search_paths
