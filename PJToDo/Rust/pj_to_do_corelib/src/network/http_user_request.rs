@@ -19,6 +19,7 @@ use common::pj_utils::PJUtils;
 use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
 use std::ffi::{CStr, CString};
 use libc::{c_char};
+use std::thread;
 
 pub struct PJHttpUserRequest;
 
@@ -134,6 +135,7 @@ pub unsafe extern "C" fn PJ_Login(
     let name = CStr::from_ptr(name).to_string_lossy().into_owned();
     let password = CStr::from_ptr(password).to_string_lossy().into_owned();
 
+    thread::spawn(move || {
     PJHttpUserRequest::login(&name, &password, move |result| {
         let mut c_str = CString::new("").unwrap();
         match result {
@@ -163,6 +165,7 @@ pub unsafe extern "C" fn PJ_Login(
             }
         }
     });
+    });
 }
 
 #[no_mangle]
@@ -178,7 +181,8 @@ pub unsafe extern "C" fn PJ_Authorizations(
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
     let authorization = CStr::from_ptr(authorization).to_string_lossy().into_owned();
 
-    PJHttpUserRequest::authorizations(&authorization, move |result| {
+    thread::spawn(move || {
+        PJHttpUserRequest::authorizations(&authorization, move |result| {
         let mut c_str = CString::new("").unwrap();
         match result {
             Ok(authorization) => {
@@ -209,13 +213,15 @@ pub unsafe extern "C" fn PJ_Authorizations(
             }
         }
     });
+    });
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn PJ_RequestUserInfo(delegate: IPJToDoHttpRequestDelegate) {
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
 
-    PJHttpUserRequest::request_user_info(move |result| {
+    thread::spawn(move || {
+        PJHttpUserRequest::request_user_info(move |result| {
         let mut c_str = CString::new("").unwrap();
         match result {
             Ok(user) => {
@@ -245,5 +251,6 @@ pub unsafe extern "C" fn PJ_RequestUserInfo(delegate: IPJToDoHttpRequestDelegate
                 (i_delegate.request_result)(i_delegate.user, c_char, false);
             }
         }
+    });
     });
 }

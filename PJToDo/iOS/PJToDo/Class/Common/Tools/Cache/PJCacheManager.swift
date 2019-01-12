@@ -54,7 +54,7 @@ public struct PJCacheManager {
     public static func saveCustomObject<T: Encodable>(customObject object: T, key: String) {
         let encoder = JSONEncoder()
         if let data = try? encoder.encode(object) {
-            print(String(data: data, encoding: .utf8)!)
+            DDLogInfo(String(data: data, encoding: .utf8)!)
             self.userDefaults.set(data, forKey: key)
         }
     }
@@ -67,7 +67,7 @@ public struct PJCacheManager {
         if let decodedObject = self.userDefaults.object(forKey: key), let data = decodedObject as? Data {
             let decoder = JSONDecoder()
             if let object = try? decoder.decode(T.self, from: data) {
-                print("\(String(describing: object))")
+                DDLogInfo("\(String(describing: object))")
                 return object
             } else {
                 return nil

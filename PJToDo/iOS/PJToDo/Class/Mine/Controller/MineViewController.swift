@@ -129,6 +129,16 @@ extension MineViewController: UITableViewDelegate, UITableViewDataSource {
         var footerView: UIView = UIView()
         if section == self.items.count - 1 {
             footerView = MineFooterView()
+            footerView.isUserInteractionEnabled = true
+            if let tempFooterView = footerView as? MineFooterView {
+                tempFooterView.loginClosure = {
+                    PJUserInfoManager.removeUserInfo()
+                    if let window = UIApplication.shared.delegate?.window {
+                        window?.rootViewController = UINavigationController(rootViewController: WelcomeViewController())
+                        window?.makeKeyAndVisible()
+                    }
+                }
+            }
             return footerView
         }
         footerView.backgroundColor = UIColor.colorWithRGB(red: 249, green: 249, blue: 249)

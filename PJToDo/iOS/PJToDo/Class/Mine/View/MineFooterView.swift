@@ -10,6 +10,8 @@ import UIKit
 
 class MineFooterView: UIView {
     
+    var loginClosure: (() -> ())?
+    
     lazy var loginOutButton: UIButton = {
         let loginOutButton = UIButton()
         loginOutButton.translatesAutoresizingMaskIntoConstraints = false
@@ -24,6 +26,7 @@ class MineFooterView: UIView {
     override init(frame: CGRect) {
         super.init(frame: .zero)
         self.initView()
+        self.initData()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -40,5 +43,13 @@ class MineFooterView: UIView {
         self.loginOutButton.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
         self.loginOutButton.topAnchor.constraint(equalTo: self.topAnchor, constant: 20).isActive = true
         self.loginOutButton.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+    }
+    
+    private func initData() {
+        self.loginOutButton.addTarget(self, action: #selector(loginOutAction), for: .touchUpInside)
+    }
+    
+    @objc private func loginOutAction() {
+        self.loginClosure?()
     }
 }

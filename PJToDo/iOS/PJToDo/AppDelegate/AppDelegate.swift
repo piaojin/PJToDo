@@ -67,22 +67,12 @@ extension AppDelegate {
     }
     
     func initRootViewController() {
-        let rootTabBarViewController = PJTabBarViewController()
-//        let homeViewController = HomeViewController()
-//        let homeNav = UINavigationController(rootViewController: homeViewController)
-//
-//        let mineViewControler = MineViewController()
-//        let mineNav = UINavigationController(rootViewController: mineViewControler)
-//
-//        let rootTabBarViewController = CYLTabBarController()
-//        rootTabBarViewController.setViewControllers([homeNav, mineNav], animated: true)
-//
-//        let homeTabBarDic = [CYLTabBarItemTitle: "Home", CYLTabBarItemImage: "home_unselected", CYLTabBarItemSelectedImage: "home_selected"]
-//
-//        let mineTabBarDic = [CYLTabBarItemTitle: "Mine", CYLTabBarItemImage: "me_unselected", CYLTabBarItemSelectedImage: "me_selected"]
-//
-//        rootTabBarViewController.tabBarItemsAttributes = [homeTabBarDic, mineTabBarDic]
-        
+        var rootTabBarViewController: UIViewController
+        if PJUserInfoManager.shared.isLogin {
+            rootTabBarViewController = PJTabBarViewController()
+        } else {
+            rootTabBarViewController = UINavigationController(rootViewController: WelcomeViewController())
+        }
         self.window?.rootViewController = rootTabBarViewController
     }
 }

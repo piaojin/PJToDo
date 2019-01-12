@@ -11,7 +11,6 @@
 		7625021D2170A6D9001043AF /* PJCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7625021C2170A6D9001043AF /* PJCacheManager.swift */; };
 		762502202170AA69001043AF /* PJToDoConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7625021F2170AA69001043AF /* PJToDoConst.swift */; };
 		7625A99C218D36EF0014FA6E /* PJToDoTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7625A99B218D36EF0014FA6E /* PJToDoTag.swift */; };
-		762E939221A580890002FED3 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762E939121A580890002FED3 /* LoginViewController.swift */; };
 		762E939721A58B1D0002FED3 /* PJCommonExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762E939621A58B1D0002FED3 /* PJCommonExtension.swift */; };
 		76348BF22116F2AD0009455C /* PJToDoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76348BF12116F2AD0009455C /* PJToDoTests.swift */; };
 		76348BFD2116F2AE0009455C /* PJToDoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76348BFC2116F2AE0009455C /* PJToDoUITests.swift */; };
@@ -56,7 +55,6 @@
 		766E6E2A21930BC800BC9DFE /* PJToDoMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 766E6E2921930BC800BC9DFE /* PJToDoMode.swift */; };
 		76746D98216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c in Sources */ = {isa = PBXBuildFile; fileRef = 76746D97216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c */; };
 		76746D9E216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m in Sources */ = {isa = PBXBuildFile; fileRef = 76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */; };
-		767B5D6E21987F9E00713393 /* ToDoModelProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 767B5D6D21987F9E00713393 /* ToDoModelProtocol.swift */; };
 		7693784421B3EEF600473382 /* HomeTasksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7693784321B3EEF600473382 /* HomeTasksViewController.swift */; };
 		7693784721B3EF5900473382 /* TasksHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7693784621B3EF5900473382 /* TasksHeaderView.swift */; };
 		769769B021B0CE9A00AB3569 /* PJTabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769769A921B0CE9A00AB3569 /* PJTabBarViewController.swift */; };
@@ -78,6 +76,9 @@
 		CA88DED121CE71EE007CFB0B /* libpj_to_do_corelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA88DED021CE71EE007CFB0B /* libpj_to_do_corelib.a */; };
 		CA88DED321CE7B7F007CFB0B /* ToDoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88DED221CE7B7F007CFB0B /* ToDoCell.swift */; };
 		CAAD248B21E4E9340042FB94 /* DateSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD248A21E4E9340042FB94 /* DateSelectView.swift */; };
+		CAAD248E21E9BA3C0042FB94 /* PJUserInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD248D21E9BA3C0042FB94 /* PJUserInfoManager.swift */; };
+		CAAD249321E9C09E0042FB94 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD249121E9C09E0042FB94 /* LoginViewController.swift */; };
+		CAAD249521E9C4180042FB94 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD249421E9C4180042FB94 /* WelcomeViewController.swift */; };
 		CAD07CA121DD01C10067AD23 /* DetailTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CA021DD01C10067AD23 /* DetailTextCell.swift */; };
 		CAD07CA321DD09C30067AD23 /* DetailValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CA221DD09C30067AD23 /* DetailValueCell.swift */; };
 		CAD07CA621DD0D310067AD23 /* DetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CA521DD0D310067AD23 /* DetailItem.swift */; };
@@ -136,7 +137,6 @@
 		7625A99B218D36EF0014FA6E /* PJToDoTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoTag.swift; sourceTree = "<group>"; };
 		762AD8E52164F39500D0C5C7 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		762AD8E72165075D00D0C5C7 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
-		762E939121A580890002FED3 /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		762E939621A58B1D0002FED3 /* PJCommonExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJCommonExtension.swift; sourceTree = "<group>"; };
 		76348BD92116F2AC0009455C /* PJToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PJToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76348BE82116F2AD0009455C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -195,7 +195,6 @@
 		76746D9D216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PJToDoCoreLibPAL_C_Bridging_OC.m; sourceTree = "<group>"; };
 		767A10D421772DC800B1A179 /* PJToDoCoreLibPAL_C.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C.h; sourceTree = "<group>"; };
 		767A10D821772E4800B1A179 /* PJToDoCoreLibPAL_C_Bindings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PJToDoCoreLibPAL_C_Bindings.h; sourceTree = "<group>"; };
-		767B5D6D21987F9E00713393 /* ToDoModelProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoModelProtocol.swift; sourceTree = "<group>"; };
 		7693784321B3EEF600473382 /* HomeTasksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeTasksViewController.swift; sourceTree = "<group>"; };
 		7693784621B3EF5900473382 /* TasksHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TasksHeaderView.swift; sourceTree = "<group>"; };
 		769769A921B0CE9A00AB3569 /* PJTabBarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJTabBarViewController.swift; sourceTree = "<group>"; };
@@ -219,6 +218,9 @@
 		CA88DED021CE71EE007CFB0B /* libpj_to_do_corelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpj_to_do_corelib.a; path = ../Rust/pj_to_do_corelib/target/universal/debug/libpj_to_do_corelib.a; sourceTree = "<group>"; };
 		CA88DED221CE7B7F007CFB0B /* ToDoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCell.swift; sourceTree = "<group>"; };
 		CAAD248A21E4E9340042FB94 /* DateSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectView.swift; sourceTree = "<group>"; };
+		CAAD248D21E9BA3C0042FB94 /* PJUserInfoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJUserInfoManager.swift; sourceTree = "<group>"; };
+		CAAD249121E9C09E0042FB94 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
+		CAAD249421E9C4180042FB94 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
 		CAD07CA021DD01C10067AD23 /* DetailTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTextCell.swift; sourceTree = "<group>"; };
 		CAD07CA221DD09C30067AD23 /* DetailValueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailValueCell.swift; sourceTree = "<group>"; };
 		CAD07CA521DD0D310067AD23 /* DetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailItem.swift; sourceTree = "<group>"; };
@@ -578,6 +580,7 @@
 		764883322168C27A00F11106 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CAAD248C21E9BA3C0042FB94 /* Managers */,
 				76C43DE221B8053700922FFD /* View */,
 				769769A821B0CE9A00AB3569 /* BaseControllers */,
 				769769AB21B0CE9A00AB3569 /* BaseViews */,
@@ -586,7 +589,6 @@
 				7625021E2170AA69001043AF /* Consts */,
 				7625021A2170A6D9001043AF /* Tools */,
 				766E6E2921930BC800BC9DFE /* PJToDoMode.swift */,
-				767B5D6D21987F9E00713393 /* ToDoModelProtocol.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -711,7 +713,9 @@
 		76FD55EB2187073100989102 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				762E939121A580890002FED3 /* LoginViewController.swift */,
+				CAAD249021E9C09E0042FB94 /* Controller */,
+				CAAD249221E9C09E0042FB94 /* Model */,
+				CAAD248F21E9C09E0042FB94 /* View */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -737,6 +741,37 @@
 				0AC28ACAC2136F28EABA21C8 /* Pods-PJToDoUITests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		CAAD248C21E9BA3C0042FB94 /* Managers */ = {
+			isa = PBXGroup;
+			children = (
+				CAAD248D21E9BA3C0042FB94 /* PJUserInfoManager.swift */,
+			);
+			path = Managers;
+			sourceTree = "<group>";
+		};
+		CAAD248F21E9C09E0042FB94 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CAAD249021E9C09E0042FB94 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				CAAD249121E9C09E0042FB94 /* LoginViewController.swift */,
+				CAAD249421E9C4180042FB94 /* WelcomeViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		CAAD249221E9C09E0042FB94 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		CAD07C9E21DD00620067AD23 /* Detail */ = {
@@ -1084,15 +1119,18 @@
 				764883302168B4F600F11106 /* PJToDoDBManager.swift in Sources */,
 				CA3C428921C2875800C71C6D /* SelectedComposeView.swift in Sources */,
 				7648830B21675A3400F11106 /* ReposController.swift in Sources */,
+				CAAD248E21E9BA3C0042FB94 /* PJUserInfoManager.swift in Sources */,
 				CAD07CA621DD0D310067AD23 /* DetailItem.swift in Sources */,
 				7648831121675A9000F11106 /* ToDoSearchController.swift in Sources */,
 				CAD07CAD21DE4F420067AD23 /* DetailViewController.swift in Sources */,
 				7654A8A021BBF944003464E9 /* TextViewController.swift in Sources */,
 				76746D98216E5F3C00BE81BC /* PJToDoCoreLibPAL_C.c in Sources */,
+				CAAD249321E9C09E0042FB94 /* LoginViewController.swift in Sources */,
 				764EF2E021B8C7B6000F4417 /* MineHeaderView.swift in Sources */,
 				7648831521675AC500F11106 /* MineController.swift in Sources */,
 				76488307216759AE00F11106 /* PJToDoCoreLibInit.swift in Sources */,
 				CA88DED321CE7B7F007CFB0B /* ToDoCell.swift in Sources */,
+				CAAD249521E9C4180042FB94 /* WelcomeViewController.swift in Sources */,
 				76384BFB2199A5DC00C677BB /* PJHttpRequest.swift in Sources */,
 				7654A8A821BCF0AD003464E9 /* ComposeTypeItem.swift in Sources */,
 				7648832121675B5C00F11106 /* MineService.swift in Sources */,
@@ -1132,10 +1170,8 @@
 				764EF2DD21B8C794000F4417 /* PJMySettings.swift in Sources */,
 				7654A89E21BBB0EA003464E9 /* ARCManager.swift in Sources */,
 				7648831F21675B4A00F11106 /* ToDoTypeService.swift in Sources */,
-				762E939221A580890002FED3 /* LoginViewController.swift in Sources */,
 				7625A99C218D36EF0014FA6E /* PJToDoTag.swift in Sources */,
 				769769B421B0CE9A00AB3569 /* PJBaseEmptyView.swift in Sources */,
-				767B5D6E21987F9E00713393 /* ToDoModelProtocol.swift in Sources */,
 				CAAD248B21E4E9340042FB94 /* DateSelectView.swift in Sources */,
 				7654A8A421BBFD88003464E9 /* TextItem.swift in Sources */,
 				76C6354B21B96F1B006CD7D9 /* MineFooterView.swift in Sources */,

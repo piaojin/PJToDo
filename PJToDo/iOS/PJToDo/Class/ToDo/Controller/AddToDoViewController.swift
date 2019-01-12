@@ -120,8 +120,6 @@ class AddToDoViewController: PJBaseViewController {
         self.selectComposeTypeViewHeightConstraint = self.selectComposeTypeView.heightAnchor.constraint(equalToConstant: 0)
         self.selectComposeTypeViewHeightConstraint?.isActive = true
         self.selectComposeTypeViewHeightConstraint?.constant = 0
-        
-        self.automaticallyAdjustsScrollViewInsets = false
     }
     
     private func initData() {
