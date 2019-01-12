@@ -29,10 +29,10 @@ class AddToDoViewController: PJBaseViewController {
         return selectedComposeView
     }()
     
-    lazy var dataPicker: UIDatePicker = {
-        let dataPicker = UIDatePicker()
-        dataPicker.translatesAutoresizingMaskIntoConstraints = false
-        return dataPicker
+    lazy var datePicker: UIDatePicker = {
+        let datePicker = UIDatePicker()
+        datePicker.translatesAutoresizingMaskIntoConstraints = false
+        return datePicker
     }()
     
     lazy var dateFormatter: DateFormatter = {
@@ -151,7 +151,7 @@ class AddToDoViewController: PJBaseViewController {
         
         priorityItems = [(0, "priority_0"), (1, "priority_1"), (2, "priority_2"), (3, "priority_3"), (4, "priority_4"), (5, "priority_5")]
         
-        self.dataPicker.addTarget(self, action: #selector(dateChangeAction(datePicker:)), for: .valueChanged)
+        self.datePicker.addTarget(self, action: #selector(dateChangeAction(datePicker:)), for: .valueChanged)
         
         self.selectedComposeView.deleteBlock = { [weak self] (_, _) in
             self?.showSelectedComposeView(show: self?.selectedComposeView.composeItems.count != 0)
@@ -218,7 +218,7 @@ class AddToDoViewController: PJBaseViewController {
         self.inputBox.textField.resignFirstResponder()
         if show {
             self.inputBox.textField.inputAccessoryView = self.doneView
-            self.inputBox.textField.inputView = self.dataPicker
+            self.inputBox.textField.inputView = self.datePicker
             self.inputBox.textField.becomeFirstResponder()
         } else {
             self.inputBox.textField.inputAccessoryView = nil
@@ -234,7 +234,7 @@ class AddToDoViewController: PJBaseViewController {
         self.showDatePicker(show: false)
         self.inputBox.textField.becomeFirstResponder()
         self.showSelectedComposeView(show: true)
-        let dateString = self.dateFormatter.string(from: self.dataPicker.date)
+        let dateString = self.dateFormatter.string(from: self.datePicker.date)
         let remindTimeComposeItem = ComposeTypeItem(id: -1, title: dateString, imageNamed: "white_calendar", composeType: .remindTime)
         self.selectedComposeView.insertSelectedComposeItem(item: remindTimeComposeItem)
     }

@@ -65,7 +65,6 @@
 		769769B321B0CE9A00AB3569 /* PJBaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769769AD21B0CE9A00AB3569 /* PJBaseTableViewCell.swift */; };
 		769769B421B0CE9A00AB3569 /* PJBaseEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769769AE21B0CE9A00AB3569 /* PJBaseEmptyView.swift */; };
 		769769B521B0CE9A00AB3569 /* PJBaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769769AF21B0CE9A00AB3569 /* PJBaseView.swift */; };
-		769769B721B0DD0A00AB3569 /* PJAddToDoButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769769B621B0DD0A00AB3569 /* PJAddToDoButton.swift */; };
 		769769BB21B102D300AB3569 /* PJ_ToDo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769769BA21B102D300AB3569 /* PJ_ToDo.swift */; };
 		769769BD21B1044C00AB3569 /* AddToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 769769BC21B1044C00AB3569 /* AddToDoViewController.swift */; };
 		76A43CBB219DB5530041B7AC /* PJKeyCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76A43CBA219DB5530041B7AC /* PJKeyCenter.swift */; };
@@ -78,6 +77,7 @@
 		CA88DECF21C7D2DB007CFB0B /* SelectedComposeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88DECE21C7D2DB007CFB0B /* SelectedComposeCell.swift */; };
 		CA88DED121CE71EE007CFB0B /* libpj_to_do_corelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA88DED021CE71EE007CFB0B /* libpj_to_do_corelib.a */; };
 		CA88DED321CE7B7F007CFB0B /* ToDoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88DED221CE7B7F007CFB0B /* ToDoCell.swift */; };
+		CAAD248B21E4E9340042FB94 /* DateSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD248A21E4E9340042FB94 /* DateSelectView.swift */; };
 		CAD07CA121DD01C10067AD23 /* DetailTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CA021DD01C10067AD23 /* DetailTextCell.swift */; };
 		CAD07CA321DD09C30067AD23 /* DetailValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CA221DD09C30067AD23 /* DetailValueCell.swift */; };
 		CAD07CA621DD0D310067AD23 /* DetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CA521DD0D310067AD23 /* DetailItem.swift */; };
@@ -204,7 +204,6 @@
 		769769AD21B0CE9A00AB3569 /* PJBaseTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJBaseTableViewCell.swift; sourceTree = "<group>"; };
 		769769AE21B0CE9A00AB3569 /* PJBaseEmptyView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJBaseEmptyView.swift; sourceTree = "<group>"; };
 		769769AF21B0CE9A00AB3569 /* PJBaseView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJBaseView.swift; sourceTree = "<group>"; };
-		769769B621B0DD0A00AB3569 /* PJAddToDoButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJAddToDoButton.swift; sourceTree = "<group>"; };
 		769769BA21B102D300AB3569 /* PJ_ToDo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJ_ToDo.swift; sourceTree = "<group>"; };
 		769769BC21B1044C00AB3569 /* AddToDoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddToDoViewController.swift; sourceTree = "<group>"; };
 		76A43CBA219DB5530041B7AC /* PJKeyCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJKeyCenter.swift; sourceTree = "<group>"; };
@@ -219,6 +218,7 @@
 		CA88DECE21C7D2DB007CFB0B /* SelectedComposeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedComposeCell.swift; sourceTree = "<group>"; };
 		CA88DED021CE71EE007CFB0B /* libpj_to_do_corelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpj_to_do_corelib.a; path = ../Rust/pj_to_do_corelib/target/universal/debug/libpj_to_do_corelib.a; sourceTree = "<group>"; };
 		CA88DED221CE7B7F007CFB0B /* ToDoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCell.swift; sourceTree = "<group>"; };
+		CAAD248A21E4E9340042FB94 /* DateSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectView.swift; sourceTree = "<group>"; };
 		CAD07CA021DD01C10067AD23 /* DetailTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTextCell.swift; sourceTree = "<group>"; };
 		CAD07CA221DD09C30067AD23 /* DetailValueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailValueCell.swift; sourceTree = "<group>"; };
 		CAD07CA521DD0D310067AD23 /* DetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailItem.swift; sourceTree = "<group>"; };
@@ -652,7 +652,6 @@
 				769769AD21B0CE9A00AB3569 /* PJBaseTableViewCell.swift */,
 				769769AE21B0CE9A00AB3569 /* PJBaseEmptyView.swift */,
 				769769AF21B0CE9A00AB3569 /* PJBaseView.swift */,
-				769769B621B0DD0A00AB3569 /* PJAddToDoButton.swift */,
 			);
 			path = BaseViews;
 			sourceTree = "<group>";
@@ -758,6 +757,7 @@
 				CAD07CA721DE3ECA0067AD23 /* DetailPriorityCell.swift */,
 				CAD07CA921DE3F250067AD23 /* DetailItemCell.swift */,
 				CAD07CAE21DE5F100067AD23 /* DetailFooterView.swift */,
+				CAAD248A21E4E9340042FB94 /* DateSelectView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1129,7 +1129,6 @@
 				7648831921675B1100F11106 /* ToDoTagService.swift in Sources */,
 				CA88DECF21C7D2DB007CFB0B /* SelectedComposeCell.swift in Sources */,
 				769769B521B0CE9A00AB3569 /* PJBaseView.swift in Sources */,
-				769769B721B0DD0A00AB3569 /* PJAddToDoButton.swift in Sources */,
 				764EF2DD21B8C794000F4417 /* PJMySettings.swift in Sources */,
 				7654A89E21BBB0EA003464E9 /* ARCManager.swift in Sources */,
 				7648831F21675B4A00F11106 /* ToDoTypeService.swift in Sources */,
@@ -1137,6 +1136,7 @@
 				7625A99C218D36EF0014FA6E /* PJToDoTag.swift in Sources */,
 				769769B421B0CE9A00AB3569 /* PJBaseEmptyView.swift in Sources */,
 				767B5D6E21987F9E00713393 /* ToDoModelProtocol.swift in Sources */,
+				CAAD248B21E4E9340042FB94 /* DateSelectView.swift in Sources */,
 				7654A8A421BBFD88003464E9 /* TextItem.swift in Sources */,
 				76C6354B21B96F1B006CD7D9 /* MineFooterView.swift in Sources */,
 				7648830D21675A4D00F11106 /* ToDoTagController.swift in Sources */,

@@ -8,6 +8,7 @@
 
 import UIKit
 import SVProgressHUD
+import PJPresentation
 
 enum DetailSectionType: Int {
     case titleSection
@@ -42,6 +43,8 @@ class DetailViewController: PJBaseViewController {
     var toDo: PJ_ToDo = PJ_ToDo()
     
     var items: [[DetailItem]] = []
+    
+    var currentSelectDateType: DetailItemType = .remindTime
     
     static let DetailTextCellId = "DetailTextCellId"
     static let DetailValueCellId = "DetailValueCellId"
@@ -198,11 +201,35 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
                 }
                 self.navigationController?.pushViewController(textViewController, animated: true)
             case .remindTime:
-                break
+                self.showSelectDate(defaultDateString: item.detailText) { (dateString) in
+                    item.detailText = dateString
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                }
             case .dueTime:
-                break
+                self.showSelectDate(defaultDateString: item.detailText) { (dateString) in
+                    item.detailText = dateString
+                    tableView.reloadRows(at: [indexPath], with: .automatic)
+                }
             default:
                 break
+        }
+    }
+    
+    private func showSelectDate(defaultDateString: String, didSelectBlock: @escaping (_ dateString: String) -> ()) {
+        let dateSelectView = DateSelectView()
+        dateSelectView.setDate(defaultDateString, animated: true)
+        
+        var options = PJPresentationOptions()
+        options.dismissDirection = .topToBottom
+        let presentationViewController = PJPresentationControllerManager.presentView(contentView: dateSelectView, presentationViewControllerHeight: 250, presentationOptions: options)
+        presentationViewController.dismissClosure = {
+            didSelectBlock(dateSelectView.dateString)
+        }
+        
+        dateSelectView.doneBlock = { (dateString) in
+            PJPresentationControllerManager.dismiss(presentationViewController: presentationViewController, animated: true, completion: {
+                didSelectBlock(dateSelectView.dateString)
+            })
         }
     }
     

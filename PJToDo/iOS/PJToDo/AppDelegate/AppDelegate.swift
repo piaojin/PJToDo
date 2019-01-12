@@ -9,7 +9,6 @@
 import UIKit
 import CocoaLumberjack
 import SSZipArchive
-import CYLTabBarController
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -68,7 +67,6 @@ extension AppDelegate {
     }
     
     func initRootViewController() {
-        PJAddToDoButton.register()
         let rootTabBarViewController = PJTabBarViewController()
 //        let homeViewController = HomeViewController()
 //        let homeNav = UINavigationController(rootViewController: homeViewController)
