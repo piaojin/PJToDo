@@ -61,4 +61,31 @@ public struct PJHttpRequest {
         
         PJ_Authorizations(httpRequestConfig.iDelegate, authorization)
     }
+    
+    public static func requestUserInfo(responseBlock: ((_ data: User?, _ isSuccess : Bool) -> Void)?) {
+        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, isSuccess) -> Void in
+            DispatchQueue.main.async(execute: {
+                if let tempPointer = pointer {
+                    do {
+                        let jsonString = String.create(cString: tempPointer)
+                        if let jsonData = jsonString.data(using: .utf8) {
+                            let user = try JSONDecoder().decode(User.self, from: jsonData)
+                            PJCacheManager.saveCustomObject(customObject: user, key: PJKeyCenter.UserInfo)
+                            responseBlock?(user, isSuccess)
+                        } else {
+                            responseBlock?(nil, isSuccess)
+                        }
+                    } catch {
+                        // 异常处理
+                        DDLogWarn("parse user info error: \(error)")
+                        responseBlock?(nil, isSuccess)
+                    }
+                } else {
+                    responseBlock?(nil, isSuccess)
+                }
+            })
+        })
+        
+        PJ_RequestUserInfo(httpRequestConfig.iDelegate)
+    }
 }

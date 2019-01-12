@@ -7,13 +7,16 @@ use repos::repos_file::ReposFileBody;
 use repos::repos_content::{ReposFile};
 use common::request_config::PJRequestConfig;
 use network::http_request::{FetchError};
+use std::thread;
 
 #[no_mangle]
 pub unsafe extern "C" fn PJ_CreateRepos(delegate: IPJToDoHttpRequestDelegate) {
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
 
-    PJHttpReposRequest::create_repos(PJRequestConfig::repos_request_body(), move |result| {
-        dispatch_repos_request_action_result(i_delegate, result, "PJ_CreateRepos");
+    thread::spawn(move || {
+        PJHttpReposRequest::create_repos(PJRequestConfig::repos_request_body(), move |result| {
+            dispatch_repos_request_action_result(i_delegate, result, "PJ_CreateRepos");
+        });
     });
 }
 
@@ -30,8 +33,10 @@ pub unsafe extern "C" fn PJ_GetRepos(
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
     let repos_url = CStr::from_ptr(repos_url).to_string_lossy().into_owned();
 
-    PJHttpReposRequest::get_repos(&repos_url, move |result| {
-        dispatch_repos_request_action_result(i_delegate, result, "PJ_GetRepos");
+    thread::spawn(move || {
+        PJHttpReposRequest::get_repos(&repos_url, move |result| {
+            dispatch_repos_request_action_result(i_delegate, result, "PJ_GetRepos");
+        });
     });
 }
 
@@ -48,8 +53,10 @@ pub unsafe extern "C" fn PJ_DeleteRepos(
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
     let repos_url = CStr::from_ptr(repos_url).to_string_lossy().into_owned();
 
-    PJHttpReposRequest::delete_repos(&repos_url, move |result| {
-        dispatch_repos_request_action_result(i_delegate, result, "PJ_DeleteRepos");
+    thread::spawn(move || {
+        PJHttpReposRequest::delete_repos(&repos_url, move |result| {
+            dispatch_repos_request_action_result(i_delegate, result, "PJ_DeleteRepos");
+        });
     });
 }
 
@@ -69,8 +76,10 @@ pub unsafe extern "C" fn PJ_CreateFile(
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
     let repos_file_body = ReposFileBody::new(path, message, content, sha);
 
-    PJHttpReposRequest::create_file(repos_file_body, move |result| {
-        dispatch_file_request_action_result(i_delegate, result, "PJ_CreateFile");
+    thread::spawn(move || {
+        PJHttpReposRequest::create_file(repos_file_body, move |result| {
+            dispatch_file_request_action_result(i_delegate, result, "PJ_CreateFile");
+        }); 
     });
 }
 
@@ -90,8 +99,10 @@ pub unsafe extern "C" fn PJ_UpdateFile(
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
     let repos_file_body = ReposFileBody::new(path, message, content, sha);
 
-    PJHttpReposRequest::update_file(repos_file_body, move |result| {
-        dispatch_file_request_action_result(i_delegate, result, "PJ_UpdateFile");
+    thread::spawn(move || {
+        PJHttpReposRequest::update_file(repos_file_body, move |result| {
+            dispatch_file_request_action_result(i_delegate, result, "PJ_UpdateFile");
+        });
     });
 }
 
@@ -111,8 +122,10 @@ pub unsafe extern "C" fn PJ_DeleteFile(
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
     let repos_file_body = ReposFileBody::new(path, message, content, sha);
 
-    PJHttpReposRequest::delete_file(repos_file_body, move |result| {
-        dispatch_file_request_action_result(i_delegate, result, "PJ_DeleteFile");
+    thread::spawn(move || {
+        PJHttpReposRequest::delete_file(repos_file_body, move |result| {
+            dispatch_file_request_action_result(i_delegate, result, "PJ_DeleteFile");
+        });
     });
 }
 
