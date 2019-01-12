@@ -221,12 +221,10 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
         
         var options = PJPresentationOptions()
         options.dismissDirection = .topToBottom
+        options.backgroundColor = .white
         let presentationViewController = PJPresentationControllerManager.presentView(contentView: dateSelectView, presentationViewControllerHeight: 250, presentationOptions: options)
-        presentationViewController.dismissClosure = {
-            didSelectBlock(dateSelectView.dateString)
-        }
         
-        dateSelectView.doneBlock = { (dateString) in
+        dateSelectView.doneClosure = { (dateString) in
             PJPresentationControllerManager.dismiss(presentationViewController: presentationViewController, animated: true, completion: {
                 didSelectBlock(dateSelectView.dateString)
             })

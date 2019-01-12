@@ -29,7 +29,7 @@ class DateSelectView: UIView {
     
     var dateValueChangedBlock: ((String) -> ())?
     
-    var doneBlock: ((String) -> ())?
+    var doneClosure: ((String) -> ())?
     
     lazy var doneView: UIView = {
         let doneView = UIView()
@@ -89,6 +89,6 @@ class DateSelectView: UIView {
     }
     
     @objc private func doneAction() {
-        self.doneBlock?(self.dateString)
+        self.doneClosure?(self.dateString)
     }
 }
