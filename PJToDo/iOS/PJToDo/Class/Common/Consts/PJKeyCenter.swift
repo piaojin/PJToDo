@@ -8,8 +8,19 @@
 
 import Foundation
 
-struct PJKeyCenter {
-    static let UserInfo: String = "userInfo"
-    static let Authorization: String = "authorization"
-    static let InsertToDoNotification = "InsertToDoNotification"
+@objc public class PJKeyCenterOC: NSObject {
+    @objc static var KeychainUserInfoService: String {
+        return PJKeyCenter.KeychainUserInfoService
+    }
+}
+
+public struct PJKeyCenter {
+    public static let UserInfo: String = "UserInfo"
+    public static let Authorization: String = "Authorization"
+    public static let InsertToDoNotification = "InsertToDoNotification"
+    public static let KeychainUserInfoService = "UserInfoService"
+    public static let KeychainAuthorizationService = "AuthorizationService"
+    public static let KeychainAuthorizationKey = "PJToDoAuthorization"
+    public static let KeychainUserPassWordKey: String = "UserPassWord"
+    public static let ReposKey: String = "ReposKey"
 }

@@ -25,7 +25,6 @@
 		764883052167598000F11106 /* PJToDoCoreLibFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764883042167598000F11106 /* PJToDoCoreLibFactory.swift */; };
 		76488307216759AE00F11106 /* PJToDoCoreLibInit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76488306216759AE00F11106 /* PJToDoCoreLibInit.swift */; };
 		76488309216759CA00F11106 /* PJToDoCoreLibPAL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76488308216759CA00F11106 /* PJToDoCoreLibPAL.swift */; };
-		7648830B21675A3400F11106 /* ReposController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648830A21675A3400F11106 /* ReposController.swift */; };
 		7648830D21675A4D00F11106 /* ToDoTagController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648830C21675A4D00F11106 /* ToDoTagController.swift */; };
 		7648830F21675A7600F11106 /* ToDoController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648830E21675A7600F11106 /* ToDoController.swift */; };
 		7648831121675A9000F11106 /* ToDoSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648831021675A9000F11106 /* ToDoSearchController.swift */; };
@@ -38,14 +37,14 @@
 		7648831F21675B4A00F11106 /* ToDoTypeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648831E21675B4A00F11106 /* ToDoTypeService.swift */; };
 		7648832121675B5C00F11106 /* MineService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648832021675B5C00F11106 /* MineService.swift */; };
 		764883302168B4F600F11106 /* PJToDoDBManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7648832F2168B4F600F11106 /* PJToDoDBManager.swift */; };
-		764EF2DB21B8C794000F4417 /* Authorization.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764EF2D521B8C793000F4417 /* Authorization.swift */; };
+		764EF2DB21B8C794000F4417 /* Authorizations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764EF2D521B8C793000F4417 /* Authorizations.swift */; };
 		764EF2DC21B8C794000F4417 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764EF2D621B8C793000F4417 /* User.swift */; };
 		764EF2DD21B8C794000F4417 /* PJMySettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764EF2D721B8C793000F4417 /* PJMySettings.swift */; };
 		764EF2DE21B8C794000F4417 /* MineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764EF2D921B8C793000F4417 /* MineViewController.swift */; };
 		764EF2E021B8C7B6000F4417 /* MineHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764EF2DF21B8C7B6000F4417 /* MineHeaderView.swift */; };
 		764EF2E221B8CB04000F4417 /* MineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764EF2E121B8CB04000F4417 /* MineCell.swift */; };
 		764EF2E421B8CDD0000F4417 /* MineItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 764EF2E321B8CDD0000F4417 /* MineItem.swift */; };
-		7654A89E21BBB0EA003464E9 /* ARCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7654A89D21BBB0EA003464E9 /* ARCManager.swift */; };
+		7654A89E21BBB0EA003464E9 /* PJARCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7654A89D21BBB0EA003464E9 /* PJARCManager.swift */; };
 		7654A8A021BBF944003464E9 /* TextViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7654A89F21BBF944003464E9 /* TextViewController.swift */; };
 		7654A8A221BBFD23003464E9 /* TextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7654A8A121BBFD23003464E9 /* TextCell.swift */; };
 		7654A8A421BBFD88003464E9 /* TextItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7654A8A321BBFD88003464E9 /* TextItem.swift */; };
@@ -79,6 +78,7 @@
 		CAAD248E21E9BA3C0042FB94 /* PJUserInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD248D21E9BA3C0042FB94 /* PJUserInfoManager.swift */; };
 		CAAD249321E9C09E0042FB94 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD249121E9C09E0042FB94 /* LoginViewController.swift */; };
 		CAAD249521E9C4180042FB94 /* WelcomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD249421E9C4180042FB94 /* WelcomeViewController.swift */; };
+		CAAD249F21EB2D330042FB94 /* PJKeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD249E21EB2D330042FB94 /* PJKeychainManager.swift */; };
 		CAD07CA121DD01C10067AD23 /* DetailTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CA021DD01C10067AD23 /* DetailTextCell.swift */; };
 		CAD07CA321DD09C30067AD23 /* DetailValueCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CA221DD09C30067AD23 /* DetailValueCell.swift */; };
 		CAD07CA621DD0D310067AD23 /* DetailItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CA521DD0D310067AD23 /* DetailItem.swift */; };
@@ -88,6 +88,8 @@
 		CAD07CAF21DE5F100067AD23 /* DetailFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CAE21DE5F100067AD23 /* DetailFooterView.swift */; };
 		CAD07CB521E08D0D0067AD23 /* SearchToDoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CB421E08D0D0067AD23 /* SearchToDoViewController.swift */; };
 		CAD07CB721E090EB0067AD23 /* SearchToDoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAD07CB621E090EB0067AD23 /* SearchToDoCell.swift */; };
+		CAEEDC8D21EF8A300038B79E /* Repos.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC8C21EF8A300038B79E /* Repos.swift */; };
+		CAEEDC8F21F0CCD80038B79E /* PJHttpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC8E21F0CCD80038B79E /* PJHttpError.swift */; };
 		E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */; };
 /* End PBXBuildFile section */
 
@@ -162,7 +164,6 @@
 		764883042167598000F11106 /* PJToDoCoreLibFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoCoreLibFactory.swift; sourceTree = "<group>"; };
 		76488306216759AE00F11106 /* PJToDoCoreLibInit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoCoreLibInit.swift; sourceTree = "<group>"; };
 		76488308216759CA00F11106 /* PJToDoCoreLibPAL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoCoreLibPAL.swift; sourceTree = "<group>"; };
-		7648830A21675A3400F11106 /* ReposController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposController.swift; sourceTree = "<group>"; };
 		7648830C21675A4D00F11106 /* ToDoTagController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTagController.swift; sourceTree = "<group>"; };
 		7648830E21675A7600F11106 /* ToDoController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoController.swift; sourceTree = "<group>"; };
 		7648831021675A9000F11106 /* ToDoSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoSearchController.swift; sourceTree = "<group>"; };
@@ -175,14 +176,14 @@
 		7648831E21675B4A00F11106 /* ToDoTypeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoTypeService.swift; sourceTree = "<group>"; };
 		7648832021675B5C00F11106 /* MineService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineService.swift; sourceTree = "<group>"; };
 		7648832F2168B4F600F11106 /* PJToDoDBManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoDBManager.swift; sourceTree = "<group>"; };
-		764EF2D521B8C793000F4417 /* Authorization.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authorization.swift; sourceTree = "<group>"; };
+		764EF2D521B8C793000F4417 /* Authorizations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Authorizations.swift; sourceTree = "<group>"; };
 		764EF2D621B8C793000F4417 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		764EF2D721B8C793000F4417 /* PJMySettings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJMySettings.swift; sourceTree = "<group>"; };
 		764EF2D921B8C793000F4417 /* MineViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MineViewController.swift; sourceTree = "<group>"; };
 		764EF2DF21B8C7B6000F4417 /* MineHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineHeaderView.swift; sourceTree = "<group>"; };
 		764EF2E121B8CB04000F4417 /* MineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineCell.swift; sourceTree = "<group>"; };
 		764EF2E321B8CDD0000F4417 /* MineItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MineItem.swift; sourceTree = "<group>"; };
-		7654A89D21BBB0EA003464E9 /* ARCManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARCManager.swift; sourceTree = "<group>"; };
+		7654A89D21BBB0EA003464E9 /* PJARCManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJARCManager.swift; sourceTree = "<group>"; };
 		7654A89F21BBF944003464E9 /* TextViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextViewController.swift; sourceTree = "<group>"; };
 		7654A8A121BBFD23003464E9 /* TextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextCell.swift; sourceTree = "<group>"; };
 		7654A8A321BBFD88003464E9 /* TextItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextItem.swift; sourceTree = "<group>"; };
@@ -221,6 +222,7 @@
 		CAAD248D21E9BA3C0042FB94 /* PJUserInfoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJUserInfoManager.swift; sourceTree = "<group>"; };
 		CAAD249121E9C09E0042FB94 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		CAAD249421E9C4180042FB94 /* WelcomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WelcomeViewController.swift; sourceTree = "<group>"; };
+		CAAD249E21EB2D330042FB94 /* PJKeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJKeychainManager.swift; sourceTree = "<group>"; };
 		CAD07CA021DD01C10067AD23 /* DetailTextCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailTextCell.swift; sourceTree = "<group>"; };
 		CAD07CA221DD09C30067AD23 /* DetailValueCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailValueCell.swift; sourceTree = "<group>"; };
 		CAD07CA521DD0D310067AD23 /* DetailItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailItem.swift; sourceTree = "<group>"; };
@@ -230,6 +232,8 @@
 		CAD07CAE21DE5F100067AD23 /* DetailFooterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailFooterView.swift; sourceTree = "<group>"; };
 		CAD07CB421E08D0D0067AD23 /* SearchToDoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchToDoViewController.swift; sourceTree = "<group>"; };
 		CAD07CB621E090EB0067AD23 /* SearchToDoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchToDoCell.swift; sourceTree = "<group>"; };
+		CAEEDC8C21EF8A300038B79E /* Repos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Repos.swift; sourceTree = "<group>"; };
+		CAEEDC8E21F0CCD80038B79E /* PJHttpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpError.swift; sourceTree = "<group>"; };
 		CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C7DCA9E375B4ACEF6FE7C8 /* Pods-PJToDo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -267,18 +271,8 @@
 		7625021A2170A6D9001043AF /* Tools */ = {
 			isa = PBXGroup;
 			children = (
-				7625021B2170A6D9001043AF /* Cache */,
-				7654A89D21BBB0EA003464E9 /* ARCManager.swift */,
 			);
 			path = Tools;
-			sourceTree = "<group>";
-		};
-		7625021B2170A6D9001043AF /* Cache */ = {
-			isa = PBXGroup;
-			children = (
-				7625021C2170A6D9001043AF /* PJCacheManager.swift */,
-			);
-			path = Cache;
 			sourceTree = "<group>";
 		};
 		7625021E2170AA69001043AF /* Consts */ = {
@@ -367,6 +361,7 @@
 		76348C102116F2F30009455C /* Class */ = {
 			isa = PBXGroup;
 			children = (
+				CAEEDC8A21EF8A070038B79E /* Repos */,
 				CAD07CB021E08C620067AD23 /* Search */,
 				CAD07C9E21DD00620067AD23 /* Detail */,
 				76FD55EB2187073100989102 /* Login */,
@@ -392,6 +387,7 @@
 			children = (
 				76384BFA2199A5DC00C677BB /* PJHttpRequest.swift */,
 				76384BFC2199A61400C677BB /* PJHttpRequestConfig.swift */,
+				CAEEDC8E21F0CCD80038B79E /* PJHttpError.swift */,
 			);
 			path = Http;
 			sourceTree = "<group>";
@@ -429,7 +425,6 @@
 		764882ED2167592800F11106 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				764882EE2167592800F11106 /* Repos */,
 				764882EF2167592800F11106 /* ToDoTag */,
 				764882F02167592800F11106 /* ToDo */,
 				764882F12167592800F11106 /* Search */,
@@ -437,14 +432,6 @@
 				764882F32167592800F11106 /* Mine */,
 			);
 			path = Controllers;
-			sourceTree = "<group>";
-		};
-		764882EE2167592800F11106 /* Repos */ = {
-			isa = PBXGroup;
-			children = (
-				7648830A21675A3400F11106 /* ReposController.swift */,
-			);
-			path = Repos;
 			sourceTree = "<group>";
 		};
 		764882EF2167592800F11106 /* ToDoTag */ = {
@@ -596,7 +583,7 @@
 		764EF2D421B8C793000F4417 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				764EF2D521B8C793000F4417 /* Authorization.swift */,
+				764EF2D521B8C793000F4417 /* Authorizations.swift */,
 				764EF2D621B8C793000F4417 /* User.swift */,
 				764EF2D721B8C793000F4417 /* PJMySettings.swift */,
 				764EF2E321B8CDD0000F4417 /* MineItem.swift */,
@@ -746,7 +733,10 @@
 		CAAD248C21E9BA3C0042FB94 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
+				7625021C2170A6D9001043AF /* PJCacheManager.swift */,
+				7654A89D21BBB0EA003464E9 /* PJARCManager.swift */,
 				CAAD248D21E9BA3C0042FB94 /* PJUserInfoManager.swift */,
+				CAAD249E21EB2D330042FB94 /* PJKeychainManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -844,6 +834,22 @@
 				CAD07CB621E090EB0067AD23 /* SearchToDoCell.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		CAEEDC8A21EF8A070038B79E /* Repos */ = {
+			isa = PBXGroup;
+			children = (
+				CAEEDC8B21EF8A070038B79E /* Model */,
+			);
+			path = Repos;
+			sourceTree = "<group>";
+		};
+		CAEEDC8B21EF8A070038B79E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				CAEEDC8C21EF8A300038B79E /* Repos.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		D7B6BE488F9FA8DC6E6E1C35 /* Frameworks */ = {
@@ -1109,6 +1115,7 @@
 				769769B121B0CE9A00AB3569 /* PJBaseViewController.swift in Sources */,
 				76746D9E216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m in Sources */,
 				CAD07CA821DE3ECA0067AD23 /* DetailPriorityCell.swift in Sources */,
+				CAEEDC8F21F0CCD80038B79E /* PJHttpError.swift in Sources */,
 				769769B221B0CE9A00AB3569 /* PJBaseErrorView.swift in Sources */,
 				7654A8A221BBFD23003464E9 /* TextCell.swift in Sources */,
 				76348C182116F2F40009455C /* AppDelegate.swift in Sources */,
@@ -1118,7 +1125,7 @@
 				769769B321B0CE9A00AB3569 /* PJBaseTableViewCell.swift in Sources */,
 				764883302168B4F600F11106 /* PJToDoDBManager.swift in Sources */,
 				CA3C428921C2875800C71C6D /* SelectedComposeView.swift in Sources */,
-				7648830B21675A3400F11106 /* ReposController.swift in Sources */,
+				CAAD249F21EB2D330042FB94 /* PJKeychainManager.swift in Sources */,
 				CAAD248E21E9BA3C0042FB94 /* PJUserInfoManager.swift in Sources */,
 				CAD07CA621DD0D310067AD23 /* DetailItem.swift in Sources */,
 				7648831121675A9000F11106 /* ToDoSearchController.swift in Sources */,
@@ -1137,7 +1144,7 @@
 				764EF2E221B8CB04000F4417 /* MineCell.swift in Sources */,
 				7648831321675AAC00F11106 /* ToDoTypeController.swift in Sources */,
 				CAD07CA121DD01C10067AD23 /* DetailTextCell.swift in Sources */,
-				764EF2DB21B8C794000F4417 /* Authorization.swift in Sources */,
+				764EF2DB21B8C794000F4417 /* Authorizations.swift in Sources */,
 				CAD07CAF21DE5F100067AD23 /* DetailFooterView.swift in Sources */,
 				7648831721675AF700F11106 /* ReposService.swift in Sources */,
 				76A43CBB219DB5530041B7AC /* PJKeyCenter.swift in Sources */,
@@ -1168,7 +1175,8 @@
 				CA88DECF21C7D2DB007CFB0B /* SelectedComposeCell.swift in Sources */,
 				769769B521B0CE9A00AB3569 /* PJBaseView.swift in Sources */,
 				764EF2DD21B8C794000F4417 /* PJMySettings.swift in Sources */,
-				7654A89E21BBB0EA003464E9 /* ARCManager.swift in Sources */,
+				CAEEDC8D21EF8A300038B79E /* Repos.swift in Sources */,
+				7654A89E21BBB0EA003464E9 /* PJARCManager.swift in Sources */,
 				7648831F21675B4A00F11106 /* ToDoTypeService.swift in Sources */,
 				7625A99C218D36EF0014FA6E /* PJToDoTag.swift in Sources */,
 				769769B421B0CE9A00AB3569 /* PJBaseEmptyView.swift in Sources */,

@@ -142,8 +142,8 @@ fn dispatch_repos_request_action_result(
             match json_string_result {
                 Ok(json_string) => {
                     let c_str = CString::new(json_string).unwrap();
-                    let c_char = c_str.into_raw();
-                    (i_delegate.request_result)(i_delegate.user, c_char, true);
+                    let cchar = c_str.into_raw();
+                    (i_delegate.request_result)(i_delegate.user, cchar, true);
                 }
                 Err(e) => {
                     let error = format!("{} request parse error: {:?}", request_action_name, e);
@@ -154,14 +154,17 @@ fn dispatch_repos_request_action_result(
                         request_action_name
                     );
                     let c_str = CString::new(parse_error.to_string()).unwrap();
-                    let c_char = c_str.into_raw();
-                    (i_delegate.request_result)(i_delegate.user, c_char, true);
+                    let cchar = c_str.into_raw();
+                    (i_delegate.request_result)(i_delegate.user, cchar, true);
                 }
             }
         }
         Err(e) => {
             let error = format!("{} request parse error: {:?}", request_action_name, e);
             pj_error!("{}", error);
+            let c_str = CString::new(error.to_string()).unwrap();
+            let cchar = c_str.into_raw();
+            (i_delegate.request_result)(i_delegate.user, cchar, true);
         }
     };
 }

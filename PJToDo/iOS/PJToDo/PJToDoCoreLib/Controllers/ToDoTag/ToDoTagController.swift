@@ -82,37 +82,37 @@ class ToDoTagController {
     
     //插入数据成功后再更新数据到当前的PJToDoTag对象
     public func insert(toDoTag: PJToDoTag) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         insertToDoTag(self.controller, toDoTag.iToDoTagInsert)
     }
     
     public func delete(toDoTagId: Int32) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         deleteToDoTag(self.controller, toDoTagId)
     }
     
     public func update(toDoTag: PJToDoTag) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         updateToDoTag(self.controller, toDoTag.iToDoTag)
     }
     
     public func findById(toDoTagId: Int32) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         findToDoTag(self.controller, toDoTagId)
     }
     
     public func findByName(tagName: String) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         findToDoTagByName(self.controller, tagName)
     }
     
     public func fetchData() {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         fetchToDoTagData(self.controller)
     }

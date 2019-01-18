@@ -8,6 +8,7 @@
 
 #import "PJToDoCoreLibPAL_C_Bridging_OC.h"
 #import "PJToDo-Swift.h"
+#import "app_bindings.h"
 
 void swiftSayHi() {
     [PJToDoCoreLibPAL swiftSayHi];
@@ -23,4 +24,21 @@ const char * getDBGZipPath(void) {
 
 const char * getDBUnCompressesPath() {
     return [PJToDoConst.dbUnCompressesPath UTF8String];
+}
+
+const char * getAuthorizationStr() {
+    if (PJUserInfoManagerOC.isLogin) {
+        NSError *error;
+        NSString *authorizationStr = [PJKeychainManagerOC readSensitiveStringWithService: PJKeyCenterOC.KeychainUserInfoService sensitiveKey: PJUserInfoManagerOC.userAccount accessGroup:nil error: &error];
+        if (authorizationStr) {
+            NSString *str = [NSString stringWithFormat:@"%@:%@", PJUserInfoManagerOC.userAccount, authorizationStr];
+            const char *cstr = ConvertStrToBase64Str([str UTF8String]);
+            NSString *base64Str = [NSString stringWithFormat:@"Basic %s", cstr];
+            return [base64Str UTF8String];
+        } else {
+            NSLog(@"getAuthorizationStr error: %@", error);
+        }
+        return [@"" UTF8String];
+    }
+    return [@"" UTF8String];
 }

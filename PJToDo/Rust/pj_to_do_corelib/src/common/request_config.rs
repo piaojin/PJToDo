@@ -51,7 +51,7 @@ impl PJRequestConfig {
     pub fn repos_request_body<'a>() -> ReposRequestBody<'a> {
         ReposRequestBody {
             name: "PJToDoWebDataBase",
-            description: "This is your first repository",
+            description: "This is your PJToDoWebDataBase repository",
             homepage: "https://github.com",
             private: false,
             has_issues: true,

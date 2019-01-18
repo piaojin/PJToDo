@@ -52,13 +52,13 @@ class ToDoSearchController {
     }
     
     public func findByTitle(title: String) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         PJ_FindToDoByTitle(self.controller, title)
     }
     
     public func findToDoLikeTitle(title: String) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         PJ_FindToDoLikeTitle(self.controller, title)
     }

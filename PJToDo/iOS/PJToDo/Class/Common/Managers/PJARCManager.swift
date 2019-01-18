@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class ARCManager: NSObject {
+open class PJARCManager: NSObject {
     public static func retain(object: AnyObject) -> UnsafeMutableRawPointer {
         let ownedPointer = UnsafeMutableRawPointer(Unmanaged.passRetained(object).toOpaque())
         return ownedPointer

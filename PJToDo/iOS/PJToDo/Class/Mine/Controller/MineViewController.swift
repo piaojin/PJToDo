@@ -132,6 +132,9 @@ extension MineViewController: UITableViewDelegate, UITableViewDataSource {
             footerView.isUserInteractionEnabled = true
             if let tempFooterView = footerView as? MineFooterView {
                 tempFooterView.loginClosure = {
+                    if let account = PJUserInfoManager.shared.userInfo?.login {
+                        try? PJKeychainManager.deleteItem(withService: PJKeyCenter.KeychainUserInfoService, sensitiveKey: account)
+                    }
                     PJUserInfoManager.removeUserInfo()
                     if let window = UIApplication.shared.delegate?.window {
                         window?.rootViewController = UINavigationController(rootViewController: WelcomeViewController())

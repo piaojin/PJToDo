@@ -87,43 +87,43 @@ class ToDoController {
     
     //插入数据成功后再更新数据到当前的PJToDo对象
     public func insert(toDo: PJ_ToDo) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         insertToDo(self.controller, toDo.iToDoInsert)
     }
     
     public func delete(section: Int, index: Int, toDoId: Int) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         deleteToDo(self.controller, Int32(section), Int32(index), Int32(toDoId))
     }
     
     public func delete(toDoId: Int) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         deleteToDoById(self.controller, Int32(toDoId))
     }
     
     public func update(toDo: PJ_ToDo) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         updateToDo(self.controller, toDo.iToDoQuery)
     }
     
     public func findById(toDoId: Int) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         findToDo(self.controller, Int32(toDoId))
     }
     
     public func fetchData() {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         fetchToDoData(self.controller)
     }
     
     public func updateOverdueToDos() {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         updateOverDueToDos(self.controller)
     }

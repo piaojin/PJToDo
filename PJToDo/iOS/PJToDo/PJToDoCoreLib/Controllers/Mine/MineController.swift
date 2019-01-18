@@ -67,25 +67,25 @@ class MineController {
     }
     
     public func insert(toDoSettings: PJMySettings) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         insertToDoSettings(self.controller, toDoSettings.iToDoSettingsInsert)
     }
     
     public func delete(toDoSettingsId: Int32) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         deleteToDoSettings(self.controller, toDoSettingsId)
     }
     
     public func update(toDoSettings: PJMySettings) {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         updateToDoSettings(self.controller, toDoSettings.iToDoSettings)
     }
     
     public func fetchData() {
-        let ownedPointer = ARCManager.retain(object: self)
+        let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
         fetchToDoSettingsData(self.controller)
     }

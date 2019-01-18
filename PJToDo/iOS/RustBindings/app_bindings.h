@@ -162,6 +162,8 @@ typedef struct {
   Vec_ToDoType *todo_types;
 } PJToDoTypeController;
 
+char *ConvertStrToBase64Str(const char *ptr);
+
 void PJ_Authorizations(IPJToDoHttpRequestDelegate delegate, const char *authorization);
 
 void PJ_CreateFile(IPJToDoHttpRequestDelegate delegate, const char *path, const char *message, const char *content, const char *sha);
@@ -331,6 +333,8 @@ int32_t getToDoTypeId(ToDoType *ptr);
 char *getToDoTypeInsertName(const ToDoTypeInsert *ptr);
 
 char *getToDoTypeName(const ToDoType *ptr);
+
+extern const char *get_authorization_str(void);
 
 extern const char *get_db_gzip_path(void);
 

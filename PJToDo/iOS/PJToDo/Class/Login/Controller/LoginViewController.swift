@@ -93,7 +93,6 @@ class LoginViewController: PJBaseViewController {
         self.passwordTextField.heightAnchor.constraint(equalToConstant: 45).isActive = true
         self.passwordTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
         self.passwordTextField.topAnchor.constraint(equalTo: self.accountTextField.bottomAnchor, constant: 20).isActive = true
-//        self.passwordTextField.bottomAnchor.constraint(equalTo: bgView.bottomAnchor).isActive = true
         self.passwordTextField.leadingAnchor.constraint(equalTo: bgView.leadingAnchor, constant: 62).isActive = true
         self.passwordTextField.trailingAnchor.constraint(equalTo: bgView.trailingAnchor, constant: -62).isActive = true
         self.passwordTextField.cornerRadius = 6
@@ -116,9 +115,10 @@ class LoginViewController: PJBaseViewController {
     @objc private func loginAction() {
         if let account = self.accountTextField.text, let passWord = self.passwordTextField.text {
             SVProgressHUD.show(withStatus: "登录中...")
-            PJHttpRequest.login(name: account, passWord: passWord, responseBlock: { (user, isSuccess) in
+            PJHttpRequest.login(name: account, passWord: passWord, responseBlock: { (isSuccess, user, error) in
                 DispatchQueue.main.async(execute: {
                     if isSuccess, let tempUser = user {
+                        try? PJKeychainManager.saveSensitiveString(withService: PJKeyCenter.KeychainUserInfoService, sensitiveKey: account, sensitiveString: passWord)
                         PJUserInfoManager.saveUserInfo(userInfo: tempUser)
                         if let window = UIApplication.shared.delegate?.window {
                             window?.rootViewController = PJTabBarViewController()

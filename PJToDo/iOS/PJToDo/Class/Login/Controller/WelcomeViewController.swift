@@ -65,7 +65,29 @@ class WelcomeViewController: PJBaseViewController {
     }
     
     @objc private func loginAction() {
-        let loginViewController = LoginViewController()
-        self.navigationController?.pushViewController(loginViewController, animated: true)
+//        if let account = PJUserInfoManager.shared.userInfo?.login {
+//            if let sentiveStr = try? PJKeychainManager.readSensitiveString(withService: PJKeyCenter.KeychainUserInfoService, sensitiveKey: account) {
+//                let base64Str = String.convertToBase64String(str: "\(account):\(sentiveStr)")
+//                let basicToken = "Basic \(base64Str)"
+//                PJHttpRequest.authorization(authorization: basicToken) { (authorization, isSuccess) in
+//                    if (isSuccess) {
+//                        try? PJKeychainManager.saveSensitiveString(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAuthorizationKey, sensitiveString: basicToken)
+//                    }
+//                }
+//            }
+//        }
+        
+        PJHttpRequest.createGitHubRepos { (isSuccess, resultStr, error) in
+            if isSuccess {
+                
+            }
+        }
+        
+//        PJHttpRequest.getGitHubRepos(reposUrl: str) { (str, isSuccess) in
+//
+//        }
+        
+//        let loginViewController = LoginViewController()
+//        self.navigationController?.pushViewController(loginViewController, animated: true)
     }
 }

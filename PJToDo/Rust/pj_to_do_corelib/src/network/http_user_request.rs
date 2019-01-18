@@ -83,6 +83,7 @@ impl PJHttpUserRequest {
         });
     }
 
+    //auth token will create once and can't create again need to delete it in github.
     pub fn authorizations<'a, F>(authorization: &'a str, completion_handler: F)
     where
         F: FnOnce(Result<Authorizations, FetchError>)

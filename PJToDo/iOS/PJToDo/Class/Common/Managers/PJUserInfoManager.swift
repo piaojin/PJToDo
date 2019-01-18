@@ -8,6 +8,16 @@
 
 import UIKit
 
+@objc public class PJUserInfoManagerOC: NSObject {
+    @objc static var userAccount: String? {
+        return PJUserInfoManager.shared.userInfo?.login
+    }
+    
+    @objc static var isLogin: Bool {
+        return PJUserInfoManager.shared.isLogin
+    }
+}
+
 public struct PJUserInfoManager {
     
     public static var shared = PJUserInfoManager()

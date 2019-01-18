@@ -16,6 +16,10 @@ public extension String {
         return str
     }
     
+    public static func convertToBase64String(str: String) -> String {
+        return self.create(cString: ConvertStrToBase64Str(str))
+    }
+    
     public func pj_bridgeObjectiveC() -> NSString {
         return NSString(string: self)
     }

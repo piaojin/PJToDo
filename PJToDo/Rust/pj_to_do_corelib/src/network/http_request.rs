@@ -18,6 +18,9 @@ use self::hyper::rt::{Stream, Future as OtherFuture};
 use common::pj_logger::PJLogger;
 use common::pj_serialize::PJSerdeDeserialize;
 
+use pal::pj_user_pal_help::PJUserPALHelp;
+use common::pj_utils::PJUtils;
+
 // Define a type so we can return multile types of errors
 #[derive(Debug)]
 pub enum FetchError {
@@ -79,11 +82,19 @@ impl PJHttpRequest {
                     hyper::header::USER_AGENT,
                     HeaderValue::from_static("application/vnd.github.v3+json"),
                 );
+                
+                let authorization: &'static str = unsafe {
+                    let user_authorization_str: String = PJUserPALHelp::get_user_authorization_str();
+                    if (&user_authorization_str).is_empty() {
+                        pj_error!("********Error authorization is empty!!!*********");
+                    }
+                    PJUtils::string_to_static_str(user_authorization_str)
+                };
 
-                // req.headers_mut().insert(
-                //     "Authorization",
-                //     HeaderValue::from_static("Basic cGlhb2ppbjp3ZW5nODA0NDg4ODE1")
-                // );
+                req.headers_mut().insert(
+                    "Authorization",
+                    HeaderValue::from_static(authorization),
+                );
                 req
             }
             Err(e) => {

@@ -17,4 +17,6 @@ const char * get_db_gzip_path(void);
 
 const char * get_db_uncompresses_path(void);
 
+const char * get_authorization_str(void);
+
 #endif /* PJToDoCoreLibPAL_C_h */

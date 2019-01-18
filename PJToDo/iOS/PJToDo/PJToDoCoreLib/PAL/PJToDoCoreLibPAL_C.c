@@ -17,3 +17,7 @@ const char * get_db_gzip_path() {
 const char * get_db_uncompresses_path() {
     return getDBUnCompressesPath();
 }
+
+const char * get_authorization_str() {
+    return getAuthorizationStr();
+}
