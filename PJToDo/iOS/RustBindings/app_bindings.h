@@ -67,7 +67,7 @@ typedef struct Vec_Vec_ToDoQuery Vec_Vec_ToDoQuery;
 typedef struct {
   void *user;
   void (*destroy)(void*);
-  void (*request_result)(void*, char*, bool);
+  void (*request_result)(void*, char*, uint16_t, bool);
 } IPJToDoHttpRequestDelegate;
 
 typedef struct {

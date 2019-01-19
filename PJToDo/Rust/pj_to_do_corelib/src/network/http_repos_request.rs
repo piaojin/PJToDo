@@ -10,13 +10,12 @@ use self::hyper::{Method, Request, Body};
 use network::http_request::{PJHttpRequest, FetchError};
 use common::request_config::PJRequestConfig;
 use common::pj_utils::PJUtils;
-use repos::repos::{ReposRequestBody, Repos};
+use repos::repos::{ReposRequestBody};
 use repos::repos_file::ReposFileBody;
-use repos::repos_content::{ReposFile};
 #[allow(unused_imports)]
 use common::pj_logger::PJLogger;
 use network;
-use common::pj_serialize::PJSerdeDeserialize;
+use delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;
 
 #[derive(PartialEq, Debug)]
 pub enum FileActionType {
@@ -31,7 +30,7 @@ pub struct PJHttpReposRequest;
 impl PJHttpReposRequest {
     pub fn create_repos<F>(repos_request_body: ReposRequestBody, completion_handler: F)
     where
-        F: FnOnce(Result<Repos, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -70,7 +69,7 @@ impl PJHttpReposRequest {
 
     pub fn get_repos<F>(repos_url: &str, completion_handler: F)
     where
-        F: FnOnce(Result<Repos, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -90,7 +89,7 @@ impl PJHttpReposRequest {
 
     pub fn delete_repos<F>(repos_url: &str, completion_handler: F)
     where
-        F: FnOnce(Result<Repos, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -109,38 +108,25 @@ impl PJHttpReposRequest {
                 HeaderValue::from_static(PJRequestConfig::personal_token()),
             );
             *request.method_mut() = Method::DELETE;
-            PJHttpReposRequest::do_repos_request(request, |result| match result {
-                Ok(_) => {
-                    completion_handler(Ok(Repos::new()));
-                }
-                Err(e) => {
-                    completion_handler(Err(e));
-                }
-            });
+            PJHttpReposRequest::do_repos_request(request, completion_handler);
         }
     }
 
     fn do_repos_request<F>(request: Request<Body>, completion_handler: F)
     where
-        F: FnOnce(Result<Repos, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
             + std::clone::Clone,
     {
-        PJHttpRequest::http_send(request, |result| match result {
-            Ok(body) => {
-                let parse_result = PJHttpRequest::parse_data::<Repos>(&body);
-                let result = match parse_result {
-                    Ok(model) => Ok(model),
-                    Err(e) => Err(FetchError::Json(e)),
-                };
-                completion_handler(result);
-            }
-            Err(e) => {
-                completion_handler(Err(e));
-            }
-        });
+        PJHttpRequest::make_http(request, completion_handler);
+    }
+
+    pub fn dispatch_repos_response(i_delegate: IPJToDoHttpRequestDelegateWrapper, result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>, request_action_name: &str,
+    ) {
+        pj_info!("request_action_name: {}", request_action_name);
+        PJHttpRequest::dispatch_http_response(result, i_delegate);
     }
 }
 
@@ -148,7 +134,7 @@ impl PJHttpReposRequest {
 impl PJHttpReposRequest {
     pub fn create_file<F>(create_file_request_body: ReposFileBody, completion_handler: F)
     where
-        F: FnOnce(Result<ReposFile, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -163,7 +149,7 @@ impl PJHttpReposRequest {
 
     pub fn update_file<F>(create_file_request_body: ReposFileBody, completion_handler: F)
     where
-        F: FnOnce(Result<ReposFile, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -178,22 +164,13 @@ impl PJHttpReposRequest {
 
     pub fn delete_file<F>(create_file_request_body: ReposFileBody, completion_handler: F)
     where
-        F: FnOnce(Result<ReposFile, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
             + std::clone::Clone,
     {
-        PJHttpReposRequest::crud_file(create_file_request_body, FileActionType::Delete, |result| {
-            match result {
-                Ok(_) => {
-                    completion_handler(Ok(ReposFile::new()));
-                }
-                Err(e) => {
-                    completion_handler(Err(e));
-                }
-            }
-        });
+        PJHttpReposRequest::crud_file(create_file_request_body, FileActionType::Delete, completion_handler);
     }
 
     fn crud_file<F>(
@@ -201,7 +178,7 @@ impl PJHttpReposRequest {
         file_action_type: FileActionType,
         completion_handler: F,
     ) where
-        F: FnOnce(Result<ReposFile, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -243,7 +220,7 @@ impl PJHttpReposRequest {
         file_action_type: FileActionType,
         completion_handler: F,
     ) where
-        F: FnOnce(Result<ReposFile, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -291,27 +268,20 @@ impl PJHttpReposRequest {
         }
     }
 
-    #[warn(dead_code)]
     fn do_crud_file_request<F>(request: Request<Body>, completion_handler: F)
     where
-        F: FnOnce(Result<ReposFile, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
             + std::clone::Clone,
     {
-        PJHttpRequest::http_send(request, |result| match result {
-            Ok(body) => {
-                let parse_result = PJHttpRequest::parse_data::<ReposFile>(&body);
-                let result = match parse_result {
-                    Ok(model) => Ok(model),
-                    Err(e) => Err(FetchError::Json(e)),
-                };
-                completion_handler(result);
-            }
-            Err(e) => {
-                completion_handler(Err(e));
-            }
-        });
+        PJHttpRequest::make_http(request, completion_handler);
+    }
+
+    pub fn dispatch_file_response(i_delegate: IPJToDoHttpRequestDelegateWrapper, result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>, request_action_name: &str,
+    ) {
+        pj_info!("request_action_name: {}", request_action_name);
+        PJHttpRequest::dispatch_http_response(result, i_delegate);
     }
 }

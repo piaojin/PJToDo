@@ -1,12 +1,9 @@
 use network::http_repos_request::PJHttpReposRequest;
 use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
-use std::ffi::{CStr, CString};
+use std::ffi::{CStr};
 use libc::{c_char};
-use repos::repos::{Repos};
 use repos::repos_file::ReposFileBody;
-use repos::repos_content::{ReposFile};
 use common::request_config::PJRequestConfig;
-use network::http_request::{FetchError};
 use std::thread;
 
 #[no_mangle]
@@ -15,7 +12,7 @@ pub unsafe extern "C" fn PJ_CreateRepos(delegate: IPJToDoHttpRequestDelegate) {
 
     thread::spawn(move || {
         PJHttpReposRequest::create_repos(PJRequestConfig::repos_request_body(), move |result| {
-            dispatch_repos_request_action_result(i_delegate, result, "PJ_CreateRepos");
+            PJHttpReposRequest::dispatch_repos_response(i_delegate, result, "PJ_CreateRepos");
         });
     });
 }
@@ -35,7 +32,7 @@ pub unsafe extern "C" fn PJ_GetRepos(
 
     thread::spawn(move || {
         PJHttpReposRequest::get_repos(&repos_url, move |result| {
-            dispatch_repos_request_action_result(i_delegate, result, "PJ_GetRepos");
+            PJHttpReposRequest::dispatch_repos_response(i_delegate, result, "PJ_GetRepos");
         });
     });
 }
@@ -55,7 +52,7 @@ pub unsafe extern "C" fn PJ_DeleteRepos(
 
     thread::spawn(move || {
         PJHttpReposRequest::delete_repos(&repos_url, move |result| {
-            dispatch_repos_request_action_result(i_delegate, result, "PJ_DeleteRepos");
+            PJHttpReposRequest::dispatch_repos_response(i_delegate, result, "PJ_DeleteRepos");
         });
     });
 }
@@ -78,7 +75,7 @@ pub unsafe extern "C" fn PJ_CreateFile(
 
     thread::spawn(move || {
         PJHttpReposRequest::create_file(repos_file_body, move |result| {
-            dispatch_file_request_action_result(i_delegate, result, "PJ_CreateFile");
+            PJHttpReposRequest::dispatch_file_response(i_delegate, result, "PJ_CreateFile");
         }); 
     });
 }
@@ -101,7 +98,7 @@ pub unsafe extern "C" fn PJ_UpdateFile(
 
     thread::spawn(move || {
         PJHttpReposRequest::update_file(repos_file_body, move |result| {
-            dispatch_file_request_action_result(i_delegate, result, "PJ_UpdateFile");
+            PJHttpReposRequest::dispatch_file_response(i_delegate, result, "PJ_UpdateFile");
         });
     });
 }
@@ -124,84 +121,7 @@ pub unsafe extern "C" fn PJ_DeleteFile(
 
     thread::spawn(move || {
         PJHttpReposRequest::delete_file(repos_file_body, move |result| {
-            dispatch_file_request_action_result(i_delegate, result, "PJ_DeleteFile");
+            PJHttpReposRequest::dispatch_file_response(i_delegate, result, "PJ_DeleteFile");
         });
     });
-}
-
-fn dispatch_repos_request_action_result(
-    i_delegate: IPJToDoHttpRequestDelegateWrapper,
-    result: Result<Repos, FetchError>,
-    request_action_name: &str,
-) {
-    match result {
-        Ok(repos) => {
-            pj_info!("repos: {:?}", repos);
-            // Serialize it to a JSON string.
-            let json_string_result = serde_json::to_string(&repos);
-            match json_string_result {
-                Ok(json_string) => {
-                    let c_str = CString::new(json_string).unwrap();
-                    let cchar = c_str.into_raw();
-                    (i_delegate.request_result)(i_delegate.user, cchar, true);
-                }
-                Err(e) => {
-                    let error = format!("{} request parse error: {:?}", request_action_name, e);
-                    pj_error!("{}", error);
-
-                    let parse_error = format!(
-                        "error: {} parse user to json data error!",
-                        request_action_name
-                    );
-                    let c_str = CString::new(parse_error.to_string()).unwrap();
-                    let cchar = c_str.into_raw();
-                    (i_delegate.request_result)(i_delegate.user, cchar, true);
-                }
-            }
-        }
-        Err(e) => {
-            let error = format!("{} request parse error: {:?}", request_action_name, e);
-            pj_error!("{}", error);
-            let c_str = CString::new(error.to_string()).unwrap();
-            let cchar = c_str.into_raw();
-            (i_delegate.request_result)(i_delegate.user, cchar, true);
-        }
-    };
-}
-
-fn dispatch_file_request_action_result(
-    i_delegate: IPJToDoHttpRequestDelegateWrapper,
-    result: Result<ReposFile, FetchError>,
-    request_action_name: &str,
-) {
-    match result {
-        Ok(repos) => {
-            pj_info!("repos: {:?}", repos);
-            // Serialize it to a JSON string.
-            let json_string_result = serde_json::to_string(&repos);
-            match json_string_result {
-                Ok(json_string) => {
-                    let c_str = CString::new(json_string).unwrap();
-                    let c_char = c_str.into_raw();
-                    (i_delegate.request_result)(i_delegate.user, c_char, true);
-                }
-                Err(e) => {
-                    let error = format!("{} request parse error: {:?}", request_action_name, e);
-                    pj_error!("{}", error);
-
-                    let parse_error = format!(
-                        "error: {} parse user to json data error!",
-                        request_action_name
-                    );
-                    let c_str = CString::new(parse_error.to_string()).unwrap();
-                    let c_char = c_str.into_raw();
-                    (i_delegate.request_result)(i_delegate.user, c_char, true);
-                }
-            }
-        }
-        Err(e) => {
-            let error = format!("{} request parse error: {:?}", request_action_name, e);
-            pj_error!("{}", error);
-        }
-    };
 }

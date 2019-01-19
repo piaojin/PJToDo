@@ -29,7 +29,7 @@ public struct PJHttpRequest {
     //MARK: User
     
     public static func login(name: String, passWord: String, responseBlock: ((_ isSuccess : Bool, _ data: User?, _ error: PJHttpError?) -> Void)?) {
-        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, isSuccess) -> Void in
+        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
             DispatchQueue.main.async(execute: {
                 var httpError: PJHttpError?
                 if let tempPointer = pointer {
@@ -68,7 +68,7 @@ public struct PJHttpRequest {
     }
     
     public static func authorization(authorization: String, responseBlock: ((_ isSuccess : Bool, _ data: Authorizations?, _ error: PJHttpError?) -> Void)?) {
-        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, isSuccess) -> Void in
+        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
             var httpError: PJHttpError?
             if let tempPointer = pointer {
                 let jsonString = String.create(cString: tempPointer)
@@ -105,7 +105,7 @@ public struct PJHttpRequest {
     }
     
     public static func requestUserInfo(responseBlock: ((_ isSuccess : Bool, _ data: User?, _ error: PJHttpError?) -> Void)?) {
-        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, isSuccess) -> Void in
+        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
             DispatchQueue.main.async(execute: {
                 var httpError: PJHttpError?
                 if let tempPointer = pointer {
@@ -178,7 +178,7 @@ public struct PJHttpRequest {
     }
     
     private static func createHttpRequestConfig(responseBlock: ((_ isSuccess : Bool, _ resultString: String?, _ error: PJHttpError?) -> Void)?) -> PJHttpRequestConfig {
-        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, isSuccess) -> Void in
+        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
             DispatchQueue.main.async(execute: {
                 var httpError: PJHttpError?
                 if let tempPointer = pointer {

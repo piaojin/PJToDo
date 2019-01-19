@@ -7,8 +7,6 @@ extern crate serde_derive;
 extern crate serde;
 extern crate serde_json;
 
-// use self::serde::{Deserialize, Serialize};
-
 use self::hyper_tls::HttpsConnector;
 use self::hyper::{Request, Body, Method, Client, Uri};
 use self::hyper::header::{HeaderValue};
@@ -16,22 +14,23 @@ use self::hyper::rt::{Stream, Future as OtherFuture};
 
 #[allow(unused_imports)]
 use common::pj_logger::PJLogger;
-use common::pj_serialize::PJSerdeDeserialize;
 
 use pal::pj_user_pal_help::PJUserPALHelp;
-use common::pj_utils::PJUtils;
+use common::pj_utils::{PJUtils, PJHttpUtils};
+use std::ffi::CString;
+use delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;
 
 // Define a type so we can return multile types of errors
 #[derive(Debug)]
 pub enum FetchError {
-    Http(hyper::Error),
+    Http(hyper::StatusCode, hyper::Error),
     Json(serde_json::Error),
     Custom(String),
 }
 
 impl From<hyper::Error> for FetchError {
     fn from(err: hyper::Error) -> FetchError {
-        FetchError::Http(err)
+        FetchError::Http(hyper::StatusCode::OK, err)
     }
 }
 
@@ -106,48 +105,56 @@ impl PJHttpRequest {
 }
 
 impl PJHttpRequest {
-    pub fn do_request_action(
-        request: Request<Body>,
-    ) -> impl OtherFuture<Item = hyper::Chunk, Error = FetchError> {
-        // 4 is number of blocking DNS threads
-        //为了使用https请求，默认是http请求
-        let https = HttpsConnector::new(4).unwrap();
-        // https.https_only(true);
-        let client = Client::builder().build::<_, hyper::Body>(https);
 
-        client
-            .request(request)
-            .and_then(|res| {
-                pj_info!("Headers: {:#?}", res.headers());
-                pj_info!("Response: {:#?}", res.status());
-                pj_info!("Body: {:#?}", res.body());
-                if !res.status().is_success() {
-                    pj_error!("request {:#?} faild!!!", res);
-                } else {
-                    pj_info!("request {:#?}", res);
-                }
-                //使用该函数则是把body字节数据返回
-                res.into_body().concat2()
-            })
-            .from_err::<FetchError>()
-            // use the body after concatenation
-            .and_then(|body| Ok(body))
-            .from_err()
-    }
-
-    pub fn parse_data<'a, T>(body: &'a hyper::Chunk) -> Result<T, serde_json::Error>
+    pub fn make_http<F>(request: Request<Body>, completion_handler: F)
     where
-        T: std::fmt::Debug + PJSerdeDeserialize<'a>,
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+            + std::marker::Sync
+            + Send
+            + 'static
+            + std::clone::Clone,
     {
-        // try to parse as json with serde_json
-        let parse_result = serde_json::from_slice(body);
-        pj_info!("parse data result: {:?}", parse_result);
-        parse_result
+        PJHttpRequest::do_http_send(request, |result| match result {
+            Ok((status, body)) => {
+                completion_handler(Ok((status, body)));
+            }
+            Err(e) => {
+                completion_handler(Err(e));
+            }
+        });
     }
 
-    pub fn http_send<F>(request: Request<Body>, completion_handler: F)
+    pub fn dispatch_http_response(result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>, i_delegate: IPJToDoHttpRequestDelegateWrapper) {
+        match result {
+            Ok((status, body)) => {
+                let c_str = CString::new(PJHttpUtils::hyper_body_to_string(body)).unwrap();
+                let c_char = c_str.into_raw();
+                (i_delegate.request_result)(i_delegate.user, c_char, status.as_u16(), status.is_success());
+            },
+            Err(e) => {
+                let mut error_string: String;
+                let mut error_code: u16 = 0;
+                match e {
+                    FetchError::Http(status, error) => {
+                        error_string = error.to_string();
+                        error_code = status.as_u16();
+                    }
+                    FetchError::Json(error) => {
+                        error_string = format!("❌parser json error: {:?}!!!❌", error);
+                    }
+                    FetchError::Custom(custom_error_str) => {
+                        error_string = custom_error_str;
+                    }
+                }
+                let c_char = CString::new(error_string).unwrap().into_raw();
+                (i_delegate.request_result)(i_delegate.user, c_char, error_code, false);
+            }
+        };
+    }
+
+    pub fn do_http_send<F>(request: Request<Body>, completion_handler: F)
     where
-        F: FnOnce(Result<hyper::Chunk, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -156,17 +163,42 @@ impl PJHttpRequest {
         let completion_handler_http_err = completion_handler.clone();
         let completion_handler_json_parse_err = completion_handler.clone();
 
-        let response_data = PJHttpRequest::do_request_action(request)
+        // 4 is number of blocking DNS threads
+        //为了使用https请求，默认是http请求
+        let https = HttpsConnector::new(4).unwrap();
+        // https.https_only(true);
+        let client = Client::builder().build::<_, hyper::Body>(https);
+        let mut status_code: u16 = 404;
+        let response = client
+            .request(request)
+            .and_then(move |res| {
+                pj_info!("👉Response headers: {:#?}👈", res.headers());
+                pj_info!("👉Response status code: {:#?}👈", res.status());
+                status_code = res.status().as_u16();
+                pj_info!("👉Response body: {:#?}👈", res.body());
+                if !res.status().is_success() {
+                    pj_error!("❌Response {:#?} faild!!!❌", res);
+                } else {
+                    pj_info!("👉👉Response {:#?}👈👈", res);
+                }
+                //使用该函数则是把body字节数据返回
+                res.into_body().concat2()
+            })
+            .from_err::<FetchError>()
+            // use the body after concatenation
+            .and_then(|body| Ok(body))
+            .from_err();
+
+        let response_data = response
             .map(|body: hyper::Chunk| body)
             // if there was an error print it
-            .map_err(|e| {
+            .map_err(move |e| {
+                let status: hyper::StatusCode = hyper::StatusCode::from_u16(status_code).unwrap();
                 match e {
-                    FetchError::Http(e) => {
-                        // eprintln!("http error: {}", e)
-                        completion_handler_http_err(Err(FetchError::Http(e)));
+                    FetchError::Http(_, e) => {
+                        completion_handler_http_err(Err(FetchError::Http(status, e)));
                     }
                     FetchError::Json(e) => {
-                        // eprintln!("json parsing error: {}", e)
                         completion_handler_json_parse_err(Err(FetchError::Json(e)));
                     }
                     FetchError::Custom(e) => {
@@ -174,11 +206,12 @@ impl PJHttpRequest {
                     }
                 }
             })
-            .map(|body: hyper::Chunk| {
-                completion_handler(Ok(body));
+            .map(move |body: hyper::Chunk| {
+                let status: hyper::StatusCode = hyper::StatusCode::from_u16(status_code).unwrap();
+                completion_handler(Ok((status, body)));
             })
             // if there was an error print it
-            .map_err(|e| eprintln!("request error: {:?}", e));
+            .map_err(|e| eprintln!("❌request error: {:?}❌", e));
 
         hyper::rt::run(response_data);
     }

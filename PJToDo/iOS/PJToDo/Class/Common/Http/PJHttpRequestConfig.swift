@@ -7,8 +7,8 @@
 //
 
 import Foundation
-
-public typealias PJResponseBlock = (_ data: UnsafeMutablePointer<Int8>?, _ isSuccess : Bool) -> Void
+//statusCode: UInt16
+public typealias PJResponseBlock = (_ data: UnsafeMutablePointer<Int8>?, _ statusCode: Int, _ isSuccess : Bool) -> Void
 
 class PJHttpRequestConfig {
     
@@ -24,9 +24,9 @@ class PJHttpRequestConfig {
             }
         }
         
-        let requestResultBackBlock: (@convention(c) (UnsafeMutableRawPointer?, UnsafeMutablePointer<Int8>?, Bool) -> Void)! = { (pointer, dataPointer, isSuccess) in
+        let requestResultBackBlock: (@convention(c) (UnsafeMutableRawPointer?, UnsafeMutablePointer<Int8>?, UInt16, Bool) -> Void)! = { (pointer, dataPointer, statusCode, isSuccess) in
             if let tempPointer = pointer {
-                PJToDo.requestResult(user: tempPointer, data: dataPointer, isSuccess: isSuccess)
+                PJToDo.requestResult(user: tempPointer, data: dataPointer, statusCode: statusCode, isSuccess: isSuccess)
             }
         }
         
@@ -39,10 +39,10 @@ class PJHttpRequestConfig {
     }
     
     //Rust回调Swift
-    fileprivate func requestResult(data: UnsafeMutablePointer<Int8>?, isSuccess: Bool) {
+    fileprivate func requestResult(data: UnsafeMutablePointer<Int8>?, statusCode: UInt16, isSuccess: Bool) {
         print("PJHttpRequestConfig: received findByIdResult callback with  \(isSuccess)")
         if let dataPointer = data {
-            self.responseBlock?(dataPointer, isSuccess)
+            self.responseBlock?(dataPointer, Int(statusCode), isSuccess)
         }
     }
     
@@ -52,9 +52,9 @@ class PJHttpRequestConfig {
 }
 
 //Rust回调Swift
-fileprivate func requestResult(user: UnsafeMutableRawPointer, data: UnsafeMutablePointer<Int8>?, isSuccess: Bool) {
+fileprivate func requestResult(user: UnsafeMutableRawPointer, data: UnsafeMutablePointer<Int8>?, statusCode: UInt16, isSuccess: Bool) {
     let obj: PJHttpRequestConfig = Unmanaged.fromOpaque(user).takeUnretainedValue()
-    obj.requestResult(data: data, isSuccess: isSuccess)
+    obj.requestResult(data: data, statusCode: statusCode, isSuccess: isSuccess)
     destroy(user: user)
 }
 

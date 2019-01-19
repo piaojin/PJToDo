@@ -10,14 +10,11 @@ use self::rustc_serialize::base64::{STANDARD, ToBase64};
 
 use self::hyper::header::{HeaderValue};
 use self::hyper::{Method};
-
 use network::http_request::{PJHttpRequest, FetchError};
 use common::request_config::PJRequestConfig;
-use mine::user::User;
-use mine::authorizations::Authorizations;
-use common::pj_utils::PJUtils;
+use common::pj_utils::{PJUtils};
 use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
-use std::ffi::{CStr, CString};
+use std::ffi::{CStr};
 use libc::{c_char};
 use std::thread;
 
@@ -26,31 +23,19 @@ pub struct PJHttpUserRequest;
 impl PJHttpUserRequest {
     pub fn request_user_info<F>(completion_handler: F)
     where
-        F: FnOnce(Result<User, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
             + std::clone::Clone,
     {
         let request = PJHttpRequest::default_request(PJRequestConfig::user_info());
-        PJHttpRequest::http_send(request, |result| match result {
-            Ok(body) => {
-                let parse_result = PJHttpRequest::parse_data::<User>(&body);
-                let result = match parse_result {
-                    Ok(model) => Ok(model),
-                    Err(e) => Err(FetchError::Json(e)),
-                };
-                completion_handler(result);
-            }
-            Err(e) => {
-                completion_handler(Err(e));
-            }
-        });
+        PJHttpRequest::make_http(request, completion_handler);
     }
 
     pub fn login<'a, F>(name: &'a str, password: &'a str, completion_handler: F)
     where
-        F: FnOnce(Result<User, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -68,25 +53,13 @@ impl PJHttpUserRequest {
             HeaderValue::from_static(basic),
         );
 
-        PJHttpRequest::http_send(request, |result| match result {
-            Ok(body) => {
-                let parse_result = PJHttpRequest::parse_data::<User>(&body);
-                let result = match parse_result {
-                    Ok(model) => Ok(model),
-                    Err(e) => Err(FetchError::Json(e)),
-                };
-                completion_handler(result);
-            }
-            Err(e) => {
-                completion_handler(Err(e));
-            }
-        });
+        PJHttpRequest::make_http(request, completion_handler);
     }
 
     //auth token will create once and can't create again need to delete it in github.
     pub fn authorizations<'a, F>(authorization: &'a str, completion_handler: F)
     where
-        F: FnOnce(Result<Authorizations, FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -105,19 +78,7 @@ impl PJHttpUserRequest {
             HeaderValue::from_static(authorization),
         );
 
-        PJHttpRequest::http_send(request, |result| match result {
-            Ok(body) => {
-                let parse_result = PJHttpRequest::parse_data::<Authorizations>(&body);
-                let result = match parse_result {
-                    Ok(model) => Ok(model),
-                    Err(e) => Err(FetchError::Json(e)),
-                };
-                completion_handler(result);
-            }
-            Err(e) => {
-                completion_handler(Err(e));
-            }
-        });
+        PJHttpRequest::make_http(request, completion_handler);
     }
 }
 
@@ -137,35 +98,9 @@ pub unsafe extern "C" fn PJ_Login(
     let password = CStr::from_ptr(password).to_string_lossy().into_owned();
 
     thread::spawn(move || {
-    PJHttpUserRequest::login(&name, &password, move |result| {
-        let mut c_str = CString::new("").unwrap();
-        match result {
-            Ok(user) => {
-                pj_info!("user: {:?}", user);
-                // Serialize it to a JSON string.
-                let json_string_result = serde_json::to_string(&user);
-                match json_string_result {
-                    Ok(json_string) => {
-                        c_str = CString::new(json_string).unwrap();
-                        let c_char = c_str.into_raw();
-                        (i_delegate.request_result)(i_delegate.user, c_char, true);
-                    }
-                    Err(e) => {
-                        pj_error!("PJ_Login request parse error: {:?}", e);
-                        c_str = CString::new("{error: PJ_Login parse user to json data error!}")
-                            .unwrap();
-                        let c_char = c_str.into_raw();
-                        (i_delegate.request_result)(i_delegate.user, c_char, true);
-                    }
-                }
-            }
-            Err(e) => {
-                pj_error!("PJ_Login request error: {:?}", e);
-                let c_char = c_str.into_raw();
-                (i_delegate.request_result)(i_delegate.user, c_char, false);
-            }
-        }
-    });
+        PJHttpUserRequest::login(&name, &password, move |result| {
+            PJHttpRequest::dispatch_http_response(result, i_delegate);
+        });
     });
 }
 
@@ -184,36 +119,8 @@ pub unsafe extern "C" fn PJ_Authorizations(
 
     thread::spawn(move || {
         PJHttpUserRequest::authorizations(&authorization, move |result| {
-        let mut c_str = CString::new("").unwrap();
-        match result {
-            Ok(authorization) => {
-                pj_info!("authorization: {:?}", authorization);
-                // Serialize it to a JSON string.
-                let json_string_result = serde_json::to_string(&authorization);
-                match json_string_result {
-                    Ok(json_string) => {
-                        c_str = CString::new(json_string).unwrap();
-                        let c_char = c_str.into_raw();
-                        (i_delegate.request_result)(i_delegate.user, c_char, true);
-                    }
-                    Err(e) => {
-                        pj_error!("PJ_Authorizations request parse error: {:?}", e);
-                        c_str = CString::new(
-                            "{error: PJ_Authorizations parse authorization to json data error!}",
-                        )
-                        .unwrap();
-                        let c_char = c_str.into_raw();
-                        (i_delegate.request_result)(i_delegate.user, c_char, true);
-                    }
-                }
-            }
-            Err(e) => {
-                pj_error!("PJ_Authorizations request error: {:?}", e);
-                let c_char = c_str.into_raw();
-                (i_delegate.request_result)(i_delegate.user, c_char, false);
-            }
-        }
-    });
+            PJHttpRequest::dispatch_http_response(result, i_delegate);
+        });
     });
 }
 
@@ -223,35 +130,7 @@ pub unsafe extern "C" fn PJ_RequestUserInfo(delegate: IPJToDoHttpRequestDelegate
 
     thread::spawn(move || {
         PJHttpUserRequest::request_user_info(move |result| {
-        let mut c_str = CString::new("").unwrap();
-        match result {
-            Ok(user) => {
-                pj_info!("user: {:?}", user);
-                // Serialize it to a JSON string.
-                let json_string_result = serde_json::to_string(&user);
-                match json_string_result {
-                    Ok(json_string) => {
-                        c_str = CString::new(json_string).unwrap();
-                        let c_char = c_str.into_raw();
-                        (i_delegate.request_result)(i_delegate.user, c_char, true);
-                    }
-                    Err(e) => {
-                        pj_error!("PJ_Request_user_info request parse error: {:?}", e);
-                        c_str = CString::new(
-                            "{error: PJ_Request_user_info parse user to json data error!}",
-                        )
-                        .unwrap();
-                        let c_char = c_str.into_raw();
-                        (i_delegate.request_result)(i_delegate.user, c_char, true);
-                    }
-                }
-            }
-            Err(e) => {
-                pj_error!("PJ_Request_user_info request error: {:?}", e);
-                let c_char = c_str.into_raw();
-                (i_delegate.request_result)(i_delegate.user, c_char, false);
-            }
-        }
-    });
+            PJHttpRequest::dispatch_http_response(result, i_delegate);
+        });
     });
 }
