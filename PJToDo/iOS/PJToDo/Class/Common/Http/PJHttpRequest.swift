@@ -31,36 +31,7 @@ public struct PJHttpRequest {
     public static func login(name: String, passWord: String, responseBlock: ((_ isSuccess : Bool, _ data: User?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
             DispatchQueue.main.async(execute: {
-                var httpError: PJHttpError?
-                if let tempPointer = pointer {
-                    let jsonString = String.create(cString: tempPointer)
-                    if isSuccess {
-                        do {
-                            if let jsonData = jsonString.data(using: .utf8) {
-                                let user = try JSONDecoder().decode(User.self, from: jsonData)
-                                PJCacheManager.saveCustomObject(customObject: user, key: PJKeyCenter.UserInfo)
-                                responseBlock?(isSuccess, user, nil)
-                            } else {
-                                httpError = PJHttpError()
-                                httpError?.message = "❌login -> jsonString to data error!!!❌"
-                                responseBlock?(isSuccess, nil, httpError)
-                            }
-                        } catch {
-                            // 异常处理
-                            DDLogWarn("parse user info error: \(error)")
-                            httpError = PJHttpError()
-                            httpError?.message = "❌login -> parse user info error: \(error)❌"
-                            responseBlock?(isSuccess, nil, httpError)
-                        }
-                    } else {
-                        httpError = self.createPJHttpError(jsonString: jsonString)
-                        responseBlock?(isSuccess, nil, httpError)
-                    }
-                } else {
-                    httpError = PJHttpError()
-                    httpError?.message = "❌login -> pointer is null!!!❌"
-                    responseBlock?(isSuccess, nil, httpError)
-                }
+                PJHttpRequest.handleResponse(pointer, statusCode, isSuccess, actionName: "login", responseBlock: responseBlock)
             })
         })
         
@@ -69,36 +40,9 @@ public struct PJHttpRequest {
     
     public static func authorization(authorization: String, responseBlock: ((_ isSuccess : Bool, _ data: Authorizations?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
-            var httpError: PJHttpError?
-            if let tempPointer = pointer {
-                let jsonString = String.create(cString: tempPointer)
-                if isSuccess {
-                    do {
-                        if let jsonData = jsonString.data(using: .utf8) {
-                            let authorization = try JSONDecoder().decode(Authorizations.self, from: jsonData)
-                            PJCacheManager.saveCustomObject(customObject: authorization, key: PJKeyCenter.Authorization)
-                            responseBlock?(isSuccess, authorization, nil)
-                        } else {
-                            httpError = PJHttpError()
-                            httpError?.message = "❌authorization -> jsonString to data error!!!❌"
-                            responseBlock?(isSuccess, nil, httpError)
-                        }
-                    } catch {
-                        // 异常处理
-                        DDLogWarn("parse authorization info error: \(error)")
-                        httpError = PJHttpError()
-                        httpError?.message = "❌authorization -> parse user info error: \(error)❌"
-                        responseBlock?(isSuccess, nil, httpError)
-                    }
-                } else {
-                    httpError = self.createPJHttpError(jsonString: jsonString)
-                    responseBlock?(isSuccess, nil, httpError)
-                }
-            } else {
-                httpError = PJHttpError()
-                httpError?.message = "❌authorization -> pointer is null!!!❌"
-                responseBlock?(isSuccess, nil, httpError)
-            }
+            DispatchQueue.main.async(execute: {
+                PJHttpRequest.handleResponse(pointer, statusCode, isSuccess, actionName: "authorization", responseBlock: responseBlock)
+            })
         })
         
         PJ_Authorizations(httpRequestConfig.iDelegate, authorization)
@@ -107,36 +51,7 @@ public struct PJHttpRequest {
     public static func requestUserInfo(responseBlock: ((_ isSuccess : Bool, _ data: User?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
             DispatchQueue.main.async(execute: {
-                var httpError: PJHttpError?
-                if let tempPointer = pointer {
-                    let jsonString = String.create(cString: tempPointer)
-                    if isSuccess {
-                        do {
-                            if let jsonData = jsonString.data(using: .utf8) {
-                                let user = try JSONDecoder().decode(User.self, from: jsonData)
-                                PJCacheManager.saveCustomObject(customObject: user, key: PJKeyCenter.UserInfo)
-                                responseBlock?(isSuccess, user, nil)
-                            } else {
-                                httpError = PJHttpError()
-                                httpError?.message = "❌login -> jsonString to data error!!!❌"
-                                responseBlock?(isSuccess, nil, httpError)
-                            }
-                        } catch {
-                            // 异常处理
-                            DDLogWarn("parse user info error: \(error)")
-                            httpError = PJHttpError()
-                            httpError?.message = "❌login -> parse user info error: \(error)❌"
-                            responseBlock?(isSuccess, nil, httpError)
-                        }
-                    } else {
-                        httpError = self.createPJHttpError(jsonString: jsonString)
-                        responseBlock?(isSuccess, nil, httpError)
-                    }
-                } else {
-                    httpError = PJHttpError()
-                    httpError?.message = "❌login -> pointer is null!!!❌"
-                    responseBlock?(isSuccess, nil, httpError)
-                }
+                PJHttpRequest.handleResponse(pointer, statusCode, isSuccess, actionName: "requestUserInfo", responseBlock: responseBlock)
             })
         })
         
@@ -145,57 +60,70 @@ public struct PJHttpRequest {
     
     //MARK: Repos
     
-    public static func createGitHubRepos(responseBlock: ((_ isSuccess : Bool, _ resultString: String?, _ error: PJHttpError?) -> Void)?) {
-        let httpRequestConfig = self.createHttpRequestConfig(responseBlock: responseBlock)
+    public static func createGitHubRepos(responseBlock: ((_ isSuccess : Bool, _ data: Repos?, _ error: PJHttpError?) -> Void)?) {
+        let httpRequestConfig = self.createHttpRequestConfig(actionName: "createGitHubRepos", responseBlock: responseBlock)
         PJ_CreateRepos(httpRequestConfig.iDelegate)
     }
     
-    public static func getGitHubRepos(reposUrl: String, responseBlock: ((_ isSuccess : Bool, _ resultString: String?, _ error: PJHttpError?) -> Void)?) {
-        let httpRequestConfig = self.createHttpRequestConfig(responseBlock: responseBlock)
+    public static func getGitHubRepos(reposUrl: String, responseBlock: ((_ isSuccess : Bool, _ data: Repos?, _ error: PJHttpError?) -> Void)?) {
+        let httpRequestConfig = self.createHttpRequestConfig(actionName: "getGitHubRepos", responseBlock: responseBlock)
         PJ_GetRepos(httpRequestConfig.iDelegate, reposUrl)
     }
     
-    public static func deleteGitHubRepos(reposUrl: String, responseBlock: ((_ isSuccess : Bool, _ resultString: String?, _ error: PJHttpError?) -> Void)?) {
-        let httpRequestConfig = self.createHttpRequestConfig(responseBlock: responseBlock)
+    public static func deleteGitHubRepos(reposUrl: String, responseBlock: ((_ isSuccess : Bool, _ data: Repos?, _ error: PJHttpError?) -> Void)?) {
+        let httpRequestConfig = self.createHttpRequestConfig(actionName: "deleteGitHubRepos", responseBlock: responseBlock)
         PJ_DeleteRepos(httpRequestConfig.iDelegate, reposUrl)
     }
     
     //MARK: File
     
-    public static func createGitHubFile(path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ resultString: String?, _ error: PJHttpError?) -> Void)?) {
-        let httpRequestConfig = self.createHttpRequestConfig(responseBlock: responseBlock)
+    public static func createGitHubFile(path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
+        let httpRequestConfig = self.createHttpRequestConfig(actionName: "createGitHubFile", responseBlock: responseBlock)
         PJ_CreateFile(httpRequestConfig.iDelegate, path, message, content, sha)
     }
     
-    public static func updateGitHubFile(path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ resultString: String?, _ error: PJHttpError?) -> Void)?) {
-        let httpRequestConfig = self.createHttpRequestConfig(responseBlock: responseBlock)
+    public static func updateGitHubFile(path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
+        let httpRequestConfig = self.createHttpRequestConfig(actionName: "updateGitHubFile", responseBlock: responseBlock)
         PJ_UpdateFile(httpRequestConfig.iDelegate, path, message, content, sha)
     }
     
-    public static func deleteGitHubFile(path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ resultString: String?, _ error: PJHttpError?) -> Void)?) {
-        let httpRequestConfig = self.createHttpRequestConfig(responseBlock: responseBlock)
+    public static func deleteGitHubFile(path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
+        let httpRequestConfig = self.createHttpRequestConfig(actionName: "deleteGitHubFile", responseBlock: responseBlock)
         PJ_DeleteFile(httpRequestConfig.iDelegate, path, message, content, sha)
     }
     
-    private static func createHttpRequestConfig(responseBlock: ((_ isSuccess : Bool, _ resultString: String?, _ error: PJHttpError?) -> Void)?) -> PJHttpRequestConfig {
+    private static func createHttpRequestConfig<T: Codable>(actionName: String, responseBlock: ((_ isSuccess : Bool, _ data: T?, _ error: PJHttpError?) -> Void)?) -> PJHttpRequestConfig {
         let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
             DispatchQueue.main.async(execute: {
-                var httpError: PJHttpError?
-                if let tempPointer = pointer {
-                    let jsonString = String.create(cString: tempPointer)
-                    if isSuccess {
-                        responseBlock?(isSuccess, jsonString, nil)
-                    } else {
-                        httpError = self.createPJHttpError(jsonString: jsonString)
-                        responseBlock?(isSuccess, jsonString, httpError)
-                    }
-                } else {
-                    httpError = PJHttpError()
-                    httpError?.message = "❌createHttpRequestConfig -> pointer is null!!!❌"
-                    responseBlock?(isSuccess, nil, httpError)
-                }
+                PJHttpRequest.handleResponse(pointer, statusCode, isSuccess, actionName: actionName, responseBlock: responseBlock)
             })
         })
         return httpRequestConfig
+    }
+    
+    public static func handleResponse<T: Codable>(_ dataPointer: UnsafeMutablePointer<Int8>?, _ statusCode: Int, _ isSuccess : Bool, actionName: String, responseBlock: ((_ isSuccess : Bool, _ data: T?, _ error: PJHttpError?) -> Void)?) {
+        if let tempPointer = dataPointer {
+            let jsonString = String.create(cString: tempPointer)
+            if isSuccess {
+                do {
+                    if let jsonData = jsonString.data(using: .utf8) {
+                        let model = try JSONDecoder().decode(T.self, from: jsonData)
+                        responseBlock?(isSuccess, model, nil)
+                    } else {
+                        responseBlock?(isSuccess, nil, PJHttpError(errorCode: statusCode, errorMessage: "❌\(actionName) -> jsonString to data error!!!❌"))
+                    }
+                } catch {
+                    // 异常处理
+                    DDLogWarn("parse user info error: \(error)")
+                    responseBlock?(isSuccess, nil, PJHttpError(errorCode: statusCode, errorMessage: "❌\(actionName) -> parse user info error: \(error)❌"))
+                }
+            } else {
+                let httpError = self.createPJHttpError(jsonString: jsonString)
+                httpError?.errorCode = statusCode
+                responseBlock?(isSuccess, nil, httpError)
+            }
+        } else {
+            responseBlock?(isSuccess, nil, PJHttpError(errorCode: statusCode, errorMessage: "❌\(actionName) -> pointer is null!!!❌"))
+        }
     }
 }

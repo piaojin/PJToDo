@@ -2,18 +2,26 @@
 //  PJHttpError.swift
 //  PJToDo
 //
-//  Created by piaojin on 2019/1/17.
+//  Created by piaojin on 2019/1/19.
 //  Copyright © 2019 piaojin. All rights reserved.
 //
 
-//{
-//    "message": "Not Found",
-//    "documentation_url": "https://developer.github.com/v3/repos/contents/#update-a-file"
-//}
-
 import UIKit
 
-public class PJHttpError: Codable {
-    var message: String = ""
-    var documentation_url: String = ""
+public class PJHttpError: PJHttpBaseModel {
+    public var errorCode: Int = 0
+    
+    override init() {
+        super.init()
+    }
+    
+    required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+    }
+    
+    convenience init(errorCode: Int, errorMessage: String) {
+        self.init()
+        self.errorCode = errorCode
+        self.message = errorMessage
+    }
 }

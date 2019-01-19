@@ -211,7 +211,9 @@ impl PJHttpRequest {
                 completion_handler(Ok((status, body)));
             })
             // if there was an error print it
-            .map_err(|e| eprintln!("❌request error: {:?}❌", e));
+            .map_err(|e| {
+                eprintln!("❌request error: {:?}❌", e);
+            });
 
         hyper::rt::run(response_data);
     }

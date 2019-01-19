@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class Authorizations: Codable {
+public class Authorizations: PJHttpBaseModel {
     var id: Int = -1
     var url: String = ""
     var token: String = ""

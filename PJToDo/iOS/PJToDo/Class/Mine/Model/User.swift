@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class User: Codable {
+public class User: PJHttpBaseModel {
     
     var login: String = ""
     var id: Int = -1
@@ -38,8 +38,4 @@ public class User: Codable {
     var following: Int = -1
     var created_at: String = ""
     var updated_at: String = ""
-    
-    init() {
-        
-    }
 }
