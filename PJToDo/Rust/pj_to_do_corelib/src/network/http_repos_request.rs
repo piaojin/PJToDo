@@ -46,10 +46,6 @@ impl PJHttpReposRequest {
                     PJHttpRequest::request_with(PJRequestConfig::repos(), &repos_request_body_json);
 
                 *request.method_mut() = Method::POST;
-                request.headers_mut().insert(
-                    PJRequestConfig::authorization_head(),
-                    HeaderValue::from_static(PJRequestConfig::personal_token()),
-                );
 
                 PJHttpReposRequest::do_repos_request(request, completion_handler);
             }
@@ -103,10 +99,6 @@ impl PJHttpReposRequest {
             completion_handler(Err(err));
         } else {
             let mut request = PJHttpRequest::default_request(repos_url);
-            request.headers_mut().insert(
-                PJRequestConfig::authorization_head(),
-                HeaderValue::from_static(PJRequestConfig::personal_token()),
-            );
             *request.method_mut() = Method::DELETE;
             PJHttpReposRequest::do_repos_request(request, completion_handler);
         }
@@ -248,10 +240,6 @@ impl PJHttpReposRequest {
                 }
 
                 *request.method_mut() = request_method;
-                request.headers_mut().insert(
-                    PJRequestConfig::authorization_head(),
-                    HeaderValue::from_static(PJRequestConfig::personal_token()),
-                );
                 PJHttpReposRequest::do_crud_file_request(request, completion_handler);
             }
             Err(e) => {
