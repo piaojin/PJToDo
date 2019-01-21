@@ -8,6 +8,6 @@
 
 import UIKit
 
-public class ReposFile: PJHttpBaseModel {
-
+public class ReposFile: Codable {
+    var content: ReposContent = ReposContent()
 }

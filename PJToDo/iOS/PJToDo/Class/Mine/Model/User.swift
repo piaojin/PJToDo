@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class User: PJHttpBaseModel {
+public class User: Codable {
     
     var login: String = ""
     var id: Int = -1

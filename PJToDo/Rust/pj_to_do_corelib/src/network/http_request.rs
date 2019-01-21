@@ -19,6 +19,8 @@ use pal::pj_user_pal_help::PJUserPALHelp;
 use common::pj_utils::{PJUtils, PJHttpUtils};
 use std::ffi::CString;
 use delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;
+use std::sync::{Arc, Mutex};
+use std::collections::HashMap;
 
 // Define a type so we can return multile types of errors
 #[derive(Debug)]
@@ -168,13 +170,21 @@ impl PJHttpRequest {
         let https = HttpsConnector::new(4).unwrap();
         // https.https_only(true);
         let client = Client::builder().build::<_, hyper::Body>(https);
-        let mut status_code: u16 = 404;
+
+        let status_map: Arc<Mutex<_>> = Arc::new(Mutex::new(HashMap::<&str, hyper::StatusCode>::new()));
+        let share_status_map_i = status_map.clone();
+        let share_status_map_ii = status_map.clone();
+        let share_status_map_iii = status_map.clone();
+
         let response = client
             .request(request)
             .and_then(move |res| {
                 pj_info!("👉Response headers: {:#?}👈", res.headers());
                 pj_info!("👉Response status code: {:#?}👈", res.status());
-                status_code = res.status().as_u16();
+
+                let mut share_status_data = share_status_map_i.lock().unwrap();
+                share_status_data.insert("StatusCode", res.status());
+
                 pj_info!("👉Response body: {:#?}👈", res.body());
                 if !res.status().is_success() {
                     pj_error!("❌Response {:#?} faild!!!❌", res);
@@ -193,10 +203,9 @@ impl PJHttpRequest {
             .map(|body: hyper::Chunk| body)
             // if there was an error print it
             .map_err(move |e| {
-                let status: hyper::StatusCode = hyper::StatusCode::from_u16(status_code).unwrap();
                 match e {
                     FetchError::Http(_, e) => {
-                        completion_handler_http_err(Err(FetchError::Http(status, e)));
+                        completion_handler_http_err(Err(FetchError::Http(share_status_map_ii.lock().unwrap()["StatusCode"], e)));
                     }
                     FetchError::Json(e) => {
                         completion_handler_json_parse_err(Err(FetchError::Json(e)));
@@ -207,8 +216,7 @@ impl PJHttpRequest {
                 }
             })
             .map(move |body: hyper::Chunk| {
-                let status: hyper::StatusCode = hyper::StatusCode::from_u16(status_code).unwrap();
-                completion_handler(Ok((status, body)));
+                completion_handler(Ok((share_status_map_iii.lock().unwrap()["StatusCode"], body)));
             })
             // if there was an error print it
             .map_err(|e| {

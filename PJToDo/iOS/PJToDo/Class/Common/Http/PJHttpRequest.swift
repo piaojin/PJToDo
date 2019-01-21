@@ -114,7 +114,7 @@ public struct PJHttpRequest {
                     }
                 } catch {
                     // 异常处理
-                    DDLogWarn("parse user info error: \(error)")
+                    DDLogWarn("❌\(actionName) parse user info error: \(error)❌")
                     responseBlock?(isSuccess, nil, PJHttpError(errorCode: statusCode, errorMessage: "❌\(actionName) -> parse user info error: \(error)❌"))
                 }
             } else {

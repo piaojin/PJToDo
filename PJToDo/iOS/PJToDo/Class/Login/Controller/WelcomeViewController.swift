@@ -77,17 +77,13 @@ class WelcomeViewController: PJBaseViewController {
 //            }
 //        }
         
-        PJHttpRequest.createGitHubRepos { (isSuccess, resultStr, error) in
-            if isSuccess {
-                
-            }
-        }
-        
-//        PJHttpRequest.getGitHubRepos(reposUrl: str) { (str, isSuccess) in
+//        PJHttpRequest.createGitHubRepos { (isSuccess, resultStr, error) in
+//            if isSuccess {
 //
+//            }
 //        }
         
-//        let loginViewController = LoginViewController()
-//        self.navigationController?.pushViewController(loginViewController, animated: true)
+        let loginViewController = LoginViewController()
+        self.navigationController?.pushViewController(loginViewController, animated: true)
     }
 }

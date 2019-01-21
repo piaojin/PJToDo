@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class Repos: PJHttpBaseModel {
+public class Repos: Codable {
     var id: Int = -1
     var node_id: String = ""
     var name: String = ""
