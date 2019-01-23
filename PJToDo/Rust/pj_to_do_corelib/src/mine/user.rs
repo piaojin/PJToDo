@@ -51,41 +51,76 @@ extern crate serde_json;
 use common::pj_serialize::PJSerdeDeserialize;
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-pub struct User<'a> {
-    pub login: &'a str,
+pub struct User {
+    pub login: String,
     pub id: i64,
-    pub node_id: &'a str,
-    pub avatar_url: &'a str,
-    pub gravatar_id: &'a str,
-    pub url: &'a str,
-    pub html_url: &'a str,
-    pub followers_url: &'a str,
-    pub following_url: &'a str,
-    pub gists_url: &'a str,
-    pub starred_url: &'a str,
-    pub subscriptions_url: &'a str,
-    pub organizations_url: &'a str,
-    pub repos_url: &'a str,
-    pub events_url: &'a str,
-    pub received_events_url: &'a str,
+    pub node_id: String,
+    pub avatar_url: String,
+    pub gravatar_id: String,
+    pub url: String,
+    pub html_url: String,
+    pub followers_url: String,
+    pub following_url: String,
+    pub gists_url: String,
+    pub starred_url: String,
+    pub subscriptions_url: String,
+    pub organizations_url: String,
+    pub repos_url: String,
+    pub events_url: String,
+    pub received_events_url: String,
     //给json中对应的字段重新命名
     #[serde(rename = "type")]
-    pub _type: &'a str,
+    pub _type: String,
     pub site_admin: bool,
-    pub name: &'a str,
-    pub company: &'a str,
-    pub blog: &'a str,
-    pub bio: &'a str,
+    pub name: String,
+    pub company: String,
+    pub blog: String,
+    pub bio: String,
     pub public_repos: i64,
     pub public_gists: i64,
     pub followers: i64,
     pub following: i64,
-    pub created_at: &'a str,
-    pub updated_at: &'a str,
+    pub created_at: String,
+    pub updated_at: String,
 }
 
-impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for User<'a> {
-    type Item = User<'a>;
+impl User {
+    pub fn new() -> User {
+        User {
+            login: "".to_string(),
+            id: 0,
+            node_id: "".to_string(),
+            avatar_url: "".to_string(),
+            gravatar_id: "".to_string(),
+            url: "".to_string(),
+            html_url: "".to_string(),
+            followers_url: "".to_string(),
+            following_url: "".to_string(),
+            gists_url: "".to_string(),
+            starred_url: "".to_string(),
+            subscriptions_url: "".to_string(),
+            organizations_url: "".to_string(),
+            repos_url: "".to_string(),
+            events_url: "".to_string(),
+            received_events_url: "".to_string(),
+            _type: "".to_string(),
+            site_admin: false,
+            name: "".to_string(),
+            company: "".to_string(),
+            blog: "".to_string(),
+            bio: "".to_string(),
+            public_repos: 0,
+            public_gists: 0,
+            followers: 0,
+            following: 0,
+            created_at: "".to_string(),
+            updated_at: "".to_string(),
+        }
+    }
+}
+
+impl<'b> PJSerdeDeserialize<'b> for User {
+    type Item = User;
     fn new() -> Self::Item {
         Self::Item::default()
     }

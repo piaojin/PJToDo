@@ -12,11 +12,13 @@ use self::hyper::header::{HeaderValue};
 use self::hyper::{Method};
 use network::http_request::{PJHttpRequest, FetchError};
 use common::request_config::PJRequestConfig;
-use common::pj_utils::{PJUtils};
+use common::pj_utils::{PJUtils, PJHttpUtils};
 use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
 use std::ffi::{CStr};
 use libc::{c_char};
 use std::thread;
+use common::pj_model_utils::PJModelUtils;
+use mine::user::User;
 
 pub struct PJHttpUserRequest;
 
@@ -99,7 +101,24 @@ pub unsafe extern "C" fn PJ_Login(
 
     thread::spawn(move || {
         PJHttpUserRequest::login(&name, &password, move |result| {
-            PJHttpRequest::dispatch_http_response(result, i_delegate);
+            // let temp_result = result.clone();
+            match result {
+                Ok((status, body)) => {
+                    if status.is_success() {
+                        let parse_result = PJHttpUtils::parse_data::<User>(&body);
+                        match parse_result {
+                            Ok(user) => {
+                                PJModelUtils::update_user(user);
+                            },
+                            Err(_) => {}
+                        };
+                    }
+                    PJHttpRequest::dispatch_http_response(Ok((status, body)), i_delegate);
+                },
+                Err(_) => {
+                    PJHttpRequest::dispatch_http_response(result, i_delegate);
+                }
+            };
         });
     });
 }

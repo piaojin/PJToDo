@@ -4,7 +4,6 @@ extern crate hyper_tls;
 extern crate tokio;
 extern crate rustc_serialize;
 
-use self::hyper::header::{HeaderValue};
 use self::hyper::{Method, Request, Body};
 
 use network::http_request::{PJHttpRequest, FetchError};

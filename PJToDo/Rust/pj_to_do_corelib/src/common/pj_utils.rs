@@ -5,6 +5,9 @@ extern crate serde_json;
 
 use common::pj_serialize::PJSerdeDeserialize;
 use std::mem;
+use libc::{c_char};
+use std::ffi::{CString, CStr};
+use common::rustc_serialize::base64::{STANDARD, ToBase64};
 
 pub struct PJUtils;
 
@@ -36,4 +39,15 @@ impl PJHttpUtils {
         pj_info!("parse data result: {:?}", parse_result);
         parse_result
     }
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn ConvertStrToBase64Str(ptr: *const c_char) -> *mut c_char {
+    assert!(ptr != std::ptr::null());
+    let original_string = CStr::from_ptr(ptr).to_string_lossy().into_owned();
+    let converted_str = CString::new(original_string).unwrap(); //unsafe
+    let config = STANDARD;
+    let converted_base64_string = converted_str.as_bytes().to_base64(config);
+    let converted_base64_cstring = CString::new(converted_base64_string).unwrap();
+    converted_base64_cstring.into_raw()
 }
