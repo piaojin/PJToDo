@@ -79,17 +79,22 @@ public struct PJHttpRequest {
     
     public static func createGitHubReposFile(requestUrl: String, path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "createGitHubFile", responseBlock: responseBlock)
-        PJ_CreateFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
+        PJ_CreateReposFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
     }
     
     public static func updateGitHubReposFile(requestUrl: String, path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "updateGitHubFile", responseBlock: responseBlock)
-        PJ_UpdateFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
+        PJ_UpdateReposFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
     }
     
     public static func deleteGitHubReposFile(requestUrl: String, path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "deleteGitHubFile", responseBlock: responseBlock)
-        PJ_DeleteFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
+        PJ_DeleteReposFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
+    }
+    
+    public static func getGitHubReposFile(requestUrl: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
+        let httpRequestConfig = self.createHttpRequestConfig(actionName: "getGitHubReposFile", responseBlock: responseBlock)
+        PJ_GetReposFile(httpRequestConfig.iDelegate, requestUrl)
     }
     
     private static func createHttpRequestConfig<T: Codable>(actionName: String, responseBlock: ((_ isSuccess : Bool, _ data: T?, _ error: PJHttpError?) -> Void)?) -> PJHttpRequestConfig {

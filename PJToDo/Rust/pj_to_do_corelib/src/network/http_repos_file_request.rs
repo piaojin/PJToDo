@@ -13,19 +13,21 @@ use repos::repos_file::ReposFileBody;
 use common::pj_logger::PJLogger;
 use network;
 use delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;
+use std::ffi::{CString};
 
 #[derive(PartialEq, Debug)]
 pub enum FileActionType {
     Create,
     Update,
     Delete,
+    Get,
 }
 
 pub struct PJHttpReposFileRequest;
 
 //repos file
 impl PJHttpReposFileRequest {
-    pub fn create_file<F>(request_url: String, create_file_request_body: ReposFileBody, completion_handler: F)
+    pub fn create_repos_file<F>(request_url: String, create_file_request_body: ReposFileBody, completion_handler: F)
     where
         F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
@@ -33,7 +35,7 @@ impl PJHttpReposFileRequest {
             + 'static
             + std::clone::Clone,
     {
-        PJHttpReposFileRequest::crud_file(
+        PJHttpReposFileRequest::crud_repos_file(
             request_url,
             create_file_request_body,
             FileActionType::Create,
@@ -41,7 +43,7 @@ impl PJHttpReposFileRequest {
         );
     }
 
-    pub fn update_file<F>(request_url: String, create_file_request_body: ReposFileBody, completion_handler: F)
+    pub fn update_repos_file<F>(request_url: String, create_file_request_body: ReposFileBody, completion_handler: F)
     where
         F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
@@ -49,7 +51,7 @@ impl PJHttpReposFileRequest {
             + 'static
             + std::clone::Clone,
     {
-        PJHttpReposFileRequest::crud_file(
+        PJHttpReposFileRequest::crud_repos_file(
             request_url,
             create_file_request_body,
             FileActionType::Update,
@@ -57,7 +59,7 @@ impl PJHttpReposFileRequest {
         );
     }
 
-    pub fn delete_file<F>(request_url: String, create_file_request_body: ReposFileBody, completion_handler: F)
+    pub fn delete_repos_file<F>(request_url: String, create_file_request_body: ReposFileBody, completion_handler: F)
     where
         F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
@@ -65,10 +67,27 @@ impl PJHttpReposFileRequest {
             + 'static
             + std::clone::Clone,
     {
-        PJHttpReposFileRequest::crud_file(request_url, create_file_request_body, FileActionType::Delete, completion_handler);
+        PJHttpReposFileRequest::crud_repos_file(request_url, create_file_request_body, FileActionType::Delete, completion_handler);
     }
 
-    fn crud_file<F>(
+    pub fn get_repos_file<F>(request_url: String, completion_handler: F)
+    where
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+            + std::marker::Sync
+            + Send
+            + 'static
+            + std::clone::Clone,
+    {
+        unsafe {
+            let path = CString::new("".to_string()).unwrap();
+        let message = CString::new("".to_string()).unwrap();
+        let content = CString::new("".to_string()).unwrap();
+        let sha = CString::new("".to_string()).unwrap();
+        PJHttpReposFileRequest::crud_repos_file(request_url, ReposFileBody::new(path.into_raw(), message.into_raw(), content.into_raw(), sha.into_raw()), FileActionType::Get, completion_handler);
+        }
+    }
+
+    fn crud_repos_file<F>(
         request_url: String,
         file_request_body: ReposFileBody,
         file_action_type: FileActionType,
@@ -89,7 +108,7 @@ impl PJHttpReposFileRequest {
                     ));
                     completion_handler(Err(err));
                 } else {
-                    PJHttpReposFileRequest::crud_file_request(
+                    PJHttpReposFileRequest::crud_repos_file_request(
                         request_url,
                         file_request_body,
                         file_action_type,
@@ -97,7 +116,7 @@ impl PJHttpReposFileRequest {
                     );
                 }
             } else {
-                PJHttpReposFileRequest::crud_file_request(
+                PJHttpReposFileRequest::crud_repos_file_request(
                     request_url,
                     file_request_body,
                     file_action_type,
@@ -113,7 +132,7 @@ impl PJHttpReposFileRequest {
         }
     }
 
-    fn crud_file_request<F>(
+    fn crud_repos_file_request<F>(
         request_url: String,
         file_request_body: ReposFileBody,
         file_action_type: FileActionType,
@@ -140,10 +159,12 @@ impl PJHttpReposFileRequest {
 
                 if file_action_type == FileActionType::Delete {
                     request_method = Method::DELETE;
+                } else if file_action_type == FileActionType::Get {
+                    request_method = Method::GET;
                 }
 
                 *request.method_mut() = request_method;
-                PJHttpReposFileRequest::do_crud_file_request(request, completion_handler);
+                PJHttpReposFileRequest::do_crud_repos_file_request(request, completion_handler);
             }
             Err(e) => {
                 pj_error!(
@@ -159,7 +180,7 @@ impl PJHttpReposFileRequest {
         }
     }
 
-    fn do_crud_file_request<F>(request: Request<Body>, completion_handler: F)
+    fn do_crud_repos_file_request<F>(request: Request<Body>, completion_handler: F)
     where
         F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync

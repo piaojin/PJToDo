@@ -7,7 +7,7 @@ use std::thread;
 use common::manager::pj_repos_file_manager::PJReposFileManager;
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_CreateFile(
+pub unsafe extern "C" fn PJ_CreateReposFile(
     delegate: IPJToDoHttpRequestDelegate,
     request_url: *const c_char,
     path: *const c_char,
@@ -25,7 +25,7 @@ pub unsafe extern "C" fn PJ_CreateFile(
     let repos_file_body = ReposFileBody::new(path, message, content, sha);
 
     thread::spawn(move || {
-        PJHttpReposFileRequest::create_file(request_url, repos_file_body, move |result| {
+        PJHttpReposFileRequest::create_repos_file(request_url, repos_file_body, move |result| {
             let result = PJReposFileManager::update_repos_file_with_result(result);
             PJHttpReposFileRequest::dispatch_file_response(i_delegate, result, "PJ_CreateFile");
         }); 
@@ -33,7 +33,7 @@ pub unsafe extern "C" fn PJ_CreateFile(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_UpdateFile(
+pub unsafe extern "C" fn PJ_UpdateReposFile(
     delegate: IPJToDoHttpRequestDelegate,
     request_url: *const c_char,
     path: *const c_char,
@@ -51,7 +51,7 @@ pub unsafe extern "C" fn PJ_UpdateFile(
     let repos_file_body = ReposFileBody::new(path, message, content, sha);
 
     thread::spawn(move || {
-        PJHttpReposFileRequest::update_file(request_url, repos_file_body, move |result| {
+        PJHttpReposFileRequest::update_repos_file(request_url, repos_file_body, move |result| {
             let result = PJReposFileManager::update_repos_file_with_result(result);
             PJHttpReposFileRequest::dispatch_file_response(i_delegate, result, "PJ_UpdateFile");
         });
@@ -59,7 +59,7 @@ pub unsafe extern "C" fn PJ_UpdateFile(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_DeleteFile(
+pub unsafe extern "C" fn PJ_DeleteReposFile(
     delegate: IPJToDoHttpRequestDelegate,
     request_url: *const c_char,
     path: *const c_char,
@@ -68,7 +68,7 @@ pub unsafe extern "C" fn PJ_DeleteFile(
     sha: *const c_char,
 ) {
     if path == std::ptr::null_mut() || message == std::ptr::null_mut() || content == std::ptr::null_mut() || sha == std::ptr::null_mut() {
-        pj_error!("path or message or content or sha: *mut PJ_UpdateFile is null!");
+        pj_error!("path or message or content or sha: *mut PJ_DeleteFile is null!");
         assert!(path != std::ptr::null_mut() && message != std::ptr::null_mut() && content != std::ptr::null_mut() && sha != std::ptr::null_mut());
     }
 
@@ -77,9 +77,30 @@ pub unsafe extern "C" fn PJ_DeleteFile(
     let repos_file_body = ReposFileBody::new(path, message, content, sha);
 
     thread::spawn(move || {
-        PJHttpReposFileRequest::delete_file(request_url, repos_file_body, move |result| {
+        PJHttpReposFileRequest::delete_repos_file(request_url, repos_file_body, move |result| {
             PJReposFileManager::remove_repos_file();
             PJHttpReposFileRequest::dispatch_file_response(i_delegate, result, "PJ_DeleteFile");
+        });
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn PJ_GetReposFile(
+    delegate: IPJToDoHttpRequestDelegate,
+    request_url: *const c_char,
+) {
+    if request_url == std::ptr::null_mut() {
+        pj_error!("request_url: *mut PJ_GetFile is null!");
+        assert!(request_url != std::ptr::null_mut());
+    }
+
+    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
+    let request_url = CStr::from_ptr(request_url).to_string_lossy().into_owned();
+
+    thread::spawn(move || {
+        PJHttpReposFileRequest::get_repos_file(request_url, move |result| {
+            let result = PJReposFileManager::update_repos_file_with_result(result);
+            PJHttpReposFileRequest::dispatch_file_response(i_delegate, result, "PJ_GetFile");
         });
     });
 }

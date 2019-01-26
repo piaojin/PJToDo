@@ -50,7 +50,6 @@ public struct PJReposFileManager {
     public static func removeReposFile() {
         PJReposFileManager.shared._reposFile = nil
         PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = false
-        PJReposFileManager.shared.hasSavedReposDBFileInLocal = false
         PJCacheManager.removeCustomObject(key: PJKeyCenter.ReposDBFileKey)
     }
     
@@ -74,17 +73,15 @@ public struct PJReposFileManager {
                 }
                 
                 PJHttpRequest.createGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl, path: PJHttpUrlConst.GitHubReposDBFilePath, message: "Create PJToDo DB file.", content: String.create(cString: base64DBContent), sha: "", responseBlock: { (isSuccess, reposFile, error) in
+                    PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = isSuccess
                     if isSuccess {
                         if let tempReposFile = reposFile {
                             self.saveReposFile(reposFile: tempReposFile)
-                            PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = true
                             completedHandle?(isSuccess, tempReposFile, error)
                         } else {
-                            PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = false
                             completedHandle?(false, reposFile, error)
                         }
                     } else {
-                        PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = false
                         completedHandle?(isSuccess, reposFile, error)
                     }
                 })
@@ -160,5 +157,26 @@ public struct PJReposFileManager {
             }
             completedHandle?(isSuccess, reposFile, error)
         })
+    }
+    
+    public static func getReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
+        PJHttpRequest.getGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl) { (isSuceesss, reposFile, error) in
+            if isSuceesss {
+                PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = true
+                if let tempReposFile = reposFile {
+                    self.saveReposFile(reposFile: tempReposFile)
+                    completedHandle?(isSuceesss, reposFile, error)
+                } else {
+                    completedHandle?(false, reposFile, error)
+                }
+            } else {
+                //Didn't create repos file
+                if let errorCode = error?.errorCode, PJHttpReponseStatusCode(rawValue: errorCode) == PJHttpReponseStatusCode.HTTP_STATUS_NOT_FOUND {
+                    PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = false
+                    DDLogError("❌Haven't create repos yet!❌")
+                }
+                completedHandle?(isSuceesss, reposFile, error)
+            }
+        }
     }
 }

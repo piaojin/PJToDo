@@ -49,7 +49,6 @@ public struct PJReposManager {
     
     public static func removeRepos() {
         PJReposManager.shared._repos = nil
-        PJReposManager.shared.hasSavedReposInLocal = false
         PJReposManager.shared.hasCreateReposOnGitHub = false
         PJCacheManager.removeCustomObject(key: PJKeyCenter.ReposKey)
     }
@@ -58,9 +57,10 @@ public struct PJReposManager {
         PJHttpRequest.getGitHubRepos(reposUrl: PJHttpUrlConst.GetReposUrl) { (isSuccess, repos, error) in
             //Has created repos
             if isSuccess {
+                PJReposManager.shared.hasCreateReposOnGitHub = true
                 if let tempRepos = repos {
-                    completedHandle?(isSuccess, repos, error)
                     self.saveRepos(repos: tempRepos)
+                    completedHandle?(isSuccess, repos, error)
                 } else {
                     completedHandle?(false, repos, error)
                 }
@@ -78,8 +78,8 @@ public struct PJReposManager {
     public static func createRepos(completedHandle: ((Bool, Repos?, PJHttpError?) -> ())?) {
         PJHttpRequest.createGitHubRepos { (isSuccess, repos, error) in
             //Create repos success
+            PJReposManager.shared.hasCreateReposOnGitHub = isSuccess
             if isSuccess {
-                PJReposManager.shared.hasCreateReposOnGitHub = true
                 if let tempRepos = repos {
                     self.saveRepos(repos: tempRepos)
                 }
@@ -87,7 +87,6 @@ public struct PJReposManager {
                 DDLogInfo("❌Create repos success!❌")
             } else {
                 //Create repos error
-                PJReposManager.shared.hasCreateReposOnGitHub = false
                 DDLogError("❌Create repos error!❌")
                 completedHandle?(isSuccess, repos, error)
             }
