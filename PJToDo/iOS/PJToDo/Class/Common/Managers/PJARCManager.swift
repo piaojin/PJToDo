@@ -6,7 +6,7 @@
 //  Copyright © 2018年 piaojin. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 open class PJARCManager: NSObject {
     public static func retain(object: AnyObject) -> UnsafeMutableRawPointer {

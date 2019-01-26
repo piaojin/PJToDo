@@ -77,19 +77,19 @@ public struct PJHttpRequest {
     
     //MARK: File
     
-    public static func createGitHubFile(path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
+    public static func createGitHubReposFile(requestUrl: String, path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "createGitHubFile", responseBlock: responseBlock)
-        PJ_CreateFile(httpRequestConfig.iDelegate, path, message, content, sha)
+        PJ_CreateFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
     }
     
-    public static func updateGitHubFile(path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
+    public static func updateGitHubReposFile(requestUrl: String, path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "updateGitHubFile", responseBlock: responseBlock)
-        PJ_UpdateFile(httpRequestConfig.iDelegate, path, message, content, sha)
+        PJ_UpdateFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
     }
     
-    public static func deleteGitHubFile(path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
+    public static func deleteGitHubReposFile(requestUrl: String, path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "deleteGitHubFile", responseBlock: responseBlock)
-        PJ_DeleteFile(httpRequestConfig.iDelegate, path, message, content, sha)
+        PJ_DeleteFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
     }
     
     private static func createHttpRequestConfig<T: Codable>(actionName: String, responseBlock: ((_ isSuccess : Bool, _ data: T?, _ error: PJHttpError?) -> Void)?) -> PJHttpRequestConfig {

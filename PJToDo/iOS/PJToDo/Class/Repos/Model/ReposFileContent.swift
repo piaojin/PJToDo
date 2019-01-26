@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ReposContent: Codable {
+public class ReposFileContent: Codable {
     var name: String = ""
     var path: String = ""
     var sha: String = ""

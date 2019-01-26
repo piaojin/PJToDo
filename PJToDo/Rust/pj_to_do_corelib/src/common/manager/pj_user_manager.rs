@@ -5,6 +5,7 @@ use common::pj_serialize::PJSerdeDeserialize;
 use network::http_request::FetchError;
 use common::utils::pj_utils::{PJHttpUtils};
 use common::manager::pj_repos_manager::PJReposManager;
+use common::manager::pj_repos_file_manager::PJReposFileManager;
 
 lazy_static! {
     pub static ref USERINFO: Mutex<User> = Mutex::new(User::new());
@@ -43,6 +44,7 @@ impl PJUserManager {
 
     pub fn logout() {
         PJUserManager::remove_user();
+        PJReposFileManager::remove_repos_file();
         PJReposManager::remove_repos();
     }
 }

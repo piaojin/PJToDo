@@ -2,7 +2,6 @@ use network::http_repos_request::PJHttpReposRequest;
 use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
 use std::ffi::{CStr};
 use libc::{c_char};
-use repos::repos_file::ReposFileBody;
 use common::request_config::PJRequestConfig;
 use std::thread;
 use common::manager::pj_repos_manager::PJReposManager;
@@ -56,75 +55,6 @@ pub unsafe extern "C" fn PJ_DeleteRepos(
     thread::spawn(move || {
         PJHttpReposRequest::delete_repos(&repos_url, move |result| {
             PJHttpReposRequest::dispatch_repos_response(i_delegate, result, "PJ_DeleteRepos");
-        });
-    });
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn PJ_CreateFile(
-    delegate: IPJToDoHttpRequestDelegate,
-    path: *const c_char,
-    message: *const c_char,
-    content: *const c_char,
-    sha: *const c_char,
-) {
-    if path == std::ptr::null_mut() || message == std::ptr::null_mut() || content == std::ptr::null_mut() || sha == std::ptr::null_mut() {
-        pj_error!("path or message or content or sha: *mut PJ_CreateFile is null!");
-        assert!(path != std::ptr::null_mut() && message != std::ptr::null_mut() && content != std::ptr::null_mut() && sha != std::ptr::null_mut());
-    }
-
-    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
-    let repos_file_body = ReposFileBody::new(path, message, content, sha);
-
-    thread::spawn(move || {
-        PJHttpReposRequest::create_file(repos_file_body, move |result| {
-            PJHttpReposRequest::dispatch_file_response(i_delegate, result, "PJ_CreateFile");
-        }); 
-    });
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn PJ_UpdateFile(
-    delegate: IPJToDoHttpRequestDelegate,
-    path: *const c_char,
-    message: *const c_char,
-    content: *const c_char,
-    sha: *const c_char,
-) {
-    if path == std::ptr::null_mut() || message == std::ptr::null_mut() || content == std::ptr::null_mut() || sha == std::ptr::null_mut() {
-        pj_error!("path or message or content or sha: *mut PJ_UpdateFile is null!");
-        assert!(path != std::ptr::null_mut() && message != std::ptr::null_mut() && content != std::ptr::null_mut() && sha != std::ptr::null_mut());
-    }
-
-    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
-    let repos_file_body = ReposFileBody::new(path, message, content, sha);
-
-    thread::spawn(move || {
-        PJHttpReposRequest::update_file(repos_file_body, move |result| {
-            PJHttpReposRequest::dispatch_file_response(i_delegate, result, "PJ_UpdateFile");
-        });
-    });
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn PJ_DeleteFile(
-    delegate: IPJToDoHttpRequestDelegate,
-    path: *const c_char,
-    message: *const c_char,
-    content: *const c_char,
-    sha: *const c_char,
-) {
-    if path == std::ptr::null_mut() || message == std::ptr::null_mut() || content == std::ptr::null_mut() || sha == std::ptr::null_mut() {
-        pj_error!("path or message or content or sha: *mut PJ_UpdateFile is null!");
-        assert!(path != std::ptr::null_mut() && message != std::ptr::null_mut() && content != std::ptr::null_mut() && sha != std::ptr::null_mut());
-    }
-
-    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
-    let repos_file_body = ReposFileBody::new(path, message, content, sha);
-
-    thread::spawn(move || {
-        PJHttpReposRequest::delete_file(repos_file_body, move |result| {
-            PJHttpReposRequest::dispatch_file_response(i_delegate, result, "PJ_DeleteFile");
         });
     });
 }

@@ -6,7 +6,7 @@
 //  Copyright © 2019 piaojin. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
 @objc public class PJKeychainManagerOC: NSObject {
     @objc public static func readSensitiveString(withService service: String, sensitiveKey: String, accessGroup: String? = nil) throws -> String {

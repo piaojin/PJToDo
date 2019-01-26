@@ -6,7 +6,7 @@
 //  Copyright © 2017年 飘金. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import CocoaLumberjack
 
 // MARK: 数据缓存类

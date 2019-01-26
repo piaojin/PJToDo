@@ -9,5 +9,5 @@
 import UIKit
 
 public class ReposFile: Codable {
-    var content: ReposContent = ReposContent()
+    var content: ReposFileContent = ReposFileContent()
 }

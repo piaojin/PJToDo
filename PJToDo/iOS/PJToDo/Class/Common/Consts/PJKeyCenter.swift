@@ -23,5 +23,5 @@ public struct PJKeyCenter {
     public static let KeychainAuthorizationKey = "PJToDoAuthorization"
     public static let KeychainUserPassWordKey: String = "UserPassWord"
     public static let ReposKey: String = "ReposKey"
-    public static let HasCreateGitHubReposKey: String = "HasCreateGitHubReposKey"
+    public static let ReposDBFileKey: String = "ReposDBFileKey"
 }

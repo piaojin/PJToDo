@@ -58,34 +58,33 @@ extern crate serde_json;
 use common::pj_serialize::PJSerdeDeserialize;
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-pub struct ReposFile<'a> {
-    #[serde(borrow)]
-    pub content: ReposContent<'a>,
+pub struct ReposFile {
+    pub content: ReposContent,
 }
 
-impl<'b: 'a, 'a> PJSerdeDeserialize<'b> for ReposFile<'a> {
-    type Item = ReposFile<'a>;
+impl<'b> PJSerdeDeserialize<'b> for ReposFile {
+    type Item = ReposFile;
     fn new() -> Self::Item {
         Self::Item::default()
     }
 }
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-pub struct ReposContent<'a> {
-    name: &'a str,
-    path: &'a str,
-    sha: &'a str,
+pub struct ReposContent {
+    name: String,
+    path: String,
+    sha: String,
     size: i64,
-    url: &'a str,
-    html_url: &'a str,
-    git_url: &'a str,
-    download_url: &'a str,
+    url: String,
+    html_url: String,
+    git_url: String,
+    download_url: String,
     #[serde(rename = "type")]
-    _type: &'a str,
+    _type: String,
 }
 
-impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for ReposContent<'a> {
-    type Item = ReposContent<'a>;
+impl<'b> PJSerdeDeserialize<'b> for ReposContent {
+    type Item = ReposContent;
     fn new() -> Self::Item {
         Self::Item::default()
     }

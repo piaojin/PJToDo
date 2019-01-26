@@ -6,8 +6,10 @@
 //  Copyright © 2019 piaojin. All rights reserved.
 //
 
-import UIKit
+import Foundation
 import CocoaLumberjack
+import SSZipArchive
+import SVProgressHUD
 
 public struct PJReposManager {
     public static var shared = PJReposManager()
@@ -47,6 +49,8 @@ public struct PJReposManager {
     
     public static func removeRepos() {
         PJReposManager.shared._repos = nil
+        PJReposManager.shared.hasSavedReposInLocal = false
+        PJReposManager.shared.hasCreateReposOnGitHub = false
         PJCacheManager.removeCustomObject(key: PJKeyCenter.ReposKey)
     }
     

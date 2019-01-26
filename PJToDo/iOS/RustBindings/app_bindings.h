@@ -166,11 +166,11 @@ char *ConvertStrToBase64Str(const char *ptr);
 
 void PJ_Authorizations(IPJToDoHttpRequestDelegate delegate, const char *authorization);
 
-void PJ_CreateFile(IPJToDoHttpRequestDelegate delegate, const char *path, const char *message, const char *content, const char *sha);
+void PJ_CreateFile(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
 
 void PJ_CreateRepos(IPJToDoHttpRequestDelegate delegate);
 
-void PJ_DeleteFile(IPJToDoHttpRequestDelegate delegate, const char *path, const char *message, const char *content, const char *sha);
+void PJ_DeleteFile(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
 
 void PJ_DeleteRepos(IPJToDoHttpRequestDelegate delegate, const char *repos_url);
 
@@ -190,7 +190,7 @@ const ToDoQuery *PJ_SearchToDoResultAtIndex(const PJToDoSearchController *ptr, i
 
 int32_t PJ_SearchToDoResultCount(const PJToDoSearchController *ptr);
 
-void PJ_UpdateFile(IPJToDoHttpRequestDelegate delegate, const char *path, const char *message, const char *content, const char *sha);
+void PJ_UpdateFile(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
 
 PJToDoController *createPJToDoController(IPJToDoDelegate delegate);
 

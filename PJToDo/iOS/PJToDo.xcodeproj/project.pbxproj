@@ -92,10 +92,11 @@
 		CAEEDC8F21F0CCD80038B79E /* PJHttpBaseModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC8E21F0CCD80038B79E /* PJHttpBaseModel.swift */; };
 		CAEEDC9121F35B560038B79E /* PJHttpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9021F35B560038B79E /* PJHttpError.swift */; };
 		CAEEDC9721F45FD20038B79E /* ReposFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9621F45FD10038B79E /* ReposFile.swift */; };
-		CAEEDC9921F45FE00038B79E /* ReposContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9821F45FE00038B79E /* ReposContent.swift */; };
+		CAEEDC9921F45FE00038B79E /* ReposFileContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9821F45FE00038B79E /* ReposFileContent.swift */; };
 		CAEEDC9B21FA0DE90038B79E /* PJHttpUrlConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9A21FA0DE90038B79E /* PJHttpUrlConst.swift */; };
 		CAEEDC9D21FC43120038B79E /* PJHttpReponseStatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9C21FC43120038B79E /* PJHttpReponseStatusCode.swift */; };
 		CAEEDC9F21FC50970038B79E /* PJReposManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9E21FC50970038B79E /* PJReposManager.swift */; };
+		CAEEDCA121FC8BF60038B79E /* PJReposFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDCA021FC8BF60038B79E /* PJReposFileManager.swift */; };
 		E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */; };
 /* End PBXBuildFile section */
 
@@ -242,10 +243,11 @@
 		CAEEDC8E21F0CCD80038B79E /* PJHttpBaseModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpBaseModel.swift; sourceTree = "<group>"; };
 		CAEEDC9021F35B560038B79E /* PJHttpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpError.swift; sourceTree = "<group>"; };
 		CAEEDC9621F45FD10038B79E /* ReposFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReposFile.swift; sourceTree = "<group>"; };
-		CAEEDC9821F45FE00038B79E /* ReposContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposContent.swift; sourceTree = "<group>"; };
+		CAEEDC9821F45FE00038B79E /* ReposFileContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposFileContent.swift; sourceTree = "<group>"; };
 		CAEEDC9A21FA0DE90038B79E /* PJHttpUrlConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpUrlConst.swift; sourceTree = "<group>"; };
 		CAEEDC9C21FC43120038B79E /* PJHttpReponseStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpReponseStatusCode.swift; sourceTree = "<group>"; };
 		CAEEDC9E21FC50970038B79E /* PJReposManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJReposManager.swift; sourceTree = "<group>"; };
+		CAEEDCA021FC8BF60038B79E /* PJReposFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJReposFileManager.swift; sourceTree = "<group>"; };
 		CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C7DCA9E375B4ACEF6FE7C8 /* Pods-PJToDo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -753,6 +755,7 @@
 				CAAD248D21E9BA3C0042FB94 /* PJUserInfoManager.swift */,
 				CAAD249E21EB2D330042FB94 /* PJKeychainManager.swift */,
 				CAEEDC9E21FC50970038B79E /* PJReposManager.swift */,
+				CAEEDCA021FC8BF60038B79E /* PJReposFileManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -865,7 +868,7 @@
 			children = (
 				CAEEDC9621F45FD10038B79E /* ReposFile.swift */,
 				CAEEDC8C21EF8A300038B79E /* Repos.swift */,
-				CAEEDC9821F45FE00038B79E /* ReposContent.swift */,
+				CAEEDC9821F45FE00038B79E /* ReposFileContent.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1146,6 +1149,7 @@
 				CA3C428921C2875800C71C6D /* SelectedComposeView.swift in Sources */,
 				CAAD249F21EB2D330042FB94 /* PJKeychainManager.swift in Sources */,
 				CAAD248E21E9BA3C0042FB94 /* PJUserInfoManager.swift in Sources */,
+				CAEEDCA121FC8BF60038B79E /* PJReposFileManager.swift in Sources */,
 				CAD07CA621DD0D310067AD23 /* DetailItem.swift in Sources */,
 				7648831121675A9000F11106 /* ToDoSearchController.swift in Sources */,
 				CAD07CAD21DE4F420067AD23 /* DetailViewController.swift in Sources */,
@@ -1155,7 +1159,7 @@
 				764EF2E021B8C7B6000F4417 /* MineHeaderView.swift in Sources */,
 				7648831521675AC500F11106 /* MineController.swift in Sources */,
 				76488307216759AE00F11106 /* PJToDoCoreLibInit.swift in Sources */,
-				CAEEDC9921F45FE00038B79E /* ReposContent.swift in Sources */,
+				CAEEDC9921F45FE00038B79E /* ReposFileContent.swift in Sources */,
 				CA88DED321CE7B7F007CFB0B /* ToDoCell.swift in Sources */,
 				CAAD249521E9C4180042FB94 /* WelcomeViewController.swift in Sources */,
 				76384BFB2199A5DC00C677BB /* PJHttpRequest.swift in Sources */,
