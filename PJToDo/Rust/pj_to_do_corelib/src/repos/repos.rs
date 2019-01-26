@@ -109,20 +109,20 @@ extern crate serde_json;
 use common::pj_serialize::PJSerdeDeserialize;
 
 #[derive(Serialize, Deserialize, Debug, Default)]
-pub struct Repos<'a> {
+pub struct Repos {
     id: i64,
-    node_id: &'a str,
-    name: &'a str,
-    full_name: &'a str,
-    html_url: &'a str,
-    description: &'a str,
-    url: &'a str,
-    contents_url: &'a str,
-    downloads_url: &'a str,
+    node_id: String,
+    name: String,
+    full_name: String,
+    html_url: String,
+    description: String,
+    url: String,
+    contents_url: String,
+    downloads_url: String,
 }
 
-impl<'a, 'b: 'a> PJSerdeDeserialize<'b> for Repos<'a> {
-    type Item = Repos<'a>;
+impl<'b> PJSerdeDeserialize<'b> for Repos {
+    type Item = Repos;
     fn new() -> Self::Item {
         Self::Item::default()
     }

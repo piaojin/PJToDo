@@ -15,15 +15,15 @@ void swiftSayHi() {
 }
 
 const char * getDBPath() {
-    return [PJToDoConst.dbPath UTF8String];
+    return [PJToDoConst.DBPath UTF8String];
 }
 
 const char * getDBGZipPath(void) {
-    return [PJToDoConst.dbGZipPath UTF8String];
+    return [PJToDoConst.DBGZipPath UTF8String];
 }
 
 const char * getDBUnCompressesPath() {
-    return [PJToDoConst.dbUnCompressesPath UTF8String];
+    return [PJToDoConst.DBUnCompressesPath UTF8String];
 }
 
 const char * getAuthorizationStr() {

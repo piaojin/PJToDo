@@ -5,6 +5,9 @@ use libc::{c_char};
 use repos::repos_file::ReposFileBody;
 use common::request_config::PJRequestConfig;
 use std::thread;
+use common::pj_model_utils::PJModelUtils;
+use repos::repos::Repos;
+use common::pj_utils::{PJHttpUtils};
 
 #[no_mangle]
 pub unsafe extern "C" fn PJ_CreateRepos(delegate: IPJToDoHttpRequestDelegate) {
@@ -12,6 +15,7 @@ pub unsafe extern "C" fn PJ_CreateRepos(delegate: IPJToDoHttpRequestDelegate) {
 
     thread::spawn(move || {
         PJHttpReposRequest::create_repos(PJRequestConfig::repos_request_body(), move |result| {
+            let result = PJModelUtils::update_repos_with_result(result);
             PJHttpReposRequest::dispatch_repos_response(i_delegate, result, "PJ_CreateRepos");
         });
     });
@@ -32,6 +36,7 @@ pub unsafe extern "C" fn PJ_GetRepos(
 
     thread::spawn(move || {
         PJHttpReposRequest::get_repos(&repos_url, move |result| {
+            let result = PJModelUtils::update_repos_with_result(result);
             PJHttpReposRequest::dispatch_repos_response(i_delegate, result, "PJ_GetRepos");
         });
     });

@@ -109,8 +109,7 @@ impl PJHttpReposRequest {
             + std::marker::Sync
             + Send
             + 'static
-            + std::clone::Clone,
-    {
+            + std::clone::Clone, {
         PJHttpRequest::make_http(request, completion_handler);
     }
 

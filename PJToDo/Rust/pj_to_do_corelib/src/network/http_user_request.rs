@@ -101,24 +101,8 @@ pub unsafe extern "C" fn PJ_Login(
 
     thread::spawn(move || {
         PJHttpUserRequest::login(&name, &password, move |result| {
-            // let temp_result = result.clone();
-            match result {
-                Ok((status, body)) => {
-                    if status.is_success() {
-                        let parse_result = PJHttpUtils::parse_data::<User>(&body);
-                        match parse_result {
-                            Ok(user) => {
-                                PJModelUtils::update_user(user);
-                            },
-                            Err(_) => {}
-                        };
-                    }
-                    PJHttpRequest::dispatch_http_response(Ok((status, body)), i_delegate);
-                },
-                Err(_) => {
-                    PJHttpRequest::dispatch_http_response(result, i_delegate);
-                }
-            };
+            let result = PJModelUtils::update_user_with_result(result);
+            PJHttpRequest::dispatch_http_response(result, i_delegate);
         });
     });
 }

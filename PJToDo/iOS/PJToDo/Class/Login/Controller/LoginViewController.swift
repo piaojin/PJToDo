@@ -134,4 +134,10 @@ class LoginViewController: PJBaseViewController {
             SVProgressHUD.showError(withStatus: "账号和密码都不能为空!")
         }
     }
+    
+    private func initRepos() {
+        PJHttpRequest.getGitHubRepos(reposUrl: PJHttpUrlConst.GetReposUrl) { (isSuccess, repos, error) in
+            
+        }
+    }
 }

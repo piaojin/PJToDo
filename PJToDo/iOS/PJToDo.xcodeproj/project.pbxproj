@@ -93,6 +93,7 @@
 		CAEEDC9121F35B560038B79E /* PJHttpError.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9021F35B560038B79E /* PJHttpError.swift */; };
 		CAEEDC9721F45FD20038B79E /* ReposFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9621F45FD10038B79E /* ReposFile.swift */; };
 		CAEEDC9921F45FE00038B79E /* ReposContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9821F45FE00038B79E /* ReposContent.swift */; };
+		CAEEDC9B21FA0DE90038B79E /* PJHttpUrlConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9A21FA0DE90038B79E /* PJHttpUrlConst.swift */; };
 		E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */; };
 /* End PBXBuildFile section */
 
@@ -240,6 +241,7 @@
 		CAEEDC9021F35B560038B79E /* PJHttpError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpError.swift; sourceTree = "<group>"; };
 		CAEEDC9621F45FD10038B79E /* ReposFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReposFile.swift; sourceTree = "<group>"; };
 		CAEEDC9821F45FE00038B79E /* ReposContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposContent.swift; sourceTree = "<group>"; };
+		CAEEDC9A21FA0DE90038B79E /* PJHttpUrlConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpUrlConst.swift; sourceTree = "<group>"; };
 		CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C7DCA9E375B4ACEF6FE7C8 /* Pods-PJToDo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -286,6 +288,7 @@
 			children = (
 				7625021F2170AA69001043AF /* PJToDoConst.swift */,
 				76A43CBA219DB5530041B7AC /* PJKeyCenter.swift */,
+				CAEEDC9A21FA0DE90038B79E /* PJHttpUrlConst.swift */,
 			);
 			path = Consts;
 			sourceTree = "<group>";
@@ -1157,6 +1160,7 @@
 				764EF2DB21B8C794000F4417 /* Authorizations.swift in Sources */,
 				CAD07CAF21DE5F100067AD23 /* DetailFooterView.swift in Sources */,
 				7648831721675AF700F11106 /* ReposService.swift in Sources */,
+				CAEEDC9B21FA0DE90038B79E /* PJHttpUrlConst.swift in Sources */,
 				76A43CBB219DB5530041B7AC /* PJKeyCenter.swift in Sources */,
 				76488309216759CA00F11106 /* PJToDoCoreLibPAL.swift in Sources */,
 				769769BD21B1044C00AB3569 /* AddToDoViewController.swift in Sources */,
