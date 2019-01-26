@@ -16,7 +16,7 @@ use self::hyper::rt::{Stream, Future as OtherFuture};
 use common::pj_logger::PJLogger;
 
 use pal::pj_user_pal_help::PJUserPALHelp;
-use common::pj_utils::{PJUtils, PJHttpUtils};
+use common::utils::pj_utils::{PJUtils, PJHttpUtils};
 use common::request_config::PJRequestConfig;
 use std::ffi::CString;
 use delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;

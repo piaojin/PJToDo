@@ -84,40 +84,40 @@ pub struct User {
     pub updated_at: String,
 }
 
-impl User {
-    pub fn new() -> User {
-        User {
-            login: "".to_string(),
-            id: 0,
-            node_id: "".to_string(),
-            avatar_url: "".to_string(),
-            gravatar_id: "".to_string(),
-            url: "".to_string(),
-            html_url: "".to_string(),
-            followers_url: "".to_string(),
-            following_url: "".to_string(),
-            gists_url: "".to_string(),
-            starred_url: "".to_string(),
-            subscriptions_url: "".to_string(),
-            organizations_url: "".to_string(),
-            repos_url: "".to_string(),
-            events_url: "".to_string(),
-            received_events_url: "".to_string(),
-            _type: "".to_string(),
-            site_admin: false,
-            name: "".to_string(),
-            company: "".to_string(),
-            blog: "".to_string(),
-            bio: "".to_string(),
-            public_repos: 0,
-            public_gists: 0,
-            followers: 0,
-            following: 0,
-            created_at: "".to_string(),
-            updated_at: "".to_string(),
-        }
-    }
-}
+// impl User {
+//     pub fn new() -> User {
+//         User {
+//             login: "".to_string(),
+//             id: 0,
+//             node_id: "".to_string(),
+//             avatar_url: "".to_string(),
+//             gravatar_id: "".to_string(),
+//             url: "".to_string(),
+//             html_url: "".to_string(),
+//             followers_url: "".to_string(),
+//             following_url: "".to_string(),
+//             gists_url: "".to_string(),
+//             starred_url: "".to_string(),
+//             subscriptions_url: "".to_string(),
+//             organizations_url: "".to_string(),
+//             repos_url: "".to_string(),
+//             events_url: "".to_string(),
+//             received_events_url: "".to_string(),
+//             _type: "".to_string(),
+//             site_admin: false,
+//             name: "".to_string(),
+//             company: "".to_string(),
+//             blog: "".to_string(),
+//             bio: "".to_string(),
+//             public_repos: 0,
+//             public_gists: 0,
+//             followers: 0,
+//             following: 0,
+//             created_at: "".to_string(),
+//             updated_at: "".to_string(),
+//         }
+//     }
+// }
 
 impl<'b> PJSerdeDeserialize<'b> for User {
     type Item = User;

@@ -14,7 +14,7 @@ class LoginViewController: PJBaseViewController {
     var accountTextField: UITextField = {
         let accountTextField = UITextField()
         accountTextField.translatesAutoresizingMaskIntoConstraints = false
-        accountTextField.placeholder = "用户名或邮箱"
+        accountTextField.placeholder = "Account"
         accountTextField.backgroundColor = .white
         return accountTextField
     }()
@@ -22,7 +22,7 @@ class LoginViewController: PJBaseViewController {
     var passwordTextField: UITextField = {
         let passwordTextField = UITextField()
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
-        passwordTextField.placeholder = "密码"
+        passwordTextField.placeholder = "PassWord"
         passwordTextField.backgroundColor = .white
         return passwordTextField
     }()
@@ -30,7 +30,7 @@ class LoginViewController: PJBaseViewController {
     var loginButton: UIButton = {
         let loginButton = UIButton()
         loginButton.translatesAutoresizingMaskIntoConstraints = false
-        loginButton.setTitle("登录", for: .normal)
+        loginButton.setTitle("Login", for: .normal)
         loginButton.setTitleColor(.white, for: .normal)
         loginButton.backgroundColor = UIColor.colorWithRGB(red: 0, green: 123, blue: 249)
         return loginButton
@@ -43,7 +43,7 @@ class LoginViewController: PJBaseViewController {
     }
     
     private func initView() {
-        self.title = "登陆"
+        self.title = "Login"
         self.view.backgroundColor = UIColor.colorWithRGB(red: 249, green: 249, blue: 249)
         
         let scrollView = UIScrollView()
@@ -114,30 +114,75 @@ class LoginViewController: PJBaseViewController {
     
     @objc private func loginAction() {
         if let account = self.accountTextField.text, let passWord = self.passwordTextField.text {
-            SVProgressHUD.show(withStatus: "登录中...")
+            SVProgressHUD.show(withStatus: "Login...")
             PJHttpRequest.login(name: account, passWord: passWord, responseBlock: { (isSuccess, user, error) in
                 DispatchQueue.main.async(execute: {
                     if isSuccess, let tempUser = user {
                         try? PJKeychainManager.saveSensitiveString(withService: PJKeyCenter.KeychainUserInfoService, sensitiveKey: account, sensitiveString: passWord)
+                        
                         PJUserInfoManager.saveUserInfo(userInfo: tempUser)
-                        if let window = UIApplication.shared.delegate?.window {
-                            window?.rootViewController = PJTabBarViewController()
-                            window?.makeKeyAndVisible()
+                        
+                        if PJReposManager.shared.hasSavedReposInLocal {
+                            self.initRootViewController()
+                            SVProgressHUD.dismiss()
+                        } else {
+                            PJReposManager.getRepos(completedHandle: { (isSuccess, repos, error) in
+                                if isSuccess {
+                                    DispatchQueue.main.async(execute: {
+                                        self.initRootViewController()
+                                        SVProgressHUD.dismiss()
+                                    })
+                                } else {
+                                    //Didn't create repos
+                                    if let errorCode = error?.errorCode, PJHttpReponseStatusCode(rawValue: errorCode) == PJHttpReponseStatusCode.HTTP_STATUS_NOT_FOUND {
+                                        PJReposManager.createRepos(completedHandle: { (isSuccess, repos, error) in
+                                            if isSuccess {
+                                                DispatchQueue.main.async(execute: {
+                                                    self.initRootViewController()
+                                                    SVProgressHUD.dismiss()
+                                                })
+                                            } else {
+                                                DispatchQueue.main.async(execute: {
+                                                    SVProgressHUD.showError(withStatus: "Login error when init data!")
+                                                })
+                                            }
+                                        })
+                                    } else {
+                                        SVProgressHUD.showError(withStatus: "Login fail!")
+                                    }
+                                }
+                            })
                         }
-                        SVProgressHUD.dismiss()
                     } else {
-                        SVProgressHUD.showError(withStatus: "登录失败!")
+                        SVProgressHUD.showError(withStatus: "Login fail!")
                     }
                 })
             })
         } else {
-            SVProgressHUD.showError(withStatus: "账号和密码都不能为空!")
+            SVProgressHUD.showError(withStatus: "account and password both can't be nil!")
         }
     }
     
-    private func initRepos() {
+    private func createRepos(completeHandle: ((Bool, Repos?, PJHttpError?) -> ())?) {
         PJHttpRequest.getGitHubRepos(reposUrl: PJHttpUrlConst.GetReposUrl) { (isSuccess, repos, error) in
-            
+            //Has created repos
+            if isSuccess {
+                if let tempRepos = repos {
+                    PJReposManager.saveRepos(repos: tempRepos)
+                }
+            } else {
+                //Didn't create repos
+                if let errorCode = error?.errorCode, PJHttpReponseStatusCode(rawValue: errorCode) == PJHttpReponseStatusCode.HTTP_STATUS_NOT_FOUND {
+                    
+                }
+            }
+        }
+    }
+    
+    private func initRootViewController() {
+        if let window = UIApplication.shared.delegate?.window {
+            window?.rootViewController = PJTabBarViewController()
+            window?.makeKeyAndVisible()
         }
     }
 }

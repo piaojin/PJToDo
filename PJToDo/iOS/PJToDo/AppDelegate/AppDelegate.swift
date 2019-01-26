@@ -69,7 +69,7 @@ extension AppDelegate {
     func initRootViewController() {
         var rootTabBarViewController: UIViewController
         if PJUserInfoManager.shared.isLogin {
-            rootTabBarViewController = WelcomeViewController()
+            rootTabBarViewController = PJTabBarViewController()
         } else {
             rootTabBarViewController = UINavigationController(rootViewController: WelcomeViewController())
         }

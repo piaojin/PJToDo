@@ -5,9 +5,9 @@ pub mod request_config;
 
 pub mod pj_serialize;
 
-pub mod pj_utils;
+pub mod utils;
 
-pub mod pj_model_utils;
+pub mod manager;
 
 extern crate rustc_serialize;
 

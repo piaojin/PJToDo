@@ -71,16 +71,16 @@ class MineViewController: PJBaseViewController {
     }
     
     private func initData() {
-        let typeItem = MineItem(imageName: "type_setting", title: "分类", detailText: "", type: .type)
-        let tagItem = MineItem(imageName: "tag_setting", title: "标签", detailText: "", type: .tag)
+        let typeItem = MineItem(imageName: "type_setting", title: "Type", detailText: "", type: .type)
+        let tagItem = MineItem(imageName: "tag_setting", title: "Tag", detailText: "", type: .tag)
         self.items.append([typeItem, tagItem])
         
-        let emailItem = MineItem(imageName: "mailbox", title: "邮箱", detailText: "", type: .email)
-        let remindItem = MineItem(imageName: "calendar", title: "提醒天数", detailText: "", type: .remindDays)
+        let emailItem = MineItem(imageName: "mailbox", title: "EmailBox", detailText: "", type: .email)
+        let remindItem = MineItem(imageName: "calendar", title: "RemindDays", detailText: "", type: .remindDays)
         self.items.append([emailItem, remindItem])
         
-        let blogItem = MineItem(imageName: "blog", title: "博客", detailText: "", type: .blog)
-        let aboutItem = MineItem(imageName: "about", title: "关于", detailText: "", type: .about)
+        let blogItem = MineItem(imageName: "blog", title: "Blog", detailText: "", type: .blog)
+        let aboutItem = MineItem(imageName: "about", title: "About", detailText: "", type: .about)
         self.items.append([blogItem, aboutItem])
         
         self.tableView.register(MineCell.classForCoder(), forCellReuseIdentifier: MineViewController.MineCellId)
@@ -131,15 +131,8 @@ extension MineViewController: UITableViewDelegate, UITableViewDataSource {
             footerView = MineFooterView()
             footerView.isUserInteractionEnabled = true
             if let tempFooterView = footerView as? MineFooterView {
-                tempFooterView.loginClosure = {
-                    if let account = PJUserInfoManager.shared.userInfo?.login {
-                        try? PJKeychainManager.deleteItem(withService: PJKeyCenter.KeychainUserInfoService, sensitiveKey: account)
-                    }
-                    PJUserInfoManager.removeUserInfo()
-                    if let window = UIApplication.shared.delegate?.window {
-                        window?.rootViewController = UINavigationController(rootViewController: WelcomeViewController())
-                        window?.makeKeyAndVisible()
-                    }
+                tempFooterView.logOutClosure = {
+                    PJUserInfoManager.logOut()
                 }
             }
             return footerView

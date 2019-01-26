@@ -4,6 +4,8 @@ pub mod http_request;
 
 pub mod http_user_request;
 
+pub mod http_user_request_extern;
+
 pub mod http_repos_request;
 
 pub mod http_repos_request_extern;

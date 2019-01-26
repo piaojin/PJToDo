@@ -48,6 +48,19 @@ public struct PJUserInfoManager {
         }
     }
     
+    public static func logOut() {
+        if let account = PJUserInfoManager.shared.userInfo?.login {
+            try? PJKeychainManager.deleteItem(withService: PJKeyCenter.KeychainUserInfoService, sensitiveKey: account)
+        }
+        PJUserInfoManager.removeUserInfo()
+        PJReposManager.removeRepos()
+        PJ_LogOut()
+        if let window = UIApplication.shared.delegate?.window {
+            window?.rootViewController = UINavigationController(rootViewController: WelcomeViewController())
+            window?.makeKeyAndVisible()
+        }
+    }
+    
     public static func saveUserInfo(userInfo: User) {
         PJUserInfoManager.shared._userInfo = userInfo
         PJCacheManager.saveCustomObject(customObject: userInfo, key: PJKeyCenter.UserInfo)

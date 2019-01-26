@@ -8,7 +8,7 @@ use self::hyper::{Method, Request, Body};
 
 use network::http_request::{PJHttpRequest, FetchError};
 use common::request_config::PJRequestConfig;
-use common::pj_utils::PJUtils;
+use common::utils::pj_utils::PJUtils;
 use repos::repos::{ReposRequestBody};
 use repos::repos_file::ReposFileBody;
 #[allow(unused_imports)]

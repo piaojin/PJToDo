@@ -12,13 +12,7 @@ use self::hyper::header::{HeaderValue};
 use self::hyper::{Method};
 use network::http_request::{PJHttpRequest, FetchError};
 use common::request_config::PJRequestConfig;
-use common::pj_utils::{PJUtils, PJHttpUtils};
-use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
-use std::ffi::{CStr};
-use libc::{c_char};
-use std::thread;
-use common::pj_model_utils::PJModelUtils;
-use mine::user::User;
+use common::utils::pj_utils::{PJUtils};
 
 pub struct PJHttpUserRequest;
 
@@ -82,58 +76,4 @@ impl PJHttpUserRequest {
 
         PJHttpRequest::make_http(request, completion_handler);
     }
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn PJ_Login(
-    delegate: IPJToDoHttpRequestDelegate,
-    name: *const c_char,
-    password: *const c_char,
-) {
-    if name == std::ptr::null_mut() || password == std::ptr::null_mut() {
-        pj_error!("name or password: *mut PJ_Login is null!");
-        assert!(name != std::ptr::null_mut() && password != std::ptr::null_mut());
-    }
-
-    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
-    let name = CStr::from_ptr(name).to_string_lossy().into_owned();
-    let password = CStr::from_ptr(password).to_string_lossy().into_owned();
-
-    thread::spawn(move || {
-        PJHttpUserRequest::login(&name, &password, move |result| {
-            let result = PJModelUtils::update_user_with_result(result);
-            PJHttpRequest::dispatch_http_response(result, i_delegate);
-        });
-    });
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn PJ_Authorizations(
-    delegate: IPJToDoHttpRequestDelegate,
-    authorization: *const c_char,
-) {
-    if authorization == std::ptr::null_mut() {
-        pj_error!("authorization: *mut PJ_Authorizations is null!");
-        assert!(authorization != std::ptr::null_mut());
-    }
-
-    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
-    let authorization = CStr::from_ptr(authorization).to_string_lossy().into_owned();
-
-    thread::spawn(move || {
-        PJHttpUserRequest::authorizations(&authorization, move |result| {
-            PJHttpRequest::dispatch_http_response(result, i_delegate);
-        });
-    });
-}
-
-#[no_mangle]
-pub unsafe extern "C" fn PJ_RequestUserInfo(delegate: IPJToDoHttpRequestDelegate) {
-    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
-
-    thread::spawn(move || {
-        PJHttpUserRequest::request_user_info(move |result| {
-            PJHttpRequest::dispatch_http_response(result, i_delegate);
-        });
-    });
 }

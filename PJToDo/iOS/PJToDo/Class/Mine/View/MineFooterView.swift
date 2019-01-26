@@ -10,7 +10,7 @@ import UIKit
 
 class MineFooterView: UIView {
     
-    var loginClosure: (() -> ())?
+    var logOutClosure: (() -> ())?
     
     lazy var loginOutButton: UIButton = {
         let loginOutButton = UIButton()
@@ -18,7 +18,7 @@ class MineFooterView: UIView {
         loginOutButton.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: UIFont.Weight.regular)
         loginOutButton.titleLabel?.textAlignment = .center
         loginOutButton.setTitleColor(.red, for: .normal)
-        loginOutButton.setTitle("退出登录", for: .normal)
+        loginOutButton.setTitle("LogOut", for: .normal)
         loginOutButton.backgroundColor = .white
         return loginOutButton
     }()
@@ -50,6 +50,6 @@ class MineFooterView: UIView {
     }
     
     @objc private func loginOutAction() {
-        self.loginClosure?()
+        self.logOutClosure?()
     }
 }

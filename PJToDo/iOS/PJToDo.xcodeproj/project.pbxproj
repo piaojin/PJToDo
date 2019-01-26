@@ -94,6 +94,8 @@
 		CAEEDC9721F45FD20038B79E /* ReposFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9621F45FD10038B79E /* ReposFile.swift */; };
 		CAEEDC9921F45FE00038B79E /* ReposContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9821F45FE00038B79E /* ReposContent.swift */; };
 		CAEEDC9B21FA0DE90038B79E /* PJHttpUrlConst.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9A21FA0DE90038B79E /* PJHttpUrlConst.swift */; };
+		CAEEDC9D21FC43120038B79E /* PJHttpReponseStatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9C21FC43120038B79E /* PJHttpReponseStatusCode.swift */; };
+		CAEEDC9F21FC50970038B79E /* PJReposManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9E21FC50970038B79E /* PJReposManager.swift */; };
 		E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */; };
 /* End PBXBuildFile section */
 
@@ -242,6 +244,8 @@
 		CAEEDC9621F45FD10038B79E /* ReposFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReposFile.swift; sourceTree = "<group>"; };
 		CAEEDC9821F45FE00038B79E /* ReposContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReposContent.swift; sourceTree = "<group>"; };
 		CAEEDC9A21FA0DE90038B79E /* PJHttpUrlConst.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpUrlConst.swift; sourceTree = "<group>"; };
+		CAEEDC9C21FC43120038B79E /* PJHttpReponseStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpReponseStatusCode.swift; sourceTree = "<group>"; };
+		CAEEDC9E21FC50970038B79E /* PJReposManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJReposManager.swift; sourceTree = "<group>"; };
 		CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C7DCA9E375B4ACEF6FE7C8 /* Pods-PJToDo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -289,6 +293,7 @@
 				7625021F2170AA69001043AF /* PJToDoConst.swift */,
 				76A43CBA219DB5530041B7AC /* PJKeyCenter.swift */,
 				CAEEDC9A21FA0DE90038B79E /* PJHttpUrlConst.swift */,
+				CAEEDC9C21FC43120038B79E /* PJHttpReponseStatusCode.swift */,
 			);
 			path = Consts;
 			sourceTree = "<group>";
@@ -747,6 +752,7 @@
 				7654A89D21BBB0EA003464E9 /* PJARCManager.swift */,
 				CAAD248D21E9BA3C0042FB94 /* PJUserInfoManager.swift */,
 				CAAD249E21EB2D330042FB94 /* PJKeychainManager.swift */,
+				CAEEDC9E21FC50970038B79E /* PJReposManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1136,6 +1142,7 @@
 				7693784421B3EEF600473382 /* HomeTasksViewController.swift in Sources */,
 				769769B321B0CE9A00AB3569 /* PJBaseTableViewCell.swift in Sources */,
 				764883302168B4F600F11106 /* PJToDoDBManager.swift in Sources */,
+				CAEEDC9D21FC43120038B79E /* PJHttpReponseStatusCode.swift in Sources */,
 				CA3C428921C2875800C71C6D /* SelectedComposeView.swift in Sources */,
 				CAAD249F21EB2D330042FB94 /* PJKeychainManager.swift in Sources */,
 				CAAD248E21E9BA3C0042FB94 /* PJUserInfoManager.swift in Sources */,
@@ -1166,6 +1173,7 @@
 				769769BD21B1044C00AB3569 /* AddToDoViewController.swift in Sources */,
 				CAD07CAA21DE3F250067AD23 /* DetailItemCell.swift in Sources */,
 				7625021D2170A6D9001043AF /* PJCacheManager.swift in Sources */,
+				CAEEDC9F21FC50970038B79E /* PJReposManager.swift in Sources */,
 				769769BB21B102D300AB3569 /* PJ_ToDo.swift in Sources */,
 				764EF2DE21B8C794000F4417 /* MineViewController.swift in Sources */,
 				764EF2DC21B8C794000F4417 /* User.swift in Sources */,

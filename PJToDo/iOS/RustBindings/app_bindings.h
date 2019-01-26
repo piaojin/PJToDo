@@ -180,6 +180,8 @@ void PJ_FindToDoLikeTitle(PJToDoSearchController *ptr, const char *title);
 
 void PJ_GetRepos(IPJToDoHttpRequestDelegate delegate, const char *repos_url);
 
+void PJ_LogOut(void);
+
 void PJ_Login(IPJToDoHttpRequestDelegate delegate, const char *name, const char *password);
 
 void PJ_RequestUserInfo(IPJToDoHttpRequestDelegate delegate);
