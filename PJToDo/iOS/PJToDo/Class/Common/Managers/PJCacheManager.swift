@@ -107,4 +107,11 @@ public struct PJCacheManager {
         }
         return nil
     }
+    
+    public static func getValue<T>(key: String, type: T) -> T? {
+        if let object = UserDefaults.standard.value(forKey: key) as? T {
+            return object
+        }
+        return nil
+    }
 }

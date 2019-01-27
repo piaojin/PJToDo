@@ -97,9 +97,10 @@ class HomeTasksViewController: PJBaseViewController {
     }
     
     private func deleteAction(indexPath: IndexPath) {
+        SVProgressHUD.show(withStatus: "Please wait...")
         let model = self.toDoController.toDoAt(section: indexPath.section, index: indexPath.row)
         self.toDoController.delete(section: indexPath.section, index: indexPath.row, toDoId: Int(model.toDoId))
-        SVProgressHUD.show(withStatus: "Please wait...")
+        PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
     }
     
     private func completeAction(indexPath: IndexPath) {
@@ -115,10 +116,10 @@ class HomeTasksViewController: PJBaseViewController {
     }
     
     private func updateToDoState(state: PJToDoState, at indexPath: IndexPath) {
+        SVProgressHUD.show(withStatus: "Please wait...")
         let model = self.toDoController.toDoAt(section: indexPath.section, index: indexPath.row)
         model.state = state
         self.toDoController.update(toDo: model)
-        SVProgressHUD.show(withStatus: "Please wait...")
     }
     
     var isEmpty: Bool {
@@ -250,6 +251,7 @@ extension HomeTasksViewController: ToDoDelegate {
     
     func deleteToDoResult(isSuccess: Bool) {
         DispatchQueue.main.async {
+            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
             if !isSuccess {
                 SVProgressHUD.showError(withStatus: "Delete ToDo error!")
             } else {
@@ -262,6 +264,7 @@ extension HomeTasksViewController: ToDoDelegate {
     
     func updateToDoResult(isSuccess: Bool) {
         DispatchQueue.main.async {
+            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
             if !isSuccess {
                 SVProgressHUD.showError(withStatus: "Update ToDo error!")
             } else {
@@ -282,6 +285,7 @@ extension HomeTasksViewController: ToDoDelegate {
     
     func updateOverDueToDosResult(isSuccess: Bool) {
         DispatchQueue.main.async {
+            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
             self.toDoController.fetchData()
         }
     }

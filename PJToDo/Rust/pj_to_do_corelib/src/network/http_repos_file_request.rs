@@ -79,10 +79,10 @@ impl PJHttpReposFileRequest {
             + std::clone::Clone,
     {
         unsafe {
-            let path = CString::new("".to_string()).unwrap();
-        let message = CString::new("".to_string()).unwrap();
-        let content = CString::new("".to_string()).unwrap();
-        let sha = CString::new("".to_string()).unwrap();
+            let path = CString::new("PJToDo/Data/pj_to_db.zip".to_string()).unwrap();
+            let message = CString::new("message".to_string()).unwrap();
+            let content = CString::new("content".to_string()).unwrap();
+            let sha = CString::new("sha".to_string()).unwrap();
         PJHttpReposFileRequest::crud_repos_file(request_url, ReposFileBody::new(path.into_raw(), message.into_raw(), content.into_raw(), sha.into_raw()), FileActionType::Get, completion_handler);
         }
     }

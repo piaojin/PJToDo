@@ -58,6 +58,7 @@ impl PJHttpRequest {
     }
 
     pub fn request_with(url: &str, body: &'static str) -> Request<Body> {
+        pj_info!("👉👉Resuest Url: {}👈👈", url);
         let uri = url.parse::<Uri>();
         let mut req = Request::new(Body::from(body));
         match uri {
@@ -96,6 +97,7 @@ impl PJHttpRequest {
                     PJRequestConfig::authorization_head(),
                     HeaderValue::from_static(authorization),
                 );
+                pj_info!("👉👉The Resuest is: {:?}👈👈", req);
                 req
             }
             Err(e) => {

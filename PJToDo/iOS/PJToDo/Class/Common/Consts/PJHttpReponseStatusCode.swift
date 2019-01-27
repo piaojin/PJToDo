@@ -105,6 +105,9 @@ public enum PJHttpReponseStatusCode: Int {
     //The server is refusing to service the request because the entity of the request is in a format not supported by the requested resource for the requested method.
     case HTTP_STATUS_UNSUPPORTED_MEDIA = 415
     
+    //Unprocessable Entity
+    case HTTP_STATUS_UNPROCESSABLE_ENTITY = 422
+    
     //The request should be retried after doing the appropriate action.
     case HTTP_STATUS_RETRY_WITH = 449
     

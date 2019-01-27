@@ -92,7 +92,7 @@ public struct PJHttpRequest {
         PJ_DeleteReposFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
     }
     
-    public static func getGitHubReposFile(requestUrl: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
+    public static func getGitHubReposFile(requestUrl: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFileContent?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "getGitHubReposFile", responseBlock: responseBlock)
         PJ_GetReposFile(httpRequestConfig.iDelegate, requestUrl)
     }

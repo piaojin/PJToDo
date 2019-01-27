@@ -336,6 +336,7 @@ extension AddToDoViewController: ToDoDelegate {
     func insertToDoResult(isSuccess: Bool) {
         DispatchQueue.main.async {
             if isSuccess {
+                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
                 NotificationCenter.default.post(name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
                 SVProgressHUD.showSuccess(withStatus: "Add ToDo Success!")
             } else {

@@ -18,4 +18,6 @@ public class ReposFileContent: Codable {
     var git_url: String = ""
     var download_url: String = ""
     var type: String = ""
+//    var content: String = ""
+//    var encoding: String = ""
 }

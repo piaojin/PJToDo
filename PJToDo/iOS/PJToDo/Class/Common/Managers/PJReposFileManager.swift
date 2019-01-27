@@ -57,34 +57,40 @@ public struct PJReposFileManager {
         SSZipArchive.createZipFile(atPath: PJToDoConst.DBGZipPath, withFilesAtPaths: [PJToDoConst.DBPath])
         SSZipArchive.unzipFile(atPath: PJToDoConst.DBGZipPath, toDestination: PJCacheManager.shared.documnetPath, overwrite: true, password: nil, progressHandler: nil) { (path, isSuccess, error) in
             if isSuccess {
-                guard let dbData = FileManager.default.contents(atPath: path) else {
+                do {
+                    let dbContent = try String(contentsOfFile: path, encoding: String.Encoding.macOSRoman)
+                    DDLogInfo("\(dbContent)")
+                    
+                    guard let base64DBContent = ConvertStrToBase64Str(dbContent) else {
+                        completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Convert db zip file to base64 error!❌"))
+                        return
+                    }
+                    
+                    PJHttpRequest.createGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl, path: PJHttpUrlConst.GitHubReposDBFilePath, message: "Create PJToDo DB file.", content: String.create(cString: base64DBContent), sha: "", responseBlock: { (isSuccess, reposFile, error) in
+                        PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = isSuccess
+                        if isSuccess {
+                            if let tempReposFile = reposFile {
+                                self.saveReposFile(reposFile: tempReposFile)
+                                completedHandle?(isSuccess, tempReposFile, error)
+                            } else {
+                                completedHandle?(false, reposFile, error)
+                            }
+                        } else {
+                            //Has created
+                            if let errorCode = error?.errorCode, PJHttpReponseStatusCode(rawValue: errorCode) == PJHttpReponseStatusCode.HTTP_STATUS_UNPROCESSABLE_ENTITY {
+                                PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = true
+                                DDLogInfo("Has create repos file yet!")
+                                completedHandle?(true, reposFile, error)
+                            } else {
+                                completedHandle?(isSuccess, reposFile, error)
+                            }
+                        }
+                    })
+                } catch {
+                    DDLogError("\(error)")
                     completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Load db zip file error!❌"))
                     return
                 }
-                
-                guard let dbContent = String(data: dbData, encoding: String.Encoding.utf8) else {
-                    completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Load db zip file content error!❌"))
-                    return
-                }
-                
-                guard let base64DBContent = ConvertStrToBase64Str(dbContent) else {
-                    completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Convert db zip file to base64 error!❌"))
-                    return
-                }
-                
-                PJHttpRequest.createGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl, path: PJHttpUrlConst.GitHubReposDBFilePath, message: "Create PJToDo DB file.", content: String.create(cString: base64DBContent), sha: "", responseBlock: { (isSuccess, reposFile, error) in
-                    PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = isSuccess
-                    if isSuccess {
-                        if let tempReposFile = reposFile {
-                            self.saveReposFile(reposFile: tempReposFile)
-                            completedHandle?(isSuccess, tempReposFile, error)
-                        } else {
-                            completedHandle?(false, reposFile, error)
-                        }
-                    } else {
-                        completedHandle?(isSuccess, reposFile, error)
-                    }
-                })
             } else {
                 completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: error.debugDescription))
             }
@@ -96,7 +102,6 @@ public struct PJReposFileManager {
         SSZipArchive.unzipFile(atPath: PJToDoConst.DBGZipPath, toDestination: PJCacheManager.shared.documnetPath, overwrite: true, password: nil, progressHandler: nil) { (path, isSuccess, error) in
             if isSuccess {
                 guard PJReposFileManager.shared.hasSavedReposDBFileInLocal, PJReposFileManager.shared.hasCreateReposDBFileOnGitHub else {
-//                    SVProgressHUD.showError(withStatus: "Didn't init user data successfully, please logout and login try again!")
                     completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Didn't init user data successfully!❌"))
                     return
                 }
@@ -106,34 +111,29 @@ public struct PJReposFileManager {
                     return
                 }
                 
-                guard let dbData = FileManager.default.contents(atPath: path) else {
-//                    SVProgressHUD.showError(withStatus: "An unexpected mistake has occurred, please try again!")
+                do {
+                    let dbContent = try String(contentsOfFile: path, encoding: .isoLatin2)
+                    DDLogInfo("\(dbContent)")
+                    
+                    let base64DBContent = String.convertToBase64String(str: dbContent, encoding: .isoLatin2)
+                    
+                    PJHttpRequest.updateGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl, path: PJHttpUrlConst.GitHubReposDBFilePath, message: "Update PJToDo DB file.", content: base64DBContent, sha: reposFile.content.sha, responseBlock: { (isSuccess, reposFile, error) in
+                        if isSuccess {
+                            if let tempReposFile = reposFile {
+                                self.saveReposFile(reposFile: tempReposFile)
+                                completedHandle?(isSuccess, tempReposFile, error)
+                            } else {
+                                completedHandle?(false, reposFile, error)
+                            }
+                        } else {
+                            completedHandle?(isSuccess, reposFile, error)
+                        }
+                    })
+                } catch {
+                    DDLogError("\(error)")
                     completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Load db zip file error!❌"))
                     return
                 }
-                
-                guard let dbContent = String(data: dbData, encoding: String.Encoding.utf8) else {
-                    completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Load db zip file content error!❌"))
-                    return
-                }
-                
-                guard let base64DBContent = ConvertStrToBase64Str(dbContent) else {
-                    completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Convert db zip file to base64 error!❌"))
-                    return
-                }
-                
-                PJHttpRequest.updateGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl, path: PJHttpUrlConst.GitHubReposDBFilePath, message: "Update PJToDo DB file.", content: String.create(cString: base64DBContent), sha: reposFile.content.sha, responseBlock: { (isSuccess, reposFile, error) in
-                    if isSuccess {
-                        if let tempReposFile = reposFile {
-                            self.saveReposFile(reposFile: tempReposFile)
-                            completedHandle?(isSuccess, tempReposFile, error)
-                        } else {
-                            completedHandle?(false, reposFile, error)
-                        }
-                    } else {
-                        completedHandle?(isSuccess, reposFile, error)
-                    }
-                })
             } else {
                 completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: error.debugDescription))
             }
@@ -160,14 +160,16 @@ public struct PJReposFileManager {
     }
     
     public static func getReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
-        PJHttpRequest.getGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl) { (isSuceesss, reposFile, error) in
+        PJHttpRequest.getGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl) { (isSuceesss, reposFileContent, error) in
+            PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = isSuceesss
             if isSuceesss {
-                PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = true
-                if let tempReposFile = reposFile {
-                    self.saveReposFile(reposFile: tempReposFile)
+                if let tempReposFileContent = reposFileContent {
+                    let reposFile = ReposFile()
+                    reposFile.content = tempReposFileContent
+                    self.saveReposFile(reposFile: reposFile)
                     completedHandle?(isSuceesss, reposFile, error)
                 } else {
-                    completedHandle?(false, reposFile, error)
+                    completedHandle?(false, nil, error)
                 }
             } else {
                 //Didn't create repos file
@@ -175,8 +177,14 @@ public struct PJReposFileManager {
                     PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = false
                     DDLogError("❌Haven't create repos yet!❌")
                 }
-                completedHandle?(isSuceesss, reposFile, error)
+                completedHandle?(isSuceesss, nil, error)
             }
+        }
+    }
+    
+    public static func initGitHubReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
+        if !PJReposFileManager.shared.hasCreateReposDBFileOnGitHub {
+            PJReposFileManager.createReposFile(completedHandle: completedHandle)
         }
     }
 }

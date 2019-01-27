@@ -22,6 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.makeKeyAndVisible()
         self.initRootViewController()
+        self.syncGitHub()
         return true
     }
 
@@ -37,6 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+        self.syncGitHub()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -67,6 +69,29 @@ extension AppDelegate {
             rootTabBarViewController = UINavigationController(rootViewController: WelcomeViewController())
         }
         self.window?.rootViewController = rootTabBarViewController
+    }
+    
+    //sync gethub data
+    func syncGitHub() {
+//        PJReposManager.initGitHubRepos(completedHandle: nil)
+//        PJReposFileManager.initGitHubReposFile(completedHandle: nil)
+        PJReposFileManager.getReposFile(completedHandle: nil)
+        PJReposFileManager.updateReposFile { (isSuccess, _, error) in
+            if isSuccess {
+                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: false)
+            } else {
+                DDLogError("❌\(error?.message ?? "")❌")
+            }
+        }
+//        if let shouldUpdateDBToGitHub = PJCacheManager.getValue(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, type: Bool.self()), shouldUpdateDBToGitHub {
+//            PJReposFileManager.updateReposFile { (isSuccess, _, error) in
+//                if isSuccess {
+//                    PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: false)
+//                } else {
+//                    DDLogError("❌\(error?.message ?? "")❌")
+//                }
+//            }
+//        }
     }
 }
 

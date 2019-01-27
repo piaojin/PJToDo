@@ -212,6 +212,7 @@ extension TextViewController: ToDoTypeDelegate {
     
     private func handleTypeResult(isSuccess: Bool, error: String?) {
         if isSuccess {
+            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
             self.typeController.fetchData()
         } else {
             SVProgressHUD.showError(withStatus: error)

@@ -84,11 +84,19 @@ public struct PJReposManager {
                     self.saveRepos(repos: tempRepos)
                 }
                 completedHandle?(isSuccess, repos, error)
-                DDLogInfo("❌Create repos success!❌")
+                DDLogInfo("💯Create repos success!💯")
             } else {
-                //Create repos error
-                DDLogError("❌Create repos error!❌")
-                completedHandle?(isSuccess, repos, error)
+                //Has created
+                if let errorCode = error?.errorCode, PJHttpReponseStatusCode(rawValue: errorCode) == PJHttpReponseStatusCode.HTTP_STATUS_UNPROCESSABLE_ENTITY {
+                    PJReposManager.shared.hasCreateReposOnGitHub = true
+                    DDLogInfo("Has create repos!")
+                    completedHandle?(true, repos, error)
+                } else {
+                    //Create repos error
+                    PJReposManager.shared.hasCreateReposOnGitHub = false
+                    DDLogError("❌Create repos error!❌")
+                    completedHandle?(isSuccess, repos, error)
+                }
             }
         }
     }
@@ -100,6 +108,12 @@ public struct PJReposManager {
                 self.removeRepos()
             }
             completedHandle?(isSuccess, repos, error)
+        }
+    }
+    
+    public static func initGitHubRepos(completedHandle: ((Bool, Repos?, PJHttpError?) -> ())?) {
+        if !PJReposManager.shared.hasCreateReposOnGitHub {
+            PJReposManager.createRepos(completedHandle: completedHandle)
         }
     }
 }

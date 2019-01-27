@@ -9,15 +9,17 @@
 import UIKit
 
 public extension String {
-    public static func create(cString: UnsafeMutablePointer<Int8>) -> String {
+    public static func create(cString: UnsafeMutablePointer<Int8>, encoding: String.Encoding = .utf8) -> String {
         //get string pointer from rust and use the pointer to create a Swift String and then free the rust string
-        let str = String(cString: cString)
-        free_rust_string(cString)
-        return str
+        if let str = String(cString: cString, encoding: encoding) {
+            free_rust_string(cString)
+            return str
+        }
+        return ""
     }
     
-    public static func convertToBase64String(str: String) -> String {
-        return self.create(cString: ConvertStrToBase64Str(str))
+    public static func convertToBase64String(str: String, encoding: String.Encoding = .utf8) -> String {
+        return self.create(cString: ConvertStrToBase64Str(str), encoding: encoding)
     }
     
     public func pj_bridgeObjectiveC() -> NSString {

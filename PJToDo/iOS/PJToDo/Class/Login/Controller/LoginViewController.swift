@@ -121,37 +121,12 @@ class LoginViewController: PJBaseViewController {
                         try? PJKeychainManager.saveSensitiveString(withService: PJKeyCenter.KeychainUserInfoService, sensitiveKey: account, sensitiveString: passWord)
                         
                         PJUserInfoManager.saveUserInfo(userInfo: tempUser)
-                        
-                        if PJReposManager.shared.hasSavedReposInLocal {
-                            self.initRootViewController()
-                            SVProgressHUD.dismiss()
-                        } else {
-                            PJReposManager.getRepos(completedHandle: { (isSuccess, repos, error) in
-                                if isSuccess {
-                                    DispatchQueue.main.async(execute: {
-                                        self.initRootViewController()
-                                        SVProgressHUD.dismiss()
-                                    })
-                                } else {
-                                    //Didn't create repos
-                                    if let errorCode = error?.errorCode, PJHttpReponseStatusCode(rawValue: errorCode) == PJHttpReponseStatusCode.HTTP_STATUS_NOT_FOUND {
-                                        PJReposManager.createRepos(completedHandle: { (isSuccess, repos, error) in
-                                            if isSuccess {
-                                                DispatchQueue.main.async(execute: {
-                                                    self.initRootViewController()
-                                                    SVProgressHUD.dismiss()
-                                                })
-                                            } else {
-                                                DispatchQueue.main.async(execute: {
-                                                    SVProgressHUD.showError(withStatus: "Login error when init data!")
-                                                })
-                                            }
-                                        })
-                                    } else {
-                                        SVProgressHUD.showError(withStatus: "Login fail!")
-                                    }
-                                }
-                            })
+                        self.initRootViewController()
+                        SVProgressHUD.dismiss()
+                        PJReposManager.initGitHubRepos { (isSuccess, _, _) in
+                            if isSuccess {
+                                PJReposFileManager.initGitHubReposFile(completedHandle: nil)
+                            }
                         }
                     } else {
                         SVProgressHUD.showError(withStatus: "Login fail!")
@@ -160,22 +135,6 @@ class LoginViewController: PJBaseViewController {
             })
         } else {
             SVProgressHUD.showError(withStatus: "account and password both can't be nil!")
-        }
-    }
-    
-    private func createRepos(completeHandle: ((Bool, Repos?, PJHttpError?) -> ())?) {
-        PJHttpRequest.getGitHubRepos(reposUrl: PJHttpUrlConst.GetReposUrl) { (isSuccess, repos, error) in
-            //Has created repos
-            if isSuccess {
-                if let tempRepos = repos {
-                    PJReposManager.saveRepos(repos: tempRepos)
-                }
-            } else {
-                //Didn't create repos
-                if let errorCode = error?.errorCode, PJHttpReponseStatusCode(rawValue: errorCode) == PJHttpReponseStatusCode.HTTP_STATUS_NOT_FOUND {
-                    
-                }
-            }
         }
     }
     
