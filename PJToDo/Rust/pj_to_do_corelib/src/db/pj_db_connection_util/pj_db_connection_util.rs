@@ -14,10 +14,12 @@ use std::collections::HashMap;
 
 lazy_static! {
     pub static ref StaticPJDBConnectionUtil: PJDBConnectionUtil = { PJDBConnectionUtil::new() };
+
     pub static ref SQLiteUrl: String = {
         let get_db_path = unsafe { CStr::from_ptr(get_db_path()).to_string_lossy().into_owned() };
         get_db_path
     };
+
     pub static ref DBGZipPath: String = {
         let get_db_gzip_path = unsafe {
             CStr::from_ptr(get_db_gzip_path())
@@ -26,6 +28,7 @@ lazy_static! {
         };
         get_db_gzip_path
     };
+
     pub static ref DBUnCompressPath: String = {
         let get_db_uncompresses_path = unsafe {
             CStr::from_ptr(get_db_uncompresses_path())
@@ -33,6 +36,16 @@ lazy_static! {
                 .into_owned()
         };
         get_db_uncompresses_path
+    };
+
+    pub static ref DBDataSQLFilePath: String = {
+        let get_db_data_sql_file_path = unsafe {
+            CStr::from_ptr(get_db_data_sql_file_path())
+                .to_string_lossy()
+                .into_owned()
+        };
+        pj_info!("get_db_data_sql_file_path: {:}", get_db_data_sql_file_path);
+        get_db_data_sql_file_path
     };
 }
 

@@ -340,6 +340,8 @@ char *getToDoTypeName(const ToDoType *ptr);
 
 extern const char *get_authorization_str(void);
 
+extern const char *get_db_data_sql_file_path(void);
+
 extern const char *get_db_gzip_path(void);
 
 extern const char *get_db_path(void);
@@ -349,6 +351,8 @@ extern const char *get_db_uncompresses_path(void);
 void init_core_lib(void);
 
 void init_database(void);
+
+void init_db_data_sql_file(void);
 
 void init_hello_piaojin(void);
 

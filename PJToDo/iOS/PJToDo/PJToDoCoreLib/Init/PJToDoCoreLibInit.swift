@@ -15,6 +15,7 @@ public struct PJToDoCoreLibInit {
         init_core_lib()
         init_database()
         init_tables()
+        init_db_data_sql_file()
         test_pal_from_rust()
         DDLogInfo("******end init CoreLib******")
     }

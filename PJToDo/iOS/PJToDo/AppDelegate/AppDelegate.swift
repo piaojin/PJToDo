@@ -75,14 +75,14 @@ extension AppDelegate {
     func syncGitHub() {
 //        PJReposManager.initGitHubRepos(completedHandle: nil)
 //        PJReposFileManager.initGitHubReposFile(completedHandle: nil)
-        PJReposFileManager.getReposFile(completedHandle: nil)
-        PJReposFileManager.updateReposFile { (isSuccess, _, error) in
-            if isSuccess {
-                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: false)
-            } else {
-                DDLogError("❌\(error?.message ?? "")❌")
-            }
-        }
+//        PJReposFileManager.getReposFile(completedHandle: nil)
+//        PJReposFileManager.updateReposFile { (isSuccess, _, error) in
+//            if isSuccess {
+//                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: false)
+//            } else {
+//                DDLogError("❌\(error?.message ?? "")❌")
+//            }
+//        }
 //        if let shouldUpdateDBToGitHub = PJCacheManager.getValue(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, type: Bool.self()), shouldUpdateDBToGitHub {
 //            PJReposFileManager.updateReposFile { (isSuccess, _, error) in
 //                if isSuccess {

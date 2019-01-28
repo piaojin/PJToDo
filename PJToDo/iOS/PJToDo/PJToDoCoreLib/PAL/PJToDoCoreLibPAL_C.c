@@ -18,6 +18,10 @@ const char * get_db_uncompresses_path() {
     return getDBUnCompressesPath();
 }
 
+const char * get_db_data_sql_file_path() {
+    return getDBDataSQLFilePath();
+}
+
 const char * get_authorization_str() {
     return getAuthorizationStr();
 }

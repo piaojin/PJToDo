@@ -26,6 +26,10 @@ impl PJToDoPal {
         let get_db_path = PJToDoPal::sqlite_url(); //unsafe
         pj_info!("get_db_path: {:}", get_db_path);
     }
+
+    pub unsafe fn get_db_data_sql_file_path<'a>() -> &'a str {
+        &DBDataSQLFilePath
+    }
 }
 
 #[no_mangle]

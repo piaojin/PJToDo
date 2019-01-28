@@ -26,6 +26,10 @@ const char * getDBUnCompressesPath() {
     return [PJToDoConst.DBUnCompressesPath UTF8String];
 }
 
+const char * getDBDataSQLFilePath() {
+    return [PJToDoConst.DBDataSQLFilePath UTF8String];
+}
+
 const char * getAuthorizationStr() {
     if (PJUserInfoManagerOC.isLogin) {
         NSError *error;
