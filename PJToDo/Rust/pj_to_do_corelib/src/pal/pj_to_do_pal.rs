@@ -27,8 +27,20 @@ impl PJToDoPal {
         pj_info!("get_db_path: {:}", get_db_path);
     }
 
-    pub unsafe fn get_db_data_sql_file_path<'a>() -> &'a str {
-        &DBDataSQLFilePath
+    pub unsafe fn get_db_type_sql_file_path<'a>() -> &'a str {
+        &DBTypeSQLFilePath
+    }
+
+    pub unsafe fn get_db_todo_sql_file_path<'a>() -> &'a str {
+        &DBToDoSQLFilePath
+    }
+
+    pub unsafe fn get_db_tag_sql_file_path<'a>() -> &'a str {
+        &DBTagSQLFilePath
+    }
+
+    pub unsafe fn get_db_todo_settings_sql_file_path<'a>() -> &'a str {
+        &DBToDoSettingsSQLFilePath
     }
 }
 

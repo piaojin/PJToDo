@@ -18,8 +18,20 @@ const char * get_db_uncompresses_path() {
     return getDBUnCompressesPath();
 }
 
-const char * get_db_data_sql_file_path() {
-    return getDBDataSQLFilePath();
+const char * get_db_type_sql_file_path() {
+    return getDBTypeSQLFilePath();
+}
+
+const char * get_db_tag_sql_file_path() {
+    return getDBTagSQLFilePath();
+}
+
+const char * get_db_todo_sql_file_path() {
+    return getDBToDoSQLFilePath();
+}
+
+const char * get_db_todo_settings_sql_file_path() {
+    return getDBToDoSettingsSQLFilePath();
 }
 
 const char * get_authorization_str() {

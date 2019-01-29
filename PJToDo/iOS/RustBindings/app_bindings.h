@@ -340,11 +340,17 @@ char *getToDoTypeName(const ToDoType *ptr);
 
 extern const char *get_authorization_str(void);
 
-extern const char *get_db_data_sql_file_path(void);
-
 extern const char *get_db_gzip_path(void);
 
 extern const char *get_db_path(void);
+
+extern const char *get_db_tag_sql_file_path(void);
+
+extern const char *get_db_todo_settings_sql_file_path(void);
+
+extern const char *get_db_todo_sql_file_path(void);
+
+extern const char *get_db_type_sql_file_path(void);
 
 extern const char *get_db_uncompresses_path(void);
 
@@ -459,5 +465,7 @@ void updateToDoSettings(PJToDoSettingsController *ptr, const ToDoSettings *toDoS
 void updateToDoTag(PJToDoTagController *ptr, const ToDoTag *toDoTag);
 
 void updateToDoType(PJToDoTypeController *ptr, const ToDoType *toDoType);
+
+void wirteDBTypeToSQLFile(void);
 
 #endif /* app_bindings_h */

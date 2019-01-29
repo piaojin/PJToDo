@@ -26,8 +26,20 @@ const char * getDBUnCompressesPath() {
     return [PJToDoConst.DBUnCompressesPath UTF8String];
 }
 
-const char * getDBDataSQLFilePath() {
-    return [PJToDoConst.DBDataSQLFilePath UTF8String];
+const char * getDBTypeSQLFilePath() {
+    return [PJToDoConst.DBTypeSQLFileName UTF8String];
+}
+
+const char * getDBTagSQLFilePath() {
+    return [PJToDoConst.DBTagSQLFileName UTF8String];
+}
+
+const char * getDBToDoSQLFilePath() {
+    return [PJToDoConst.DBToDoSQLFileName UTF8String];
+}
+
+const char * getDBToDoSettingsSQLFilePath() {
+    return [PJToDoConst.DBToDoSettingsSQLFileName UTF8String];
 }
 
 const char * getAuthorizationStr() {

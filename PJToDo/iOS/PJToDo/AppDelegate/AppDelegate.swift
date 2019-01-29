@@ -92,6 +92,8 @@ extension AppDelegate {
 //                }
 //            }
 //        }
+        
+        wirteDBTypeToSQLFile()
     }
 }
 

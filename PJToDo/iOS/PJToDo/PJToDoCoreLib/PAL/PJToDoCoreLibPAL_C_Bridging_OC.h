@@ -17,7 +17,13 @@ const char * getDBGZipPath(void);
 
 const char * getDBUnCompressesPath(void);
 
-const char * getDBDataSQLFilePath(void);
+const char * getDBTypeSQLFilePath(void);
+
+const char * getDBTagSQLFilePath(void);
+
+const char * getDBToDoSQLFilePath(void);
+
+const char * getDBToDoSettingsSQLFilePath(void);
 
 const char * getAuthorizationStr(void);
 

@@ -38,14 +38,44 @@ lazy_static! {
         get_db_uncompresses_path
     };
 
-    pub static ref DBDataSQLFilePath: String = {
-        let get_db_data_sql_file_path = unsafe {
-            CStr::from_ptr(get_db_data_sql_file_path())
+    pub static ref DBTypeSQLFilePath: String = {
+        let get_db_type_sql_file_path = unsafe {
+            CStr::from_ptr(get_db_type_sql_file_path())
                 .to_string_lossy()
                 .into_owned()
         };
-        pj_info!("get_db_data_sql_file_path: {:}", get_db_data_sql_file_path);
-        get_db_data_sql_file_path
+        pj_info!("get_db_type_sql_file_path: {:}", get_db_type_sql_file_path);
+        get_db_type_sql_file_path
+    };
+
+    pub static ref DBTagSQLFilePath: String = {
+        let get_db_tag_sql_file_path = unsafe {
+            CStr::from_ptr(get_db_tag_sql_file_path())
+                .to_string_lossy()
+                .into_owned()
+        };
+        pj_info!("get_db_tag_sql_file_path: {:}", get_db_tag_sql_file_path);
+        get_db_tag_sql_file_path
+    };
+
+    pub static ref DBToDoSQLFilePath: String = {
+        let get_db_todo_sql_file_path = unsafe {
+            CStr::from_ptr(get_db_type_sql_file_path())
+                .to_string_lossy()
+                .into_owned()
+        };
+        pj_info!("get_db_todo_sql_file_path: {:}", get_db_todo_sql_file_path);
+        get_db_todo_sql_file_path
+    };
+
+    pub static ref DBToDoSettingsSQLFilePath: String = {
+        let get_db_todo_settings_sql_file_path = unsafe {
+            CStr::from_ptr(get_db_todo_settings_sql_file_path())
+                .to_string_lossy()
+                .into_owned()
+        };
+        pj_info!("get_db_todo_settings_sql_file_path: {:}", get_db_todo_settings_sql_file_path);
+        get_db_todo_settings_sql_file_path
     };
 }
 
