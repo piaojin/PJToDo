@@ -7,7 +7,7 @@ use common::pj_serialize::PJSerdeDeserialize;
 use std::mem;
 use libc::{c_char};
 use std::ffi::{CString, CStr};
-use common::rustc_serialize::base64::{STANDARD, ToBase64};
+use common::rustc_serialize::base64::{STANDARD, ToBase64, FromBase64};
 
 pub struct PJUtils;
 
@@ -50,4 +50,25 @@ pub unsafe extern "C" fn ConvertStrToBase64Str(ptr: *const c_char) -> *mut c_cha
     let converted_base64_string = converted_str.as_bytes().to_base64(config);
     let converted_base64_cstring = CString::new(converted_base64_string).unwrap();
     converted_base64_cstring.into_raw()
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn ConvertBase64StrToStr(ptr: *const c_char) -> *mut c_char {
+    assert!(ptr != std::ptr::null());
+    let base64_string = unsafe {
+        CStr::from_ptr(ptr).to_string_lossy().into_owned()
+    };
+    let mut temp_c_char: *mut c_char = std::ptr::null_mut();
+    let res = base64_string.from_base64();
+    if res.is_ok() {
+      let opt_bytes = String::from_utf8(res.unwrap());
+      if opt_bytes.is_ok() {
+        let c_str = CString::new(opt_bytes.unwrap()).unwrap();
+        c_str.into_raw()
+      } else {
+            temp_c_char
+        }
+    } else {
+        temp_c_char
+    }
 }

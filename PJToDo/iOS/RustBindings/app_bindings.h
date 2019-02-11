@@ -186,6 +186,8 @@ typedef struct {
   void (*action_result)(void*, bool);
 } IPJToDoTypeFileDelegate;
 
+char *ConvertBase64StrToStr(const char *ptr);
+
 char *ConvertStrToBase64Str(const char *ptr);
 
 void PJ_Authorizations(IPJToDoHttpRequestDelegate delegate, const char *authorization);

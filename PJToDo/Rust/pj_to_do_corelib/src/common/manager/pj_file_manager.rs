@@ -62,7 +62,6 @@ impl PJFileManager {
         }
     }
 
-    //Result<Vec<ToDoType>, diesel::result::Error>
     fn wirte_db_type_to_sql_file(delegate: IPJToDoTypeFileDelegate) {
         let i_delegate = IPJToDoTypeFileDelegateWrapper(delegate);
         thread::spawn(move || {
