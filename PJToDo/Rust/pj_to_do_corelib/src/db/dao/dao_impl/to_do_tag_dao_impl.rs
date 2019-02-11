@@ -14,7 +14,7 @@ impl PJToDoTagDAO for PJToDoTagDAOImpl {
         pj_info!("insert_todo_tag: to_do_tag: {:?}", to_do_tag);
         let inserted_result = diesel::insert_into(schema::todotag::table)
             .values(to_do_tag)
-            .execute(&StaticPJDBConnectionUtil.connection);
+            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match inserted_result {
             Ok(inserted_row) => {
                 let mut result: Result<usize, diesel::result::Error> =
@@ -36,7 +36,7 @@ impl PJToDoTagDAO for PJToDoTagDAOImpl {
 
     fn delete_todo_tag(&self, to_do_tag_id: i32) -> Result<usize, diesel::result::Error> {
         let deleted_result = diesel::delete(todotag.filter(id.eq(to_do_tag_id)))
-            .execute(&StaticPJDBConnectionUtil.connection);
+            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match deleted_result {
             Ok(deleted_row) => {
                 let mut result: Result<usize, diesel::result::Error> =
@@ -60,7 +60,7 @@ impl PJToDoTagDAO for PJToDoTagDAOImpl {
         pj_info!("update_todo_tag: to_do_tag: {:?}", to_do_tag);
         let update_result = diesel::update(todotag.filter(id.eq(to_do_tag.id)))
             .set(to_do_tag)
-            .execute(&StaticPJDBConnectionUtil.connection);
+            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
 
         match update_result {
             Ok(update_row) => {
@@ -85,7 +85,7 @@ impl PJToDoTagDAO for PJToDoTagDAOImpl {
         pj_info!("find_todo_tag_by_id: to_do_tag_id: {:?}", to_do_tag_id);
         let find_result = todotag
             .find(to_do_tag_id)
-            .first::<ToDoTag>(&StaticPJDBConnectionUtil.connection);
+            .first::<ToDoTag>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match find_result {
             Ok(result) => {
                 pj_info!("find_todo_tag_by_id success!");
@@ -103,7 +103,7 @@ impl PJToDoTagDAO for PJToDoTagDAOImpl {
 
         let to_do_tags_result = schema::todotag::table
             .filter(tag_name.eq(name))
-            .load::<ToDoTag>(&StaticPJDBConnectionUtil.connection);
+            .load::<ToDoTag>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
 
         match to_do_tags_result {
             Ok(to_do_tags) => {
@@ -129,7 +129,7 @@ impl PJToDoTagDAO for PJToDoTagDAOImpl {
     }
 
     fn fetch_data(&self) -> Result<Vec<ToDoTag>, diesel::result::Error> {
-        let to_do_tags_result = todotag.load::<ToDoTag>(&StaticPJDBConnectionUtil.connection);
+        let to_do_tags_result = todotag.load::<ToDoTag>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match to_do_tags_result {
             Ok(to_do_tags) => {
                 pj_info!("fetchData success!");

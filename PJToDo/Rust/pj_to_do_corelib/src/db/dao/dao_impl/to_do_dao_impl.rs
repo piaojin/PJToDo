@@ -15,7 +15,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
         pj_info!("insert_todo: to_do: {:?}", to_do);
         let inserted_result = diesel::insert_into(schema::todo::table)
             .values(to_do)
-            .execute(&StaticPJDBConnectionUtil.connection);
+            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match inserted_result {
             Ok(inserted_row) => {
                 let mut result: Result<usize, diesel::result::Error> =
@@ -37,7 +37,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
 
     fn delete_todo(&self, to_do_id: i32) -> Result<usize, diesel::result::Error> {
         let deleted_result = diesel::delete(todo.filter(id.eq(to_do_id)))
-            .execute(&StaticPJDBConnectionUtil.connection);
+            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match deleted_result {
             Ok(deleted_row) => {
                 let mut result: Result<usize, diesel::result::Error> =
@@ -61,7 +61,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
         pj_info!("insert_todo: to_do: {:?}", to_do);
         let update_result = diesel::update(todo.filter(id.eq(to_do.id)))
             .set(to_do)
-            .execute(&StaticPJDBConnectionUtil.connection);
+            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
 
         match update_result {
             Ok(update_row) => {
@@ -86,7 +86,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
         pj_info!("find_todo_by_id: to_do_id: {:?}", to_do_id);
         let find_result = todo
             .find(to_do_id)
-            .first::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+            .first::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match find_result {
             Ok(result) => {
                 pj_info!("find_todo_by_id success!");
@@ -104,7 +104,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
 
         let to_dos_result = schema::todo::table
             .filter(title.eq(todo_title))
-            .load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+            .load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
 
         match to_dos_result {
             Ok(to_dos) => {
@@ -130,7 +130,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
         let like_result = schema::todo::table
             .filter(title.like(&like))
             .order(id.asc())
-            .load(&StaticPJDBConnectionUtil.connection);
+            .load(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match like_result {
             Ok(to_dos) => {
                 pj_info!("find_todo_like_title success!");
@@ -144,7 +144,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
     }
 
     fn fetch_data(&self) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
-        let to_dos_result = todo.load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+        let to_dos_result = todo.load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match to_dos_result {
             Ok(to_dos) => {
                 pj_info!("fetchData success!");
@@ -166,7 +166,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
             "SELECT * FROM todo WHERE due_time < date('{}','{} days') and state == 0",
             from_day, comparison_days
         );
-        let result = sql_query(sql).load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+        let result = sql_query(sql).load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match result {
             Ok(to_dos) => {
                 pj_info!("find_todo_date_future_day_more_than success!");
@@ -188,7 +188,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
 
         let todos_determined_result = schema::todo::table
             .filter(state.eq(0))
-            .load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+            .load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
 
         match todos_determined_result {
             Ok(todos_determined) => {
@@ -207,7 +207,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
 
         let todos_inprogress_result = schema::todo::table
             .filter(state.eq(1))
-            .load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+            .load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
 
         match todos_inprogress_result {
             Ok(todos_inprogress) => {
@@ -226,7 +226,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
 
         let todos_completed_result = schema::todo::table
             .filter(state.eq(2))
-            .load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+            .load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
 
         match todos_completed_result {
             Ok(todos_completed) => {
@@ -242,7 +242,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
 
         let todos_overdue_result = schema::todo::table
             .filter(state.eq(3))
-            .load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+            .load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
 
         match todos_overdue_result {
             Ok(todos_overdue) => {
@@ -268,7 +268,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
             "UPDATE todo set state = 3 WHERE due_time < date('now') and state == 0",
         );
 
-        let result = sql_query(sql).load::<ToDoQuery>(&StaticPJDBConnectionUtil.connection);
+        let result = sql_query(sql).load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match result {
             Ok(update_rows) => {
                 pj_info!("update_overdue_todos success!");

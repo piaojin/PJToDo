@@ -17,7 +17,7 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
         pj_info!("insert_todo_type: to_do_type: {:?}", to_do_type);
         let inserted_result = diesel::insert_into(schema::todotype::table)
             .values(to_do_type)
-            .execute(&StaticPJDBConnectionUtil.connection);
+            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match inserted_result {
             Ok(inserted_row) => {
                 let mut result: Result<usize, diesel::result::Error> =
@@ -39,7 +39,7 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
 
     fn delete_todo_type(&self, to_do_type_id: i32) -> Result<usize, diesel::result::Error> {
         let deleted_result = diesel::delete(todotype.filter(id.eq(to_do_type_id)))
-            .execute(&StaticPJDBConnectionUtil.connection);
+            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match deleted_result {
             Ok(deleted_row) => {
                 let mut result: Result<usize, diesel::result::Error> =
@@ -63,7 +63,7 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
         pj_info!("insert_todo_type: to_do_type: {:?}", to_do_type);
         let update_result = diesel::update(todotype.filter(id.eq(to_do_type.id)))
             .set(to_do_type)
-            .execute(&StaticPJDBConnectionUtil.connection);
+            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
 
         match update_result {
             Ok(update_row) => {
@@ -88,7 +88,7 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
         pj_info!("find_todo_type_by_id: to_do_type_id: {:?}", to_do_type_id);
         let find_result = todotype
             .find(to_do_type_id)
-            .first::<ToDoType>(&StaticPJDBConnectionUtil.connection);
+            .first::<ToDoType>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match find_result {
             Ok(result) => {
                 pj_info!("find_todo_type_by_id success!");
@@ -106,7 +106,7 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
 
         let to_do_types_result = schema::todotype::table
             .filter(type_name.eq(name))
-            .load::<ToDoType>(&StaticPJDBConnectionUtil.connection);
+            .load::<ToDoType>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
 
         match to_do_types_result {
             Ok(to_do_types) => {
@@ -132,7 +132,7 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
     }
 
     fn fetch_data(&self) -> Result<Vec<ToDoType>, diesel::result::Error> {
-        let to_do_types_result = todotype.load::<ToDoType>(&StaticPJDBConnectionUtil.connection);
+        let to_do_types_result = todotype.load::<ToDoType>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match to_do_types_result {
             Ok(to_do_types) => {
                 pj_info!("fetchData success!");

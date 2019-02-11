@@ -12,14 +12,11 @@ use db::tables::schema::{Table_ToDoType, Table_ToDoTag, Table_ToDo, Table_ToDoSe
 
 use std::collections::HashMap;
 
-use std::sync::{Arc, Mutex};
+use std::sync::{Arc, Mutex, MutexGuard};
 
 lazy_static! {
-    pub static ref StaticPJDBConnectionUtil: PJDBConnectionUtil = {
-        PJDBConnectionUtil::new()
-    };
-    
-    pub static ref StaticArcMutexPJDBConnectionUtil: Arc<Mutex<PJDBConnectionUtil>> = {
+
+    pub static ref StaticPJDBConnectionUtil: Arc<Mutex<PJDBConnectionUtil>> = {
         Arc::new( Mutex::new(PJDBConnectionUtil::new()))
     };
 
@@ -145,10 +142,10 @@ impl PJDBConnectionUtil {
 
 #[no_mangle]
 pub unsafe extern "C" fn init_database() {
-    StaticPJDBConnectionUtil.init_database();
+    StaticPJDBConnectionUtil.lock().unwrap().init_database();
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn init_tables() {
-    StaticPJDBConnectionUtil.init_tables();
+    StaticPJDBConnectionUtil.lock().unwrap().init_tables();
 }
