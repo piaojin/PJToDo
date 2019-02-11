@@ -97,6 +97,10 @@
 		CAEEDC9D21FC43120038B79E /* PJHttpReponseStatusCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9C21FC43120038B79E /* PJHttpReponseStatusCode.swift */; };
 		CAEEDC9F21FC50970038B79E /* PJReposManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDC9E21FC50970038B79E /* PJReposManager.swift */; };
 		CAEEDCA121FC8BF60038B79E /* PJReposFileManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAEEDCA021FC8BF60038B79E /* PJReposFileManager.swift */; };
+		CAFF98962201E3A100A59C69 /* PJToDoTypeFileDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFF98952201E3A100A59C69 /* PJToDoTypeFileDelegate.swift */; };
+		CAFF98982201E42000A59C69 /* PJToDoTagFileDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFF98972201E42000A59C69 /* PJToDoTagFileDelegate.swift */; };
+		CAFF989A2201E49C00A59C69 /* PJToDoFileDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFF98992201E49C00A59C69 /* PJToDoFileDelegate.swift */; };
+		CAFF989C2201E4DF00A59C69 /* PJToDoSettingsFileDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAFF989B2201E4DF00A59C69 /* PJToDoSettingsFileDelegate.swift */; };
 		E66097176C9EFDCCA9E52149 /* Pods_PJToDo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */; };
 /* End PBXBuildFile section */
 
@@ -248,6 +252,10 @@
 		CAEEDC9C21FC43120038B79E /* PJHttpReponseStatusCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpReponseStatusCode.swift; sourceTree = "<group>"; };
 		CAEEDC9E21FC50970038B79E /* PJReposManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJReposManager.swift; sourceTree = "<group>"; };
 		CAEEDCA021FC8BF60038B79E /* PJReposFileManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJReposFileManager.swift; sourceTree = "<group>"; };
+		CAFF98952201E3A100A59C69 /* PJToDoTypeFileDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJToDoTypeFileDelegate.swift; sourceTree = "<group>"; };
+		CAFF98972201E42000A59C69 /* PJToDoTagFileDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoTagFileDelegate.swift; sourceTree = "<group>"; };
+		CAFF98992201E49C00A59C69 /* PJToDoFileDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoFileDelegate.swift; sourceTree = "<group>"; };
+		CAFF989B2201E4DF00A59C69 /* PJToDoSettingsFileDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoSettingsFileDelegate.swift; sourceTree = "<group>"; };
 		CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8C7DCA9E375B4ACEF6FE7C8 /* Pods-PJToDo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PJToDo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PJToDo/Pods-PJToDo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -576,6 +584,7 @@
 		7648832E2168B4E200F11106 /* DB */ = {
 			isa = PBXGroup;
 			children = (
+				CADA837B2200AB3F0046CAF1 /* DBFile */,
 				7648832F2168B4F600F11106 /* PJToDoDBManager.swift */,
 			);
 			path = DB;
@@ -853,6 +862,25 @@
 				CAD07CB621E090EB0067AD23 /* SearchToDoCell.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		CADA837B2200AB3F0046CAF1 /* DBFile */ = {
+			isa = PBXGroup;
+			children = (
+				CADA837C2200AB5C0046CAF1 /* Delegate */,
+			);
+			path = DBFile;
+			sourceTree = "<group>";
+		};
+		CADA837C2200AB5C0046CAF1 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				CAFF98952201E3A100A59C69 /* PJToDoTypeFileDelegate.swift */,
+				CAFF98972201E42000A59C69 /* PJToDoTagFileDelegate.swift */,
+				CAFF98992201E49C00A59C69 /* PJToDoFileDelegate.swift */,
+				CAFF989B2201E4DF00A59C69 /* PJToDoSettingsFileDelegate.swift */,
+			);
+			path = Delegate;
 			sourceTree = "<group>";
 		};
 		CAEEDC8A21EF8A070038B79E /* Repos */ = {
@@ -1134,12 +1162,14 @@
 			files = (
 				7693784721B3EF5900473382 /* TasksHeaderView.swift in Sources */,
 				769769B121B0CE9A00AB3569 /* PJBaseViewController.swift in Sources */,
+				CAFF989C2201E4DF00A59C69 /* PJToDoSettingsFileDelegate.swift in Sources */,
 				76746D9E216E60EB00BE81BC /* PJToDoCoreLibPAL_C_Bridging_OC.m in Sources */,
 				CAD07CA821DE3ECA0067AD23 /* DetailPriorityCell.swift in Sources */,
 				CAEEDC8F21F0CCD80038B79E /* PJHttpBaseModel.swift in Sources */,
 				769769B221B0CE9A00AB3569 /* PJBaseErrorView.swift in Sources */,
 				7654A8A221BBFD23003464E9 /* TextCell.swift in Sources */,
 				76348C182116F2F40009455C /* AppDelegate.swift in Sources */,
+				CAFF98962201E3A100A59C69 /* PJToDoTypeFileDelegate.swift in Sources */,
 				7654A8A621BC185C003464E9 /* SelectComposeTypeView.swift in Sources */,
 				7648831D21675B3500F11106 /* ServiceService.swift in Sources */,
 				7693784421B3EEF600473382 /* HomeTasksViewController.swift in Sources */,
@@ -1173,6 +1203,7 @@
 				7648831721675AF700F11106 /* ReposService.swift in Sources */,
 				CAEEDC9B21FA0DE90038B79E /* PJHttpUrlConst.swift in Sources */,
 				76A43CBB219DB5530041B7AC /* PJKeyCenter.swift in Sources */,
+				CAFF989A2201E49C00A59C69 /* PJToDoFileDelegate.swift in Sources */,
 				76488309216759CA00F11106 /* PJToDoCoreLibPAL.swift in Sources */,
 				769769BD21B1044C00AB3569 /* AddToDoViewController.swift in Sources */,
 				CAD07CAA21DE3F250067AD23 /* DetailItemCell.swift in Sources */,
@@ -1198,6 +1229,7 @@
 				76B5226D21809EC200D51AE8 /* PJToDoType.swift in Sources */,
 				CAD07CA321DD09C30067AD23 /* DetailValueCell.swift in Sources */,
 				7648831B21675B2300F11106 /* ToDoService.swift in Sources */,
+				CAFF98982201E42000A59C69 /* PJToDoTagFileDelegate.swift in Sources */,
 				7648831921675B1100F11106 /* ToDoTagService.swift in Sources */,
 				CA88DECF21C7D2DB007CFB0B /* SelectedComposeCell.swift in Sources */,
 				769769B521B0CE9A00AB3569 /* PJBaseView.swift in Sources */,

@@ -8,6 +8,7 @@
 
 import UIKit
 import CocoaLumberjack
+import SQLite3
 
 public struct PJToDoCoreLibInit {
     static public func initRustCoreLib() {

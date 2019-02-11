@@ -93,7 +93,33 @@ extension AppDelegate {
 //            }
 //        }
         
-        wirteDBTypeToSQLFile()
+        let typeFileDelegate = PJToDoTypeFileDelegate { (isSuccess) in
+            if isSuccess {
+                
+            }
+        }
+        wirteDBTypeToSQLFile(typeFileDelegate.iDelegate)
+        
+        let tagFileDelegate = PJToDoTagFileDelegate { (isSuccess) in
+            if isSuccess {
+                
+            }
+        }
+        wirteDBTagToSQLFile(tagFileDelegate.iDelegate)
+        
+        let todoFileDelegate = PJToDoFileDelegate { (isSuccess) in
+            if isSuccess {
+                
+            }
+        }
+        wirteDBToDoToSQLFile(todoFileDelegate.iDelegate)
+        
+        let settingsFileDelegate = PJToDoSettingsFileDelegate { (isSuccess) in
+            if isSuccess {
+                
+            }
+        }
+        wirteDBSettingsToSQLFile(settingsFileDelegate.iDelegate)
     }
 }
 

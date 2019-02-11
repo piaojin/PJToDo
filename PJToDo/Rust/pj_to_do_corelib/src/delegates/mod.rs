@@ -6,3 +6,5 @@ pub mod to_do_tag_delegate;
 pub mod to_do_type_delegate;
 pub mod to_do_file_delegate;
 pub mod to_do_type_file_delegate;
+pub mod to_do_tag_file_delegate;
+pub mod to_do_settings_file_delegate;

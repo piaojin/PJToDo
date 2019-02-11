@@ -2,8 +2,8 @@ use std::ops::Deref;
 use libc::{c_void};
 use std::marker::{Send, Sync};
 
-#[repr(C)]
 #[derive(Clone)]
+#[repr(C)]
 pub struct IPJToDoFileDelegate {
     pub user: *mut c_void, //当前持有IPJToDoFileDelegate对象的所有权者
     //释放内存回调，告诉当前持有IPJToDoFileDelegate对象的所有权者做相应的处理

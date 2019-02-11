@@ -162,6 +162,30 @@ typedef struct {
   Vec_ToDoType *todo_types;
 } PJToDoTypeController;
 
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
+  void (*action_result)(void*, bool);
+} IPJToDoSettingsFileDelegate;
+
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
+  void (*action_result)(void*, bool);
+} IPJToDoTagFileDelegate;
+
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
+  void (*action_result)(void*, bool);
+} IPJToDoFileDelegate;
+
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
+  void (*action_result)(void*, bool);
+} IPJToDoTypeFileDelegate;
+
 char *ConvertStrToBase64Str(const char *ptr);
 
 void PJ_Authorizations(IPJToDoHttpRequestDelegate delegate, const char *authorization);
@@ -466,6 +490,12 @@ void updateToDoTag(PJToDoTagController *ptr, const ToDoTag *toDoTag);
 
 void updateToDoType(PJToDoTypeController *ptr, const ToDoType *toDoType);
 
-void wirteDBTypeToSQLFile(void);
+void wirteDBSettingsToSQLFile(IPJToDoSettingsFileDelegate delegate);
+
+void wirteDBTagToSQLFile(IPJToDoTagFileDelegate delegate);
+
+void wirteDBToDoToSQLFile(IPJToDoFileDelegate delegate);
+
+void wirteDBTypeToSQLFile(IPJToDoTypeFileDelegate delegate);
 
 #endif /* app_bindings_h */

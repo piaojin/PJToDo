@@ -12,8 +12,16 @@ use db::tables::schema::{Table_ToDoType, Table_ToDoTag, Table_ToDo, Table_ToDoSe
 
 use std::collections::HashMap;
 
+use std::sync::{Arc, Mutex};
+
 lazy_static! {
-    pub static ref StaticPJDBConnectionUtil: PJDBConnectionUtil = { PJDBConnectionUtil::new() };
+    pub static ref StaticPJDBConnectionUtil: PJDBConnectionUtil = {
+        PJDBConnectionUtil::new()
+    };
+    
+    pub static ref StaticArcMutexPJDBConnectionUtil: Arc<Mutex<PJDBConnectionUtil>> = {
+        Arc::new( Mutex::new(PJDBConnectionUtil::new()))
+    };
 
     pub static ref SQLiteUrl: String = {
         let get_db_path = unsafe { CStr::from_ptr(get_db_path()).to_string_lossy().into_owned() };
