@@ -77,7 +77,7 @@ impl PJFileManager {
                             Ok(type_json_string) => {
                                 pj_info!("👉👉: type_json_string: {:?}", type_json_string);
                                 unsafe {
-                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_type_sql_file_path().to_string(), format!("{}/n", type_json_string));
+                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_type_sql_file_path().to_string(), format!("{}\n", type_json_string));
                                     match write_result {
                                         Ok(_) => {
 
