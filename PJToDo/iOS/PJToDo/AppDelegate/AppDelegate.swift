@@ -73,9 +73,9 @@ extension AppDelegate {
     
     //sync gethub data
     func syncGitHub() {
-//        PJReposManager.initGitHubRepos(completedHandle: nil)
-//        PJReposFileManager.initGitHubReposFile(completedHandle: nil)
-//        PJReposFileManager.getReposFile(completedHandle: nil)
+        PJReposManager.initGitHubRepos(completedHandle: nil)
+        PJReposFileManager.initGitHubReposFile(completedHandle: nil)
+        PJReposFileManager.getReposFile(completedHandle: nil)
 //        PJReposFileManager.updateReposFile { (isSuccess, _, error) in
 //            if isSuccess {
 //                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: false)
@@ -93,33 +93,62 @@ extension AppDelegate {
 //            }
 //        }
         
-        let typeFileDelegate = PJToDoTypeFileDelegate { (isSuccess) in
-            if isSuccess {
-                
+        if let shouldUpdateDBToGitHubKey = PJCacheManager.getDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey) as? Bool, shouldUpdateDBToGitHubKey {
+            var writeFileSuccessCount: Int = 0
+            //save data to sql file
+            let typeFileDelegate = PJToDoTypeFileDelegate { (isSuccess) in
+                if isSuccess {
+                    writeFileSuccessCount += 1
+                    if writeFileSuccessCount == 4 {
+                        self.SyncReposFile()
+                    }
+                }
+            }
+            wirteDBTypeToSQLFile(typeFileDelegate.iDelegate)
+            
+            let tagFileDelegate = PJToDoTagFileDelegate { (isSuccess) in
+                if isSuccess {
+                    writeFileSuccessCount += 1
+                    if writeFileSuccessCount == 4 {
+                        self.SyncReposFile()
+                    }
+                }
+            }
+            wirteDBTagToSQLFile(tagFileDelegate.iDelegate)
+            
+            let todoFileDelegate = PJToDoFileDelegate { (isSuccess) in
+                if isSuccess {
+                    writeFileSuccessCount += 1
+                    if writeFileSuccessCount == 4 {
+                        self.SyncReposFile()
+                    }
+                }
+            }
+            wirteDBToDoToSQLFile(todoFileDelegate.iDelegate)
+            
+            let settingsFileDelegate = PJToDoSettingsFileDelegate { (isSuccess) in
+                if isSuccess {
+                    writeFileSuccessCount += 1
+                    if writeFileSuccessCount == 4 {
+                        self.SyncReposFile()
+                    }
+                }
+            }
+            wirteDBSettingsToSQLFile(settingsFileDelegate.iDelegate)
+        }
+    }
+    
+    private func SyncReposFile() {
+        if PJReposFileManager.shared.hasCreateReposDBFileOnGitHub {
+            PJReposFileManager.updateReposFile { (isSuccess, _, error) in
+                if isSuccess {
+                    PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: false)
+                } else {
+                    PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
+                    DDLogError("❌\(error?.message ?? "")❌")
+                }
             }
         }
-        wirteDBTypeToSQLFile(typeFileDelegate.iDelegate)
-        
-        let tagFileDelegate = PJToDoTagFileDelegate { (isSuccess) in
-            if isSuccess {
-                
-            }
-        }
-        wirteDBTagToSQLFile(tagFileDelegate.iDelegate)
-        
-        let todoFileDelegate = PJToDoFileDelegate { (isSuccess) in
-            if isSuccess {
-                
-            }
-        }
-        wirteDBToDoToSQLFile(todoFileDelegate.iDelegate)
-        
-        let settingsFileDelegate = PJToDoSettingsFileDelegate { (isSuccess) in
-            if isSuccess {
-                
-            }
-        }
-        wirteDBSettingsToSQLFile(settingsFileDelegate.iDelegate)
     }
 }
 

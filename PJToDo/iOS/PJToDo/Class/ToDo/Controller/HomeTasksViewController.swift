@@ -255,6 +255,7 @@ extension HomeTasksViewController: ToDoDelegate {
             if !isSuccess {
                 SVProgressHUD.showError(withStatus: "Delete ToDo error!")
             } else {
+                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
                 SVProgressHUD.dismiss()
             }
             self.tableView.reloadData()
@@ -268,6 +269,7 @@ extension HomeTasksViewController: ToDoDelegate {
             if !isSuccess {
                 SVProgressHUD.showError(withStatus: "Update ToDo error!")
             } else {
+                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
                 SVProgressHUD.dismiss()
             }
             self.toDoController.fetchData()

@@ -54,7 +54,7 @@ public struct PJReposFileManager {
     }
     
     public static func createReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
-        SSZipArchive.createZipFile(atPath: PJToDoConst.DBGZipPath, withFilesAtPaths: [PJToDoConst.DBPath])
+        SSZipArchive.createZipFile(atPath: PJToDoConst.DBGZipPath, withFilesAtPaths: [PJToDoConst.DBToDoSQLFilePath, PJToDoConst.DBTypeSQLFilePath, PJToDoConst.DBTagSQLFilePath, PJToDoConst.DBToDoSettingsSQLFilePath])
         SSZipArchive.unzipFile(atPath: PJToDoConst.DBGZipPath, toDestination: PJCacheManager.shared.documnetPath, overwrite: true, password: nil, progressHandler: nil) { (path, isSuccess, error) in
             if isSuccess {
                 do {
@@ -98,7 +98,7 @@ public struct PJReposFileManager {
     }
     
     public static func updateReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
-        SSZipArchive.createZipFile(atPath: PJToDoConst.DBGZipPath, withFilesAtPaths: [PJToDoConst.DBPath])
+        SSZipArchive.createZipFile(atPath: PJToDoConst.DBGZipPath, withFilesAtPaths: [PJToDoConst.DBToDoSQLFilePath, PJToDoConst.DBTypeSQLFilePath, PJToDoConst.DBTagSQLFilePath, PJToDoConst.DBToDoSettingsSQLFilePath])
         SSZipArchive.unzipFile(atPath: PJToDoConst.DBGZipPath, toDestination: PJCacheManager.shared.documnetPath, overwrite: true, password: nil, progressHandler: nil) { (path, isSuccess, error) in
             if isSuccess {
                 guard PJReposFileManager.shared.hasSavedReposDBFileInLocal, PJReposFileManager.shared.hasCreateReposDBFileOnGitHub else {

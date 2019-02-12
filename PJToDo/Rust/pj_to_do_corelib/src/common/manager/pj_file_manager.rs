@@ -120,7 +120,7 @@ impl PJFileManager {
                             Ok(tag_json_string) => {
                                 pj_info!("👉👉: tag_json_string: {:?}", tag_json_string);
                                 unsafe {
-                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_tag_sql_file_path().to_string(), format!("{}/n", tag_json_string));
+                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_tag_sql_file_path().to_string(), format!("{}\n", tag_json_string));
                                     match write_result {
                                         Ok(_) => {
 
@@ -163,7 +163,7 @@ impl PJFileManager {
                             Ok(todo_json_string) => {
                                 pj_info!("👉👉: todo_json_string: {:?}", todo_json_string);
                                 unsafe {
-                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_todo_sql_file_path().to_string(), format!("{}/n", todo_json_string));
+                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_todo_sql_file_path().to_string(), format!("{}\n", todo_json_string));
                                     match write_result {
                                         Ok(_) => {
 
@@ -206,7 +206,7 @@ impl PJFileManager {
                             Ok(setting_json_string) => {
                                 pj_info!("👉👉: setting_json_string: {:?}", setting_json_string);
                                 unsafe {
-                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_todo_settings_sql_file_path().to_string(), format!("{}/n", setting_json_string));
+                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_todo_settings_sql_file_path().to_string(), format!("{}\n", setting_json_string));
                                     match write_result {
                                         Ok(_) => {
 
