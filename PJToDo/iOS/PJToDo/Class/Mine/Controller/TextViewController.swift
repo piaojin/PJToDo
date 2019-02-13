@@ -259,6 +259,7 @@ extension TextViewController: ToDoTagDelegate {
     
     private func handleTagResult(isSuccess: Bool, error: String?) {
         if isSuccess {
+            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
             self.tagController.fetchData()
         } else {
             SVProgressHUD.showError(withStatus: error)

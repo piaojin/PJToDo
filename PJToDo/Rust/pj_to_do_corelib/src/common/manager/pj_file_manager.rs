@@ -51,7 +51,7 @@ impl PJFileManager {
             let buffer_result = File::create(file_path);
             match buffer_result {
                 Ok(mut buffer) => {
-                    buffer.write(string.as_bytes())?;
+                    buffer.write_all(string.as_bytes())?;
                     Ok(())
                 },
                 Err(e) => {
@@ -71,23 +71,13 @@ impl PJFileManager {
                 Ok(todo_types) => {
                     let mut is_success = true;
                     // Serialize it to a JSON string.
+                    let mut content_string: String = String::new();
                     for todo_type in todo_types {
                         let json_string_result = serde_json::to_string(&todo_type);
                         match json_string_result {
                             Ok(type_json_string) => {
                                 pj_info!("👉👉: type_json_string: {:?}", type_json_string);
-                                unsafe {
-                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_type_sql_file_path().to_string(), format!("{}\n", type_json_string));
-                                    match write_result {
-                                        Ok(_) => {
-
-                                        },
-                                        Err(e) => {
-                                            is_success = false;
-                                            pj_error!("❌❌: wirte_db_type_to_sql_file error: {:?}", e);
-                                        }
-                                    }
-                                }
+                                content_string.push_str(&format!("{}\n", type_json_string));
                             }
                             Err(e) => {
                                 is_success = false;
@@ -95,6 +85,20 @@ impl PJFileManager {
                             }
                         }
                     }
+
+                    unsafe {
+                        let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_type_sql_file_path().to_string(), content_string);
+                        match write_result {
+                            Ok(_) => {
+
+                            },
+                            Err(e) => {
+                                is_success = false;
+                                pj_error!("❌❌: wirte_db_type_to_sql_file error: {:?}", e);
+                            }
+                        }
+                    }
+
                     (i_delegate.action_result)(i_delegate.user, is_success);
                 },
                 Err(e) => {
@@ -114,23 +118,13 @@ impl PJFileManager {
                 Ok(todo_tags) => {
                     let mut is_success = true;
                     // Serialize it to a JSON string.
+                    let mut content_string: String = String::new();
                     for todo_tag in todo_tags {
                         let json_string_result = serde_json::to_string(&todo_tag);
                         match json_string_result {
                             Ok(tag_json_string) => {
                                 pj_info!("👉👉: tag_json_string: {:?}", tag_json_string);
-                                unsafe {
-                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_tag_sql_file_path().to_string(), format!("{}\n", tag_json_string));
-                                    match write_result {
-                                        Ok(_) => {
-
-                                        },
-                                        Err(e) => {
-                                            is_success = false;
-                                            pj_error!("❌❌: wirte_db_type_to_sql_file error: {:?}", e);
-                                        }
-                                    }
-                                }
+                                content_string.push_str(&format!("{}\n", tag_json_string));
                             }
                             Err(e) => {
                                 is_success = false;
@@ -138,6 +132,20 @@ impl PJFileManager {
                             }
                         }
                     }
+
+                    unsafe {
+                        let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_tag_sql_file_path().to_string(), content_string);
+                        match write_result {
+                            Ok(_) => {
+
+                            },
+                            Err(e) => {
+                                is_success = false;
+                                pj_error!("❌❌: wirte_db_type_to_sql_file error: {:?}", e);
+                            }
+                        }
+                    }
+
                     (i_delegate.action_result)(i_delegate.user, is_success);
                 },
                 Err(e) => {
@@ -157,23 +165,13 @@ impl PJFileManager {
                 Ok(todos) => {
                     let mut is_success = true;
                     // Serialize it to a JSON string.
+                    let mut content_string: String = String::new();
                     for todo in todos {
                         let json_string_result = serde_json::to_string(&todo);
                         match json_string_result {
                             Ok(todo_json_string) => {
                                 pj_info!("👉👉: todo_json_string: {:?}", todo_json_string);
-                                unsafe {
-                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_todo_sql_file_path().to_string(), format!("{}\n", todo_json_string));
-                                    match write_result {
-                                        Ok(_) => {
-
-                                        },
-                                        Err(e) => {
-                                            is_success = false;
-                                            pj_error!("❌❌: wirte_db_todo_to_sql_file error: {:?}", e);
-                                        }
-                                    }
-                                }
+                                content_string.push_str(&format!("{}\n", todo_json_string));
                             }
                             Err(e) => {
                                 is_success = false;
@@ -181,6 +179,20 @@ impl PJFileManager {
                             }
                         }
                     }
+
+                    unsafe {
+                        let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_todo_sql_file_path().to_string(), content_string);
+                        match write_result {
+                            Ok(_) => {
+
+                            },
+                            Err(e) => {
+                                is_success = false;
+                                pj_error!("❌❌: wirte_db_todo_to_sql_file error: {:?}", e);
+                            }
+                        }
+                    }
+
                     (i_delegate.action_result)(i_delegate.user, is_success);
                 },
                 Err(e) => {
@@ -200,23 +212,13 @@ impl PJFileManager {
                 Ok(todo_settings) => {
                     let mut is_success = true;
                     // Serialize it to a JSON string.
+                    let mut content_string: String = String::new();
                     for todo_setting in todo_settings {
                         let json_string_result = serde_json::to_string(&todo_setting);
                         match json_string_result {
                             Ok(setting_json_string) => {
                                 pj_info!("👉👉: setting_json_string: {:?}", setting_json_string);
-                                unsafe {
-                                    let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_todo_settings_sql_file_path().to_string(), format!("{}\n", setting_json_string));
-                                    match write_result {
-                                        Ok(_) => {
-
-                                        },
-                                        Err(e) => {
-                                            is_success = false;
-                                            pj_error!("❌❌: wirte_db_type_to_sql_file error: {:?}", e);
-                                        }
-                                    }
-                                }
+                                content_string.push_str(&format!("{}\n", setting_json_string));
                             }
                             Err(e) => {
                                 is_success = false;
@@ -224,6 +226,20 @@ impl PJFileManager {
                             }
                         }
                     }
+
+                    unsafe {
+                        let write_result = PJFileManager::wirte_to_file(PJToDoPal::get_db_todo_settings_sql_file_path().to_string(), content_string);
+                        match write_result {
+                            Ok(_) => {
+
+                            },
+                            Err(e) => {
+                                is_success = false;
+                                pj_error!("❌❌: wirte_db_type_to_sql_file error: {:?}", e);
+                            }
+                        }
+                    }
+
                     (i_delegate.action_result)(i_delegate.user, is_success);
                 },
                 Err(e) => {
