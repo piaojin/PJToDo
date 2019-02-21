@@ -24,6 +24,7 @@ class LoginViewController: PJBaseViewController {
         passwordTextField.translatesAutoresizingMaskIntoConstraints = false
         passwordTextField.placeholder = "PassWord"
         passwordTextField.backgroundColor = .white
+        passwordTextField.isSecureTextEntry = true
         return passwordTextField
     }()
     
@@ -125,7 +126,15 @@ class LoginViewController: PJBaseViewController {
                         SVProgressHUD.dismiss()
                         PJReposManager.initGitHubRepos { (isSuccess, _, _) in
                             if isSuccess {
-                                PJReposFileManager.initGitHubReposFile(completedHandle: nil)
+                                PJReposFileManager.initGitHubReposFile(completedHandle: { (isSuccess, _, _) in
+                                    //sync github db sql file data
+                                    PJHttpRequest.downloadFile(requestUrl: "https://raw.githubusercontent.com/piaojin/PJToDoWebDataBase/master/PJToDo/Data/pj_to_db.zip", savePath: PJToDoConst.PJDownLoadToDoZipFilePath) { (isSuccess, errorString, error) in
+                                        if isSuccess {
+                                            // TODO: sync github data to sqlite
+                                            
+                                        }
+                                    }
+                                })
                             }
                         }
                     } else {

@@ -127,7 +127,6 @@ pub unsafe extern "C" fn PJ_DownLoadFile(
         PJHttpReposFileRequest::download_file(request_url, move |result| {
             match result {
             Ok((status, body)) => {
-                println!("***body****: {:#?}", body);
                 let body_string = String::from_utf8_lossy(&body);
                 match PJFileManager::wirte_bytes_to_file(save_path, &body) {
                     Ok(_) => {

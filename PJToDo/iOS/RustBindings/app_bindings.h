@@ -382,15 +382,15 @@ extern const char *get_db_type_sql_file_path(void);
 
 extern const char *get_db_uncompresses_path(void);
 
-void init_core_lib(void);
+void initCoreLib(void);
 
-void init_database(void);
+void initDataBase(void);
 
-void init_db_data_sql_file(void);
+void initDownLoadFolder(const char *folder_path);
+
+void initTables(void);
 
 void init_hello_piaojin(void);
-
-void init_tables(void);
 
 void insertToDo(PJToDoController *ptr, ToDoInsert *toDo);
 
@@ -401,6 +401,10 @@ void insertToDoTag(PJToDoTagController *ptr, ToDoTagInsert *toDoTag);
 void insertToDoType(PJToDoTypeController *ptr, ToDoTypeInsert *toDoType);
 
 int32_t pj_getToDoNumberOfSections(const PJToDoController *ptr);
+
+void removeFile(const char *file_path);
+
+void removeFolder(const char *folder_path, bool all);
 
 void setToDoInsertContent(ToDoInsert *ptr, const char *content);
 

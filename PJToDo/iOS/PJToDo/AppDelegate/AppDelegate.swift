@@ -76,28 +76,6 @@ extension AppDelegate {
         PJReposManager.initGitHubRepos(completedHandle: nil)
         PJReposFileManager.initGitHubReposFile(completedHandle: nil)
         PJReposFileManager.getReposFile(completedHandle: nil)
-//        PJReposFileManager.updateReposFile { (isSuccess, _, error) in
-//            if isSuccess {
-//                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: false)
-//            } else {
-//                DDLogError("❌\(error?.message ?? "")❌")
-//            }
-//        }
-//        if let shouldUpdateDBToGitHub = PJCacheManager.getValue(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, type: Bool.self()), shouldUpdateDBToGitHub {
-//            PJReposFileManager.updateReposFile { (isSuccess, _, error) in
-//                if isSuccess {
-//                    PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: false)
-//                } else {
-//                    DDLogError("❌\(error?.message ?? "")❌")
-//                }
-//            }
-//        }
-        
-        PJHttpRequest.downloadFile(requestUrl: "https://raw.githubusercontent.com/piaojin/PJToDoWebDataBase/master/PJToDo/Data/pj_to_db.zip", savePath: PJToDoConst.PJDownLoadToDoZipFilePath) { (isSuccess, errorString, error) in
-            if isSuccess {
-                
-            }
-        }
         
         if let shouldUpdateDBToGitHubKey = PJCacheManager.getDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey) as? Bool, shouldUpdateDBToGitHubKey {
             var writeFileSuccessCount: Int = 0
@@ -106,7 +84,7 @@ extension AppDelegate {
                 if isSuccess {
                     writeFileSuccessCount += 1
                     if writeFileSuccessCount == 4 {
-                        self.SyncReposFile()
+                        self.syncReposFile()
                     }
                 }
             }
@@ -116,7 +94,7 @@ extension AppDelegate {
                 if isSuccess {
                     writeFileSuccessCount += 1
                     if writeFileSuccessCount == 4 {
-                        self.SyncReposFile()
+                        self.syncReposFile()
                     }
                 }
             }
@@ -126,7 +104,7 @@ extension AppDelegate {
                 if isSuccess {
                     writeFileSuccessCount += 1
                     if writeFileSuccessCount == 4 {
-                        self.SyncReposFile()
+                        self.syncReposFile()
                     }
                 }
             }
@@ -136,7 +114,7 @@ extension AppDelegate {
                 if isSuccess {
                     writeFileSuccessCount += 1
                     if writeFileSuccessCount == 4 {
-                        self.SyncReposFile()
+                        self.syncReposFile()
                     }
                 }
             }
@@ -144,13 +122,11 @@ extension AppDelegate {
         }
     }
     
-    private func SyncReposFile() {
+    private func syncReposFile() {
         if PJReposFileManager.shared.hasCreateReposDBFileOnGitHub {
             PJReposFileManager.updateReposFile { (isSuccess, _, error) in
-                if isSuccess {
-                    PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: false)
-                } else {
-                    PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
+                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: isSuccess)
+                if !isSuccess {
                     DDLogError("❌\(error?.message ?? "")❌")
                 }
             }

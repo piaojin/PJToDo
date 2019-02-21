@@ -55,6 +55,7 @@ public struct PJUserInfoManager {
         PJUserInfoManager.removeUserInfo()
         PJReposManager.removeRepos()
         PJ_LogOut()
+        removeFolder(PJToDoConst.PJToDoData, true)
         if let window = UIApplication.shared.delegate?.window {
             window?.rootViewController = UINavigationController(rootViewController: WelcomeViewController())
             window?.makeKeyAndVisible()

@@ -55,9 +55,7 @@ pub unsafe extern "C" fn ConvertStrToBase64Str(ptr: *const c_char) -> *mut c_cha
 #[no_mangle]
 pub unsafe extern "C" fn ConvertBase64StrToStr(ptr: *const c_char) -> *mut c_char {
     assert!(ptr != std::ptr::null());
-    let base64_string = unsafe {
-        CStr::from_ptr(ptr).to_string_lossy().into_owned()
-    };
+    let base64_string = CStr::from_ptr(ptr).to_string_lossy().into_owned();
     let mut temp_c_char: *mut c_char = std::ptr::null_mut();
     let res = base64_string.from_base64();
     if res.is_ok() {

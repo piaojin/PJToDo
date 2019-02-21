@@ -141,11 +141,11 @@ impl PJDBConnectionUtil {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn init_database() {
+pub unsafe extern "C" fn initDataBase() {
     StaticPJDBConnectionUtil.lock().unwrap().init_database();
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn init_tables() {
+pub unsafe extern "C" fn initTables() {
     StaticPJDBConnectionUtil.lock().unwrap().init_tables();
 }

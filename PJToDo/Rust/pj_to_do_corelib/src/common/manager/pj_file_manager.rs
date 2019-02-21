@@ -16,12 +16,23 @@ use service::to_do_type_service::PJToDoTypeService;
 use service::to_do_tag_service::PJToDoTagService;
 use service::to_do_settings_service::PJToDoSettingsService;
 use service::to_do_service::PJToDoService;
-use std::ffi::{CString};
-
+use std::ffi::{CStr, CString};
+use std::fs;
+use libc::{c_char};
 
 pub struct PJFileManager;
 
 impl PJFileManager {
+
+    pub fn init_download_folder(folder_path: String) {
+        match fs::metadata(&folder_path) {
+            Ok(_) => {},
+            Err(e) => {
+                let _ = fs::create_dir(&folder_path);
+            }
+        }
+    }
+
     fn init_db_data_sql_file() {
         unsafe {
             PJFileManager::init_db_sql_file(PJToDoPal::get_db_todo_sql_file_path().to_string());
@@ -44,6 +55,21 @@ impl PJFileManager {
                 }
             }
         }
+    }
+
+    pub fn remove_folder(folder_path: String, all: bool) -> std::io::Result<()> {
+        if all {
+            fs::remove_dir_all(&folder_path)?;
+            Ok(())
+        } else {
+            fs::remove_dir(&folder_path)?;
+            Ok(())
+        }
+    }
+
+    pub fn remove_file(file_path: String) -> std::io::Result<()> {
+        fs::remove_file(&file_path)?;
+        Ok(())
     }
 
     pub fn wirte_to_file(file_path: String, string: String) -> std::io::Result<()> {
@@ -258,8 +284,24 @@ impl PJFileManager {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn init_db_data_sql_file() {
-    PJFileManager::init_db_data_sql_file();
+pub unsafe extern "C" fn initDownLoadFolder(folder_path: *const c_char) {
+    assert!(folder_path != std::ptr::null());
+    let folder_path = CStr::from_ptr(folder_path).to_string_lossy().into_owned();
+    PJFileManager::init_download_folder(folder_path);
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn removeFolder(folder_path: *const c_char, all: bool) {
+    assert!(folder_path != std::ptr::null());
+    let folder_path = CStr::from_ptr(folder_path).to_string_lossy().into_owned();
+    PJFileManager::remove_folder(folder_path, all);
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn removeFile(file_path: *const c_char) {
+    assert!(file_path != std::ptr::null());
+    let file_path = CStr::from_ptr(file_path).to_string_lossy().into_owned();
+    PJFileManager::remove_file(file_path);
 }
 
 #[no_mangle]

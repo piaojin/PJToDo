@@ -1,6 +1,6 @@
 #[allow(unused_imports)]
 use common::pj_logger::PJLogger;
-use db::pj_db_connection_util::pj_db_connection_util::{init_database, init_tables};
+use db::pj_db_connection_util::pj_db_connection_util::{initDataBase, initTables};
 
 #[no_mangle]
 pub unsafe extern "C" fn init_hello_piaojin() {
@@ -10,10 +10,10 @@ pub unsafe extern "C" fn init_hello_piaojin() {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn init_core_lib() {
+pub unsafe extern "C" fn initCoreLib() {
     init_hello_piaojin();
-    init_database();
-    init_tables();
+    initDataBase();
+    initTables();
     //使用log之前需要初始化，并且只需要初始化一次
     let _ = PJLogger::pj_init_logger();
 }
