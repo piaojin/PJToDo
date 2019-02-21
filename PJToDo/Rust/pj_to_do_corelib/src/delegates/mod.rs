@@ -8,3 +8,4 @@ pub mod to_do_file_delegate;
 pub mod to_do_type_file_delegate;
 pub mod to_do_tag_file_delegate;
 pub mod to_do_settings_file_delegate;
+pub mod to_do_download_file_delegate;

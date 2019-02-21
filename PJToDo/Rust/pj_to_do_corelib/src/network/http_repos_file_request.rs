@@ -87,6 +87,18 @@ impl PJHttpReposFileRequest {
         }
     }
 
+    pub fn download_file<F>(request_url: String, completion_handler: F)
+    where
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+            + std::marker::Sync
+            + Send
+            + 'static
+            + std::clone::Clone, {
+        let mut request = PJHttpRequest::default_request(&request_url);
+        *request.method_mut() = Method::GET;
+        PJHttpRequest::make_http(request, completion_handler);
+    }
+
     fn crud_repos_file<F>(
         request_url: String,
         file_request_body: ReposFileBody,

@@ -97,6 +97,24 @@ public struct PJHttpRequest {
         PJ_GetReposFile(httpRequestConfig.iDelegate, requestUrl)
     }
     
+    public static func downloadFile(requestUrl: String, savePath: String, responseBlock: ((_ isSuccess : Bool, _ data: String?, _ error: PJHttpError?) -> Void)?) {
+        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
+            if isSuccess {
+                responseBlock?(isSuccess, "", nil)
+            } else {
+                if let tempPointer = pointer {
+                    let errorString = String.create(cString: tempPointer)
+                    let httpError = PJHttpError(errorCode: statusCode, errorMessage: errorString)
+                    responseBlock?(isSuccess, errorString, httpError)
+                } else {
+                    let httpError = PJHttpError(errorCode: statusCode, errorMessage: "download file unknow error")
+                    responseBlock?(isSuccess, "download file unknow error", httpError)
+                }
+            }
+        })
+        PJ_DownLoadFile(httpRequestConfig.iDelegate, requestUrl, savePath)
+    }
+    
     private static func createHttpRequestConfig<T: Codable>(actionName: String, responseBlock: ((_ isSuccess : Bool, _ data: T?, _ error: PJHttpError?) -> Void)?) -> PJHttpRequestConfig {
         let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
             DispatchQueue.main.async(execute: {

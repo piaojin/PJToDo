@@ -200,6 +200,8 @@ void PJ_DeleteRepos(IPJToDoHttpRequestDelegate delegate, const char *repos_url);
 
 void PJ_DeleteReposFile(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
 
+void PJ_DownLoadFile(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *save_path);
+
 void PJ_FindToDoByTitle(PJToDoSearchController *ptr, const char *title);
 
 void PJ_FindToDoLikeTitle(PJToDoSearchController *ptr, const char *title);

@@ -93,6 +93,12 @@ extension AppDelegate {
 //            }
 //        }
         
+        PJHttpRequest.downloadFile(requestUrl: "https://raw.githubusercontent.com/piaojin/PJToDoWebDataBase/master/PJToDo/Data/pj_to_db.zip", savePath: PJToDoConst.PJDownLoadToDoZipFilePath) { (isSuccess, errorString, error) in
+            if isSuccess {
+                
+            }
+        }
+        
         if let shouldUpdateDBToGitHubKey = PJCacheManager.getDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey) as? Bool, shouldUpdateDBToGitHubKey {
             var writeFileSuccessCount: Int = 0
             //save data to sql file

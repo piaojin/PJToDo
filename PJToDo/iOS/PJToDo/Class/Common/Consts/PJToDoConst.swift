@@ -24,4 +24,6 @@ import UIKit
     @objc public static let DBGZipPath = PJCacheManager.shared.documnetPath + "/\(PJToDoConst.DBGZipName)";
     @objc public static let DBUnCompressesPath = PJCacheManager.shared.documnetPath + "/\(PJToDoConst.DBUnCompressesName)";
     @objc public static let PJToDoWebDataBase = "PJToDoWebDataBase"
+    @objc public static let PJDownLoadFolderPath = PJCacheManager.shared.documnetPath + "/Download/"
+    @objc public static let PJDownLoadToDoZipFilePath = PJToDoConst.PJDownLoadFolderPath + "\(PJToDoConst.DBGZipName)"
 }

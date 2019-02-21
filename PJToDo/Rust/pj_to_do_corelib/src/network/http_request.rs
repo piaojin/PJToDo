@@ -199,7 +199,7 @@ impl PJHttpRequest {
             })
             .from_err::<FetchError>()
             // use the body after concatenation
-            .and_then(|body| Ok(body))
+        .and_then(|body: hyper::Chunk| Ok(body))
             .from_err();
 
         let response_data = response

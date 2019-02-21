@@ -46,16 +46,22 @@ impl PJFileManager {
         }
     }
 
-    fn wirte_to_file(file_path: String, string: String) -> std::io::Result<()> {
+    pub fn wirte_to_file(file_path: String, string: String) -> std::io::Result<()> {
+        unsafe {
+            PJFileManager::wirte_bytes_to_file(file_path, string.as_bytes())
+        }
+    }
+
+    pub fn wirte_bytes_to_file(file_path: String, bytes: &[u8]) -> std::io::Result<()> {
         unsafe {
             let buffer_result = File::create(file_path);
             match buffer_result {
                 Ok(mut buffer) => {
-                    buffer.write_all(string.as_bytes())?;
+                    buffer.write_all(bytes)?;
                     Ok(())
                 },
                 Err(e) => {
-                    pj_error!("❌create db_data_sql_file error: {:}❌", e);
+                    pj_error!("❌create file error: {:}❌", e);
                     Err(e)
                 }
             }
