@@ -19,7 +19,7 @@ public extension String {
     }
     
     public static func convertToBase64String(str: String, encoding: String.Encoding = .utf8) -> String {
-        return self.create(cString: ConvertStrToBase64Str(str), encoding: encoding)
+        return self.create(cString: convertStrToBase64Str(str), encoding: encoding)
     }
     
     public func pj_bridgeObjectiveC() -> NSString {

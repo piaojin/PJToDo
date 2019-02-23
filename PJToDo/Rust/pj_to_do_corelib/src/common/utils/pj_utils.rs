@@ -29,20 +29,10 @@ impl PJHttpUtils {
         let v = body.to_vec();
         String::from_utf8_lossy(&v).to_string()
     }
-
-    pub fn parse_data<'a, T>(body: &'a hyper::Chunk) -> Result<T, serde_json::Error>
-    where
-        T: std::fmt::Debug + PJSerdeDeserialize<'a>,
-    {
-        // try to parse as json with serde_json
-        let parse_result = serde_json::from_slice(body);
-        pj_info!("parse data result: {:?}", parse_result);
-        parse_result
-    }
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn ConvertStrToBase64Str(ptr: *const c_char) -> *mut c_char {
+pub unsafe extern "C" fn convertStrToBase64Str(ptr: *const c_char) -> *mut c_char {
     assert!(ptr != std::ptr::null());
     let original_string = CStr::from_ptr(ptr).to_string_lossy().into_owned();
     let converted_str = CString::new(original_string).unwrap(); //unsafe
@@ -53,7 +43,7 @@ pub unsafe extern "C" fn ConvertStrToBase64Str(ptr: *const c_char) -> *mut c_cha
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn ConvertBase64StrToStr(ptr: *const c_char) -> *mut c_char {
+pub unsafe extern "C" fn convertBase64StrToStr(ptr: *const c_char) -> *mut c_char {
     assert!(ptr != std::ptr::null());
     let base64_string = CStr::from_ptr(ptr).to_string_lossy().into_owned();
     let mut temp_c_char: *mut c_char = std::ptr::null_mut();

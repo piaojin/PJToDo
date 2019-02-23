@@ -13,10 +13,22 @@ import SQLite3
 public struct PJToDoCoreLibInit {
     static public func initRustCoreLib() {
         DDLogInfo("******start init CoreLib******")
-        initDownLoadFolder(PJToDoConst.PJToDoData)
+        initFolder(PJToDoConst.PJToDoData)
         initCoreLib()
-        initDownLoadFolder(PJToDoConst.PJDownLoadFolderPath)
+        initFolder(PJToDoConst.PJDownLoadFolderPath)
         test_pal_from_rust()
         DDLogInfo("******end init CoreLib******")
+    }
+    
+    static public func initFolderIfNeed() {
+        initFolder(PJToDoConst.PJToDoData)
+        initFolder(PJToDoConst.PJDownLoadFolderPath)
+        initDataBase();
+        initTables();
+    }
+    
+    static public func initDBIfNeed() {
+        initDataBase();
+        initTables();
     }
 }

@@ -41,12 +41,6 @@ impl ToDoTypeInsert {
     }
 }
 
-// impl Drop for ToDoTypeInsert {
-//     fn drop(&mut self) {
-//         println!("ToDoTypeInsert -> drop");
-//     }
-// }
-
 /*** extern "C" ***/
 
 #[no_mangle]

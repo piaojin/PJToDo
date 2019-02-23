@@ -207,6 +207,7 @@ extension MineViewController: UITableViewDelegate, UITableViewDataSource {
                     SVProgressHUD.showError(withStatus: "Update email or remind days error!")
                 }
             }
+            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
         }
         
         editAlert.addAction(cancelAction)

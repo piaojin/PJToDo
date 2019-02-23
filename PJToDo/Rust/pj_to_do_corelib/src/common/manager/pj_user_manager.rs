@@ -1,11 +1,10 @@
 extern crate hyper;
 use std::sync::Mutex;
 use mine::user::User;
-use common::pj_serialize::PJSerdeDeserialize;
 use network::http_request::FetchError;
-use common::utils::pj_utils::{PJHttpUtils};
 use common::manager::pj_repos_manager::PJReposManager;
 use common::manager::pj_repos_file_manager::PJReposFileManager;
+use common::pj_serialize::{PJSerializeUtils, PJSerdeDeserialize};
 
 lazy_static! {
     pub static ref USERINFO: Mutex<User> = Mutex::new(User::new());
@@ -26,7 +25,7 @@ impl PJUserManager {
         match result {
             Ok((status, body)) => {
                 if status.is_success() {
-                    let parse_result = PJHttpUtils::parse_data::<User>(&body);
+                    let parse_result = PJSerializeUtils::from_hyper_chunk::<User>(&body);
                     match parse_result {
                         Ok(user) => {
                             PJUserManager::update_user(user);

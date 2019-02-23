@@ -22,7 +22,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         self.window = UIWindow(frame: UIScreen.main.bounds)
         self.window?.makeKeyAndVisible()
         self.initRootViewController()
-        self.syncGitHub()
+        self.initGitHub()
         return true
     }
 
@@ -38,7 +38,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        self.syncGitHub()
+        PJToDoCoreLibInit.initFolderIfNeed()
+        PJToDoCoreLibInit.initDBIfNeed()
+        self.initGitHub()
+        self.fetchGitHubData()
+        self.prepareSQLDataToFile()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -71,12 +75,17 @@ extension AppDelegate {
         self.window?.rootViewController = rootTabBarViewController
     }
     
-    //sync gethub data
-    func syncGitHub() {
+    //init gethub data
+    func initGitHub() {
         PJReposManager.initGitHubRepos(completedHandle: nil)
         PJReposFileManager.initGitHubReposFile(completedHandle: nil)
+    }
+    
+    private func fetchGitHubData() {
         PJReposFileManager.getReposFile(completedHandle: nil)
-        
+    }
+    
+    private func prepareSQLDataToFile() {
         if let shouldUpdateDBToGitHubKey = PJCacheManager.getDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey) as? Bool, shouldUpdateDBToGitHubKey {
             var writeFileSuccessCount: Int = 0
             //save data to sql file

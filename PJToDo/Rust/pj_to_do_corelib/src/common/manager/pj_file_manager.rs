@@ -24,7 +24,7 @@ pub struct PJFileManager;
 
 impl PJFileManager {
 
-    pub fn init_download_folder(folder_path: String) {
+    pub fn init_folder(folder_path: String) {
         match fs::metadata(&folder_path) {
             Ok(_) => {},
             Err(e) => {
@@ -70,6 +70,19 @@ impl PJFileManager {
     pub fn remove_file(file_path: String) -> std::io::Result<()> {
         fs::remove_file(&file_path)?;
         Ok(())
+    }
+
+    pub fn read_file_content<'a>(file_path: &'a str) -> String {
+        let mut file_content = String::new();
+        match File::open(file_path) {
+            Ok(mut file) => {
+                file.read_to_string(&mut file_content);
+            },
+            Err(e) => {
+                pj_error!("read_file_content open file error: {:?}", e);
+            }
+        }
+        file_content
     }
 
     pub fn wirte_to_file(file_path: String, string: String) -> std::io::Result<()> {
@@ -284,10 +297,10 @@ impl PJFileManager {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn initDownLoadFolder(folder_path: *const c_char) {
+pub unsafe extern "C" fn initFolder(folder_path: *const c_char) {
     assert!(folder_path != std::ptr::null());
     let folder_path = CStr::from_ptr(folder_path).to_string_lossy().into_owned();
-    PJFileManager::init_download_folder(folder_path);
+    PJFileManager::init_folder(folder_path);
 }
 
 #[no_mangle]

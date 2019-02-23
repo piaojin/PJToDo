@@ -1,9 +1,8 @@
 extern crate hyper;
 use std::sync::Mutex;
 use repos::repos_content::ReposFile;
-use common::pj_serialize::PJSerdeDeserialize;
+use common::pj_serialize::{PJSerializeUtils, PJSerdeDeserialize};
 use network::http_request::FetchError;
-use common::utils::pj_utils::{PJHttpUtils};
 
 lazy_static! {
     pub static ref REPOSFILE: Mutex<ReposFile> = Mutex::new(ReposFile::new());
@@ -25,7 +24,7 @@ impl PJReposFileManager {
         match result {
             Ok((status, body)) => {
                 if status.is_success() {
-                    let parse_result = PJHttpUtils::parse_data::<ReposFile>(&body);
+                    let parse_result = PJSerializeUtils::from_hyper_chunk::<ReposFile>(&body);
                     match parse_result {
                         Ok(repos_file) => {
                             PJReposFileManager::update_repos_file(repos_file);

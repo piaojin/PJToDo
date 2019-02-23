@@ -36,6 +36,7 @@ pub mod network;
 use network::http_user_request::PJHttpUserRequest;
 use network::http_repos_request::PJHttpReposRequest;
 use common::request_config::PJRequestConfig;
+use common::pj_serialize::{PJSerializeUtils, PJSerdeDeserialize};
 
 pub mod mine;
 
@@ -70,7 +71,7 @@ fn main() {
     // let data = PJHttpRequest::fetch_response_data();
     // let result = data
     //     .map(|body: hyper::Chunk| {
-    //         let user: User = PJHttpRequest::parse_data::<User>(&body);
+    //         let user: User = PJSerializeUtils::from_hyper_chunk::<User>(&body);
     //         pj_info!("user: {:?}", user);
     //     })
     //     // if there was an error print it

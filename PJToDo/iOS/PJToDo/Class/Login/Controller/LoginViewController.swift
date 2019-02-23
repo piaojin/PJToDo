@@ -111,6 +111,8 @@ class LoginViewController: PJBaseViewController {
     
     private func initData() {
         self.loginButton.addTarget(self, action: #selector(loginAction), for: .touchUpInside)
+        PJToDoCoreLibInit.initFolderIfNeed()
+        PJToDoCoreLibInit.initDBIfNeed()
     }
     
     @objc private func loginAction() {
@@ -127,11 +129,10 @@ class LoginViewController: PJBaseViewController {
                         PJReposManager.initGitHubRepos { (isSuccess, _, _) in
                             if isSuccess {
                                 PJReposFileManager.initGitHubReposFile(completedHandle: { (isSuccess, _, _) in
-                                    //sync github db sql file data
+                                    //download github data file
                                     PJHttpRequest.downloadFile(requestUrl: "https://raw.githubusercontent.com/piaojin/PJToDoWebDataBase/master/PJToDo/Data/pj_to_db.zip", savePath: PJToDoConst.PJDownLoadToDoZipFilePath) { (isSuccess, errorString, error) in
                                         if isSuccess {
-                                            // TODO: sync github data to sqlite
-                                            
+                                            PJDBDataManager.shared.syncGitHubDataToDB()
                                         }
                                     }
                                 })

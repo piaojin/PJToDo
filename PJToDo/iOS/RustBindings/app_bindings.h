@@ -127,6 +127,19 @@ typedef struct {
 typedef struct {
   void *user;
   void (*destroy)(void*);
+  void (*sync_todo_data_result)(void*, bool);
+  void (*sync_type_data_result)(void*, bool);
+  void (*sync_tag_data_result)(void*, bool);
+  void (*sync_settings_data_result)(void*, bool);
+} IPJToDoSyncGitHubDataDelegate;
+
+typedef struct {
+  IPJToDoSyncGitHubDataDelegate delegate;
+} PJToDoSyncGitHubDataController;
+
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
   void (*insert_result)(void*, bool);
   void (*delete_result)(void*, bool);
   void (*update_result)(void*, bool);
@@ -186,10 +199,6 @@ typedef struct {
   void (*action_result)(void*, bool);
 } IPJToDoTypeFileDelegate;
 
-char *ConvertBase64StrToStr(const char *ptr);
-
-char *ConvertStrToBase64Str(const char *ptr);
-
 void PJ_Authorizations(IPJToDoHttpRequestDelegate delegate, const char *authorization);
 
 void PJ_CreateRepos(IPJToDoHttpRequestDelegate delegate);
@@ -222,11 +231,17 @@ int32_t PJ_SearchToDoResultCount(const PJToDoSearchController *ptr);
 
 void PJ_UpdateReposFile(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
 
+char *convertBase64StrToStr(const char *ptr);
+
+char *convertStrToBase64Str(const char *ptr);
+
 PJToDoController *createPJToDoController(IPJToDoDelegate delegate);
 
 PJToDoSearchController *createPJToDoSearchController(IPJToDoSearchDelegate delegate);
 
 PJToDoSettingsController *createPJToDoSettingsController(IPJToDoSettingsDelegate delegate);
+
+PJToDoSyncGitHubDataController *createPJToDoSyncGitHubDataController(IPJToDoSyncGitHubDataDelegate delegate);
 
 PJToDoTagController *createPJToDoTagController(IPJToDoTagDelegate delegate);
 
@@ -281,6 +296,8 @@ void free_rust_PJToDoController(PJToDoController *ptr);
 void free_rust_PJToDoSearchController(PJToDoSearchController *ptr);
 
 void free_rust_PJToDoSettingsController(PJToDoSettingsController *ptr);
+
+void free_rust_PJToDoSyncGitHubDataController(PJToDoSyncGitHubDataController *ptr);
 
 void free_rust_PJToDoTagController(PJToDoTagController *ptr);
 
@@ -386,7 +403,7 @@ void initCoreLib(void);
 
 void initDataBase(void);
 
-void initDownLoadFolder(const char *folder_path);
+void initFolder(const char *folder_path);
 
 void initTables(void);
 
@@ -469,6 +486,14 @@ void setToDoTypeId(ToDoType *ptr, int32_t type_id);
 void setToDoTypeInsertName(ToDoTypeInsert *ptr, const char *type_name);
 
 void setToDoTypeName(ToDoType *ptr, const char *type_name);
+
+void syncGitHubSettingsData(PJToDoSyncGitHubDataController *ptr, const char *file_path);
+
+void syncGitHubTagData(PJToDoSyncGitHubDataController *ptr, const char *file_path);
+
+void syncGitHubToDoData(PJToDoSyncGitHubDataController *ptr, const char *file_path);
+
+void syncGitHubTypeData(PJToDoSyncGitHubDataController *ptr, const char *file_path);
 
 extern void test_pal_from_Swift(void);
 

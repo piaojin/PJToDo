@@ -71,6 +71,8 @@
 		76C6354B21B96F1B006CD7D9 /* MineFooterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C6354A21B96F1B006CD7D9 /* MineFooterView.swift */; };
 		90B883A67742CBA20B227A90 /* Pods_PJToDoUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CE77F377829623B30EB82FC6 /* Pods_PJToDoUITests.framework */; };
 		CA3C428921C2875800C71C6D /* SelectedComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C428721C2875800C71C6D /* SelectedComposeView.swift */; };
+		CA40FDD42220483600C9FF4A /* PJDBDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40FDD32220483600C9FF4A /* PJDBDataManager.swift */; };
+		CA40FDD72221405C00C9FF4A /* ToDoSyncGitHubDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA40FDD62221405C00C9FF4A /* ToDoSyncGitHubDataController.swift */; };
 		CA88DECF21C7D2DB007CFB0B /* SelectedComposeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88DECE21C7D2DB007CFB0B /* SelectedComposeCell.swift */; };
 		CA88DED121CE71EE007CFB0B /* libpj_to_do_corelib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CA88DED021CE71EE007CFB0B /* libpj_to_do_corelib.a */; };
 		CA88DED321CE7B7F007CFB0B /* ToDoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88DED221CE7B7F007CFB0B /* ToDoCell.swift */; };
@@ -226,6 +228,8 @@
 		8C3D8277E35F85C284FD0CC5 /* Pods_PJToDo.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDo.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD3758FA50254166E4D59F88 /* Pods_PJToDoTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PJToDoTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA3C428721C2875800C71C6D /* SelectedComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedComposeView.swift; sourceTree = "<group>"; };
+		CA40FDD32220483600C9FF4A /* PJDBDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJDBDataManager.swift; sourceTree = "<group>"; };
+		CA40FDD62221405C00C9FF4A /* ToDoSyncGitHubDataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoSyncGitHubDataController.swift; sourceTree = "<group>"; };
 		CA88DECE21C7D2DB007CFB0B /* SelectedComposeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedComposeCell.swift; sourceTree = "<group>"; };
 		CA88DED021CE71EE007CFB0B /* libpj_to_do_corelib.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libpj_to_do_corelib.a; path = ../Rust/pj_to_do_corelib/target/universal/debug/libpj_to_do_corelib.a; sourceTree = "<group>"; };
 		CA88DED221CE7B7F007CFB0B /* ToDoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCell.swift; sourceTree = "<group>"; };
@@ -450,6 +454,7 @@
 		764882ED2167592800F11106 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				CA40FDD52221404600C9FF4A /* ToDoSyncGitHubData */,
 				764882EF2167592800F11106 /* ToDoTag */,
 				764882F02167592800F11106 /* ToDo */,
 				764882F12167592800F11106 /* Search */,
@@ -756,6 +761,14 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		CA40FDD52221404600C9FF4A /* ToDoSyncGitHubData */ = {
+			isa = PBXGroup;
+			children = (
+				CA40FDD62221405C00C9FF4A /* ToDoSyncGitHubDataController.swift */,
+			);
+			path = ToDoSyncGitHubData;
+			sourceTree = "<group>";
+		};
 		CAAD248C21E9BA3C0042FB94 /* Managers */ = {
 			isa = PBXGroup;
 			children = (
@@ -765,6 +778,7 @@
 				CAAD249E21EB2D330042FB94 /* PJKeychainManager.swift */,
 				CAEEDC9E21FC50970038B79E /* PJReposManager.swift */,
 				CAEEDCA021FC8BF60038B79E /* PJReposFileManager.swift */,
+				CA40FDD32220483600C9FF4A /* PJDBDataManager.swift */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1173,10 +1187,12 @@
 				7654A8A621BC185C003464E9 /* SelectComposeTypeView.swift in Sources */,
 				7648831D21675B3500F11106 /* ServiceService.swift in Sources */,
 				7693784421B3EEF600473382 /* HomeTasksViewController.swift in Sources */,
+				CA40FDD72221405C00C9FF4A /* ToDoSyncGitHubDataController.swift in Sources */,
 				769769B321B0CE9A00AB3569 /* PJBaseTableViewCell.swift in Sources */,
 				764883302168B4F600F11106 /* PJToDoDBManager.swift in Sources */,
 				CAEEDC9D21FC43120038B79E /* PJHttpReponseStatusCode.swift in Sources */,
 				CA3C428921C2875800C71C6D /* SelectedComposeView.swift in Sources */,
+				CA40FDD42220483600C9FF4A /* PJDBDataManager.swift in Sources */,
 				CAAD249F21EB2D330042FB94 /* PJKeychainManager.swift in Sources */,
 				CAAD248E21E9BA3C0042FB94 /* PJUserInfoManager.swift in Sources */,
 				CAEEDCA121FC8BF60038B79E /* PJReposFileManager.swift in Sources */,
