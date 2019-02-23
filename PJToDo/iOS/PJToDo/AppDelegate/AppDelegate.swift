@@ -80,7 +80,9 @@ extension AppDelegate {
     }
     
     private func fetchGitHubData() {
-        PJReposFileManager.getReposFile(completedHandle: nil)
+        if PJUserInfoManager.shared.isLogin {
+            PJReposFileManager.getReposFile(completedHandle: nil)
+        }
     }
     
     private func prepareSQLDataToFile() {
@@ -130,7 +132,7 @@ extension AppDelegate {
     }
     
     private func syncReposFile() {
-        if PJReposFileManager.shared.hasCreateReposDBFileOnGitHub {
+        if PJReposFileManager.shared.hasCreateReposDBFileOnGitHub, PJUserInfoManager.shared.isLogin {
             PJReposFileManager.updateReposFile { (isSuccess, _, error) in
                 PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: isSuccess)
                 if !isSuccess {

@@ -170,7 +170,7 @@ public struct PJReposFileManager {
     }
     
     public static func initGitHubReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
-        if !PJReposFileManager.shared.hasCreateReposDBFileOnGitHub {
+        if !PJReposFileManager.shared.hasCreateReposDBFileOnGitHub, PJUserInfoManager.shared.isLogin {
             PJReposFileManager.createReposFile(completedHandle: completedHandle)
         }
     }
