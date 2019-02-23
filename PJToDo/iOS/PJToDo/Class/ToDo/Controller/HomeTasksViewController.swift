@@ -287,7 +287,6 @@ extension HomeTasksViewController: ToDoDelegate {
     
     func updateOverDueToDosResult(isSuccess: Bool) {
         DispatchQueue.main.async {
-            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
             self.toDoController.fetchData()
         }
     }

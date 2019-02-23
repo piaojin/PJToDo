@@ -20,7 +20,7 @@ class PJDBDataManager: NSObject {
     public func syncGitHubDataToDB() {
         DispatchQueue.global().async {
             removeFolder(PJToDoConst.PJDownLoadToDoUnZipFileFolderPath, true)
-            SSZipArchive.unzipFile(atPath: PJToDoConst.PJDownLoadToDoZipFilePath, toDestination: PJToDoConst.PJDownLoadFolderPath, progressHandler: nil, completionHandler: { (path, isSuccess, error) in
+            SSZipArchive.unzipFile(atPath: PJToDoConst.PJDownLoadToDoZipFilePath, toDestination: PJToDoConst.PJDownLoadToDoUnZipFileFolderPath, progressHandler: nil, completionHandler: { (path, isSuccess, error) in
                 if isSuccess {
                     self.toDoSyncGitHubDataController.syncGitHubTypeDataResult(filePath: PJToDoConst.PJUnZipGitHubTypeSQLFilePath)
                 }

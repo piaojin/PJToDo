@@ -513,6 +513,8 @@ char *todoTitleAtSection(const PJToDoController *ptr, int32_t section);
 
 const ToDoType *todoTypeAtIndex(const PJToDoTypeController *ptr, int32_t index);
 
+void updateDBConnection(void);
+
 void updateOverDueToDos(const PJToDoController *ptr);
 
 void updateToDo(PJToDoController *ptr, const ToDoQuery *toDo);

@@ -335,8 +335,8 @@ impl PJToDoController {
                 pj_info!("update_overdue_todos success!");
                 (i_delegate.update_overdue_todos)(i_delegate.user, true);
             }
-            Err(_) => {
-                pj_error!("update_overdue_todos faild!");
+            Err(e) => {
+                pj_error!("❌❌update_overdue_todos faild: {:?}!", e);
                 (i_delegate.update_overdue_todos)(i_delegate.user, false);
             }
         }

@@ -60,10 +60,20 @@ impl PJSerializeUtils {
         for<'de> T: serde::Deserialize<'de>, 
         {
             let mut v: Vec<Result<T, serde_json::Error>> = Vec::new();
-            file_content.lines().map(|line| {
-                let parse_line_result = PJSerializeUtils::from_str::<T>(line);
-                v.push(parse_line_result);
-            });
+            // file_content.lines().map(|line| {
+                // let parse_line_result = PJSerializeUtils::from_str::<T>(line);
+                // v.push(parse_line_result);
+            // });
+            let lines_vec: Vec<Vec<&'a str>> = file_content.lines().map(|line| {
+                line.split_whitespace().collect()
+            }).collect();
+
+            for line_vec in lines_vec {
+                for line in line_vec {
+                    let parse_line_result = PJSerializeUtils::from_str::<T>(line);
+                    v.push(parse_line_result);
+                }
+            }
             v
         }
 }

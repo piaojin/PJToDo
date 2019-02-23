@@ -112,6 +112,7 @@ class LoginViewController: PJBaseViewController {
     private func initData() {
         self.loginButton.addTarget(self, action: #selector(loginAction), for: .touchUpInside)
         PJToDoCoreLibInit.initFolderIfNeed()
+        PJToDoCoreLibInit.updateConnection()
         PJToDoCoreLibInit.initDBIfNeed()
     }
     

@@ -92,9 +92,9 @@ impl PJToDoSyncGitHubDataController {
                     }
                 }
             }
-            (i_delegate.sync_type_data_result)(i_delegate.user, sync_success_count == result_vec_len);
+            (i_delegate.sync_tag_data_result)(i_delegate.user, sync_success_count == result_vec_len);
         } else {
-            (i_delegate.sync_type_data_result)(i_delegate.user, true);
+            (i_delegate.sync_tag_data_result)(i_delegate.user, true);
         }
     }
 
@@ -123,9 +123,9 @@ impl PJToDoSyncGitHubDataController {
                     }
                 }
             }
-            (i_delegate.sync_type_data_result)(i_delegate.user, sync_success_count == result_vec_len);
+            (i_delegate.sync_settings_data_result)(i_delegate.user, sync_success_count == result_vec_len);
         } else {
-            (i_delegate.sync_type_data_result)(i_delegate.user, true);
+            (i_delegate.sync_settings_data_result)(i_delegate.user, true);
         }
     }
 
@@ -154,9 +154,9 @@ impl PJToDoSyncGitHubDataController {
                     }
                 }
             }
-            (i_delegate.sync_type_data_result)(i_delegate.user, sync_success_count == result_vec_len);
+            (i_delegate.sync_todo_data_result)(i_delegate.user, sync_success_count == result_vec_len);
         } else {
-            (i_delegate.sync_type_data_result)(i_delegate.user, true);
+            (i_delegate.sync_todo_data_result)(i_delegate.user, true);
         }
     }
 }

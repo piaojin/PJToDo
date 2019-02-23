@@ -107,6 +107,10 @@ impl PJDBConnectionUtil {
             .unwrap_or_else(|e| panic!("Error connecting to {}, error: {}", sqlite_url, e))
     }
 
+    pub fn update_connection(&mut self, sqlite_url: &str) {
+        self.connection = PJDBConnectionUtil::establish_connection(sqlite_url);
+    }
+
     pub fn init_database(&self) {
         if !self.data_base.exists() {
             self.data_base.create();
@@ -138,6 +142,11 @@ impl PJDBConnectionUtil {
             }
         }
     }
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn updateDBConnection() {
+    StaticPJDBConnectionUtil.lock().unwrap().update_connection(PJToDoPal::sqlite_url());
 }
 
 #[no_mangle]

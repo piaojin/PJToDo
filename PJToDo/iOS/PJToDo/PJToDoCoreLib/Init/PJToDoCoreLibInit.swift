@@ -23,12 +23,14 @@ public struct PJToDoCoreLibInit {
     static public func initFolderIfNeed() {
         initFolder(PJToDoConst.PJToDoData)
         initFolder(PJToDoConst.PJDownLoadFolderPath)
-        initDataBase();
-        initTables();
     }
     
     static public func initDBIfNeed() {
-        initDataBase();
-        initTables();
+        initDataBase()
+        initTables()
+    }
+    
+    static public func updateConnection() {
+        updateDBConnection()
     }
 }
