@@ -127,9 +127,6 @@ class LoginViewController: PJBaseViewController {
                         PJReposManager.initGitHubRepos { (isSuccess, _, _) in
                             if isSuccess {
                                 PJReposFileManager.initGitHubReposFile(completedHandle: { (isSuccess, _, _) in
-                                    if !isSuccess {
-                                        self.showSyncError()
-                                    }
                                     PJReposFileManager.getReposFile(completedHandle: { (isSuccess, reposFile, error) in
                                         if isSuccess, let tempReposFile = reposFile {
                                             //download github data file
