@@ -55,10 +55,8 @@ public struct PJReposFileManager {
     
     public static func createReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
         DispatchQueue.global().async {
-            SSZipArchive.createZipFile(atPath: PJToDoConst.DBGZipPath, withFilesAtPaths: [PJToDoConst.DBToDoSQLFilePath, PJToDoConst.DBTypeSQLFilePath, PJToDoConst.DBTagSQLFilePath, PJToDoConst.DBToDoSettingsSQLFilePath])
-            
             do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: PJToDoConst.DBGZipPath))
+                let data = try Data(contentsOf: URL(fileURLWithPath: PJToDoConst.DBPath))
                 let base64DBContent = data.base64EncodedString()
                 
                 PJHttpRequest.createGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl, path: PJHttpUrlConst.GitHubReposDBFilePath, message: "Create PJToDo DB file.", content: base64DBContent, sha: "", responseBlock: { (isSuccess, reposFile, error) in
@@ -91,15 +89,13 @@ public struct PJReposFileManager {
     
     public static func updateReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
         DispatchQueue.global().async {
-            SSZipArchive.createZipFile(atPath: PJToDoConst.DBGZipPath, withFilesAtPaths: [PJToDoConst.DBToDoSQLFilePath, PJToDoConst.DBTypeSQLFilePath, PJToDoConst.DBTagSQLFilePath, PJToDoConst.DBToDoSettingsSQLFilePath])
-            
             guard let reposFile = PJReposFileManager.shared.reposFile else {
                 completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Didn't init user data successfully!❌"))
                 return
             }
             
             do {
-                let data = try Data(contentsOf: URL(fileURLWithPath: PJToDoConst.DBGZipPath))
+                let data = try Data(contentsOf: URL(fileURLWithPath: PJToDoConst.DBPath))
                 let base64DBContent = data.base64EncodedString()
                 
                 PJHttpRequest.updateGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl, path: PJHttpUrlConst.GitHubReposDBFilePath, message: "Update PJToDo DB file.", content: base64DBContent, sha: reposFile.content.sha, responseBlock: { (isSuccess, reposFile, error) in

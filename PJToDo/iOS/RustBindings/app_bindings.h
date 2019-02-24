@@ -127,19 +127,6 @@ typedef struct {
 typedef struct {
   void *user;
   void (*destroy)(void*);
-  void (*sync_todo_data_result)(void*, bool);
-  void (*sync_type_data_result)(void*, bool);
-  void (*sync_tag_data_result)(void*, bool);
-  void (*sync_settings_data_result)(void*, bool);
-} IPJToDoSyncGitHubDataDelegate;
-
-typedef struct {
-  IPJToDoSyncGitHubDataDelegate delegate;
-} PJToDoSyncGitHubDataController;
-
-typedef struct {
-  void *user;
-  void (*destroy)(void*);
   void (*insert_result)(void*, bool);
   void (*delete_result)(void*, bool);
   void (*update_result)(void*, bool);
@@ -174,30 +161,6 @@ typedef struct {
   ToDoTypeInsert *insert_todo_type;
   Vec_ToDoType *todo_types;
 } PJToDoTypeController;
-
-typedef struct {
-  void *user;
-  void (*destroy)(void*);
-  void (*action_result)(void*, bool);
-} IPJToDoSettingsFileDelegate;
-
-typedef struct {
-  void *user;
-  void (*destroy)(void*);
-  void (*action_result)(void*, bool);
-} IPJToDoTagFileDelegate;
-
-typedef struct {
-  void *user;
-  void (*destroy)(void*);
-  void (*action_result)(void*, bool);
-} IPJToDoFileDelegate;
-
-typedef struct {
-  void *user;
-  void (*destroy)(void*);
-  void (*action_result)(void*, bool);
-} IPJToDoTypeFileDelegate;
 
 void PJ_Authorizations(IPJToDoHttpRequestDelegate delegate, const char *authorization);
 
@@ -235,13 +198,13 @@ char *convertBase64StrToStr(const char *ptr);
 
 char *convertStrToBase64Str(const char *ptr);
 
+void createFolder(const char *folder_path);
+
 PJToDoController *createPJToDoController(IPJToDoDelegate delegate);
 
 PJToDoSearchController *createPJToDoSearchController(IPJToDoSearchDelegate delegate);
 
 PJToDoSettingsController *createPJToDoSettingsController(IPJToDoSettingsDelegate delegate);
-
-PJToDoSyncGitHubDataController *createPJToDoSyncGitHubDataController(IPJToDoSyncGitHubDataDelegate delegate);
 
 PJToDoTagController *createPJToDoTagController(IPJToDoTagDelegate delegate);
 
@@ -296,8 +259,6 @@ void free_rust_PJToDoController(PJToDoController *ptr);
 void free_rust_PJToDoSearchController(PJToDoSearchController *ptr);
 
 void free_rust_PJToDoSettingsController(PJToDoSettingsController *ptr);
-
-void free_rust_PJToDoSyncGitHubDataController(PJToDoSyncGitHubDataController *ptr);
 
 void free_rust_PJToDoTagController(PJToDoTagController *ptr);
 
@@ -385,25 +346,11 @@ char *getToDoTypeName(const ToDoType *ptr);
 
 extern const char *get_authorization_str(void);
 
-extern const char *get_db_gzip_path(void);
-
 extern const char *get_db_path(void);
-
-extern const char *get_db_tag_sql_file_path(void);
-
-extern const char *get_db_todo_settings_sql_file_path(void);
-
-extern const char *get_db_todo_sql_file_path(void);
-
-extern const char *get_db_type_sql_file_path(void);
-
-extern const char *get_db_uncompresses_path(void);
 
 void initCoreLib(void);
 
 void initDataBase(void);
-
-void initFolder(const char *folder_path);
 
 void initTables(void);
 
@@ -487,14 +434,6 @@ void setToDoTypeInsertName(ToDoTypeInsert *ptr, const char *type_name);
 
 void setToDoTypeName(ToDoType *ptr, const char *type_name);
 
-void syncGitHubSettingsData(PJToDoSyncGitHubDataController *ptr, const char *file_path);
-
-void syncGitHubTagData(PJToDoSyncGitHubDataController *ptr, const char *file_path);
-
-void syncGitHubToDoData(PJToDoSyncGitHubDataController *ptr, const char *file_path);
-
-void syncGitHubTypeData(PJToDoSyncGitHubDataController *ptr, const char *file_path);
-
 extern void test_pal_from_Swift(void);
 
 void test_pal_from_rust(void);
@@ -524,13 +463,5 @@ void updateToDoSettings(PJToDoSettingsController *ptr, const ToDoSettings *toDoS
 void updateToDoTag(PJToDoTagController *ptr, const ToDoTag *toDoTag);
 
 void updateToDoType(PJToDoTypeController *ptr, const ToDoType *toDoType);
-
-void wirteDBSettingsToSQLFile(IPJToDoSettingsFileDelegate delegate);
-
-void wirteDBTagToSQLFile(IPJToDoTagFileDelegate delegate);
-
-void wirteDBToDoToSQLFile(IPJToDoFileDelegate delegate);
-
-void wirteDBTypeToSQLFile(IPJToDoTypeFileDelegate delegate);
 
 #endif /* app_bindings_h */

@@ -39,8 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         self.initGitHub()
-        self.fetchGitHubData()
-        self.prepareSQLDataToFileAndSyncReposFile()
+        self.fetchGitHubReposFile()
+        self.syncDBToGitHub()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -79,60 +79,14 @@ extension AppDelegate {
         PJReposFileManager.initGitHubReposFile(completedHandle: nil)
     }
     
-    private func fetchGitHubData() {
+    private func fetchGitHubReposFile() {
         if PJUserInfoManager.shared.isLogin {
             PJReposFileManager.getReposFile(completedHandle: nil)
         }
     }
     
-    private func prepareSQLDataToFileAndSyncReposFile() {
-        if let shouldUpdateDBToGitHubKey = PJCacheManager.getDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey) as? Bool, shouldUpdateDBToGitHubKey {
-            var writeFileSuccessCount: Int = 0
-            //save data to sql file
-            let typeFileDelegate = PJToDoTypeFileDelegate { (isSuccess) in
-                if isSuccess {
-                    writeFileSuccessCount += 1
-                    if writeFileSuccessCount == 4 {
-                        self.syncReposFile()
-                    }
-                }
-            }
-            wirteDBTypeToSQLFile(typeFileDelegate.iDelegate)
-            
-            let tagFileDelegate = PJToDoTagFileDelegate { (isSuccess) in
-                if isSuccess {
-                    writeFileSuccessCount += 1
-                    if writeFileSuccessCount == 4 {
-                        self.syncReposFile()
-                    }
-                }
-            }
-            wirteDBTagToSQLFile(tagFileDelegate.iDelegate)
-            
-            let todoFileDelegate = PJToDoFileDelegate { (isSuccess) in
-                if isSuccess {
-                    writeFileSuccessCount += 1
-                    if writeFileSuccessCount == 4 {
-                        self.syncReposFile()
-                    }
-                }
-            }
-            wirteDBToDoToSQLFile(todoFileDelegate.iDelegate)
-            
-            let settingsFileDelegate = PJToDoSettingsFileDelegate { (isSuccess) in
-                if isSuccess {
-                    writeFileSuccessCount += 1
-                    if writeFileSuccessCount == 4 {
-                        self.syncReposFile()
-                    }
-                }
-            }
-            wirteDBSettingsToSQLFile(settingsFileDelegate.iDelegate)
-        }
-    }
-    
-    private func syncReposFile() {
-        if PJUserInfoManager.shared.isLogin {
+    private func syncDBToGitHub() {
+        if let shouldUpdateDBToGitHubKey = PJCacheManager.getDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey) as? Bool, shouldUpdateDBToGitHubKey, PJUserInfoManager.shared.isLogin {
             PJReposFileManager.updateReposFile { (isSuccess, _, error) in
                 PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: isSuccess)
                 if !isSuccess {

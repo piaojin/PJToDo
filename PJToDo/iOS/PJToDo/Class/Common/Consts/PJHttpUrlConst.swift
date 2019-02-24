@@ -58,5 +58,5 @@ public class PJHttpUrlConst: NSObject {
     
     public static let GitHubLoginUrl = "https://api.github.com/user"
     
-    public static let GitHubReposDBFilePath = "PJToDo/Data/pj_to_db.zip"
+    public static let GitHubReposDBFilePath = "PJToDo/Data/pj_to_db.db"
 }

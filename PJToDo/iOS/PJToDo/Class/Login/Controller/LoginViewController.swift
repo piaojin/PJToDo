@@ -127,12 +127,24 @@ class LoginViewController: PJBaseViewController {
                         PJReposManager.initGitHubRepos { (isSuccess, _, _) in
                             if isSuccess {
                                 PJReposFileManager.initGitHubReposFile(completedHandle: { (isSuccess, _, _) in
-                                    //download github data file
-                                    PJHttpRequest.downloadFile(requestUrl: "https://raw.githubusercontent.com/piaojin/PJToDoWebDataBase/master/PJToDo/Data/pj_to_db.zip", savePath: PJToDoConst.PJDownLoadToDoZipFilePath) { (isSuccess, errorString, error) in
-                                        if isSuccess {
-                                            PJDBDataManager.shared.syncGitHubDataToDB()
+                                    PJReposFileManager.getReposFile(completedHandle: { (isSuccess, reposFile, error) in
+                                        if isSuccess, let tempReposFile = reposFile {
+                                            //download github data file
+                                            self.downloadDBFromGitHub(reposFile: tempReposFile)
+                                        } else {
+                                            DispatchQueue.main.async(execute: {
+                                                let alert = UIAlertController(title: "Sync Failure", message: "Sync Data failure, please logout and login try again!", preferredStyle: .alert)
+                                                
+                                                let okAction = UIAlertAction(title: "OK", style: .default, handler: { (_) in
+                                                    PJUserInfoManager.logOut()
+                                                })
+                                                
+                                                alert.addAction(okAction)
+                                                
+                                                self.present(alert, animated: true, completion: nil)
+                                            })
                                         }
-                                    }
+                                    })
                                 })
                             }
                         }
@@ -150,6 +162,19 @@ class LoginViewController: PJBaseViewController {
         if let window = UIApplication.shared.delegate?.window {
             window?.rootViewController = PJTabBarViewController()
             window?.makeKeyAndVisible()
+        }
+    }
+    
+    private func downloadDBFromGitHub(reposFile: ReposFile) {
+        PJHttpRequest.downloadFile(requestUrl: reposFile.content.download_url, savePath: PJToDoConst.DBPath) { (isSuccess, errorString, error) in
+            if isSuccess {
+                DispatchQueue.main.async(execute: {
+                    updateDBConnection()
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
+                        NotificationCenter.default.post(name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
+                    })
+                })
+            }
         }
     }
 }

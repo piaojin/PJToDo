@@ -13,18 +13,6 @@ void test_pal_from_Swift(void);
 
 const char * get_db_path(void);
 
-const char * get_db_gzip_path(void);
-
-const char * get_db_uncompresses_path(void);
-
-const char * get_db_type_sql_file_path(void);
-
-const char * get_db_tag_sql_file_path(void);
-
-const char * get_db_todo_sql_file_path(void);
-
-const char * get_db_todo_settings_sql_file_path(void);
-
 const char * get_authorization_str(void);
 
 #endif /* PJToDoCoreLibPAL_C_h */

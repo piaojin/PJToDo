@@ -24,64 +24,6 @@ lazy_static! {
         let get_db_path = unsafe { CStr::from_ptr(get_db_path()).to_string_lossy().into_owned() };
         get_db_path
     };
-
-    pub static ref DBGZipPath: String = {
-        let get_db_gzip_path = unsafe {
-            CStr::from_ptr(get_db_gzip_path())
-                .to_string_lossy()
-                .into_owned()
-        };
-        get_db_gzip_path
-    };
-
-    pub static ref DBUnCompressPath: String = {
-        let get_db_uncompresses_path = unsafe {
-            CStr::from_ptr(get_db_uncompresses_path())
-                .to_string_lossy()
-                .into_owned()
-        };
-        get_db_uncompresses_path
-    };
-
-    pub static ref DBTypeSQLFilePath: String = {
-        let get_db_type_sql_file_path = unsafe {
-            CStr::from_ptr(get_db_type_sql_file_path())
-                .to_string_lossy()
-                .into_owned()
-        };
-        pj_info!("get_db_type_sql_file_path: {:}", get_db_type_sql_file_path);
-        get_db_type_sql_file_path
-    };
-
-    pub static ref DBTagSQLFilePath: String = {
-        let get_db_tag_sql_file_path = unsafe {
-            CStr::from_ptr(get_db_tag_sql_file_path())
-                .to_string_lossy()
-                .into_owned()
-        };
-        pj_info!("get_db_tag_sql_file_path: {:}", get_db_tag_sql_file_path);
-        get_db_tag_sql_file_path
-    };
-
-    pub static ref DBToDoSQLFilePath: String = {
-        let get_db_todo_sql_file_path = unsafe {
-            CStr::from_ptr(get_db_todo_sql_file_path())
-                .to_string_lossy()
-                .into_owned()
-        };
-        pj_info!("get_db_todo_sql_file_path: {:}", get_db_todo_sql_file_path);
-        get_db_todo_sql_file_path
-    };
-
-    pub static ref DBToDoSettingsSQLFilePath: String = {
-        let get_db_todo_settings_sql_file_path = unsafe {
-            CStr::from_ptr(get_db_todo_settings_sql_file_path())
-                .to_string_lossy()
-                .into_owned()
-        };
-        pj_info!("get_db_todo_settings_sql_file_path: {:}", get_db_todo_settings_sql_file_path);
-        get_db_todo_settings_sql_file_path
-    };
 }
 
 pub struct PJDBConnectionUtil {

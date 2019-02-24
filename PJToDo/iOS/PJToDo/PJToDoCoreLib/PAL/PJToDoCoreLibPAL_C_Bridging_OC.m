@@ -18,30 +18,6 @@ const char * getDBPath() {
     return [PJToDoConst.DBPath UTF8String];
 }
 
-const char * getDBGZipPath(void) {
-    return [PJToDoConst.DBGZipPath UTF8String];
-}
-
-const char * getDBUnCompressesPath() {
-    return [PJToDoConst.DBUnCompressesPath UTF8String];
-}
-
-const char * getDBTypeSQLFilePath() {
-    return [PJToDoConst.DBTypeSQLFilePath UTF8String];
-}
-
-const char * getDBTagSQLFilePath() {
-    return [PJToDoConst.DBTagSQLFilePath UTF8String];
-}
-
-const char * getDBToDoSQLFilePath() {
-    return [PJToDoConst.DBToDoSQLFilePath UTF8String];
-}
-
-const char * getDBToDoSettingsSQLFilePath() {
-    return [PJToDoConst.DBToDoSettingsSQLFilePath UTF8String];
-}
-
 const char * getAuthorizationStr() {
     if (PJUserInfoManagerOC.isLogin) {
         NSError *error;
