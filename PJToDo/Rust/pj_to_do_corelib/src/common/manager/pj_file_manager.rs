@@ -2,7 +2,6 @@ use std::io::prelude::*;
 use std::fs::File;
 #[allow(unused_imports)]
 use common::pj_logger::PJLogger;
-use std::thread;
 use std::ffi::{CStr};
 use std::fs;
 use libc::{c_char};
@@ -10,27 +9,24 @@ use libc::{c_char};
 pub struct PJFileManager;
 
 impl PJFileManager {
-
     pub fn create_folder(folder_path: String) {
         match fs::metadata(&folder_path) {
             Ok(_) => {},
-            Err(e) => {
+            Err(_) => {
                 let _ = fs::create_dir(&folder_path);
             }
         }
     }
 
     fn create_file(path: String) -> std::io::Result<()> {
-        unsafe {
-            let buffer_result = File::create(path.clone());
-            match buffer_result {
-                Ok(_) => {
-                    Ok(())
-                },
-                Err(e) => {
-                    pj_error!("❌create file error: {:}, {:}❌", e, path);
-                    Err(e)
-                }
+        let buffer_result = File::create(path.clone());
+        match buffer_result {
+            Ok(_) => {
+                Ok(())
+            },
+            Err(e) => {
+                pj_error!("❌create file error: {:}, {:}❌", e, path);
+                Err(e)
             }
         }
     }
@@ -54,7 +50,7 @@ impl PJFileManager {
         let mut file_content = String::new();
         match File::open(file_path) {
             Ok(mut file) => {
-                file.read_to_string(&mut file_content);
+                let _ = file.read_to_string(&mut file_content);
             },
             Err(e) => {
                 pj_error!("read_file_content open file error: {:?}", e);
@@ -64,23 +60,19 @@ impl PJFileManager {
     }
 
     pub fn wirte_to_file(file_path: String, string: String) -> std::io::Result<()> {
-        unsafe {
-            PJFileManager::wirte_bytes_to_file(file_path, string.as_bytes())
-        }
+        PJFileManager::wirte_bytes_to_file(file_path, string.as_bytes())
     }
 
     pub fn wirte_bytes_to_file(file_path: String, bytes: &[u8]) -> std::io::Result<()> {
-        unsafe {
-            let buffer_result = File::create(file_path);
-            match buffer_result {
-                Ok(mut buffer) => {
-                    buffer.write_all(bytes)?;
-                    Ok(())
-                },
-                Err(e) => {
-                    pj_error!("❌create file error: {:}❌", e);
-                    Err(e)
-                }
+        let buffer_result = File::create(file_path);
+        match buffer_result {
+            Ok(mut buffer) => {
+                buffer.write_all(bytes)?;
+                Ok(())
+            },
+            Err(e) => {
+                pj_error!("❌create file error: {:}❌", e);
+                Err(e)
             }
         }
     }
@@ -97,12 +89,12 @@ pub unsafe extern "C" fn createFolder(folder_path: *const c_char) {
 pub unsafe extern "C" fn removeFolder(folder_path: *const c_char, all: bool) {
     assert!(folder_path != std::ptr::null());
     let folder_path = CStr::from_ptr(folder_path).to_string_lossy().into_owned();
-    PJFileManager::remove_folder(folder_path, all);
+    let _ = PJFileManager::remove_folder(folder_path, all);
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn removeFile(file_path: *const c_char) {
     assert!(file_path != std::ptr::null());
     let file_path = CStr::from_ptr(file_path).to_string_lossy().into_owned();
-    PJFileManager::remove_file(file_path);
+    let _ = PJFileManager::remove_file(file_path);
 }

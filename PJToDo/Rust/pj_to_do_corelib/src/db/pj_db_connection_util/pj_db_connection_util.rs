@@ -12,7 +12,7 @@ use db::tables::schema::{Table_ToDoType, Table_ToDoTag, Table_ToDo, Table_ToDoSe
 
 use std::collections::HashMap;
 
-use std::sync::{Arc, Mutex, MutexGuard};
+use std::sync::{Arc, Mutex};
 
 lazy_static! {
 

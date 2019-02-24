@@ -3,9 +3,6 @@ extern crate serde;
 extern crate serde_json;
 
 use self::serde::{Deserialize, Serialize};
-use std::io::prelude::*;
-use std::io::BufReader;
-use std::fs::File;
 use common::manager::pj_file_manager::PJFileManager;
 
 pub trait PJSerdeDeserialize<'a>: Deserialize<'a> + Serialize {
@@ -50,20 +47,16 @@ impl PJSerializeUtils {
             let mut v: Vec<Result<T, serde_json::Error>> = Vec::new();
             let file_content: String = PJFileManager::read_file_content(json_file_path);
             if !file_content.is_empty() {
-                v = PJSerializeUtils::from_file_content_lines::<T>(&file_content);
+                v = PJSerializeUtils::model_from_file_content_lines::<T>(&file_content);
             }
             v
     }
 
-    fn from_file_content_lines<'a, T>(file_content: &'a str) -> Vec<Result<T, serde_json::Error>> 
+    fn model_from_file_content_lines<'a, T>(file_content: &'a str) -> Vec<Result<T, serde_json::Error>> 
     where 
         for<'de> T: serde::Deserialize<'de>, 
         {
             let mut v: Vec<Result<T, serde_json::Error>> = Vec::new();
-            // file_content.lines().map(|line| {
-                // let parse_line_result = PJSerializeUtils::from_str::<T>(line);
-                // v.push(parse_line_result);
-            // });
             let lines_vec: Vec<Vec<&'a str>> = file_content.lines().map(|line| {
                 line.split_whitespace().collect()
             }).collect();

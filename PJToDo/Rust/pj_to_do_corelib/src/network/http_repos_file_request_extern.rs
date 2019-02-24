@@ -1,6 +1,5 @@
 use network::http_repos_file_request::PJHttpReposFileRequest;
 use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
-use delegates::to_do_download_file_delegate::{IPJToDoDownLoadFileDelegateWrapper, IPJToDoDownLoadFileDelegate};
 use std::ffi::{CStr, CString};
 use libc::{c_char};
 use repos::repos_file::ReposFileBody;
@@ -127,7 +126,6 @@ pub unsafe extern "C" fn PJ_DownLoadFile(
         PJHttpReposFileRequest::download_file(request_url, move |result| {
             match result {
             Ok((status, body)) => {
-                let body_string = String::from_utf8_lossy(&body);
                 match PJFileManager::wirte_bytes_to_file(save_path, &body) {
                     Ok(_) => {
                         (i_delegate.request_result)(i_delegate.user, CString::new("".to_string()).unwrap().into_raw(), status.as_u16(), status.is_success());

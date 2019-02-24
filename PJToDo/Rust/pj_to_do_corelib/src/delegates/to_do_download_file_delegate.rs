@@ -1,5 +1,5 @@
 use std::ops::Deref;
-use libc::{c_void, c_char};
+use libc::{c_void};
 use std::marker::{Send, Sync};
 
 #[derive(Clone)]
