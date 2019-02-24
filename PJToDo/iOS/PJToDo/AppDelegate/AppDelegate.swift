@@ -40,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
         self.initGitHub()
         self.fetchGitHubData()
-        self.prepareSQLDataToFile()
+        self.prepareSQLDataToFileAndSyncReposFile()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -85,7 +85,7 @@ extension AppDelegate {
         }
     }
     
-    private func prepareSQLDataToFile() {
+    private func prepareSQLDataToFileAndSyncReposFile() {
         if let shouldUpdateDBToGitHubKey = PJCacheManager.getDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey) as? Bool, shouldUpdateDBToGitHubKey {
             var writeFileSuccessCount: Int = 0
             //save data to sql file
@@ -132,7 +132,7 @@ extension AppDelegate {
     }
     
     private func syncReposFile() {
-        if PJReposFileManager.shared.hasCreateReposDBFileOnGitHub, PJUserInfoManager.shared.isLogin {
+        if PJUserInfoManager.shared.isLogin {
             PJReposFileManager.updateReposFile { (isSuccess, _, error) in
                 PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: isSuccess)
                 if !isSuccess {

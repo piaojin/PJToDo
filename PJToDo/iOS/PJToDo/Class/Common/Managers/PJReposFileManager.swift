@@ -93,11 +93,6 @@ public struct PJReposFileManager {
         DispatchQueue.global().async {
             SSZipArchive.createZipFile(atPath: PJToDoConst.DBGZipPath, withFilesAtPaths: [PJToDoConst.DBToDoSQLFilePath, PJToDoConst.DBTypeSQLFilePath, PJToDoConst.DBTagSQLFilePath, PJToDoConst.DBToDoSettingsSQLFilePath])
             
-            guard PJReposFileManager.shared.hasSavedReposDBFileInLocal, PJReposFileManager.shared.hasCreateReposDBFileOnGitHub else {
-                completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Didn't init user data successfully!❌"))
-                return
-            }
-            
             guard let reposFile = PJReposFileManager.shared.reposFile else {
                 completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Didn't init user data successfully!❌"))
                 return
@@ -170,7 +165,7 @@ public struct PJReposFileManager {
     }
     
     public static func initGitHubReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
-        if !PJReposFileManager.shared.hasCreateReposDBFileOnGitHub, PJUserInfoManager.shared.isLogin {
+        if PJUserInfoManager.shared.isLogin {
             PJReposFileManager.createReposFile(completedHandle: completedHandle)
         }
     }

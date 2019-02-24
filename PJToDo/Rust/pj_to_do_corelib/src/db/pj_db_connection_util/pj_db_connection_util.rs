@@ -65,7 +65,7 @@ lazy_static! {
 
     pub static ref DBToDoSQLFilePath: String = {
         let get_db_todo_sql_file_path = unsafe {
-            CStr::from_ptr(get_db_type_sql_file_path())
+            CStr::from_ptr(get_db_todo_sql_file_path())
                 .to_string_lossy()
                 .into_owned()
         };
