@@ -123,15 +123,19 @@ class LoginViewController: PJBaseViewController {
                         
                         PJUserInfoManager.saveUserInfo(userInfo: tempUser)
                         self.initRootViewController()
-                        SVProgressHUD.dismiss()
+                        SVProgressHUD.show(withStatus: "Sync Data...")
                         PJReposManager.initGitHubRepos { (isSuccess, _, _) in
                             if isSuccess {
                                 PJReposFileManager.initGitHubReposFile(completedHandle: { (isSuccess, _, _) in
+                                    if !isSuccess {
+                                        self.showSyncError()
+                                    }
                                     PJReposFileManager.getReposFile(completedHandle: { (isSuccess, reposFile, error) in
                                         if isSuccess, let tempReposFile = reposFile {
                                             //download github data file
                                             self.downloadDBFromGitHub(reposFile: tempReposFile)
                                         } else {
+                                            SVProgressHUD.dismiss()
                                             DispatchQueue.main.async(execute: {
                                                 let alert = UIAlertController(title: "Sync Failure", message: "Sync Data failure, please logout and login try again!", preferredStyle: .alert)
                                                 
@@ -146,10 +150,12 @@ class LoginViewController: PJBaseViewController {
                                         }
                                     })
                                 })
+                            } else {
+                                self.showSyncError()
                             }
                         }
                     } else {
-                        SVProgressHUD.showError(withStatus: "Login fail!")
+                        SVProgressHUD.showError(withStatus: "Login Failure!")
                     }
                 })
             })
@@ -172,9 +178,18 @@ class LoginViewController: PJBaseViewController {
                     updateDBConnection()
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
                         NotificationCenter.default.post(name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
+                        SVProgressHUD.dismiss()
                     })
                 })
+            } else {
+                SVProgressHUD.showError(withStatus: "Sync Failure!")
             }
         }
+    }
+    
+    private func showSyncError() {
+        DispatchQueue.main.async(execute: {
+            SVProgressHUD.showError(withStatus: "Sync Failure!")
+        })
     }
 }
