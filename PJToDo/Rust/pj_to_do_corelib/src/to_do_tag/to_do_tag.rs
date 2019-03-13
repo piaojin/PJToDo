@@ -40,19 +40,19 @@ impl ToDoTagInsert {
 /*** extern "C" ***/
 
 #[no_mangle]
-pub unsafe extern "C" fn createToDoTagInsert(tag_name: *const c_char) -> *mut ToDoTagInsert {
+pub unsafe extern "C" fn pj_create_ToDoTagInsert(tag_name: *const c_char) -> *mut ToDoTagInsert {
     let tag_name = CStr::from_ptr(tag_name).to_string_lossy().into_owned(); //unsafe
     Box::into_raw(Box::new(ToDoTagInsert::new(tag_name)))
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn createToDoTag(tag_name: *const c_char) -> *mut ToDoTag {
+pub unsafe extern "C" fn pj_create_ToDoTag(tag_name: *const c_char) -> *mut ToDoTag {
     let tag_name = CStr::from_ptr(tag_name).to_string_lossy().into_owned(); //unsafe
     Box::into_raw(Box::new(ToDoTag::new(tag_name)))
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn setToDoTagName(ptr: *mut ToDoTag, tag_name: *const c_char) {
+pub unsafe extern "C" fn pj_set_todo_tag_name(ptr: *mut ToDoTag, tag_name: *const c_char) {
     assert!(ptr != std::ptr::null_mut());
     let todo_tag = &mut *ptr;
     let tag_name = CStr::from_ptr(tag_name).to_string_lossy().into_owned();
@@ -60,7 +60,7 @@ pub unsafe extern "C" fn setToDoTagName(ptr: *mut ToDoTag, tag_name: *const c_ch
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTagName(ptr: *const ToDoTag) -> *mut c_char {
+pub unsafe extern "C" fn pj_get_todo_tag_name(ptr: *const ToDoTag) -> *mut c_char {
     assert!(ptr != std::ptr::null_mut());
     let todo_tag = &*ptr;
     let tag_name = CString::new(todo_tag.tag_name.clone()).unwrap(); //unsafe
@@ -68,21 +68,21 @@ pub unsafe extern "C" fn getToDoTagName(ptr: *const ToDoTag) -> *mut c_char {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn setToDoTagId(ptr: *mut ToDoTag, type_id: i32) {
+pub unsafe extern "C" fn pj_set_todo_tag_id(ptr: *mut ToDoTag, type_id: i32) {
     assert!(ptr != std::ptr::null_mut());
     let todo_tag = &mut *ptr;
     todo_tag.id = type_id;
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTagId(ptr: *mut ToDoTag) -> i32 {
+pub unsafe extern "C" fn pj_get_todo_tag_id(ptr: *mut ToDoTag) -> i32 {
     assert!(ptr != std::ptr::null_mut());
     let todo_tag = &mut *ptr;
     todo_tag.id
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn setToDoTagInsertName(ptr: *mut ToDoTagInsert, tag_name: *const c_char) {
+pub unsafe extern "C" fn pj_set_todo_tag_insert_name(ptr: *mut ToDoTagInsert, tag_name: *const c_char) {
     assert!(ptr != std::ptr::null_mut());
     let todo_tag = &mut *ptr;
     let tag_name = CStr::from_ptr(tag_name).to_string_lossy().into_owned();
@@ -90,7 +90,7 @@ pub unsafe extern "C" fn setToDoTagInsertName(ptr: *mut ToDoTagInsert, tag_name:
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTagInsertName(ptr: *const ToDoTagInsert) -> *mut c_char {
+pub unsafe extern "C" fn pj_get_todo_tag_insert_name(ptr: *const ToDoTagInsert) -> *mut c_char {
     assert!(ptr != std::ptr::null_mut());
     let todo_tag = &*ptr;
     let tag_name = CString::new(todo_tag.tag_name.clone()).unwrap(); //unsafe

@@ -87,16 +87,16 @@ impl PJDBConnectionUtil {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn updateDBConnection() {
+pub unsafe extern "C" fn pj_update_db_connection() {
     StaticPJDBConnectionUtil.lock().unwrap().update_connection(PJToDoPal::sqlite_url());
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn initDataBase() {
+pub unsafe extern "C" fn pj_init_data_base() {
     StaticPJDBConnectionUtil.lock().unwrap().init_database();
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn initTables() {
+pub unsafe extern "C" fn pj_init_tables() {
     StaticPJDBConnectionUtil.lock().unwrap().init_tables();
 }

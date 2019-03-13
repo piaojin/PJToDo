@@ -79,21 +79,21 @@ impl PJFileManager {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn createFolder(folder_path: *const c_char) {
+pub unsafe extern "C" fn pj_create_folder(folder_path: *const c_char) {
     assert!(folder_path != std::ptr::null());
     let folder_path = CStr::from_ptr(folder_path).to_string_lossy().into_owned();
     PJFileManager::create_folder(folder_path);
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn removeFolder(folder_path: *const c_char, all: bool) {
+pub unsafe extern "C" fn pj_remove_folder(folder_path: *const c_char, all: bool) {
     assert!(folder_path != std::ptr::null());
     let folder_path = CStr::from_ptr(folder_path).to_string_lossy().into_owned();
     let _ = PJFileManager::remove_folder(folder_path, all);
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn removeFile(file_path: *const c_char) {
+pub unsafe extern "C" fn pj_remove_file(file_path: *const c_char) {
     assert!(file_path != std::ptr::null());
     let file_path = CStr::from_ptr(file_path).to_string_lossy().into_owned();
     let _ = PJFileManager::remove_file(file_path);

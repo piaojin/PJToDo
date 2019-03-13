@@ -7,7 +7,7 @@ use network::http_user_request::PJHttpUserRequest;
 use libc::{c_char};
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_Login(
+pub unsafe extern "C" fn pj_login(
     delegate: IPJToDoHttpRequestDelegate,
     name: *const c_char,
     password: *const c_char,
@@ -30,7 +30,7 @@ pub unsafe extern "C" fn PJ_Login(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_Authorizations(
+pub unsafe extern "C" fn pj_authorizations(
     delegate: IPJToDoHttpRequestDelegate,
     authorization: *const c_char,
 ) {
@@ -50,7 +50,7 @@ pub unsafe extern "C" fn PJ_Authorizations(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_RequestUserInfo(delegate: IPJToDoHttpRequestDelegate) {
+pub unsafe extern "C" fn pj_request_user_info(delegate: IPJToDoHttpRequestDelegate) {
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
 
     thread::spawn(move || {
@@ -61,6 +61,6 @@ pub unsafe extern "C" fn PJ_RequestUserInfo(delegate: IPJToDoHttpRequestDelegate
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_LogOut() {
+pub unsafe extern "C" fn pj_logout() {
     PJUserManager::logout();
 }

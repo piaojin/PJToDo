@@ -31,7 +31,7 @@ impl PJHttpUtils {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn convertStrToBase64Str(ptr: *const c_char) -> *mut c_char {
+pub unsafe extern "C" fn pj_convert_str_to_base64str(ptr: *const c_char) -> *mut c_char {
     assert!(ptr != std::ptr::null());
     let original_string = CStr::from_ptr(ptr).to_string_lossy().into_owned();
     let converted_str = CString::new(original_string).unwrap(); //unsafe
@@ -42,7 +42,7 @@ pub unsafe extern "C" fn convertStrToBase64Str(ptr: *const c_char) -> *mut c_cha
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn convertBase64StrToStr(ptr: *const c_char) -> *mut c_char {
+pub unsafe extern "C" fn pj_convert_base64str_to_str(ptr: *const c_char) -> *mut c_char {
     assert!(ptr != std::ptr::null());
     let base64_string = CStr::from_ptr(ptr).to_string_lossy().into_owned();
     let temp_c_char: *mut c_char = std::ptr::null_mut();

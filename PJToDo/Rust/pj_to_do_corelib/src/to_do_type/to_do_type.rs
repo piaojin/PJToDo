@@ -44,19 +44,19 @@ impl ToDoTypeInsert {
 /*** extern "C" ***/
 
 #[no_mangle]
-pub unsafe extern "C" fn createToDoTypeInsert(type_name: *const c_char) -> *mut ToDoTypeInsert {
+pub unsafe extern "C" fn pj_create_ToDoTypeInsert(type_name: *const c_char) -> *mut ToDoTypeInsert {
     let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned(); //unsafe
     Box::into_raw(Box::new(ToDoTypeInsert::new(type_name)))
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn createToDoType(type_name: *const c_char) -> *mut ToDoType {
+pub unsafe extern "C" fn pj_create_ToDoType(type_name: *const c_char) -> *mut ToDoType {
     let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned(); //unsafe
     Box::into_raw(Box::new(ToDoType::new(type_name)))
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn setToDoTypeName(ptr: *mut ToDoType, type_name: *const c_char) {
+pub unsafe extern "C" fn pj_set_todo_type_name(ptr: *mut ToDoType, type_name: *const c_char) {
     assert!(ptr != std::ptr::null_mut());
     let todo_type = &mut *ptr;
     let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned();
@@ -64,7 +64,7 @@ pub unsafe extern "C" fn setToDoTypeName(ptr: *mut ToDoType, type_name: *const c
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTypeName(ptr: *const ToDoType) -> *mut c_char {
+pub unsafe extern "C" fn pj_get_todo_type_name(ptr: *const ToDoType) -> *mut c_char {
     assert!(ptr != std::ptr::null_mut());
     let todo_type = &*ptr;
     let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe
@@ -72,21 +72,21 @@ pub unsafe extern "C" fn getToDoTypeName(ptr: *const ToDoType) -> *mut c_char {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn setToDoTypeId(ptr: *mut ToDoType, type_id: i32) {
+pub unsafe extern "C" fn pj_set_todo_type_id(ptr: *mut ToDoType, type_id: i32) {
     assert!(ptr != std::ptr::null_mut());
     let todo_type = &mut *ptr;
     todo_type.id = type_id;
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTypeId(ptr: *mut ToDoType) -> i32 {
+pub unsafe extern "C" fn pj_get_todo_type_id(ptr: *mut ToDoType) -> i32 {
     assert!(ptr != std::ptr::null_mut());
     let todo_type = &mut *ptr;
     todo_type.id
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn setToDoTypeInsertName(ptr: *mut ToDoTypeInsert, type_name: *const c_char) {
+pub unsafe extern "C" fn pj_set_todo_type_insert_name(ptr: *mut ToDoTypeInsert, type_name: *const c_char) {
     assert!(ptr != std::ptr::null_mut());
     let todo_type = &mut *ptr;
     let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned();
@@ -94,7 +94,7 @@ pub unsafe extern "C" fn setToDoTypeInsertName(ptr: *mut ToDoTypeInsert, type_na
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTypeInsertName(ptr: *const ToDoTypeInsert) -> *mut c_char {
+pub unsafe extern "C" fn pj_get_todo_type_insert_name(ptr: *const ToDoTypeInsert) -> *mut c_char {
     assert!(ptr != std::ptr::null_mut());
     let todo_type = &*ptr;
     let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe

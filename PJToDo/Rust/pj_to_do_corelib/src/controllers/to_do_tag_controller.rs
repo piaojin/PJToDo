@@ -1,7 +1,7 @@
 use delegates::to_do_tag_delegate::{IPJToDoTagDelegate, IPJToDoTagDelegateWrapper};
 use service::to_do_tag_service::{PJToDoTagService, insert_todo_tag, delete_todo_tag, update_todo_tag, find_todo_tag_by_id, find_todo_tag_by_name, fetch_data};
 use service::service_impl::to_do_tag_service_impl::{createPJToDoTagServiceImpl};
-use to_do_tag::to_do_tag::{ToDoTagInsert, ToDoTag, createToDoTag, createToDoTagInsert};
+use to_do_tag::to_do_tag::{ToDoTagInsert, ToDoTag, pj_create_ToDoTag, pj_create_ToDoTagInsert};
 use common::{free_rust_any_object};
 #[allow(unused_imports)]
 use common::pj_logger::PJLogger;
@@ -58,8 +58,8 @@ impl PJToDoTagController {
                 todo_tag_service_controller: Box::into_raw(Box::new(
                     PJToDoTagServiceController::new(),
                 )),
-                find_result_todo_tag: createToDoTag(c_str_tag.into_raw()),
-                insert_todo_tag: createToDoTagInsert(c_str_tag_insert.into_raw()),
+                find_result_todo_tag: pj_create_ToDoTag(c_str_tag.into_raw()),
+                insert_todo_tag: pj_create_ToDoTagInsert(c_str_tag_insert.into_raw()),
                 todo_tags: Box::into_raw(Box::new(Vec::new())),
             }
         };
@@ -239,7 +239,7 @@ impl Drop for PJToDoTagController {
 /*** extern "C" ***/
 
 #[no_mangle]
-pub extern "C" fn createPJToDoTagController(
+pub extern "C" fn pj_create_PJToDoTagController(
     delegate: IPJToDoTagDelegate,
 ) -> *mut PJToDoTagController {
     let controller = PJToDoTagController::new(delegate);
@@ -247,7 +247,7 @@ pub extern "C" fn createPJToDoTagController(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn insertToDoTag(ptr: *mut PJToDoTagController, toDoTag: *mut ToDoTagInsert) {
+pub unsafe extern "C" fn pj_insert_todo_tag(ptr: *mut PJToDoTagController, toDoTag: *mut ToDoTagInsert) {
     if ptr == std::ptr::null_mut() || toDoTag == std::ptr::null_mut() {
         pj_error!("ptr or toDoTag: *mut insertToDoTag is null!");
         assert!(ptr != std::ptr::null_mut() && toDoTag != std::ptr::null_mut());
@@ -263,7 +263,7 @@ pub unsafe extern "C" fn insertToDoTag(ptr: *mut PJToDoTagController, toDoTag: *
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn deleteToDoTag(ptr: *mut PJToDoTagController, toDoTagId: i32) {
+pub unsafe extern "C" fn pj_delete_todo_tag(ptr: *mut PJToDoTagController, toDoTagId: i32) {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr: *mut deleteToDoTag is null!");
         assert!(ptr != std::ptr::null_mut());
@@ -278,7 +278,7 @@ pub unsafe extern "C" fn deleteToDoTag(ptr: *mut PJToDoTagController, toDoTagId:
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn updateToDoTag(ptr: *mut PJToDoTagController, toDoTag: *const ToDoTag) {
+pub unsafe extern "C" fn pj_update_todo_tag(ptr: *mut PJToDoTagController, toDoTag: *const ToDoTag) {
     if ptr == std::ptr::null_mut() || toDoTag == std::ptr::null_mut() {
         pj_error!("ptr or toDoTag: *mut updateToDoTag is null!");
         assert!(ptr != std::ptr::null_mut() && toDoTag != std::ptr::null_mut());
@@ -294,7 +294,7 @@ pub unsafe extern "C" fn updateToDoTag(ptr: *mut PJToDoTagController, toDoTag: *
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn findToDoTag(ptr: *mut PJToDoTagController, toDoTagId: i32) {
+pub unsafe extern "C" fn pj_find_todo_tag(ptr: *mut PJToDoTagController, toDoTagId: i32) {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr: *mut findToDoTag is null!");
         assert!(ptr != std::ptr::null_mut());
@@ -309,7 +309,7 @@ pub unsafe extern "C" fn findToDoTag(ptr: *mut PJToDoTagController, toDoTagId: i
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn findToDoTagByName(ptr: *mut PJToDoTagController, tag_name: *const c_char) {
+pub unsafe extern "C" fn pj_find_todo_tag_by_name(ptr: *mut PJToDoTagController, tag_name: *const c_char) {
     if ptr == std::ptr::null_mut() || tag_name == std::ptr::null_mut() {
         pj_error!("ptr or typeName: *mut findToDoTagByName is null!");
         assert!(ptr != std::ptr::null_mut() && tag_name != std::ptr::null_mut());
@@ -325,7 +325,7 @@ pub unsafe extern "C" fn findToDoTagByName(ptr: *mut PJToDoTagController, tag_na
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn fetchToDoTagData(ptr: *mut PJToDoTagController) {
+pub unsafe extern "C" fn pj_fetch_todo_tag_data(ptr: *mut PJToDoTagController) {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDoTag: *mut fetchData is null!");
         assert!(ptr != std::ptr::null_mut());
@@ -335,7 +335,7 @@ pub unsafe extern "C" fn fetchToDoTagData(ptr: *mut PJToDoTagController) {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn todoTagAtIndex(
+pub unsafe extern "C" fn pj_todo_tag_at_index(
     ptr: *const PJToDoTagController,
     index: i32,
 ) -> *const ToDoTag {
@@ -348,7 +348,7 @@ pub unsafe extern "C" fn todoTagAtIndex(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTagCount(ptr: *const PJToDoTagController) -> i32 {
+pub unsafe extern "C" fn pj_get_todo_tag_count(ptr: *const PJToDoTagController) -> i32 {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDoTag: *mut getToDoTagCount is null!");
         assert!(ptr != std::ptr::null_mut());
@@ -358,7 +358,7 @@ pub unsafe extern "C" fn getToDoTagCount(ptr: *const PJToDoTagController) -> i32
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn free_rust_PJToDoTagController(ptr: *mut PJToDoTagController) {
+pub unsafe extern "C" fn pj_free_rust_PJToDoTagController(ptr: *mut PJToDoTagController) {
     if ptr != std::ptr::null_mut() {
         Box::from_raw(ptr); //unsafe
     };

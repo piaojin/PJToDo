@@ -7,7 +7,7 @@ use std::thread;
 use common::manager::pj_repos_manager::PJReposManager;
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_CreateRepos(delegate: IPJToDoHttpRequestDelegate) {
+pub unsafe extern "C" fn pj_create_repos(delegate: IPJToDoHttpRequestDelegate) {
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
 
     thread::spawn(move || {
@@ -19,7 +19,7 @@ pub unsafe extern "C" fn PJ_CreateRepos(delegate: IPJToDoHttpRequestDelegate) {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_GetRepos(
+pub unsafe extern "C" fn pj_get_repos(
     delegate: IPJToDoHttpRequestDelegate,
     repos_url: *const c_char,
 ) {
@@ -40,7 +40,7 @@ pub unsafe extern "C" fn PJ_GetRepos(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_DeleteRepos(
+pub unsafe extern "C" fn pj_delete_repos(
     delegate: IPJToDoHttpRequestDelegate,
     repos_url: *const c_char,
 ) {

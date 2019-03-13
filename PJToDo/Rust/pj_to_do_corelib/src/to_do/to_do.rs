@@ -102,11 +102,11 @@ impl<'b> PJSerdeDeserialize<'b> for ToDoInsert {
 /*** extern "C" ***/
 
 #[no_mangle]
-pub unsafe extern "C" fn createToDoInsert() -> *mut ToDoInsert {
+pub unsafe extern "C" fn pj_create_ToDoInsert() -> *mut ToDoInsert {
     Box::into_raw(Box::new(ToDoInsert::new()))
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn createToDoQuery() -> *mut ToDoQuery {
+pub unsafe extern "C" fn pj_create_ToDoQuery() -> *mut ToDoQuery {
     Box::into_raw(Box::new(ToDoQuery::new()))
 }

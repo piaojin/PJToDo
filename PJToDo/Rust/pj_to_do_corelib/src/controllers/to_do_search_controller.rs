@@ -259,7 +259,7 @@ impl Drop for PJToDoSearchController {
 // /*** extern "C" ***/
 
 #[no_mangle]
-pub extern "C" fn createPJToDoSearchController(
+pub extern "C" fn pj_create_PJToDoSearchController(
     delegate: IPJToDoSearchDelegate,
 ) -> *mut PJToDoSearchController {
     let controller = PJToDoSearchController::new(delegate);
@@ -267,7 +267,7 @@ pub extern "C" fn createPJToDoSearchController(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_FindToDoByTitle(
+pub unsafe extern "C" fn pj_find_todo_by_title(
     ptr: *mut PJToDoSearchController,
     title: *const c_char,
 ) {
@@ -286,7 +286,7 @@ pub unsafe extern "C" fn PJ_FindToDoByTitle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_FindToDoLikeTitle(
+pub unsafe extern "C" fn pj_find_todo_like_title(
     ptr: *mut PJToDoSearchController,
     title: *const c_char,
 ) {
@@ -305,7 +305,7 @@ pub unsafe extern "C" fn PJ_FindToDoLikeTitle(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_SearchToDoResultAtIndex(
+pub unsafe extern "C" fn pj_search_todo_result_at_index(
     ptr: *const PJToDoSearchController,
     index: i32,
 ) -> *const ToDoQuery {
@@ -318,7 +318,7 @@ pub unsafe extern "C" fn PJ_SearchToDoResultAtIndex(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_SearchToDoResultCount(ptr: *const PJToDoSearchController) -> i32 {
+pub unsafe extern "C" fn pj_search_todo_result_count(ptr: *const PJToDoSearchController) -> i32 {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut getToDoCount is null!");
         assert!(ptr != std::ptr::null_mut());
@@ -328,7 +328,7 @@ pub unsafe extern "C" fn PJ_SearchToDoResultCount(ptr: *const PJToDoSearchContro
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getSearchToDoTypeWithId(
+pub unsafe extern "C" fn pj_get_search_todo_type_with_id(
     ptr: *const PJToDoSearchController,
     type_id: i32,
 ) -> *const ToDoType {
@@ -341,7 +341,7 @@ pub unsafe extern "C" fn getSearchToDoTypeWithId(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getSearchToDoTagWithId(
+pub unsafe extern "C" fn pj_get_search_todo_tag_with_id(
     ptr: *const PJToDoSearchController,
     tag_id: i32,
 ) -> *const ToDoTag {
@@ -354,7 +354,7 @@ pub unsafe extern "C" fn getSearchToDoTagWithId(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn free_rust_PJToDoSearchController(ptr: *mut PJToDoSearchController) {
+pub unsafe extern "C" fn pj_free_rust_PJToDoSearchController(ptr: *mut PJToDoSearchController) {
     if ptr != std::ptr::null_mut() {
         Box::from_raw(ptr); //unsafe
     }

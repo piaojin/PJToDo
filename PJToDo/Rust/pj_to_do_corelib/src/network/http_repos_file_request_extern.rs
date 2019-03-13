@@ -8,7 +8,7 @@ use common::manager::pj_repos_file_manager::PJReposFileManager;
 use common::manager::pj_file_manager::PJFileManager;
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_CreateReposFile(
+pub unsafe extern "C" fn pj_create_repos_file(
     delegate: IPJToDoHttpRequestDelegate,
     request_url: *const c_char,
     path: *const c_char,
@@ -34,7 +34,7 @@ pub unsafe extern "C" fn PJ_CreateReposFile(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_UpdateReposFile(
+pub unsafe extern "C" fn pj_update_repos_file(
     delegate: IPJToDoHttpRequestDelegate,
     request_url: *const c_char,
     path: *const c_char,
@@ -60,7 +60,7 @@ pub unsafe extern "C" fn PJ_UpdateReposFile(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_DeleteReposFile(
+pub unsafe extern "C" fn pj_delete_repos_file(
     delegate: IPJToDoHttpRequestDelegate,
     request_url: *const c_char,
     path: *const c_char,
@@ -86,7 +86,7 @@ pub unsafe extern "C" fn PJ_DeleteReposFile(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_GetReposFile(
+pub unsafe extern "C" fn pj_get_repos_file(
     delegate: IPJToDoHttpRequestDelegate,
     request_url: *const c_char,
 ) {
@@ -107,7 +107,7 @@ pub unsafe extern "C" fn PJ_GetReposFile(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn PJ_DownLoadFile(
+pub unsafe extern "C" fn pj_download_file(
     delegate: IPJToDoHttpRequestDelegate,
     request_url: *const c_char,
     save_path: *const c_char,

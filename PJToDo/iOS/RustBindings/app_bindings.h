@@ -92,28 +92,6 @@ typedef struct {
   void (*insert_result)(void*, bool);
   void (*delete_result)(void*, bool);
   void (*update_result)(void*, bool);
-  void (*find_byId_result)(void*, ToDoQuery*, bool);
-  void (*fetch_data_result)(void*, bool);
-  void (*update_overdue_todos)(void*, bool);
-} IPJToDoDelegate;
-
-typedef struct {
-  IPJToDoDelegate delegate;
-  PJToDoServiceController *todo_service_controller;
-  ToDoQuery *find_result_todo;
-  ToDoInsert *insert_todo;
-  Vec_Vec_ToDoQuery *todos;
-  Vec_ToDoType *todo_types;
-  Vec_ToDoTag *todo_tags;
-  const Vec_String *sectionTitles;
-} PJToDoController;
-
-typedef struct {
-  void *user;
-  void (*destroy)(void*);
-  void (*insert_result)(void*, bool);
-  void (*delete_result)(void*, bool);
-  void (*update_result)(void*, bool);
   void (*fetch_data_result)(void*, bool);
 } IPJToDoSettingsDelegate;
 
@@ -162,306 +140,328 @@ typedef struct {
   Vec_ToDoType *todo_types;
 } PJToDoTypeController;
 
-void PJ_Authorizations(IPJToDoHttpRequestDelegate delegate, const char *authorization);
-
-void PJ_CreateRepos(IPJToDoHttpRequestDelegate delegate);
-
-void PJ_CreateReposFile(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
-
-void PJ_DeleteRepos(IPJToDoHttpRequestDelegate delegate, const char *repos_url);
-
-void PJ_DeleteReposFile(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
-
-void PJ_DownLoadFile(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *save_path);
-
-void PJ_FindToDoByTitle(PJToDoSearchController *ptr, const char *title);
-
-void PJ_FindToDoLikeTitle(PJToDoSearchController *ptr, const char *title);
-
-void PJ_GetRepos(IPJToDoHttpRequestDelegate delegate, const char *repos_url);
-
-void PJ_GetReposFile(IPJToDoHttpRequestDelegate delegate, const char *request_url);
-
-void PJ_LogOut(void);
-
-void PJ_Login(IPJToDoHttpRequestDelegate delegate, const char *name, const char *password);
-
-void PJ_RequestUserInfo(IPJToDoHttpRequestDelegate delegate);
-
-const ToDoQuery *PJ_SearchToDoResultAtIndex(const PJToDoSearchController *ptr, int32_t index);
-
-int32_t PJ_SearchToDoResultCount(const PJToDoSearchController *ptr);
-
-void PJ_UpdateReposFile(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
-
-char *convertBase64StrToStr(const char *ptr);
-
-char *convertStrToBase64Str(const char *ptr);
-
-void createFolder(const char *folder_path);
-
-PJToDoController *createPJToDoController(IPJToDoDelegate delegate);
-
-PJToDoSearchController *createPJToDoSearchController(IPJToDoSearchDelegate delegate);
-
-PJToDoSettingsController *createPJToDoSettingsController(IPJToDoSettingsDelegate delegate);
-
-PJToDoTagController *createPJToDoTagController(IPJToDoTagDelegate delegate);
-
-PJToDoTypeController *createPJToDoTypeController(IPJToDoTypeDelegate delegate);
-
-ToDoInsert *createToDoInsert(void);
-
-ToDoQuery *createToDoQuery(void);
-
-ToDoSettings *createToDoSettings(const char *remind_email, int32_t remind_days);
-
-ToDoSettingsInsert *createToDoSettingsInsert(const char *remind_email, int32_t remind_days);
-
-ToDoTag *createToDoTag(const char *tag_name);
-
-ToDoTagInsert *createToDoTagInsert(const char *tag_name);
-
-ToDoType *createToDoType(const char *type_name);
-
-ToDoTypeInsert *createToDoTypeInsert(const char *type_name);
-
-void deleteToDo(PJToDoController *ptr, int32_t section, int32_t index, int32_t toDoId);
-
-void deleteToDoById(PJToDoController *ptr, int32_t toDoId);
-
-void deleteToDoSettings(PJToDoSettingsController *ptr, int32_t toDoSettingsId);
-
-void deleteToDoTag(PJToDoTagController *ptr, int32_t toDoTagId);
-
-void deleteToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
-
-void fetchToDoData(PJToDoController *ptr);
-
-void fetchToDoSettingsData(PJToDoSettingsController *ptr);
-
-void fetchToDoTagData(PJToDoTagController *ptr);
-
-void fetchToDoTypeData(PJToDoTypeController *ptr);
-
-void findToDo(PJToDoController *ptr, int32_t toDoId);
-
-void findToDoTag(PJToDoTagController *ptr, int32_t toDoTagId);
-
-void findToDoTagByName(PJToDoTagController *ptr, const char *tag_name);
-
-void findToDoType(PJToDoTypeController *ptr, int32_t toDoTypeId);
-
-void findToDoTypeByName(PJToDoTypeController *ptr, const char *type_name);
-
-void free_rust_PJToDoController(PJToDoController *ptr);
-
-void free_rust_PJToDoSearchController(PJToDoSearchController *ptr);
-
-void free_rust_PJToDoSettingsController(PJToDoSettingsController *ptr);
-
-void free_rust_PJToDoTagController(PJToDoTagController *ptr);
-
-void free_rust_PJToDoTypeController(PJToDoTypeController *ptr);
-
-void free_rust_object(void *ptr);
-
-void free_rust_string(char *ptr);
-
-const ToDoTag *getSearchToDoTagWithId(const PJToDoSearchController *ptr, int32_t tag_id);
-
-const ToDoType *getSearchToDoTypeWithId(const PJToDoSearchController *ptr, int32_t type_id);
-
-int32_t getToDoCountsAtSection(const PJToDoController *ptr, int32_t section);
-
-char *getToDoInsertContent(const ToDoInsert *ptr);
-
-char *getToDoInsertCreateTime(const ToDoInsert *ptr);
-
-char *getToDoInsertDueTime(const ToDoInsert *ptr);
-
-char *getToDoInsertRemindTime(const ToDoInsert *ptr);
-
-int32_t getToDoInsertState(ToDoInsert *ptr);
-
-char *getToDoInsertTitle(const ToDoInsert *ptr);
-
-char *getToDoInsertUpdateTime(const ToDoInsert *ptr);
-
-int32_t getToDoInsert_ToDoPriority(ToDoInsert *ptr);
-
-int32_t getToDoInsert_ToDoTagId(ToDoInsert *ptr);
-
-int32_t getToDoInsert_ToDoTypeId(ToDoInsert *ptr);
-
-char *getToDoQueryContent(const ToDoQuery *ptr);
-
-char *getToDoQueryCreateTime(const ToDoQuery *ptr);
-
-char *getToDoQueryDueTime(const ToDoQuery *ptr);
-
-int32_t getToDoQueryId(ToDoQuery *ptr);
-
-char *getToDoQueryRemindTime(const ToDoQuery *ptr);
-
-int32_t getToDoQueryState(ToDoQuery *ptr);
-
-char *getToDoQueryTitle(const ToDoQuery *ptr);
-
-char *getToDoQueryUpdateTime(const ToDoQuery *ptr);
-
-int32_t getToDoQuery_ToDoPriority(ToDoQuery *ptr);
-
-int32_t getToDoQuery_ToDoTagId(ToDoQuery *ptr);
-
-int32_t getToDoQuery_ToDoTypeId(ToDoQuery *ptr);
-
-int32_t getToDoSettingsCount(const PJToDoSettingsController *ptr);
-
-int32_t getToDoSettingsId(ToDoSettings *ptr);
-
-int32_t getToDoSettingsInsertRemindDays(ToDoSettingsInsert *ptr);
-
-char *getToDoSettingsInsertRemindEmail(const ToDoSettingsInsert *ptr);
-
-int32_t getToDoSettingsRemindDays(ToDoSettings *ptr);
-
-char *getToDoSettingsRemindEmail(const ToDoSettings *ptr);
-
-int32_t getToDoTagCount(const PJToDoTagController *ptr);
-
-int32_t getToDoTagId(ToDoTag *ptr);
-
-char *getToDoTagInsertName(const ToDoTagInsert *ptr);
-
-char *getToDoTagName(const ToDoTag *ptr);
-
-int32_t getToDoTypeCount(const PJToDoTypeController *ptr);
-
-int32_t getToDoTypeId(ToDoType *ptr);
-
-char *getToDoTypeInsertName(const ToDoTypeInsert *ptr);
-
-char *getToDoTypeName(const ToDoType *ptr);
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
+  void (*insert_result)(void*, bool);
+  void (*delete_result)(void*, bool);
+  void (*update_result)(void*, bool);
+  void (*find_byId_result)(void*, ToDoQuery*, bool);
+  void (*fetch_data_result)(void*, bool);
+  void (*update_overdue_todos)(void*, bool);
+} IPJToDoDelegate;
+
+typedef struct {
+  IPJToDoDelegate delegate;
+  PJToDoServiceController *todo_service_controller;
+  ToDoQuery *find_result_todo;
+  ToDoInsert *insert_todo;
+  Vec_Vec_ToDoQuery *todos;
+  Vec_ToDoType *todo_types;
+  Vec_ToDoTag *todo_tags;
+  const Vec_String *sectionTitles;
+} PJToDoController;
 
 extern const char *get_authorization_str(void);
 
 extern const char *get_db_path(void);
 
-void initCoreLib(void);
+void pj_authorizations(IPJToDoHttpRequestDelegate delegate, const char *authorization);
 
-void initDataBase(void);
+char *pj_convert_base64str_to_str(const char *ptr);
 
-void initTables(void);
+char *pj_convert_str_to_base64str(const char *ptr);
 
-void init_hello_piaojin(void);
+PJToDoSearchController *pj_create_PJToDoSearchController(IPJToDoSearchDelegate delegate);
 
-void insertToDo(PJToDoController *ptr, ToDoInsert *toDo);
+PJToDoSettingsController *pj_create_PJToDoSettingsController(IPJToDoSettingsDelegate delegate);
 
-void insertToDoSettings(PJToDoSettingsController *ptr, ToDoSettingsInsert *toDoSettings);
+PJToDoTagController *pj_create_PJToDoTagController(IPJToDoTagDelegate delegate);
 
-void insertToDoTag(PJToDoTagController *ptr, ToDoTagInsert *toDoTag);
+PJToDoTypeController *pj_create_PJToDoTypeController(IPJToDoTypeDelegate delegate);
 
-void insertToDoType(PJToDoTypeController *ptr, ToDoTypeInsert *toDoType);
+ToDoInsert *pj_create_ToDoInsert(void);
 
-int32_t pj_getToDoNumberOfSections(const PJToDoController *ptr);
+ToDoQuery *pj_create_ToDoQuery(void);
 
-void removeFile(const char *file_path);
+ToDoSettings *pj_create_ToDoSettings(const char *remind_email, int32_t remind_days);
 
-void removeFolder(const char *folder_path, bool all);
+ToDoSettingsInsert *pj_create_ToDoSettingsInsert(const char *remind_email, int32_t remind_days);
 
-void setToDoInsertContent(ToDoInsert *ptr, const char *content);
+ToDoTag *pj_create_ToDoTag(const char *tag_name);
 
-void setToDoInsertCreateTime(ToDoInsert *ptr, const char *create_time);
+ToDoTagInsert *pj_create_ToDoTagInsert(const char *tag_name);
 
-void setToDoInsertDueTime(ToDoInsert *ptr, const char *due_time);
+ToDoType *pj_create_ToDoType(const char *type_name);
 
-void setToDoInsertRemindTime(ToDoInsert *ptr, const char *remind_time);
+ToDoTypeInsert *pj_create_ToDoTypeInsert(const char *type_name);
 
-void setToDoInsertState(ToDoInsert *ptr, int32_t state);
+void pj_create_folder(const char *folder_path);
 
-void setToDoInsertTitle(ToDoInsert *ptr, const char *title);
+void pj_create_repos(IPJToDoHttpRequestDelegate delegate);
 
-void setToDoInsertUpdateTime(ToDoInsert *ptr, const char *update_time);
+void pj_create_repos_file(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
 
-void setToDoInsert_ToDoPriority(ToDoInsert *ptr, int32_t priority);
+PJToDoController *pj_create_todo_controller(IPJToDoDelegate delegate);
 
-void setToDoInsert_ToDoTagId(ToDoInsert *ptr, int32_t to_do_tag_id);
+void pj_delete_repos(IPJToDoHttpRequestDelegate delegate, const char *repos_url);
 
-void setToDoInsert_ToDoTypeId(ToDoInsert *ptr, int32_t to_do_type_id);
+void pj_delete_repos_file(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
 
-void setToDoQueryContent(ToDoQuery *ptr, const char *content);
+void pj_delete_todo(PJToDoController *ptr, int32_t section, int32_t index, int32_t toDoId);
 
-void setToDoQueryCreateTime(ToDoQuery *ptr, const char *create_time);
+void pj_delete_todo_by_id(PJToDoController *ptr, int32_t toDoId);
 
-void setToDoQueryDueTime(ToDoQuery *ptr, const char *due_time);
+void pj_delete_todo_settings(PJToDoSettingsController *ptr, int32_t toDoSettingsId);
 
-void setToDoQueryId(ToDoQuery *ptr, int32_t _id);
+void pj_delete_todo_tag(PJToDoTagController *ptr, int32_t toDoTagId);
 
-void setToDoQueryRemindTime(ToDoQuery *ptr, const char *remind_time);
+void pj_delete_todo_type(PJToDoTypeController *ptr, int32_t toDoTypeId);
 
-void setToDoQueryState(ToDoQuery *ptr, int32_t state);
+void pj_download_file(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *save_path);
 
-void setToDoQueryTitle(ToDoQuery *ptr, const char *title);
+void pj_fetch_todo_data(PJToDoController *ptr);
 
-void setToDoQueryUpdateTime(ToDoQuery *ptr, const char *update_time);
+void pj_fetch_todo_settings_data(PJToDoSettingsController *ptr);
 
-void setToDoQuery_ToDoPriority(ToDoQuery *ptr, int32_t priority);
+void pj_fetch_todo_tag_data(PJToDoTagController *ptr);
 
-void setToDoQuery_ToDoTagId(ToDoQuery *ptr, int32_t to_do_tag_id);
+void pj_fetch_todo_type_data(PJToDoTypeController *ptr);
 
-void setToDoQuery_ToDoTypeId(ToDoQuery *ptr, int32_t to_do_type_id);
+void pj_find_todo(PJToDoController *ptr, int32_t toDoId);
 
-void setToDoSettingsId(ToDoSettings *ptr, int32_t settins_id);
+void pj_find_todo_by_title(PJToDoSearchController *ptr, const char *title);
 
-void setToDoSettingsInsertRemindDays(ToDoSettingsInsert *ptr, int32_t remind_days);
+void pj_find_todo_like_title(PJToDoSearchController *ptr, const char *title);
 
-void setToDoSettingsInsertRemindEmail(ToDoSettingsInsert *ptr, const char *remind_email);
+void pj_find_todo_tag(PJToDoTagController *ptr, int32_t toDoTagId);
 
-void setToDoSettingsRemindDays(ToDoSettings *ptr, int32_t remind_days);
+void pj_find_todo_tag_by_name(PJToDoTagController *ptr, const char *tag_name);
 
-void setToDoSettingsRemindEmail(ToDoSettings *ptr, const char *remind_email);
+void pj_find_todo_type(PJToDoTypeController *ptr, int32_t toDoTypeId);
 
-void setToDoTagId(ToDoTag *ptr, int32_t type_id);
+void pj_find_todo_type_by_name(PJToDoTypeController *ptr, const char *type_name);
 
-void setToDoTagInsertName(ToDoTagInsert *ptr, const char *tag_name);
+void pj_free_rust_PJToDoController(PJToDoController *ptr);
 
-void setToDoTagName(ToDoTag *ptr, const char *tag_name);
+void pj_free_rust_PJToDoSearchController(PJToDoSearchController *ptr);
 
-void setToDoTypeId(ToDoType *ptr, int32_t type_id);
+void pj_free_rust_PJToDoSettingsController(PJToDoSettingsController *ptr);
 
-void setToDoTypeInsertName(ToDoTypeInsert *ptr, const char *type_name);
+void pj_free_rust_PJToDoTagController(PJToDoTagController *ptr);
 
-void setToDoTypeName(ToDoType *ptr, const char *type_name);
+void pj_free_rust_PJToDoTypeController(PJToDoTypeController *ptr);
+
+void pj_free_rust_object(void *ptr);
+
+void pj_free_rust_string(char *ptr);
+
+void pj_get_repos(IPJToDoHttpRequestDelegate delegate, const char *repos_url);
+
+void pj_get_repos_file(IPJToDoHttpRequestDelegate delegate, const char *request_url);
+
+const ToDoTag *pj_get_search_todo_tag_with_id(const PJToDoSearchController *ptr, int32_t tag_id);
+
+const ToDoType *pj_get_search_todo_type_with_id(const PJToDoSearchController *ptr, int32_t type_id);
+
+int32_t pj_get_todo_counts_at_section(const PJToDoController *ptr, int32_t section);
+
+char *pj_get_todo_insert_content(const ToDoInsert *ptr);
+
+char *pj_get_todo_insert_create_time(const ToDoInsert *ptr);
+
+char *pj_get_todo_insert_duetime(const ToDoInsert *ptr);
+
+char *pj_get_todo_insert_remind_time(const ToDoInsert *ptr);
+
+int32_t pj_get_todo_insert_state(ToDoInsert *ptr);
+
+char *pj_get_todo_insert_title(const ToDoInsert *ptr);
+
+int32_t pj_get_todo_insert_todo_priority(ToDoInsert *ptr);
+
+int32_t pj_get_todo_insert_todo_tag_id(ToDoInsert *ptr);
+
+int32_t pj_get_todo_insert_todo_type_id(ToDoInsert *ptr);
+
+char *pj_get_todo_insert_update_time(const ToDoInsert *ptr);
+
+int32_t pj_get_todo_number_of_sections(const PJToDoController *ptr);
+
+char *pj_get_todo_query_content(const ToDoQuery *ptr);
+
+char *pj_get_todo_query_create_time(const ToDoQuery *ptr);
+
+char *pj_get_todo_query_duetime(const ToDoQuery *ptr);
+
+int32_t pj_get_todo_query_id(ToDoQuery *ptr);
+
+char *pj_get_todo_query_remind_time(const ToDoQuery *ptr);
+
+int32_t pj_get_todo_query_state(ToDoQuery *ptr);
+
+char *pj_get_todo_query_title(const ToDoQuery *ptr);
+
+int32_t pj_get_todo_query_todo_priority(ToDoQuery *ptr);
+
+int32_t pj_get_todo_query_todo_tag_id(ToDoQuery *ptr);
+
+int32_t pj_get_todo_query_todo_type_id(ToDoQuery *ptr);
+
+char *pj_get_todo_query_update_time(const ToDoQuery *ptr);
+
+int32_t pj_get_todo_settings_count(const PJToDoSettingsController *ptr);
+
+int32_t pj_get_todo_settings_id(ToDoSettings *ptr);
+
+int32_t pj_get_todo_settings_insert_remind_days(ToDoSettingsInsert *ptr);
+
+char *pj_get_todo_settings_insert_remind_email(const ToDoSettingsInsert *ptr);
+
+int32_t pj_get_todo_settings_remind_days(ToDoSettings *ptr);
+
+char *pj_get_todo_settings_remind_email(const ToDoSettings *ptr);
+
+int32_t pj_get_todo_tag_count(const PJToDoTagController *ptr);
+
+int32_t pj_get_todo_tag_id(ToDoTag *ptr);
+
+char *pj_get_todo_tag_insert_name(const ToDoTagInsert *ptr);
+
+char *pj_get_todo_tag_name(const ToDoTag *ptr);
+
+int32_t pj_get_todo_type_count(const PJToDoTypeController *ptr);
+
+int32_t pj_get_todo_type_id(ToDoType *ptr);
+
+char *pj_get_todo_type_insert_name(const ToDoTypeInsert *ptr);
+
+char *pj_get_todo_type_name(const ToDoType *ptr);
+
+void pj_init_corelib(void);
+
+void pj_init_data_base(void);
+
+void pj_init_hello_piaojin(void);
+
+void pj_init_tables(void);
+
+void pj_insert_todo(PJToDoController *ptr, ToDoInsert *toDo);
+
+void pj_insert_todo_settings(PJToDoSettingsController *ptr, ToDoSettingsInsert *toDoSettings);
+
+void pj_insert_todo_tag(PJToDoTagController *ptr, ToDoTagInsert *toDoTag);
+
+void pj_insert_todo_type(PJToDoTypeController *ptr, ToDoTypeInsert *toDoType);
+
+void pj_login(IPJToDoHttpRequestDelegate delegate, const char *name, const char *password);
+
+void pj_logout(void);
+
+void pj_remove_file(const char *file_path);
+
+void pj_remove_folder(const char *folder_path, bool all);
+
+void pj_request_user_info(IPJToDoHttpRequestDelegate delegate);
+
+const ToDoQuery *pj_search_todo_result_at_index(const PJToDoSearchController *ptr, int32_t index);
+
+int32_t pj_search_todo_result_count(const PJToDoSearchController *ptr);
+
+void pj_set_todo_insert_content(ToDoInsert *ptr, const char *content);
+
+void pj_set_todo_insert_create_time(ToDoInsert *ptr, const char *create_time);
+
+void pj_set_todo_insert_duetime(ToDoInsert *ptr, const char *due_time);
+
+void pj_set_todo_insert_remind_time(ToDoInsert *ptr, const char *remind_time);
+
+void pj_set_todo_insert_state(ToDoInsert *ptr, int32_t state);
+
+void pj_set_todo_insert_title(ToDoInsert *ptr, const char *title);
+
+void pj_set_todo_insert_todo_priority(ToDoInsert *ptr, int32_t priority);
+
+void pj_set_todo_insert_todo_tag_id(ToDoInsert *ptr, int32_t to_do_tag_id);
+
+void pj_set_todo_insert_todo_type_id(ToDoInsert *ptr, int32_t to_do_type_id);
+
+void pj_set_todo_insert_update_time(ToDoInsert *ptr, const char *update_time);
+
+void pj_set_todo_query_content(ToDoQuery *ptr, const char *content);
+
+void pj_set_todo_query_create_time(ToDoQuery *ptr, const char *create_time);
+
+void pj_set_todo_query_duetime(ToDoQuery *ptr, const char *due_time);
+
+void pj_set_todo_query_id(ToDoQuery *ptr, int32_t _id);
+
+void pj_set_todo_query_remind_time(ToDoQuery *ptr, const char *remind_time);
+
+void pj_set_todo_query_state(ToDoQuery *ptr, int32_t state);
+
+void pj_set_todo_query_title(ToDoQuery *ptr, const char *title);
+
+void pj_set_todo_query_todo_priority(ToDoQuery *ptr, int32_t priority);
+
+void pj_set_todo_query_todo_tag_id(ToDoQuery *ptr, int32_t to_do_tag_id);
+
+void pj_set_todo_query_todo_type_id(ToDoQuery *ptr, int32_t to_do_type_id);
+
+void pj_set_todo_query_update_time(ToDoQuery *ptr, const char *update_time);
+
+void pj_set_todo_settings_id(ToDoSettings *ptr, int32_t settins_id);
+
+void pj_set_todo_settings_insert_remind_days(ToDoSettingsInsert *ptr, int32_t remind_days);
+
+void pj_set_todo_settings_insert_remind_email(ToDoSettingsInsert *ptr, const char *remind_email);
+
+void pj_set_todo_settings_remind_days(ToDoSettings *ptr, int32_t remind_days);
+
+void pj_set_todo_settings_remind_email(ToDoSettings *ptr, const char *remind_email);
+
+void pj_set_todo_tag_id(ToDoTag *ptr, int32_t type_id);
+
+void pj_set_todo_tag_insert_name(ToDoTagInsert *ptr, const char *tag_name);
+
+void pj_set_todo_tag_name(ToDoTag *ptr, const char *tag_name);
+
+void pj_set_todo_type_id(ToDoType *ptr, int32_t type_id);
+
+void pj_set_todo_type_insert_name(ToDoTypeInsert *ptr, const char *type_name);
+
+void pj_set_todo_type_name(ToDoType *ptr, const char *type_name);
+
+void pj_test_pal_from_rust(void);
+
+const ToDoQuery *pj_todo_at_section(const PJToDoController *ptr, int32_t section, int32_t index);
+
+const ToDoSettings *pj_todo_settings_at_index(const PJToDoSettingsController *ptr, int32_t index);
+
+const ToDoTag *pj_todo_tag_at_index(const PJToDoTagController *ptr, int32_t index);
+
+const ToDoTag *pj_todo_tag_with_id(const PJToDoController *ptr, int32_t tag_id);
+
+char *pj_todo_title_at_section(const PJToDoController *ptr, int32_t section);
+
+const ToDoType *pj_todo_type_at_index(const PJToDoTypeController *ptr, int32_t index);
+
+const ToDoType *pj_todo_type_with_id(const PJToDoController *ptr, int32_t type_id);
+
+void pj_update_db_connection(void);
+
+void pj_update_overdue_todos(const PJToDoController *ptr);
+
+void pj_update_repos_file(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
+
+void pj_update_todo(PJToDoController *ptr, const ToDoQuery *toDo);
+
+void pj_update_todo_settings(PJToDoSettingsController *ptr, const ToDoSettings *toDoSettings);
+
+void pj_update_todo_tag(PJToDoTagController *ptr, const ToDoTag *toDoTag);
+
+void pj_update_todo_type(PJToDoTypeController *ptr, const ToDoType *toDoType);
 
 extern void test_pal_from_Swift(void);
-
-void test_pal_from_rust(void);
-
-const ToDoTag *toDoTagWithId(const PJToDoController *ptr, int32_t tag_id);
-
-const ToDoType *toDoTypeWithId(const PJToDoController *ptr, int32_t type_id);
-
-const ToDoQuery *todoAtSection(const PJToDoController *ptr, int32_t section, int32_t index);
-
-const ToDoSettings *todoSettingsAtIndex(const PJToDoSettingsController *ptr, int32_t index);
-
-const ToDoTag *todoTagAtIndex(const PJToDoTagController *ptr, int32_t index);
-
-char *todoTitleAtSection(const PJToDoController *ptr, int32_t section);
-
-const ToDoType *todoTypeAtIndex(const PJToDoTypeController *ptr, int32_t index);
-
-void updateDBConnection(void);
-
-void updateOverDueToDos(const PJToDoController *ptr);
-
-void updateToDo(PJToDoController *ptr, const ToDoQuery *toDo);
-
-void updateToDoSettings(PJToDoSettingsController *ptr, const ToDoSettings *toDoSettings);
-
-void updateToDoTag(PJToDoTagController *ptr, const ToDoTag *toDoTag);
-
-void updateToDoType(PJToDoTypeController *ptr, const ToDoType *toDoType);
 
 #endif /* app_bindings_h */

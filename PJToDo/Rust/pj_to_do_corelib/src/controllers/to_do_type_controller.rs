@@ -1,7 +1,7 @@
 use delegates::to_do_type_delegate::{IPJToDoTypeDelegate, IPJToDoTypeDelegateWrapper};
 use service::to_do_type_service::{PJToDoTypeService, insert_todo_type, delete_todo_type, update_todo_type, find_todo_type_by_id, find_todo_type_by_name, fetch_data};
 use service::service_impl::to_do_type_service_impl::{createPJToDoTypeServiceImpl};
-use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType, createToDoType, createToDoTypeInsert};
+use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType, pj_create_ToDoType, pj_create_ToDoTypeInsert};
 use common::{free_rust_any_object};
 #[allow(unused_imports)]
 use common::pj_logger::PJLogger;
@@ -59,8 +59,8 @@ impl PJToDoTypeController {
                 todo_typ_service_controller: Box::into_raw(Box::new(
                     PJToDoTypeServiceController::new(),
                 )),
-                find_result_todo_type: createToDoType(c_str_type.into_raw()),
-                insert_todo_type: createToDoTypeInsert(c_str_type_insert.into_raw()),
+                find_result_todo_type: pj_create_ToDoType(c_str_type.into_raw()),
+                insert_todo_type: pj_create_ToDoTypeInsert(c_str_type_insert.into_raw()),
                 todo_types: Box::into_raw(Box::new(Vec::new())),
             }
         };
@@ -241,7 +241,7 @@ impl Drop for PJToDoTypeController {
 /*** extern "C" ***/
 
 #[no_mangle]
-pub extern "C" fn createPJToDoTypeController(
+pub extern "C" fn pj_create_PJToDoTypeController(
     delegate: IPJToDoTypeDelegate,
 ) -> *mut PJToDoTypeController {
     let controller = PJToDoTypeController::new(delegate);
@@ -249,7 +249,7 @@ pub extern "C" fn createPJToDoTypeController(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn insertToDoType(
+pub unsafe extern "C" fn pj_insert_todo_type(
     ptr: *mut PJToDoTypeController,
     toDoType: *mut ToDoTypeInsert,
 ) {
@@ -268,7 +268,7 @@ pub unsafe extern "C" fn insertToDoType(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn deleteToDoType(ptr: *mut PJToDoTypeController, toDoTypeId: i32) {
+pub unsafe extern "C" fn pj_delete_todo_type(ptr: *mut PJToDoTypeController, toDoTypeId: i32) {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr: *mut deleteToDoType is null!");
         assert!(ptr != std::ptr::null_mut());
@@ -283,7 +283,7 @@ pub unsafe extern "C" fn deleteToDoType(ptr: *mut PJToDoTypeController, toDoType
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn updateToDoType(ptr: *mut PJToDoTypeController, toDoType: *const ToDoType) {
+pub unsafe extern "C" fn pj_update_todo_type(ptr: *mut PJToDoTypeController, toDoType: *const ToDoType) {
     if ptr == std::ptr::null_mut() || toDoType == std::ptr::null_mut() {
         pj_error!("ptr or toDoType: *mut updateToDoType is null!");
         assert!(ptr != std::ptr::null_mut() && toDoType != std::ptr::null_mut());
@@ -299,7 +299,7 @@ pub unsafe extern "C" fn updateToDoType(ptr: *mut PJToDoTypeController, toDoType
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn findToDoType(ptr: *mut PJToDoTypeController, toDoTypeId: i32) {
+pub unsafe extern "C" fn pj_find_todo_type(ptr: *mut PJToDoTypeController, toDoTypeId: i32) {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr: *mut findToDoType is null!");
         assert!(ptr != std::ptr::null_mut());
@@ -314,7 +314,7 @@ pub unsafe extern "C" fn findToDoType(ptr: *mut PJToDoTypeController, toDoTypeId
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn findToDoTypeByName(
+pub unsafe extern "C" fn pj_find_todo_type_by_name(
     ptr: *mut PJToDoTypeController,
     type_name: *const c_char,
 ) {
@@ -333,7 +333,7 @@ pub unsafe extern "C" fn findToDoTypeByName(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn fetchToDoTypeData(ptr: *mut PJToDoTypeController) {
+pub unsafe extern "C" fn pj_fetch_todo_type_data(ptr: *mut PJToDoTypeController) {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDoType: *mut fetchData is null!");
         assert!(ptr != std::ptr::null_mut());
@@ -343,7 +343,7 @@ pub unsafe extern "C" fn fetchToDoTypeData(ptr: *mut PJToDoTypeController) {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn todoTypeAtIndex(
+pub unsafe extern "C" fn pj_todo_type_at_index(
     ptr: *const PJToDoTypeController,
     index: i32,
 ) -> *const ToDoType {
@@ -356,7 +356,7 @@ pub unsafe extern "C" fn todoTypeAtIndex(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn getToDoTypeCount(ptr: *const PJToDoTypeController) -> i32 {
+pub unsafe extern "C" fn pj_get_todo_type_count(ptr: *const PJToDoTypeController) -> i32 {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDoType: *mut getToDoTypeCount is null!");
         assert!(ptr != std::ptr::null_mut());
@@ -366,7 +366,7 @@ pub unsafe extern "C" fn getToDoTypeCount(ptr: *const PJToDoTypeController) -> i
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn free_rust_PJToDoTypeController(ptr: *mut PJToDoTypeController) {
+pub unsafe extern "C" fn pj_free_rust_PJToDoTypeController(ptr: *mut PJToDoTypeController) {
     if ptr != std::ptr::null_mut() {
         Box::from_raw(ptr); //unsafe
     };

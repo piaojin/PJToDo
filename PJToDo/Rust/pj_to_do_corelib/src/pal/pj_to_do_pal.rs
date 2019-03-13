@@ -20,6 +20,6 @@ impl PJToDoPal {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn test_pal_from_rust() {
+pub unsafe extern "C" fn pj_test_pal_from_rust() {
     PJToDoPal::say_hi_from_rust();
 }
