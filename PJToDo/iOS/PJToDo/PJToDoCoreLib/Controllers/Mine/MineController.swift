@@ -18,7 +18,7 @@ public protocol ToDoSettingsDelegate: NSObjectProtocol {
 class MineController {
     
     private lazy var controller: UnsafeMutablePointer<PJToDoSettingsController>? = {
-        let controller = createPJToDoSettingsController(self.iDelegate)
+        let controller = pj_create_PJToDoSettingsController(self.iDelegate)
         return controller
     }()
     
@@ -69,33 +69,33 @@ class MineController {
     public func insert(toDoSettings: PJMySettings) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        insertToDoSettings(self.controller, toDoSettings.iToDoSettingsInsert)
+        pj_insert_todo_settings(self.controller, toDoSettings.iToDoSettingsInsert)
     }
     
     public func delete(toDoSettingsId: Int32) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        deleteToDoSettings(self.controller, toDoSettingsId)
+        pj_delete_todo_settings(self.controller, toDoSettingsId)
     }
     
     public func update(toDoSettings: PJMySettings) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        updateToDoSettings(self.controller, toDoSettings.iToDoSettings)
+        pj_update_todo_settings(self.controller, toDoSettings.iToDoSettings)
     }
     
     public func fetchData() {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        fetchToDoSettingsData(self.controller)
+        pj_fetch_todo_settings_data(self.controller)
     }
     
     public func getCount() -> Int32 {
-        return getToDoSettingsCount(self.controller)
+        return pj_get_todo_settings_count(self.controller)
     }
     
     public func toDoSettingsAt(index: Int32) -> PJMySettings {
-        return PJMySettings(iToDoSettings: todoSettingsAtIndex(self.controller, index))
+        return PJMySettings(iToDoSettings: pj_todo_settings_at_index(self.controller, index))
     }
     
     //Rust回调Swift
@@ -122,7 +122,7 @@ class MineController {
     
     deinit {
         print("deinit -> MineController")
-        free_rust_PJToDoSettingsController(self.controller)
+        pj_free_rust_PJToDoSettingsController(self.controller)
     }
 }
 

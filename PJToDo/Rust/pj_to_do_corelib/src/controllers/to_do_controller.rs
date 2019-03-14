@@ -446,7 +446,7 @@ impl Drop for PJToDoController {
 // /*** extern "C" ***/
 
 #[no_mangle]
-pub extern "C" fn pj_create_todo_controller(delegate: IPJToDoDelegate) -> *mut PJToDoController {
+pub extern "C" fn pj_create_PJToDoController(delegate: IPJToDoDelegate) -> *mut PJToDoController {
     let controller = PJToDoController::new(delegate);
     Box::into_raw(Box::new(controller))
 }

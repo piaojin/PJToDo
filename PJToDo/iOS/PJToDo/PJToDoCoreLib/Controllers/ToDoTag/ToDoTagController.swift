@@ -20,7 +20,7 @@ import UIKit
 class ToDoTagController {
     
     private lazy var controller: UnsafeMutablePointer<PJToDoTagController>? = {
-        let controller = createPJToDoTagController(self.iDelegate)
+        let controller = pj_create_PJToDoTagController(self.iDelegate)
         return controller
     }()
     
@@ -84,45 +84,45 @@ class ToDoTagController {
     public func insert(toDoTag: PJToDoTag) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        insertToDoTag(self.controller, toDoTag.iToDoTagInsert)
+        pj_insert_todo_tag(self.controller, toDoTag.iToDoTagInsert)
     }
     
     public func delete(toDoTagId: Int32) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        deleteToDoTag(self.controller, toDoTagId)
+        pj_delete_todo_tag(self.controller, toDoTagId)
     }
     
     public func update(toDoTag: PJToDoTag) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        updateToDoTag(self.controller, toDoTag.iToDoTag)
+        pj_update_todo_tag(self.controller, toDoTag.iToDoTag)
     }
     
     public func findById(toDoTagId: Int32) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        findToDoTag(self.controller, toDoTagId)
+        pj_find_todo_tag(self.controller, toDoTagId)
     }
     
     public func findByName(tagName: String) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        findToDoTagByName(self.controller, tagName)
+        pj_find_todo_tag_by_name(self.controller, tagName)
     }
     
     public func fetchData() {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        fetchToDoTagData(self.controller)
+        pj_fetch_todo_tag_data(self.controller)
     }
     
     public func getCount() -> Int32 {
-        return getToDoTagCount(self.controller)
+        return pj_get_todo_tag_count(self.controller)
     }
     
     public func toDoTagAt(index: Int32) -> PJToDoTag {
-        return PJToDoTag(iToDoTag: todoTagAtIndex(self.controller, index))
+        return PJToDoTag(iToDoTag: pj_todo_tag_at_index(self.controller, index))
     }
     
     //Rust回调Swift
@@ -160,7 +160,7 @@ class ToDoTagController {
     
     deinit {
         print("deinit -> ToDoTagController")
-        free_rust_PJToDoTagController(self.controller)
+        pj_free_rust_PJToDoTagController(self.controller)
     }
 }
 

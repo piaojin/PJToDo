@@ -35,7 +35,7 @@ public struct PJHttpRequest {
             })
         })
         
-        PJ_Login(httpRequestConfig.iDelegate, name, passWord)
+        pj_login(httpRequestConfig.iDelegate, name, passWord)
     }
     
     public static func authorization(authorization: String, responseBlock: ((_ isSuccess : Bool, _ data: Authorizations?, _ error: PJHttpError?) -> Void)?) {
@@ -45,7 +45,7 @@ public struct PJHttpRequest {
             })
         })
         
-        PJ_Authorizations(httpRequestConfig.iDelegate, authorization)
+        pj_authorizations(httpRequestConfig.iDelegate, authorization)
     }
     
     public static func requestUserInfo(responseBlock: ((_ isSuccess : Bool, _ data: User?, _ error: PJHttpError?) -> Void)?) {
@@ -55,46 +55,46 @@ public struct PJHttpRequest {
             })
         })
         
-        PJ_RequestUserInfo(httpRequestConfig.iDelegate)
+        pj_request_user_info(httpRequestConfig.iDelegate)
     }
     
     //MARK: Repos
     
     public static func createGitHubRepos(responseBlock: ((_ isSuccess : Bool, _ data: Repos?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "createGitHubRepos", responseBlock: responseBlock)
-        PJ_CreateRepos(httpRequestConfig.iDelegate)
+        pj_create_repos(httpRequestConfig.iDelegate)
     }
     
     public static func getGitHubRepos(reposUrl: String, responseBlock: ((_ isSuccess : Bool, _ data: Repos?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "getGitHubRepos", responseBlock: responseBlock)
-        PJ_GetRepos(httpRequestConfig.iDelegate, reposUrl)
+        pj_get_repos(httpRequestConfig.iDelegate, reposUrl)
     }
     
     public static func deleteGitHubRepos(reposUrl: String, responseBlock: ((_ isSuccess : Bool, _ data: Repos?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "deleteGitHubRepos", responseBlock: responseBlock)
-        PJ_DeleteRepos(httpRequestConfig.iDelegate, reposUrl)
+        pj_delete_repos(httpRequestConfig.iDelegate, reposUrl)
     }
     
     //MARK: File
     
     public static func createGitHubReposFile(requestUrl: String, path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "createGitHubFile", responseBlock: responseBlock)
-        PJ_CreateReposFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
+        pj_create_repos_file(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
     }
     
     public static func updateGitHubReposFile(requestUrl: String, path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "updateGitHubFile", responseBlock: responseBlock)
-        PJ_UpdateReposFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
+        pj_update_repos_file(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
     }
     
     public static func deleteGitHubReposFile(requestUrl: String, path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "deleteGitHubFile", responseBlock: responseBlock)
-        PJ_DeleteReposFile(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
+        pj_delete_repos_file(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
     }
     
     public static func getGitHubReposFile(requestUrl: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFileContent?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "getGitHubReposFile", responseBlock: responseBlock)
-        PJ_GetReposFile(httpRequestConfig.iDelegate, requestUrl)
+        pj_get_repos_file(httpRequestConfig.iDelegate, requestUrl)
     }
     
     public static func downloadFile(requestUrl: String, savePath: String, responseBlock: ((_ isSuccess : Bool, _ data: String?, _ error: PJHttpError?) -> Void)?) {
@@ -112,7 +112,7 @@ public struct PJHttpRequest {
                 }
             }
         })
-        PJ_DownLoadFile(httpRequestConfig.iDelegate, requestUrl, savePath)
+        pj_download_file(httpRequestConfig.iDelegate, requestUrl, savePath)
     }
     
     private static func createHttpRequestConfig<T: Codable>(actionName: String, responseBlock: ((_ isSuccess : Bool, _ data: T?, _ error: PJHttpError?) -> Void)?) -> PJHttpRequestConfig {

@@ -15,7 +15,7 @@ public protocol ToDoSearchDelegate: NSObjectProtocol {
 
 class ToDoSearchController {
     private lazy var controller: UnsafeMutablePointer<PJToDoSearchController>? = {
-        let controller = createPJToDoSearchController(self.iDelegate)
+        let controller = pj_create_PJToDoSearchController(self.iDelegate)
         return controller
     }()
     
@@ -54,25 +54,25 @@ class ToDoSearchController {
     public func findByTitle(title: String) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        PJ_FindToDoByTitle(self.controller, title)
+        pj_find_todo_by_title(self.controller, title)
     }
     
     public func findToDoLikeTitle(title: String) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        PJ_FindToDoLikeTitle(self.controller, title)
+        pj_find_todo_like_title(self.controller, title)
     }
     
     public func getSearchToDoResultCount() -> Int32 {
-        return PJ_SearchToDoResultCount(self.controller)
+        return pj_search_todo_result_count(self.controller)
     }
     
     public func searchToDoResultAtIndex(index: Int32) -> PJ_ToDo {
-        let iToDoQuery = PJ_SearchToDoResultAtIndex(self.controller, index)
-        let typeId = getToDoQuery_ToDoTypeId(iToDoQuery)
-        let tagId = getToDoQuery_ToDoTagId(iToDoQuery)
-        let iToDoType = getSearchToDoTypeWithId(self.controller, typeId)
-        let iToDoTag = getSearchToDoTagWithId(self.controller, tagId)
+        let iToDoQuery = pj_search_todo_result_at_index(self.controller, index)
+        let typeId = pj_get_todo_query_todo_type_id(iToDoQuery)
+        let tagId = pj_get_todo_query_todo_tag_id(iToDoQuery)
+        let iToDoType = pj_get_search_todo_type_with_id(self.controller, typeId)
+        let iToDoTag = pj_get_search_todo_tag_with_id(self.controller, tagId)
         return PJ_ToDo(iToDoQuery: iToDoQuery, iToDoType: iToDoType, iToDoTag: iToDoTag)
     }
     
@@ -82,10 +82,10 @@ class ToDoSearchController {
         print("ToDoSearchController: received findByIdResult callback with  \(isSuccess)")
         var tempToDo: PJ_ToDo? = nil
         if isSuccess {
-            let typeId = getToDoQuery_ToDoTypeId(toDo)
-            let tagId = getToDoQuery_ToDoTagId(toDo)
-            let iToDoType = getSearchToDoTypeWithId(self.controller, typeId)
-            let iToDoTag = getSearchToDoTagWithId(self.controller, tagId)
+            let typeId = pj_get_todo_query_todo_type_id(toDo)
+            let tagId = pj_get_todo_query_todo_tag_id(toDo)
+            let iToDoType = pj_get_search_todo_type_with_id(self.controller, typeId)
+            let iToDoTag = pj_get_search_todo_tag_with_id(self.controller, tagId)
             tempToDo = PJ_ToDo(iToDoQuery: toDo, iToDoType: iToDoType, iToDoTag: iToDoTag)
         }
         self.delegate?.findToDoByTitleResult(toDo: tempToDo, isSuccess: isSuccess)
@@ -98,7 +98,7 @@ class ToDoSearchController {
     
     deinit {
         print("deinit -> ToDoSearchController")
-        free_rust_PJToDoSearchController(self.controller)
+        pj_free_rust_PJToDoSearchController(self.controller)
     }
 }
 

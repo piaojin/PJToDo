@@ -54,8 +54,8 @@ public struct PJUserInfoManager {
         }
         PJUserInfoManager.removeUserInfo()
         PJReposManager.removeRepos()
-        PJ_LogOut()
-        removeFolder(PJToDoConst.PJToDoData, true)
+        pj_logout()
+        pj_remove_folder(PJToDoConst.PJToDoData, true)
         PJToDoCoreLibInit.initRustCoreLib()
         if let window = UIApplication.shared.delegate?.window {
             window?.rootViewController = UINavigationController(rootViewController: WelcomeViewController())

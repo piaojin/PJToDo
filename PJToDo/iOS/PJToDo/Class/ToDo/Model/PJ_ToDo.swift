@@ -28,28 +28,28 @@ public class PJ_ToDo: NSObject {
     
     public var toDoId: Int32 {
         get {
-            return getToDoQueryId(self.iToDoQuery)
+            return pj_get_todo_query_id(self.iToDoQuery)
         }
         
         set {
-            setToDoQueryId(self.iToDoQuery, newValue)
+            pj_set_todo_query_id(self.iToDoQuery, newValue)
         }
     }
     
     public var title: String {
         get {
             if self.mode == .insert {
-                return String.create(cString: getToDoInsertTitle(self.iToDoInsert))
+                return String.create(cString: pj_get_todo_insert_title(self.iToDoInsert))
             } else {
-                return String.create(cString: getToDoQueryTitle(self.iToDoQuery))
+                return String.create(cString: pj_get_todo_query_title(self.iToDoQuery))
             }
         }
         
         set {
             if self.mode == .insert {
-                setToDoInsertTitle(self.iToDoInsert, newValue)
+                pj_set_todo_insert_title(self.iToDoInsert, newValue)
             } else {
-                setToDoQueryTitle(self.iToDoQuery, newValue)
+                pj_set_todo_query_title(self.iToDoQuery, newValue)
             }
         }
     }
@@ -57,17 +57,17 @@ public class PJ_ToDo: NSObject {
     public var content: String {
         get {
             if self.mode == .insert {
-                return String.create(cString: getToDoInsertContent(self.iToDoInsert))
+                return String.create(cString: pj_get_todo_insert_content(self.iToDoInsert))
             } else {
-                return String.create(cString: getToDoQueryContent(self.iToDoQuery))
+                return String.create(cString: pj_get_todo_query_content(self.iToDoQuery))
             }
         }
         
         set {
             if self.mode == .insert {
-                setToDoInsertContent(self.iToDoInsert, newValue)
+                pj_set_todo_insert_content(self.iToDoInsert, newValue)
             } else {
-                setToDoQueryContent(self.iToDoQuery, newValue)
+                pj_set_todo_query_content(self.iToDoQuery, newValue)
             }
         }
     }
@@ -75,17 +75,17 @@ public class PJ_ToDo: NSObject {
     public var dueTime: String {
         get {
             if self.mode == .insert {
-                return String.create(cString: getToDoInsertDueTime(self.iToDoInsert))
+                return String.create(cString: pj_get_todo_insert_duetime(self.iToDoInsert))
             } else {
-                return String.create(cString: getToDoQueryDueTime(self.iToDoQuery))
+                return String.create(cString: pj_get_todo_query_duetime(self.iToDoQuery))
             }
         }
         
         set {
             if self.mode == .insert {
-                setToDoInsertDueTime(self.iToDoInsert, newValue)
+                pj_set_todo_insert_duetime(self.iToDoInsert, newValue)
             } else {
-                setToDoQueryDueTime(self.iToDoQuery, newValue)
+                pj_set_todo_query_duetime(self.iToDoQuery, newValue)
             }
         }
     }
@@ -93,17 +93,17 @@ public class PJ_ToDo: NSObject {
     public var remindTime: String {
         get {
             if self.mode == .insert {
-                return String.create(cString: getToDoInsertRemindTime(self.iToDoInsert))
+                return String.create(cString: pj_get_todo_insert_remind_time(self.iToDoInsert))
             } else {
-                return String.create(cString: getToDoQueryRemindTime(self.iToDoQuery))
+                return String.create(cString: pj_get_todo_query_remind_time(self.iToDoQuery))
             }
         }
         
         set {
             if self.mode == .insert {
-                setToDoInsertRemindTime(self.iToDoInsert, newValue)
+                pj_set_todo_insert_remind_time(self.iToDoInsert, newValue)
             } else {
-                setToDoQueryRemindTime(self.iToDoQuery, newValue)
+                pj_set_todo_query_remind_time(self.iToDoQuery, newValue)
             }
         }
     }
@@ -111,17 +111,17 @@ public class PJ_ToDo: NSObject {
     public var createTime: String {
         get {
             if self.mode == .insert {
-                return String.create(cString: getToDoInsertCreateTime(self.iToDoInsert))
+                return String.create(cString: pj_get_todo_insert_create_time(self.iToDoInsert))
             } else {
-                return String.create(cString: getToDoQueryCreateTime(self.iToDoQuery))
+                return String.create(cString: pj_get_todo_query_create_time(self.iToDoQuery))
             }
         }
         
         set {
             if self.mode == .insert {
-                setToDoInsertCreateTime(self.iToDoInsert, newValue)
+                pj_set_todo_insert_create_time(self.iToDoInsert, newValue)
             } else {
-                setToDoQueryCreateTime(self.iToDoQuery, newValue)
+                pj_set_todo_query_create_time(self.iToDoQuery, newValue)
             }
         }
     }
@@ -129,17 +129,17 @@ public class PJ_ToDo: NSObject {
     public var updateTime: String {
         get {
             if self.mode == .insert {
-                return String.create(cString: getToDoInsertUpdateTime(self.iToDoInsert))
+                return String.create(cString: pj_get_todo_insert_update_time(self.iToDoInsert))
             } else {
-                return String.create(cString: getToDoQueryUpdateTime(self.iToDoQuery))
+                return String.create(cString: pj_get_todo_query_update_time(self.iToDoQuery))
             }
         }
         
         set {
             if self.mode == .insert {
-                setToDoInsertUpdateTime(self.iToDoInsert, newValue)
+                pj_set_todo_insert_update_time(self.iToDoInsert, newValue)
             } else {
-                setToDoQueryUpdateTime(self.iToDoQuery, newValue)
+                pj_set_todo_query_update_time(self.iToDoQuery, newValue)
             }
         }
     }
@@ -147,17 +147,17 @@ public class PJ_ToDo: NSObject {
     public var priority: Int32 {
         get {
             if self.mode == .insert {
-                return getToDoInsert_ToDoPriority(self.iToDoInsert)
+                return pj_get_todo_insert_todo_priority(self.iToDoInsert)
             } else {
-                return getToDoQuery_ToDoPriority(self.iToDoQuery)
+                return pj_get_todo_query_todo_priority(self.iToDoQuery)
             }
         }
         
         set {
             if self.mode == .insert {
-                setToDoInsert_ToDoPriority(self.iToDoInsert, newValue)
+                pj_set_todo_insert_todo_priority(self.iToDoInsert, newValue)
             } else {
-                setToDoQuery_ToDoPriority(self.iToDoQuery, newValue)
+                pj_set_todo_query_todo_priority(self.iToDoQuery, newValue)
             }
         }
     }
@@ -165,17 +165,17 @@ public class PJ_ToDo: NSObject {
     public var toDoTypeId: Int32 {
         get {
             if self.mode == .insert {
-                return getToDoInsert_ToDoTypeId(self.iToDoInsert)
+                return pj_get_todo_insert_todo_type_id(self.iToDoInsert)
             } else {
-                return getToDoQuery_ToDoTypeId(self.iToDoQuery)
+                return pj_get_todo_query_todo_type_id(self.iToDoQuery)
             }
         }
         
         set {
             if self.mode == .insert {
-                setToDoInsert_ToDoTypeId(self.iToDoInsert, newValue)
+                pj_set_todo_insert_todo_type_id(self.iToDoInsert, newValue)
             } else {
-                setToDoQuery_ToDoTypeId(self.iToDoQuery, newValue)
+                pj_set_todo_query_todo_type_id(self.iToDoQuery, newValue)
             }
         }
     }
@@ -183,17 +183,17 @@ public class PJ_ToDo: NSObject {
     public var toDoTagId: Int32 {
         get {
             if self.mode == .insert {
-                return getToDoInsert_ToDoTagId(self.iToDoInsert)
+                return pj_get_todo_insert_todo_tag_id(self.iToDoInsert)
             } else {
-                return getToDoQuery_ToDoTagId(self.iToDoQuery)
+                return pj_get_todo_query_todo_tag_id(self.iToDoQuery)
             }
         }
         
         set {
             if self.mode == .insert {
-                setToDoInsert_ToDoTagId(self.iToDoInsert, newValue)
+                pj_set_todo_insert_todo_tag_id(self.iToDoInsert, newValue)
             } else {
-                setToDoQuery_ToDoTagId(self.iToDoQuery, newValue)
+                pj_set_todo_query_todo_tag_id(self.iToDoQuery, newValue)
             }
         }
     }
@@ -201,11 +201,11 @@ public class PJ_ToDo: NSObject {
     public var state: PJToDoState {
         get {
             if self.mode == .insert {
-                if let value = PJToDoState(rawValue: Int(getToDoInsertState(self.iToDoInsert))) {
+                if let value = PJToDoState(rawValue: Int(pj_get_todo_insert_state(self.iToDoInsert))) {
                     return value
                 }
             } else {
-                if let value = PJToDoState(rawValue: Int(getToDoQueryState(self.iToDoQuery))) {
+                if let value = PJToDoState(rawValue: Int(pj_get_todo_query_state(self.iToDoQuery))) {
                     return value
                 }
             }
@@ -214,9 +214,9 @@ public class PJ_ToDo: NSObject {
         
         set {
             if self.mode == .insert {
-                setToDoInsertState(self.iToDoInsert, Int32(newValue.rawValue))
+                pj_set_todo_insert_state(self.iToDoInsert, Int32(newValue.rawValue))
             } else {
-                setToDoQueryState(self.iToDoQuery, Int32(newValue.rawValue))
+                pj_set_todo_query_state(self.iToDoQuery, Int32(newValue.rawValue))
             }
         }
     }
@@ -225,9 +225,9 @@ public class PJ_ToDo: NSObject {
     public init(mode: PJToDoMode = .model) {
         self.mode = mode
         if mode == .insert {
-            self.iToDoInsert = createToDoInsert()
+            self.iToDoInsert = pj_create_ToDoInsert()
         } else {
-            self.iToDoQuery = createToDoQuery()
+            self.iToDoQuery = pj_create_ToDoQuery()
         }
     }
     

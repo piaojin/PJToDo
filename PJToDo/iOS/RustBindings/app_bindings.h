@@ -73,6 +73,28 @@ typedef struct {
 typedef struct {
   void *user;
   void (*destroy)(void*);
+  void (*insert_result)(void*, bool);
+  void (*delete_result)(void*, bool);
+  void (*update_result)(void*, bool);
+  void (*find_byId_result)(void*, ToDoQuery*, bool);
+  void (*fetch_data_result)(void*, bool);
+  void (*update_overdue_todos)(void*, bool);
+} IPJToDoDelegate;
+
+typedef struct {
+  IPJToDoDelegate delegate;
+  PJToDoServiceController *todo_service_controller;
+  ToDoQuery *find_result_todo;
+  ToDoInsert *insert_todo;
+  Vec_Vec_ToDoQuery *todos;
+  Vec_ToDoType *todo_types;
+  Vec_ToDoTag *todo_tags;
+  const Vec_String *sectionTitles;
+} PJToDoController;
+
+typedef struct {
+  void *user;
+  void (*destroy)(void*);
   void (*find_byTitle_result)(void*, ToDoQuery*, bool);
   void (*find_byLike_result)(void*, bool);
 } IPJToDoSearchDelegate;
@@ -140,28 +162,6 @@ typedef struct {
   Vec_ToDoType *todo_types;
 } PJToDoTypeController;
 
-typedef struct {
-  void *user;
-  void (*destroy)(void*);
-  void (*insert_result)(void*, bool);
-  void (*delete_result)(void*, bool);
-  void (*update_result)(void*, bool);
-  void (*find_byId_result)(void*, ToDoQuery*, bool);
-  void (*fetch_data_result)(void*, bool);
-  void (*update_overdue_todos)(void*, bool);
-} IPJToDoDelegate;
-
-typedef struct {
-  IPJToDoDelegate delegate;
-  PJToDoServiceController *todo_service_controller;
-  ToDoQuery *find_result_todo;
-  ToDoInsert *insert_todo;
-  Vec_Vec_ToDoQuery *todos;
-  Vec_ToDoType *todo_types;
-  Vec_ToDoTag *todo_tags;
-  const Vec_String *sectionTitles;
-} PJToDoController;
-
 extern const char *get_authorization_str(void);
 
 extern const char *get_db_path(void);
@@ -171,6 +171,8 @@ void pj_authorizations(IPJToDoHttpRequestDelegate delegate, const char *authoriz
 char *pj_convert_base64str_to_str(const char *ptr);
 
 char *pj_convert_str_to_base64str(const char *ptr);
+
+PJToDoController *pj_create_PJToDoController(IPJToDoDelegate delegate);
 
 PJToDoSearchController *pj_create_PJToDoSearchController(IPJToDoSearchDelegate delegate);
 
@@ -201,8 +203,6 @@ void pj_create_folder(const char *folder_path);
 void pj_create_repos(IPJToDoHttpRequestDelegate delegate);
 
 void pj_create_repos_file(IPJToDoHttpRequestDelegate delegate, const char *request_url, const char *path, const char *message, const char *content, const char *sha);
-
-PJToDoController *pj_create_todo_controller(IPJToDoDelegate delegate);
 
 void pj_delete_repos(IPJToDoHttpRequestDelegate delegate, const char *repos_url);
 

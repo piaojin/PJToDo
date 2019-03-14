@@ -172,7 +172,7 @@ class LoginViewController: PJBaseViewController {
         PJHttpRequest.downloadFile(requestUrl: reposFile.content.download_url, savePath: PJToDoConst.DBPath) { (isSuccess, errorString, error) in
             if isSuccess {
                 DispatchQueue.main.async(execute: {
-                    updateDBConnection()
+                    pj_update_db_connection()
                     DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
                         NotificationCenter.default.post(name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
                         SVProgressHUD.dismiss()

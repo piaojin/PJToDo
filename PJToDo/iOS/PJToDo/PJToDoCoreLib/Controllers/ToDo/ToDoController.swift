@@ -19,7 +19,7 @@ import Foundation
 
 class ToDoController {
     private lazy var controller: UnsafeMutablePointer<PJToDoController>? = {
-        let controller = createPJToDoController(self.iDelegate)
+        let controller = pj_create_PJToDoController(self.iDelegate)
         return controller
     }()
     
@@ -89,64 +89,64 @@ class ToDoController {
     public func insert(toDo: PJ_ToDo) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        insertToDo(self.controller, toDo.iToDoInsert)
+        pj_insert_todo(self.controller, toDo.iToDoInsert)
     }
     
     public func delete(section: Int, index: Int, toDoId: Int) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        deleteToDo(self.controller, Int32(section), Int32(index), Int32(toDoId))
+        pj_delete_todo(self.controller, Int32(section), Int32(index), Int32(toDoId))
     }
     
     public func delete(toDoId: Int) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        deleteToDoById(self.controller, Int32(toDoId))
+        pj_delete_todo_by_id(self.controller, Int32(toDoId))
     }
     
     public func update(toDo: PJ_ToDo) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        updateToDo(self.controller, toDo.iToDoQuery)
+        pj_update_todo(self.controller, toDo.iToDoQuery)
     }
     
     public func findById(toDoId: Int) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        findToDo(self.controller, Int32(toDoId))
+        pj_find_todo(self.controller, Int32(toDoId))
     }
     
     public func fetchData() {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        fetchToDoData(self.controller)
+        pj_fetch_todo_data(self.controller)
     }
     
     public func updateOverdueToDos() {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        updateOverDueToDos(self.controller)
+        pj_update_overdue_todos(self.controller)
     }
     
     public func getToDoCountAtSection(section: Int) -> Int {
-        return Int(getToDoCountsAtSection(self.controller, Int32(section)))
+        return Int(pj_get_todo_counts_at_section(self.controller, Int32(section)))
     }
     
     public func getToDoNumberOfSections() -> Int {
-        return Int(pj_getToDoNumberOfSections(self.controller))
+        return Int(pj_get_todo_number_of_sections(self.controller))
     }
     
     public func toDoAt(section: Int, index: Int) -> PJ_ToDo {
-        let iToDoQuery = todoAtSection(self.controller, Int32(section), Int32(index))
-        let typeId = getToDoQuery_ToDoTypeId(iToDoQuery)
-        let tagId = getToDoQuery_ToDoTagId(iToDoQuery)
-        let iToDoType = toDoTypeWithId(self.controller, typeId)
-        let iToDoTag = toDoTagWithId(self.controller, tagId)
+        let iToDoQuery = pj_todo_at_section(self.controller, Int32(section), Int32(index))
+        let typeId = pj_get_todo_query_todo_type_id(iToDoQuery)
+        let tagId = pj_get_todo_query_todo_tag_id(iToDoQuery)
+        let iToDoType = pj_todo_type_with_id(self.controller, typeId)
+        let iToDoTag = pj_todo_tag_with_id(self.controller, tagId)
         return PJ_ToDo(iToDoQuery: iToDoQuery, iToDoType: iToDoType, iToDoTag: iToDoTag)
     }
     
     public func toDoTitle(section: Int) -> String {
-        return String.create(cString: todoTitleAtSection(self.controller, Int32(section)))
+        return String.create(cString: pj_todo_title_at_section(self.controller, Int32(section)))
     }
     
     //Rust回调Swift
@@ -169,10 +169,10 @@ class ToDoController {
         print("ToDoController: received findByIdResult callback with  \(isSuccess)")
         var tempToDo: PJ_ToDo? = nil
         if isSuccess {
-            let typeId = getToDoQuery_ToDoTypeId(toDo)
-            let tagId = getToDoQuery_ToDoTagId(toDo)
-            let iToDoType = toDoTypeWithId(self.controller, typeId)
-            let iToDoTag = toDoTagWithId(self.controller, tagId)
+            let typeId = pj_get_todo_query_todo_type_id(toDo)
+            let tagId = pj_get_todo_query_todo_tag_id(toDo)
+            let iToDoType = pj_todo_type_with_id(self.controller, typeId)
+            let iToDoTag = pj_todo_tag_with_id(self.controller, tagId)
             tempToDo = PJ_ToDo(iToDoQuery: toDo, iToDoType: iToDoType, iToDoTag: iToDoTag)
         }
         self.delegate?.findToDoByIdResult?(toDo: tempToDo, isSuccess: isSuccess)
@@ -190,7 +190,7 @@ class ToDoController {
     
     deinit {
         print("deinit -> ToDoController")
-        free_rust_PJToDoController(self.controller)
+        pj_free_rust_PJToDoController(self.controller)
     }
 }
 

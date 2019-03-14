@@ -18,35 +18,35 @@ public class PJToDoType: NSObject {
     public var typeName: String {
         get {
             if self.mode == .insert {
-                return String.create(cString: getToDoTypeInsertName(self.iToDoTypeInsert))
+                return String.create(cString: pj_get_todo_type_insert_name(self.iToDoTypeInsert))
             } else {
-                return String.create(cString: getToDoTypeName(self.iToDoType))
+                return String.create(cString: pj_get_todo_type_name(self.iToDoType))
             }
         }
         
         set {
             if self.mode == .insert {
-                setToDoTypeInsertName(self.iToDoTypeInsert, newValue)
+                pj_set_todo_type_insert_name(self.iToDoTypeInsert, newValue)
             } else {
-                setToDoTypeName(self.iToDoType, newValue)
+                pj_set_todo_type_name(self.iToDoType, newValue)
             }
         }
     }
     
     public var typeId: Int32 {
         get {
-            return getToDoTypeId(self.iToDoType)
+            return pj_get_todo_type_id(self.iToDoType)
         }
         
         set {
-            setToDoTypeId(self.iToDoType, newValue)
+            pj_set_todo_type_id(self.iToDoType, newValue)
         }
     }
     
     /*This constructor is used when inserting data.*/
     public init(typeName: String) {
         super.init()
-        self.iToDoTypeInsert = createToDoTypeInsert(typeName)
+        self.iToDoTypeInsert = pj_create_ToDoTypeInsert(typeName)
         self.mode = .insert
     }
     
@@ -58,7 +58,7 @@ public class PJToDoType: NSObject {
     
     public init(typeId: Int32, typeName: String) {
         super.init()
-        self.iToDoType = createToDoType(typeName)
+        self.iToDoType = pj_create_ToDoType(typeName)
         self.typeId = typeId;
     }
 }

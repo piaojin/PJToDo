@@ -12,14 +12,14 @@ public extension String {
     public static func create(cString: UnsafeMutablePointer<Int8>, encoding: String.Encoding = .utf8) -> String {
         //get string pointer from rust and use the pointer to create a Swift String and then free the rust string
         if let str = String(cString: cString, encoding: encoding) {
-            free_rust_string(cString)
+            pj_free_rust_string(cString)
             return str
         }
         return ""
     }
     
     public static func convertToBase64String(str: String, encoding: String.Encoding = .utf8) -> String {
-        return self.create(cString: convertStrToBase64Str(str), encoding: encoding)
+        return self.create(cString: pj_convert_str_to_base64str(str), encoding: encoding)
     }
     
     public func pj_bridgeObjectiveC() -> NSString {

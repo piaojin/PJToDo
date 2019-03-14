@@ -20,7 +20,7 @@ import UIKit
 class ToDoTypeController {
     
     private lazy var controller: UnsafeMutablePointer<PJToDoTypeController>? = {
-        let controller = createPJToDoTypeController(self.iDelegate)
+        let controller = pj_create_PJToDoTypeController(self.iDelegate)
         return controller
     }()
     
@@ -84,45 +84,45 @@ class ToDoTypeController {
     public func insert(toDoType: PJToDoType) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        insertToDoType(self.controller, toDoType.iToDoTypeInsert)
+        pj_insert_todo_type(self.controller, toDoType.iToDoTypeInsert)
     }
     
     public func delete(toDoTypeId: Int32) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        deleteToDoType(self.controller, toDoTypeId)
+        pj_delete_todo_type(self.controller, toDoTypeId)
     }
     
     public func update(toDoType: PJToDoType) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        updateToDoType(self.controller, toDoType.iToDoType)
+        pj_update_todo_type(self.controller, toDoType.iToDoType)
     }
     
     public func findById(toDoTypeId: Int32) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        findToDoType(self.controller, toDoTypeId)
+        pj_find_todo_type(self.controller, toDoTypeId)
     }
     
     public func findByName(typeName: String) {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        findToDoTypeByName(self.controller, typeName)
+        pj_find_todo_type_by_name(self.controller, typeName)
     }
     
     public func fetchData() {
         let ownedPointer = PJARCManager.retain(object: self)
         self.iDelegate.user = ownedPointer
-        fetchToDoTypeData(self.controller)
+        pj_fetch_todo_type_data(self.controller)
     }
     
     public func getCount() -> Int32 {
-        return getToDoTypeCount(self.controller)
+        return pj_get_todo_type_count(self.controller)
     }
     
     public func toDoTypeAt(index: Int32) -> PJToDoType {
-        return PJToDoType(iToDoType: todoTypeAtIndex(self.controller, index))
+        return PJToDoType(iToDoType: pj_todo_type_at_index(self.controller, index))
     }
     
     //Rust回调Swift
@@ -160,7 +160,7 @@ class ToDoTypeController {
     
     deinit {
         print("deinit -> ToDoTypeController")
-        free_rust_PJToDoTypeController(self.controller)
+        pj_free_rust_PJToDoTypeController(self.controller)
     }
 }
 

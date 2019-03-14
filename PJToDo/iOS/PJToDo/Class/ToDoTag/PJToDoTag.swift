@@ -18,35 +18,35 @@ public class PJToDoTag: NSObject {
     public var tagName: String {
         get {
             if self.mode == .insert {
-                return String.create(cString: getToDoTagInsertName(self.iToDoTagInsert))
+                return String.create(cString: pj_get_todo_tag_insert_name(self.iToDoTagInsert))
             } else {
-                return String.create(cString: getToDoTagName(self.iToDoTag))
+                return String.create(cString: pj_get_todo_tag_name(self.iToDoTag))
             }
         }
         
         set {
             if self.mode == .insert {
-                setToDoTagInsertName(self.iToDoTagInsert, newValue)
+                pj_set_todo_tag_insert_name(self.iToDoTagInsert, newValue)
             } else {
-                setToDoTagName(self.iToDoTag, newValue)
+                pj_set_todo_tag_name(self.iToDoTag, newValue)
             }
         }
     }
     
     public var tagId: Int32 {
         get {
-            return getToDoTagId(self.iToDoTag)
+            return pj_get_todo_tag_id(self.iToDoTag)
         }
         
         set {
-            setToDoTagId(self.iToDoTag, newValue)
+            pj_set_todo_tag_id(self.iToDoTag, newValue)
         }
     }
     
     /*This constructor is used when inserting data.*/
     public init(insertTagName: String) {
         super.init()
-        self.iToDoTagInsert = createToDoTagInsert(insertTagName)
+        self.iToDoTagInsert = pj_create_ToDoTagInsert(insertTagName)
         self.mode = .insert
     }
     
@@ -58,7 +58,7 @@ public class PJToDoTag: NSObject {
     
     public init(tagId: Int32, tagName: String) {
         super.init()
-        self.iToDoTag = createToDoTag(tagName)
+        self.iToDoTag = pj_create_ToDoTag(tagName)
         self.tagId = tagId;
     }
 }

@@ -24,7 +24,7 @@ const char * getAuthorizationStr() {
         NSString *authorizationStr = [PJKeychainManagerOC readSensitiveStringWithService: PJKeyCenterOC.KeychainUserInfoService sensitiveKey: PJUserInfoManagerOC.userAccount accessGroup:nil error: &error];
         if (authorizationStr) {
             NSString *str = [NSString stringWithFormat:@"%@:%@", PJUserInfoManagerOC.userAccount, authorizationStr];
-            const char *cstr = convertStrToBase64Str([str UTF8String]);
+            const char *cstr = pj_convert_str_to_base64str([str UTF8String]);
             NSString *base64Str = [NSString stringWithFormat:@"Basic %s", cstr];
             return [base64Str UTF8String];
         } else {
