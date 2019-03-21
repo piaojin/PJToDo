@@ -75,7 +75,9 @@ pub unsafe extern "C" fn pj_set_todo_settings_remind_email(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn pj_get_todo_settings_remind_email(ptr: *const ToDoSettings) -> *mut c_char {
+pub unsafe extern "C" fn pj_get_todo_settings_remind_email(
+    ptr: *const ToDoSettings,
+) -> *mut c_char {
     assert!(ptr != std::ptr::null_mut());
     let todo_settins = &*ptr;
     let remind_email = CString::new(todo_settins.remind_email.clone()).unwrap(); //unsafe
@@ -97,7 +99,10 @@ pub unsafe extern "C" fn pj_get_todo_settings_id(ptr: *mut ToDoSettings) -> i32 
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn pj_set_todo_settings_remind_days(ptr: *mut ToDoSettings, remind_days: i32) {
+pub unsafe extern "C" fn pj_set_todo_settings_remind_days(
+    ptr: *mut ToDoSettings,
+    remind_days: i32,
+) {
     assert!(ptr != std::ptr::null_mut());
     let todo_settins = &mut *ptr;
     todo_settins.remind_days = remind_days;
@@ -142,7 +147,9 @@ pub unsafe extern "C" fn pj_set_todo_settings_insert_remind_days(
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn pj_get_todo_settings_insert_remind_days(ptr: *mut ToDoSettingsInsert) -> i32 {
+pub unsafe extern "C" fn pj_get_todo_settings_insert_remind_days(
+    ptr: *mut ToDoSettingsInsert,
+) -> i32 {
     assert!(ptr != std::ptr::null_mut());
     let todo_settins = &mut *ptr;
     todo_settins.remind_days

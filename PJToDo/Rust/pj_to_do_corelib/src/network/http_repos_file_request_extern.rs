@@ -16,9 +16,18 @@ pub unsafe extern "C" fn pj_create_repos_file(
     content: *const c_char,
     sha: *const c_char,
 ) {
-    if path == std::ptr::null_mut() || message == std::ptr::null_mut() || content == std::ptr::null_mut() || sha == std::ptr::null_mut() {
+    if path == std::ptr::null_mut()
+        || message == std::ptr::null_mut()
+        || content == std::ptr::null_mut()
+        || sha == std::ptr::null_mut()
+    {
         pj_error!("path or message or content or sha: *mut PJ_CreateFile is null!");
-        assert!(path != std::ptr::null_mut() && message != std::ptr::null_mut() && content != std::ptr::null_mut() && sha != std::ptr::null_mut());
+        assert!(
+            path != std::ptr::null_mut()
+                && message != std::ptr::null_mut()
+                && content != std::ptr::null_mut()
+                && sha != std::ptr::null_mut()
+        );
     }
 
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
@@ -29,7 +38,7 @@ pub unsafe extern "C" fn pj_create_repos_file(
         PJHttpReposFileRequest::create_repos_file(request_url, repos_file_body, move |result| {
             let result = PJReposFileManager::update_repos_file_with_result(result);
             PJHttpReposFileRequest::dispatch_file_response(i_delegate, result, "PJ_CreateFile");
-        }); 
+        });
     });
 }
 
@@ -42,9 +51,18 @@ pub unsafe extern "C" fn pj_update_repos_file(
     content: *const c_char,
     sha: *const c_char,
 ) {
-    if path == std::ptr::null_mut() || message == std::ptr::null_mut() || content == std::ptr::null_mut() || sha == std::ptr::null_mut() {
+    if path == std::ptr::null_mut()
+        || message == std::ptr::null_mut()
+        || content == std::ptr::null_mut()
+        || sha == std::ptr::null_mut()
+    {
         pj_error!("path or message or content or sha: *mut PJ_UpdateFile is null!");
-        assert!(path != std::ptr::null_mut() && message != std::ptr::null_mut() && content != std::ptr::null_mut() && sha != std::ptr::null_mut());
+        assert!(
+            path != std::ptr::null_mut()
+                && message != std::ptr::null_mut()
+                && content != std::ptr::null_mut()
+                && sha != std::ptr::null_mut()
+        );
     }
 
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
@@ -68,9 +86,18 @@ pub unsafe extern "C" fn pj_delete_repos_file(
     content: *const c_char,
     sha: *const c_char,
 ) {
-    if path == std::ptr::null_mut() || message == std::ptr::null_mut() || content == std::ptr::null_mut() || sha == std::ptr::null_mut() {
+    if path == std::ptr::null_mut()
+        || message == std::ptr::null_mut()
+        || content == std::ptr::null_mut()
+        || sha == std::ptr::null_mut()
+    {
         pj_error!("path or message or content or sha: *mut PJ_DeleteFile is null!");
-        assert!(path != std::ptr::null_mut() && message != std::ptr::null_mut() && content != std::ptr::null_mut() && sha != std::ptr::null_mut());
+        assert!(
+            path != std::ptr::null_mut()
+                && message != std::ptr::null_mut()
+                && content != std::ptr::null_mut()
+                && sha != std::ptr::null_mut()
+        );
     }
 
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
@@ -122,25 +149,41 @@ pub unsafe extern "C" fn pj_download_file(
     let save_path = CStr::from_ptr(save_path).to_string_lossy().into_owned();
 
     thread::spawn(move || {
-
         PJHttpReposFileRequest::download_file(request_url, move |result| {
             match result {
-            Ok((status, body)) => {
-                match PJFileManager::wirte_bytes_to_file(save_path, &body) {
+                Ok((status, body)) => match PJFileManager::wirte_bytes_to_file(save_path, &body) {
                     Ok(_) => {
-                        (i_delegate.request_result)(i_delegate.user, CString::new("".to_string()).unwrap().into_raw(), status.as_u16(), status.is_success());
-                    },
+                        (i_delegate.request_result)(
+                            i_delegate.user,
+                            CString::new("".to_string()).unwrap().into_raw(),
+                            status.as_u16(),
+                            status.is_success(),
+                        );
+                    }
                     Err(e) => {
                         pj_error!("download error: {:?}", e);
-                        (i_delegate.request_result)(i_delegate.user, CString::new(format!("io error: {:?}", e)).unwrap().into_raw(), 0, false);
+                        (i_delegate.request_result)(
+                            i_delegate.user,
+                            CString::new(format!("io error: {:?}", e))
+                                .unwrap()
+                                .into_raw(),
+                            0,
+                            false,
+                        );
                     }
+                },
+                Err(e) => {
+                    pj_error!("download error: {:?}", e);
+                    (i_delegate.request_result)(
+                        i_delegate.user,
+                        CString::new(format!("download error: {:?}", e))
+                            .unwrap()
+                            .into_raw(),
+                        0,
+                        false,
+                    );
                 }
-            },
-            Err(e) => {
-                pj_error!("download error: {:?}", e);
-                (i_delegate.request_result)(i_delegate.user, CString::new(format!("download error: {:?}", e)).unwrap().into_raw(), 0, false);
-            }
-        };
+            };
         });
     });
 }

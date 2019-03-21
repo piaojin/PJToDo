@@ -21,7 +21,9 @@ impl PJUserManager {
         PJUserManager::update_user(User::new());
     }
 
-    pub fn update_user_with_result(result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>) -> Result<(hyper::StatusCode, hyper::Chunk), FetchError> {
+    pub fn update_user_with_result(
+        result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>,
+    ) -> Result<(hyper::StatusCode, hyper::Chunk), FetchError> {
         match result {
             Ok((status, body)) => {
                 if status.is_success() {
@@ -29,15 +31,13 @@ impl PJUserManager {
                     match parse_result {
                         Ok(user) => {
                             PJUserManager::update_user(user);
-                        },
+                        }
                         Err(_) => {}
                     };
                 }
                 Ok((status, body))
-            },
-            Err(_) => {
-                result
             }
+            Err(_) => result,
         }
     }
 

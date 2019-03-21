@@ -109,7 +109,6 @@ impl PJToDoController {
 
         match result {
             Ok(_) => {
-
                 let todo: *const ToDoQuery = self.todo_at_section(section, index);
                 if (*todo).id == to_do_id {
                     ((*(self.todos))[section as usize]).remove(index as usize);
@@ -325,9 +324,7 @@ impl PJToDoController {
         }
     }
 
-    pub unsafe fn update_overdue_todos(
-        &self,
-    ) {
+    pub unsafe fn update_overdue_todos(&self) {
         let i_delegate = IPJToDoDelegateWrapper((&self.delegate) as *const IPJToDoDelegate);
         let result = update_overdue_todos(&(&(*self.todo_service_controller)).todo_service);
         match result {
@@ -386,7 +383,7 @@ impl PJToDoController {
             let section: usize = section as usize;
             /*let sections = (*(self.todos)).len(); here may crash*/
             assert!(section <= self.get_count_of_sections());
-            
+
             let todos = &(*(self.todos))[section];
             let count = todos.len();
             count
@@ -444,7 +441,6 @@ impl Drop for PJToDoController {
 }
 
 // /*** extern "C" ***/
-
 #[no_mangle]
 pub extern "C" fn pj_create_PJToDoController(delegate: IPJToDoDelegate) -> *mut PJToDoController {
     let controller = PJToDoController::new(delegate);
@@ -468,7 +464,12 @@ pub unsafe extern "C" fn pj_insert_todo(ptr: *mut PJToDoController, toDo: *mut T
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn pj_delete_todo(ptr: *mut PJToDoController, section: i32, index: i32, toDoId: i32) {
+pub unsafe extern "C" fn pj_delete_todo(
+    ptr: *mut PJToDoController,
+    section: i32,
+    index: i32,
+    toDoId: i32,
+) {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr: *mut deleteToDo is null!");
         assert!(ptr != std::ptr::null_mut());
@@ -596,7 +597,10 @@ pub unsafe extern "C" fn pj_get_todo_number_of_sections(ptr: *const PJToDoContro
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn pj_get_todo_counts_at_section(ptr: *const PJToDoController, section: i32) -> i32 {
+pub unsafe extern "C" fn pj_get_todo_counts_at_section(
+    ptr: *const PJToDoController,
+    section: i32,
+) -> i32 {
     if ptr == std::ptr::null_mut() {
         pj_error!("ptr or toDo: *mut getToDoCount is null!");
         assert!(ptr != std::ptr::null_mut());

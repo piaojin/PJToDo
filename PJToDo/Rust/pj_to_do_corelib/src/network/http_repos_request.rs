@@ -101,11 +101,15 @@ impl PJHttpReposRequest {
             + std::marker::Sync
             + Send
             + 'static
-            + std::clone::Clone, {
+            + std::clone::Clone,
+    {
         PJHttpRequest::make_http(request, completion_handler);
     }
 
-    pub fn dispatch_repos_response(i_delegate: IPJToDoHttpRequestDelegateWrapper, result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>, request_action_name: &str,
+    pub fn dispatch_repos_response(
+        i_delegate: IPJToDoHttpRequestDelegateWrapper,
+        result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>,
+        request_action_name: &str,
     ) {
         pj_info!("request_action_name: {}", request_action_name);
         PJHttpRequest::dispatch_http_response(result, i_delegate);

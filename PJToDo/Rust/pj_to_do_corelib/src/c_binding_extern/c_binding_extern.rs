@@ -2,4 +2,15 @@
 
 #[link(name = "PJToDoCoreLibPAL")]
 
-extern "C" { # [ link_name = "\u{1}_test_pal_from_Swift" ] pub fn test_pal_from_Swift ( ) ; } extern "C" { # [ link_name = "\u{1}_get_db_path" ] pub fn get_db_path ( ) -> * const :: std :: os :: raw :: c_char ; } extern "C" { # [ link_name = "\u{1}_get_authorization_str" ] pub fn get_authorization_str ( ) -> * const :: std :: os :: raw :: c_char ; }
+extern "C" {
+    #[link_name = "\u{1}_test_pal_from_Swift"]
+    pub fn test_pal_from_Swift();
+}
+extern "C" {
+    #[link_name = "\u{1}_get_db_path"]
+    pub fn get_db_path() -> *const ::std::os::raw::c_char;
+}
+extern "C" {
+    #[link_name = "\u{1}_get_authorization_str"]
+    pub fn get_authorization_str() -> *const ::std::os::raw::c_char;
+}

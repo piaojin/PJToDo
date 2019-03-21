@@ -283,7 +283,10 @@ pub unsafe extern "C" fn pj_delete_todo_type(ptr: *mut PJToDoTypeController, toD
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn pj_update_todo_type(ptr: *mut PJToDoTypeController, toDoType: *const ToDoType) {
+pub unsafe extern "C" fn pj_update_todo_type(
+    ptr: *mut PJToDoTypeController,
+    toDoType: *const ToDoType,
+) {
     if ptr == std::ptr::null_mut() || toDoType == std::ptr::null_mut() {
         pj_error!("ptr or toDoType: *mut updateToDoType is null!");
         assert!(ptr != std::ptr::null_mut() && toDoType != std::ptr::null_mut());

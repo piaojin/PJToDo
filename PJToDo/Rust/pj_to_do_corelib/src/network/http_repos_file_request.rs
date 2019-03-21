@@ -27,8 +27,11 @@ pub struct PJHttpReposFileRequest;
 
 //repos file
 impl PJHttpReposFileRequest {
-    pub fn create_repos_file<F>(request_url: String, create_file_request_body: ReposFileBody, completion_handler: F)
-    where
+    pub fn create_repos_file<F>(
+        request_url: String,
+        create_file_request_body: ReposFileBody,
+        completion_handler: F,
+    ) where
         F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
@@ -43,8 +46,11 @@ impl PJHttpReposFileRequest {
         );
     }
 
-    pub fn update_repos_file<F>(request_url: String, create_file_request_body: ReposFileBody, completion_handler: F)
-    where
+    pub fn update_repos_file<F>(
+        request_url: String,
+        create_file_request_body: ReposFileBody,
+        completion_handler: F,
+    ) where
         F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
@@ -59,15 +65,23 @@ impl PJHttpReposFileRequest {
         );
     }
 
-    pub fn delete_repos_file<F>(request_url: String, create_file_request_body: ReposFileBody, completion_handler: F)
-    where
+    pub fn delete_repos_file<F>(
+        request_url: String,
+        create_file_request_body: ReposFileBody,
+        completion_handler: F,
+    ) where
         F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
             + std::clone::Clone,
     {
-        PJHttpReposFileRequest::crud_repos_file(request_url, create_file_request_body, FileActionType::Delete, completion_handler);
+        PJHttpReposFileRequest::crud_repos_file(
+            request_url,
+            create_file_request_body,
+            FileActionType::Delete,
+            completion_handler,
+        );
     }
 
     pub fn get_repos_file<F>(request_url: String, completion_handler: F)
@@ -83,7 +97,17 @@ impl PJHttpReposFileRequest {
             let message = CString::new("message".to_string()).unwrap();
             let content = CString::new("content".to_string()).unwrap();
             let sha = CString::new("sha".to_string()).unwrap();
-        PJHttpReposFileRequest::crud_repos_file(request_url, ReposFileBody::new(path.into_raw(), message.into_raw(), content.into_raw(), sha.into_raw()), FileActionType::Get, completion_handler);
+            PJHttpReposFileRequest::crud_repos_file(
+                request_url,
+                ReposFileBody::new(
+                    path.into_raw(),
+                    message.into_raw(),
+                    content.into_raw(),
+                    sha.into_raw(),
+                ),
+                FileActionType::Get,
+                completion_handler,
+            );
         }
     }
 
@@ -93,7 +117,8 @@ impl PJHttpReposFileRequest {
             + std::marker::Sync
             + Send
             + 'static
-            + std::clone::Clone, {
+            + std::clone::Clone,
+    {
         let mut request = PJHttpRequest::default_request(&request_url);
         *request.method_mut() = Method::GET;
         PJHttpRequest::make_http(request, completion_handler);
@@ -203,7 +228,10 @@ impl PJHttpReposFileRequest {
         PJHttpRequest::make_http(request, completion_handler);
     }
 
-    pub fn dispatch_file_response(i_delegate: IPJToDoHttpRequestDelegateWrapper, result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>, request_action_name: &str,
+    pub fn dispatch_file_response(
+        i_delegate: IPJToDoHttpRequestDelegateWrapper,
+        result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>,
+        request_action_name: &str,
     ) {
         pj_info!("request_action_name: {}", request_action_name);
         PJHttpRequest::dispatch_http_response(result, i_delegate);

@@ -129,7 +129,8 @@ impl PJToDoTagDAO for PJToDoTagDAOImpl {
     }
 
     fn fetch_data(&self) -> Result<Vec<ToDoTag>, diesel::result::Error> {
-        let to_do_tags_result = todotag.load::<ToDoTag>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
+        let to_do_tags_result =
+            todotag.load::<ToDoTag>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match to_do_tags_result {
             Ok(to_do_tags) => {
                 pj_info!("fetchData success!");

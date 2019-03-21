@@ -82,7 +82,10 @@ pub unsafe extern "C" fn pj_get_todo_tag_id(ptr: *mut ToDoTag) -> i32 {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn pj_set_todo_tag_insert_name(ptr: *mut ToDoTagInsert, tag_name: *const c_char) {
+pub unsafe extern "C" fn pj_set_todo_tag_insert_name(
+    ptr: *mut ToDoTagInsert,
+    tag_name: *const c_char,
+) {
     assert!(ptr != std::ptr::null_mut());
     let todo_tag = &mut *ptr;
     let tag_name = CStr::from_ptr(tag_name).to_string_lossy().into_owned();

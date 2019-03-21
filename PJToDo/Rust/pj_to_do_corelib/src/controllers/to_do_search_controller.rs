@@ -61,15 +61,15 @@ unsafe impl Sync for PJToDoSearchController {}
 impl PJToDoSearchController {
     fn new(delegate: IPJToDoSearchDelegate) -> PJToDoSearchController {
         let mut controller = PJToDoSearchController {
-                delegate: delegate,
-                todo_search_service_controller: Box::into_raw(Box::new(
-                    PJToDoSearchServiceController::new(),
-                )),
-                todos: ptr::null_mut(),
-                todo_types: ptr::null_mut(),
-                todo_tags: ptr::null_mut(),
-                find_result_todo: ptr::null_mut(),
-            };
+            delegate: delegate,
+            todo_search_service_controller: Box::into_raw(Box::new(
+                PJToDoSearchServiceController::new(),
+            )),
+            todos: ptr::null_mut(),
+            todo_types: ptr::null_mut(),
+            todo_tags: ptr::null_mut(),
+            find_result_todo: ptr::null_mut(),
+        };
         unsafe {
             controller.prepare_datas();
         }
@@ -257,7 +257,6 @@ impl Drop for PJToDoSearchController {
 }
 
 // /*** extern "C" ***/
-
 #[no_mangle]
 pub extern "C" fn pj_create_PJToDoSearchController(
     delegate: IPJToDoSearchDelegate,

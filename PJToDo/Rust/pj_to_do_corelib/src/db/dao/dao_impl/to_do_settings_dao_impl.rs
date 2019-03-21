@@ -88,8 +88,8 @@ impl PJToDoSettingsDAO for PJToDoSettingsDAOImpl {
     }
 
     fn fetch_data(&self) -> Result<Vec<ToDoSettings>, diesel::result::Error> {
-        let to_do_settings_result =
-            todosettings.load::<ToDoSettings>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
+        let to_do_settings_result = todosettings
+            .load::<ToDoSettings>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match to_do_settings_result {
             Ok(to_do_settingss) => {
                 pj_info!("fetchData success!");

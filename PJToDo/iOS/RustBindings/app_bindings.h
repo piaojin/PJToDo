@@ -7,7 +7,7 @@
 #ifndef app_bindings_h
 #define app_bindings_h
 
-/* Generated with cbindgen:0.6.7 */
+/* Generated with cbindgen:0.8.2 */
 
 /* Generated with cbindgen */
 
@@ -22,9 +22,10 @@
 
 #include "struct_heads.h"
 
+#include <stdarg.h>
+#include <stdbool.h>
 #include <stdint.h>
 #include <stdlib.h>
-#include <stdbool.h>
 
 typedef struct PJToDoSearchServiceController PJToDoSearchServiceController;
 
@@ -66,19 +67,19 @@ typedef struct Vec_Vec_ToDoQuery Vec_Vec_ToDoQuery;
 
 typedef struct {
   void *user;
-  void (*destroy)(void*);
-  void (*request_result)(void*, char*, uint16_t, bool);
+  void (*destroy)(void *user);
+  void (*request_result)(void *user, char *data, uint16_t statusCode, bool is_success);
 } IPJToDoHttpRequestDelegate;
 
 typedef struct {
   void *user;
-  void (*destroy)(void*);
-  void (*insert_result)(void*, bool);
-  void (*delete_result)(void*, bool);
-  void (*update_result)(void*, bool);
-  void (*find_byId_result)(void*, ToDoQuery*, bool);
-  void (*fetch_data_result)(void*, bool);
-  void (*update_overdue_todos)(void*, bool);
+  void (*destroy)(void *user);
+  void (*insert_result)(void *user, bool isSuccess);
+  void (*delete_result)(void *user, bool isSuccess);
+  void (*update_result)(void *user, bool isSuccess);
+  void (*find_byId_result)(void *user, ToDoQuery *toDo, bool isSuccess);
+  void (*fetch_data_result)(void *user, bool isSuccess);
+  void (*update_overdue_todos)(void *user, bool isSuccess);
 } IPJToDoDelegate;
 
 typedef struct {
@@ -94,9 +95,9 @@ typedef struct {
 
 typedef struct {
   void *user;
-  void (*destroy)(void*);
-  void (*find_byTitle_result)(void*, ToDoQuery*, bool);
-  void (*find_byLike_result)(void*, bool);
+  void (*destroy)(void *user);
+  void (*find_byTitle_result)(void *user, ToDoQuery *toDo, bool isSuccess);
+  void (*find_byLike_result)(void *user, bool isSuccess);
 } IPJToDoSearchDelegate;
 
 typedef struct {
@@ -110,11 +111,11 @@ typedef struct {
 
 typedef struct {
   void *user;
-  void (*destroy)(void*);
-  void (*insert_result)(void*, bool);
-  void (*delete_result)(void*, bool);
-  void (*update_result)(void*, bool);
-  void (*fetch_data_result)(void*, bool);
+  void (*destroy)(void *user);
+  void (*insert_result)(void *user, bool isSuccess);
+  void (*delete_result)(void *user, bool isSuccess);
+  void (*update_result)(void *user, bool isSuccess);
+  void (*fetch_data_result)(void *user, bool isSuccess);
 } IPJToDoSettingsDelegate;
 
 typedef struct {
@@ -126,13 +127,13 @@ typedef struct {
 
 typedef struct {
   void *user;
-  void (*destroy)(void*);
-  void (*insert_result)(void*, bool);
-  void (*delete_result)(void*, bool);
-  void (*update_result)(void*, bool);
-  void (*find_byId_result)(void*, ToDoTag*, bool);
-  void (*find_byName_result)(void*, ToDoTag*, bool);
-  void (*fetch_data_result)(void*, bool);
+  void (*destroy)(void *user);
+  void (*insert_result)(void *user, bool isSuccess);
+  void (*delete_result)(void *user, bool isSuccess);
+  void (*update_result)(void *user, bool isSuccess);
+  void (*find_byId_result)(void *user, ToDoTag *toDoTag, bool isSuccess);
+  void (*find_byName_result)(void *user, ToDoTag *toDoTag, bool isSuccess);
+  void (*fetch_data_result)(void *user, bool isSuccess);
 } IPJToDoTagDelegate;
 
 typedef struct {
@@ -145,13 +146,13 @@ typedef struct {
 
 typedef struct {
   void *user;
-  void (*destroy)(void*);
-  void (*insert_result)(void*, bool);
-  void (*delete_result)(void*, bool);
-  void (*update_result)(void*, bool);
-  void (*find_byId_result)(void*, ToDoType*, bool);
-  void (*find_byName_result)(void*, ToDoType*, bool);
-  void (*fetch_data_result)(void*, bool);
+  void (*destroy)(void *user);
+  void (*insert_result)(void *user, bool isSuccess);
+  void (*delete_result)(void *user, bool isSuccess);
+  void (*update_result)(void *user, bool isSuccess);
+  void (*find_byId_result)(void *user, ToDoType *toDoType, bool isSuccess);
+  void (*find_byName_result)(void *user, ToDoType *toDoType, bool isSuccess);
+  void (*fetch_data_result)(void *user, bool isSuccess);
 } IPJToDoTypeDelegate;
 
 typedef struct {

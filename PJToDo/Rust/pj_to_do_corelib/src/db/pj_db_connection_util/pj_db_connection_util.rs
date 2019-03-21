@@ -15,11 +15,8 @@ use std::collections::HashMap;
 use std::sync::{Arc, Mutex};
 
 lazy_static! {
-
-    pub static ref StaticPJDBConnectionUtil: Arc<Mutex<PJDBConnectionUtil>> = {
-        Arc::new( Mutex::new(PJDBConnectionUtil::new()))
-    };
-
+    pub static ref StaticPJDBConnectionUtil: Arc<Mutex<PJDBConnectionUtil>> =
+        { Arc::new(Mutex::new(PJDBConnectionUtil::new())) };
     pub static ref SQLiteUrl: String = {
         let get_db_path = unsafe { CStr::from_ptr(get_db_path()).to_string_lossy().into_owned() };
         get_db_path
@@ -88,7 +85,10 @@ impl PJDBConnectionUtil {
 
 #[no_mangle]
 pub unsafe extern "C" fn pj_update_db_connection() {
-    StaticPJDBConnectionUtil.lock().unwrap().update_connection(PJToDoPal::sqlite_url());
+    StaticPJDBConnectionUtil
+        .lock()
+        .unwrap()
+        .update_connection(PJToDoPal::sqlite_url());
 }
 
 #[no_mangle]

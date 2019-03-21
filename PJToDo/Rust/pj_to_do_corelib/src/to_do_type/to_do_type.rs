@@ -86,7 +86,10 @@ pub unsafe extern "C" fn pj_get_todo_type_id(ptr: *mut ToDoType) -> i32 {
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn pj_set_todo_type_insert_name(ptr: *mut ToDoTypeInsert, type_name: *const c_char) {
+pub unsafe extern "C" fn pj_set_todo_type_insert_name(
+    ptr: *mut ToDoTypeInsert,
+    type_name: *const c_char,
+) {
     assert!(ptr != std::ptr::null_mut());
     let todo_type = &mut *ptr;
     let type_name = CStr::from_ptr(type_name).to_string_lossy().into_owned();

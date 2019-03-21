@@ -11,7 +11,6 @@ lazy_static! {
 pub struct PJReposManager;
 
 impl PJReposManager {
-
     pub fn update_repos(repos: Repos) {
         *(REPOS.lock().unwrap()) = repos;
     }
@@ -20,7 +19,9 @@ impl PJReposManager {
         PJReposManager::update_repos(Repos::new());
     }
 
-    pub fn update_repos_with_result(result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>) -> Result<(hyper::StatusCode, hyper::Chunk), FetchError> {
+    pub fn update_repos_with_result(
+        result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>,
+    ) -> Result<(hyper::StatusCode, hyper::Chunk), FetchError> {
         match result {
             Ok((status, body)) => {
                 if status.is_success() {
@@ -28,15 +29,13 @@ impl PJReposManager {
                     match parse_result {
                         Ok(repos) => {
                             PJReposManager::update_repos(repos);
-                        },
+                        }
                         Err(_) => {}
                     };
                 }
                 Ok((status, body))
-            },
-            Err(_) => {
-                result
             }
+            Err(_) => result,
         }
     }
 }

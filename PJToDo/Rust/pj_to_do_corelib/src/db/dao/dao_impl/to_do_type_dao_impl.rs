@@ -132,7 +132,8 @@ impl PJToDoTypeDAO for PJToDoTypeDAOImpl {
     }
 
     fn fetch_data(&self) -> Result<Vec<ToDoType>, diesel::result::Error> {
-        let to_do_types_result = todotype.load::<ToDoType>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
+        let to_do_types_result =
+            todotype.load::<ToDoType>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match to_do_types_result {
             Ok(to_do_types) => {
                 pj_info!("fetchData success!");

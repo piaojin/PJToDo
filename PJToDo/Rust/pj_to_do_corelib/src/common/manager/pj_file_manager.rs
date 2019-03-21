@@ -11,7 +11,7 @@ pub struct PJFileManager;
 impl PJFileManager {
     pub fn create_folder(folder_path: String) {
         match fs::metadata(&folder_path) {
-            Ok(_) => {},
+            Ok(_) => {}
             Err(_) => {
                 let _ = fs::create_dir(&folder_path);
             }
@@ -21,9 +21,7 @@ impl PJFileManager {
     fn create_file(path: String) -> std::io::Result<()> {
         let buffer_result = File::create(path.clone());
         match buffer_result {
-            Ok(_) => {
-                Ok(())
-            },
+            Ok(_) => Ok(()),
             Err(e) => {
                 pj_error!("❌create file error: {:}, {:}❌", e, path);
                 Err(e)
@@ -51,7 +49,7 @@ impl PJFileManager {
         match File::open(file_path) {
             Ok(mut file) => {
                 let _ = file.read_to_string(&mut file_content);
-            },
+            }
             Err(e) => {
                 pj_error!("read_file_content open file error: {:?}", e);
             }
@@ -69,7 +67,7 @@ impl PJFileManager {
             Ok(mut buffer) => {
                 buffer.write_all(bytes)?;
                 Ok(())
-            },
+            }
             Err(e) => {
                 pj_error!("❌create file error: {:}❌", e);
                 Err(e)

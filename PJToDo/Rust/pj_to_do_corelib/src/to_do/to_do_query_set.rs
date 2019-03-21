@@ -65,7 +65,10 @@ pub unsafe extern "C" fn pj_get_todo_query_duetime(ptr: *const ToDoQuery) -> *mu
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn pj_set_todo_query_remind_time(ptr: *mut ToDoQuery, remind_time: *const c_char) {
+pub unsafe extern "C" fn pj_set_todo_query_remind_time(
+    ptr: *mut ToDoQuery,
+    remind_time: *const c_char,
+) {
     assert!(ptr != std::ptr::null_mut());
     let todo = &mut *ptr;
     let remind_time = CStr::from_ptr(remind_time).to_string_lossy().into_owned();
@@ -81,7 +84,10 @@ pub unsafe extern "C" fn pj_get_todo_query_remind_time(ptr: *const ToDoQuery) ->
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn pj_set_todo_query_create_time(ptr: *mut ToDoQuery, create_time: *const c_char) {
+pub unsafe extern "C" fn pj_set_todo_query_create_time(
+    ptr: *mut ToDoQuery,
+    create_time: *const c_char,
+) {
     assert!(ptr != std::ptr::null_mut());
     let todo = &mut *ptr;
     let create_time = CStr::from_ptr(create_time).to_string_lossy().into_owned();
@@ -97,7 +103,10 @@ pub unsafe extern "C" fn pj_get_todo_query_create_time(ptr: *const ToDoQuery) ->
 }
 
 #[no_mangle]
-pub unsafe extern "C" fn pj_set_todo_query_update_time(ptr: *mut ToDoQuery, update_time: *const c_char) {
+pub unsafe extern "C" fn pj_set_todo_query_update_time(
+    ptr: *mut ToDoQuery,
+    update_time: *const c_char,
+) {
     assert!(ptr != std::ptr::null_mut());
     let todo = &mut *ptr;
     let update_time = CStr::from_ptr(update_time).to_string_lossy().into_owned();

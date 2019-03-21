@@ -84,9 +84,10 @@ impl PJHttpRequest {
                     hyper::header::USER_AGENT,
                     HeaderValue::from_static("application/vnd.github.v3+json"),
                 );
-                
+
                 let authorization: &'static str = unsafe {
-                    let user_authorization_str: String = PJUserPALHelp::get_user_authorization_str();
+                    let user_authorization_str: String =
+                        PJUserPALHelp::get_user_authorization_str();
                     if (&user_authorization_str).is_empty() {
                         pj_error!("********Error authorization is empty!!!*********");
                     }
@@ -109,7 +110,6 @@ impl PJHttpRequest {
 }
 
 impl PJHttpRequest {
-
     pub fn make_http<F>(request: Request<Body>, completion_handler: F)
     where
         F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
@@ -128,13 +128,21 @@ impl PJHttpRequest {
         });
     }
 
-    pub fn dispatch_http_response(result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>, i_delegate: IPJToDoHttpRequestDelegateWrapper) {
+    pub fn dispatch_http_response(
+        result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>,
+        i_delegate: IPJToDoHttpRequestDelegateWrapper,
+    ) {
         match result {
             Ok((status, body)) => {
                 let c_str = CString::new(PJHttpUtils::hyper_body_to_string(body)).unwrap();
                 let c_char = c_str.into_raw();
-                (i_delegate.request_result)(i_delegate.user, c_char, status.as_u16(), status.is_success());
-            },
+                (i_delegate.request_result)(
+                    i_delegate.user,
+                    c_char,
+                    status.as_u16(),
+                    status.is_success(),
+                );
+            }
             Err(e) => {
                 let mut error_string: String;
                 let mut error_code: u16 = 0;
@@ -172,7 +180,7 @@ impl PJHttpRequest {
         let https = HttpsConnector::new(4).unwrap();
         // https.https_only(true);
         let client = Client::builder().build::<_, hyper::Body>(https);
-        
+
         let status_code: hyper::StatusCode = hyper::StatusCode::OK;
         let status_map: Arc<Mutex<_>> = Arc::new(Mutex::new(status_code));
         let share_status_map_i = status_map.clone();
@@ -199,23 +207,24 @@ impl PJHttpRequest {
             })
             .from_err::<FetchError>()
             // use the body after concatenation
-        .and_then(|body: hyper::Chunk| Ok(body))
+            .and_then(|body: hyper::Chunk| Ok(body))
             .from_err();
 
         let response_data = response
             .map(|body: hyper::Chunk| body)
             // if there was an error print it
-            .map_err(move |e| {
-                match e {
-                    FetchError::Http(_, e) => {
-                        completion_handler_http_err(Err(FetchError::Http(*(share_status_map_ii.lock().unwrap()), e)));
-                    }
-                    FetchError::Json(e) => {
-                        completion_handler_json_parse_err(Err(FetchError::Json(e)));
-                    }
-                    FetchError::Custom(e) => {
-                        completion_handler_json_parse_err(Err(FetchError::Custom(e)));
-                    }
+            .map_err(move |e| match e {
+                FetchError::Http(_, e) => {
+                    completion_handler_http_err(Err(FetchError::Http(
+                        *(share_status_map_ii.lock().unwrap()),
+                        e,
+                    )));
+                }
+                FetchError::Json(e) => {
+                    completion_handler_json_parse_err(Err(FetchError::Json(e)));
+                }
+                FetchError::Custom(e) => {
+                    completion_handler_json_parse_err(Err(FetchError::Custom(e)));
                 }
             })
             .map(move |body: hyper::Chunk| {

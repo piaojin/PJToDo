@@ -48,11 +48,11 @@ pub unsafe extern "C" fn pj_convert_base64str_to_str(ptr: *const c_char) -> *mut
     let temp_c_char: *mut c_char = std::ptr::null_mut();
     let res = base64_string.from_base64();
     if res.is_ok() {
-      let opt_bytes = String::from_utf8(res.unwrap());
-      if opt_bytes.is_ok() {
-        let c_str = CString::new(opt_bytes.unwrap()).unwrap();
-        c_str.into_raw()
-      } else {
+        let opt_bytes = String::from_utf8(res.unwrap());
+        if opt_bytes.is_ok() {
+            let c_str = CString::new(opt_bytes.unwrap()).unwrap();
+            c_str.into_raw()
+        } else {
             temp_c_char
         }
     } else {

@@ -144,7 +144,8 @@ impl PJToDoDAO for PJToDoDAOImpl {
     }
 
     fn fetch_data(&self) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
-        let to_dos_result = todo.load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
+        let to_dos_result =
+            todo.load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match to_dos_result {
             Ok(to_dos) => {
                 pj_info!("fetchData success!");
@@ -166,7 +167,8 @@ impl PJToDoDAO for PJToDoDAOImpl {
             "SELECT * FROM todo WHERE due_time < date('{}','{} days') and state == 0",
             from_day, comparison_days
         );
-        let result = sql_query(sql).load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
+        let result = sql_query(sql)
+            .load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match result {
             Ok(to_dos) => {
                 pj_info!("find_todo_date_future_day_more_than success!");
@@ -264,11 +266,10 @@ impl PJToDoDAO for PJToDoDAOImpl {
     }
 
     fn update_overdue_todos(&self) -> Result<Vec<ToDoQuery>, diesel::result::Error> {
-        let sql = format!(
-            "UPDATE todo set state = 3 WHERE due_time < date('now') and state == 0",
-        );
+        let sql = format!("UPDATE todo set state = 3 WHERE due_time < date('now') and state == 0",);
 
-        let result = sql_query(sql).load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
+        let result = sql_query(sql)
+            .load::<ToDoQuery>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match result {
             Ok(update_rows) => {
                 pj_info!("update_overdue_todos success!");
