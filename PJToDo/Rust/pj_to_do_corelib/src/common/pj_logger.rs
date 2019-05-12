@@ -1,4 +1,5 @@
 extern crate log;
+extern crate chrono;
 
 use log::{Record, Level, Metadata};
 use log::{SetLoggerError, LevelFilter};
@@ -15,7 +16,7 @@ impl log::Log for PJLogger {
 
     fn log(&self, record: &Record) {
         if self.enabled(record.metadata()) {
-            println!("{} - {}", record.level(), record.args());
+            eprintln!("{} - {}", record.level(), record.args());
         }
     }
 
@@ -53,11 +54,11 @@ macro_rules! function {
 #[macro_export]
 macro_rules! pj_warn {
     ($fmt:expr) => {
-        println!("[in module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         warn!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        println!("[in module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         warn!($fmt, $($arg)*);
     };
 }
@@ -66,11 +67,11 @@ macro_rules! pj_warn {
 #[macro_export]
 macro_rules! pj_debug {
     ($fmt:expr) => {
-        println!("[in module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         debug!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        println!("[in module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         debug!($fmt, $($arg)*);
     };
 }
@@ -79,11 +80,11 @@ macro_rules! pj_debug {
 #[macro_export]
 macro_rules! pj_error {
     ($fmt:expr) => {
-        println!("[in module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         error!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        println!("[in module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         error!($fmt, $($arg)*);
     };
 }
@@ -92,11 +93,11 @@ macro_rules! pj_error {
 #[macro_export]
 macro_rules! pj_info {
     ($fmt:expr) => {
-        println!("[in module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         info!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        println!("[in module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         info!($fmt, $($arg)*);
     };
 }
@@ -105,11 +106,11 @@ macro_rules! pj_info {
 #[macro_export]
 macro_rules! pj_trace {
     ($fmt:expr) => {
-        println!("[in module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         trace!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        println!("[in module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         trace!($fmt, $($arg)*);
     };
 }

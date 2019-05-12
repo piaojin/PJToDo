@@ -9,7 +9,7 @@
 import UIKit
 
 public extension String {
-    public static func create(cString: UnsafeMutablePointer<Int8>, encoding: String.Encoding = .utf8) -> String {
+    static func create(cString: UnsafeMutablePointer<Int8>, encoding: String.Encoding = .utf8) -> String {
         //get string pointer from rust and use the pointer to create a Swift String and then free the rust string
         if let str = String(cString: cString, encoding: encoding) {
             pj_free_rust_string(cString)
@@ -18,20 +18,20 @@ public extension String {
         return ""
     }
     
-    public static func convertToBase64String(str: String, encoding: String.Encoding = .utf8) -> String {
+    static func convertToBase64String(str: String, encoding: String.Encoding = .utf8) -> String {
         return self.create(cString: pj_convert_str_to_base64str(str), encoding: encoding)
     }
     
-    public func pj_bridgeObjectiveC() -> NSString {
+    func pj_bridgeObjectiveC() -> NSString {
         return NSString(string: self)
     }
     
-    public func pj_boundingSizeBySize(_ size: CGSize, font: UIFont) -> CGSize {
+    func pj_boundingSizeBySize(_ size: CGSize, font: UIFont) -> CGSize {
         if self.isEmpty { return CGSize.zero }
         return pj_attributedTextConstrainedToSize(NSAttributedString(string: self, attributes: [NSAttributedStringKey.font: font]), size: size, numberOfLines: 0)
     }
     
-    public func pj_sizeByAttributes(_ attributes: [NSAttributedStringKey: Any]?) -> CGSize {
+    func pj_sizeByAttributes(_ attributes: [NSAttributedStringKey: Any]?) -> CGSize {
         return self.pj_bridgeObjectiveC().size(withAttributes: attributes)
     }
 }
