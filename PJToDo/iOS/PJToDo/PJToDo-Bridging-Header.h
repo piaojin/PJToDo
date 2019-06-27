@@ -5,6 +5,6 @@
 #ifndef PJTODO_Bridging_Header_h
 #define PJTODO_Bridging_Header_h
 
-#import "app_bindings.h"
+#import <PJToDoCoreLib/PJToDoCoreLib.h>
 
 #endif

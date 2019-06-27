@@ -12,7 +12,7 @@ autogen_warning = """/* Generated with cbindgen */
  *   2. Run `rustup run nightly cbindgen path/to/your/crate/projrct --lockfile Cargo.lock --crate your/crate/name -o path/to/save/head_ffi_generated.h`
  */ 
  
- \n\n#include \"struct_heads.h\"""" # 引入自己的头文件
+ \n\n#import \"struct_heads.h\"""" # 引入自己的头文件
 include_version = true
 braces = "SameLine"
 line_length = 200

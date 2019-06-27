@@ -2,14 +2,20 @@
 
 echo "******Rust RustCoreLib RustCustomScript Start******"
 
+currentPath=`pwd`
+
+echo $currentPath
+
+# cd $currentPath
+
 buildAction () {
     echo "******Building...******"
-    sh RustBuildScript.sh
+    sh ${SRCROOT}/RustBuildScript.sh
 }
 
 cleanAction () {
     echo "******Cleaning...******"
-    sh RustCargoCleanScript.sh
+    sh ${SRCROOT}/RustCargoCleanScript.sh
 }
 
 # - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -21,6 +27,10 @@ case $ACTION in
     # NOTE: for some reason, it gets set to "" rather than "build" when
     # doing a build.
     "")
+        buildAction
+        ;;
+
+    "build")
         buildAction
         ;;
 

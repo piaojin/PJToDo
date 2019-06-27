@@ -19,8 +19,7 @@ cargo lipo --version
 pwd
 cd ..
 
-current_path=`pwd`
-rust_lib_path="$current_path/Rust/$RUST_LIB_DIR_NAME"
+rust_lib_path="${SRCROOT}/${TARGET_NAME}/Rust/$RUST_LIB_DIR_NAME"
 
 ######bindgen######
 bindgen_path="$root_path/.cargo/bin/bindgen"
@@ -54,12 +53,11 @@ then
 
     # copy staticlib to iOS 
     echo "******cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR:"
-    cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR
+    # cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR
 else
     echo "******cargo lipo --release:"
     cargo lipo --release -vv --targets=aarch64-apple-ios,armv7s-apple-ios
-
-    cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR
+    # cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR
 fi
 
 ######format Rust code######

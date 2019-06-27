@@ -20,7 +20,7 @@
  
  
 
-#include "struct_heads.h"
+#import "struct_heads.h"
 
 #include <stdarg.h>
 #include <stdbool.h>

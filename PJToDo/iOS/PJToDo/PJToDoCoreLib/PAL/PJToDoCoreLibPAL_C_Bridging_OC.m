@@ -8,7 +8,7 @@
 
 #import "PJToDoCoreLibPAL_C_Bridging_OC.h"
 #import "PJToDo-Swift.h"
-#import "app_bindings.h"
+#import <PJToDoCoreLib/PJToDoCoreLib.h>
 
 void swiftSayHi() {
     [PJToDoCoreLibPAL swiftSayHi];
