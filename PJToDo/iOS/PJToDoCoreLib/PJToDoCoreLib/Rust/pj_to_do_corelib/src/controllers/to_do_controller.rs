@@ -1,5 +1,8 @@
 use delegates::to_do_delegate::{IPJToDoDelegate, IPJToDoDelegateWrapper};
-use service::to_do_service::{PJToDoService, insert_todo, delete_todo, update_todo, find_todo_by_id, find_todo_date_future_day_more_than, fetch_todos_order_by_state, update_overdue_todos};
+use service::to_do_service::{
+    PJToDoService, insert_todo, delete_todo, update_todo, find_todo_by_id,
+    find_todo_date_future_day_more_than, fetch_todos_order_by_state, update_overdue_todos,
+};
 use service::service_impl::to_do_service_impl::{createPJToDoServiceImpl};
 use to_do::to_do::{ToDoInsert, ToDoQuery};
 use to_do_type::to_do_type::ToDoType;

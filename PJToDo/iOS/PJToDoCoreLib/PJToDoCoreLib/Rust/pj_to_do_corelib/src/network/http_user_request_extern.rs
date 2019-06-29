@@ -1,4 +1,6 @@
-use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
+use delegates::to_do_http_request_delegate::{
+    IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate,
+};
 use std::ffi::{CStr};
 use common::manager::pj_user_manager::PJUserManager;
 use network::http_request::{PJHttpRequest};

@@ -15,7 +15,7 @@ autotests = false
 [dependencies]
 
 # ****** C ******
-libc = "0.2.43"
+libc = "0.2.58"
 
 # ****** NetWork ******
 bytes = "0.4"
@@ -41,7 +41,7 @@ log = "0.4.5"
 # ****** Base64 ******
 rustc-serialize = "0.3.24"
 
-cc = "1.0"
+cc = "1.0.37"
 
 # ****** Zip ******
 # brotli = "2.5.1"
@@ -55,7 +55,7 @@ version = "1.1.0"
 
 # ****** CC ******
 [build-dependencies]
-cc = "1.0"
+cc = "1.0.37"
 
 # [build-dependencies]
 # bindgen = "0.42.2"

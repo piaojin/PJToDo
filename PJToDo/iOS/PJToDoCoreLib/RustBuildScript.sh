@@ -47,16 +47,18 @@ unset $(env | grep '^SDK' | cut -d'=' -f1)
 if [[ "$CONFIGURATION" == "Debug" ]]
 then
     echo "******cargo lipo:"
-    cargo lipo --verbose --targets=aarch64-apple-ios,x86_64-apple-ios
+     RUSTFLAGS="-Z embed-bitcode" cargo lipo --verbose --targets=aarch64-apple-ios,x86_64-apple-ios
+    # cargo lipo --verbose --targets=aarch64-apple-ios,x86_64-apple-ios
     # cargo build --verbose
     # LLVM_SYS_70_PREFIX=/path/to/llvm cargo build
 
     # copy staticlib to iOS 
-    echo "******cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR:"
+    # echo "******cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR:"
     # cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR
 else
     echo "******cargo lipo --release:"
-    cargo lipo --release -vv --targets=aarch64-apple-ios,armv7s-apple-ios
+    RUSTFLAGS="-Z embed-bitcode" cargo lipo --release -vv --targets=aarch64-apple-ios,armv7s-apple-ios
+    # cargo lipo --release -vv --targets=aarch64-apple-ios,armv7s-apple-ios
     # cp $rust_lib_path/target/universal/debug/$RUST_LIB_NAME $RUST_BUILD_BINDINGS_DIR
 fi
 

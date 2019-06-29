@@ -841,15 +841,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/universal/debug",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/aarch64-apple-ios/debug/deps",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/aarch64-apple-ios/debug",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/aarch64-apple-ios/debug/build/pj_to_do_corelib-200af3d2b15cc0ea/out",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/aarch64-apple-ios/debug/build/libz-sys-657fedb1d3e5d889/out/build",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/x86_64-apple-ios/debug/deps",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/x86_64-apple-ios/debug",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/x86_64-apple-ios/debug/build/pj_to_do_corelib-200af3d2b15cc0ea/out",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/x86_64-apple-ios/debug/build/libz-sys-657fedb1d3e5d889/out/build",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/debug/deps",
 				);
 				MACH_O_TYPE = staticlib;
 				PJTODO_PAL_PATH = "${SRCROOT}/../PJToDo/PJToDoCoreLib/PAL/PJToDoCoreLibPAL_C.c";
@@ -888,15 +879,6 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/universal/debug",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/aarch64-apple-ios/debug/deps",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/aarch64-apple-ios/debug",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/aarch64-apple-ios/debug/build/pj_to_do_corelib-200af3d2b15cc0ea/out",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/aarch64-apple-ios/debug/build/libz-sys-657fedb1d3e5d889/out/build",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/x86_64-apple-ios/debug/deps",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/x86_64-apple-ios/debug",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/x86_64-apple-ios/debug/build/pj_to_do_corelib-200af3d2b15cc0ea/out",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/x86_64-apple-ios/debug/build/libz-sys-657fedb1d3e5d889/out/build",
-					"$(PROJECT_DIR)/PJToDoCoreLib/Rust/pj_to_do_corelib/target/debug/deps",
 				);
 				MACH_O_TYPE = staticlib;
 				PJTODO_PAL_PATH = "${SRCROOT}/../PJToDo/PJToDoCoreLib/PAL/PJToDoCoreLibPAL_C.c";

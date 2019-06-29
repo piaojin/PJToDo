@@ -144,7 +144,7 @@ impl PJHttpRequest {
                 );
             }
             Err(e) => {
-                let mut error_string: String;
+                let error_string: String;
                 let mut error_code: u16 = 0;
                 match e {
                     FetchError::Http(status, error) => {

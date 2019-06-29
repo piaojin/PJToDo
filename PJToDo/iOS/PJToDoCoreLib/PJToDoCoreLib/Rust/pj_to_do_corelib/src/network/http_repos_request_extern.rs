@@ -1,5 +1,7 @@
 use network::http_repos_request::PJHttpReposRequest;
-use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
+use delegates::to_do_http_request_delegate::{
+    IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate,
+};
 use std::ffi::{CStr};
 use libc::{c_char};
 use common::request_config::PJRequestConfig;

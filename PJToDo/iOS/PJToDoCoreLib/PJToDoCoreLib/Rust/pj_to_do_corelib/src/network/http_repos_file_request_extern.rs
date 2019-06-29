@@ -1,5 +1,7 @@
 use network::http_repos_file_request::PJHttpReposFileRequest;
-use delegates::to_do_http_request_delegate::{IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate};
+use delegates::to_do_http_request_delegate::{
+    IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate,
+};
 use std::ffi::{CStr, CString};
 use libc::{c_char};
 use repos::repos_file::ReposFileBody;
