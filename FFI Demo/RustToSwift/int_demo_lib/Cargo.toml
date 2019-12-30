@@ -1,0 +1,16 @@
+[package]
+name = "int_demo_lib"
+version = "0.1.0"
+authors = ["Zoey Weng <zoey.weng@ringcentral.com>"]
+edition = "2018"
+build = "build.rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+
+libc = "0.2.58"
+cc = "1.0.37"
+
+[lib]
+crate-type = ["staticlib"]
