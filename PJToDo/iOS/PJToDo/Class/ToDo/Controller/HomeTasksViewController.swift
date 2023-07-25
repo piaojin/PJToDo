@@ -16,8 +16,8 @@ class HomeTasksViewController: PJBaseViewController {
         tempTableView.translatesAutoresizingMaskIntoConstraints = false
         tempTableView.backgroundColor = .white
         tempTableView.estimatedRowHeight = 44.0
-        tempTableView.rowHeight = UITableViewAutomaticDimension
-        tempTableView.estimatedSectionHeaderHeight = UITableViewAutomaticDimension
+        tempTableView.rowHeight = UITableView.automaticDimension
+        tempTableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
         tempTableView.tableFooterView = UIView()
         tempTableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
         tempTableView.keyboardDismissMode = .onDrag
@@ -162,22 +162,22 @@ extension HomeTasksViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         var actions: [UITableViewRowAction] = []
         let model = self.toDoController.toDoAt(section: indexPath.section, index: indexPath.row)
-        let unDeterminedAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "待定") { (action, tempIndexPath) in
+        let unDeterminedAction = UITableViewRowAction(style: UITableViewRowAction.Style.normal, title: "待定") { (action, tempIndexPath) in
             self.unDeterminedAction(indexPath: tempIndexPath)
         }
         unDeterminedAction.backgroundColor = .orange
         
-        let completeAction = UITableViewRowAction(style: UITableViewRowActionStyle.normal, title: "完成") { (action, tempIndexPath) in
+        let completeAction = UITableViewRowAction(style: UITableViewRowAction.Style.normal, title: "完成") { (action, tempIndexPath) in
             self.completeAction(indexPath: tempIndexPath)
         }
         completeAction.backgroundColor = .green
         
-        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "删除") { (action, tempIndexPath) in
+        let deleteAction = UITableViewRowAction(style: UITableViewRowAction.Style.destructive, title: "删除") { (action, tempIndexPath) in
             self.deleteAction(indexPath: tempIndexPath)
         }
         deleteAction.backgroundColor = .red
         
-        let inProgressAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "开始") { (action, tempIndexPath) in
+        let inProgressAction = UITableViewRowAction(style: UITableViewRowAction.Style.destructive, title: "开始") { (action, tempIndexPath) in
             self.inProgressAction(indexPath: tempIndexPath)
         }
         inProgressAction.backgroundColor = .blue
@@ -220,7 +220,7 @@ extension HomeTasksViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         let count = self.toDoController.getToDoCountAtSection(section: section)
-        return count == 0 ? CGFloat.leastNormalMagnitude : UITableViewAutomaticDimension
+        return count == 0 ? CGFloat.leastNormalMagnitude : UITableView.automaticDimension
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

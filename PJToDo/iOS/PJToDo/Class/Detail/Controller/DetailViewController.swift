@@ -28,9 +28,9 @@ class DetailViewController: PJBaseViewController {
         tempTableView.translatesAutoresizingMaskIntoConstraints = false
         tempTableView.backgroundColor = UIColor.colorWithRGB(red: 249, green: 249, blue: 249)
         tempTableView.estimatedRowHeight = 44.0
-        tempTableView.rowHeight = UITableViewAutomaticDimension
-        tempTableView.estimatedSectionHeaderHeight = UITableViewAutomaticDimension
-        tempTableView.estimatedSectionFooterHeight = UITableViewAutomaticDimension
+        tempTableView.rowHeight = UITableView.automaticDimension
+        tempTableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
+        tempTableView.estimatedSectionFooterHeight = UITableView.automaticDimension
         tempTableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
         tempTableView.tableFooterView = UIView()
         tempTableView.keyboardDismissMode = .onDrag
@@ -87,7 +87,7 @@ class DetailViewController: PJBaseViewController {
             self.automaticallyAdjustsScrollViewInsets = false
         }
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: UIBarButtonItemStyle.done, target: self, action: #selector(saveAction))
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Save", style: UIBarButtonItem.Style.done, target: self, action: #selector(saveAction))
     }
     
     private func initData() {

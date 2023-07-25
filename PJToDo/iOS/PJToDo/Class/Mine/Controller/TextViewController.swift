@@ -21,7 +21,7 @@ class TextViewController: PJBaseViewController {
         tempTableView.translatesAutoresizingMaskIntoConstraints = false
         tempTableView.backgroundColor = UIColor.colorWithRGB(red: 249, green: 249, blue: 249)
         tempTableView.estimatedRowHeight = 44.0
-        tempTableView.rowHeight = UITableViewAutomaticDimension
+        tempTableView.rowHeight = UITableView.automaticDimension
         tempTableView.tableFooterView = UIView()
         tempTableView.keyboardDismissMode = .onDrag
         tempTableView.sectionIndexBackgroundColor = UIColor.clear
@@ -83,7 +83,7 @@ class TextViewController: PJBaseViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         
-        let addBarButton = UIBarButtonItem(title: "Add", style: UIBarButtonItemStyle.plain, target: self, action: #selector(addAction))
+        let addBarButton = UIBarButtonItem(title: "Add", style: UIBarButtonItem.Style.plain, target: self, action: #selector(addAction))
         self.navigationItem.rightBarButtonItem = addBarButton
     }
     
@@ -96,12 +96,12 @@ class TextViewController: PJBaseViewController {
     }
     
     @objc private func addAction() {
-        let addAlert = UIAlertController(title: self.textType == .type ? "Add Type" : "Add Tag", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        let addAlert = UIAlertController(title: self.textType == .type ? "Add Type" : "Add Tag", message: "", preferredStyle: UIAlertController.Style.alert)
         addAlert.addTextField { (textField) in
             
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { (action) in
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) { (action) in
             
         }
         
@@ -167,7 +167,7 @@ extension TextViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let deleteAction = UITableViewRowAction(style: UITableViewRowActionStyle.destructive, title: "Delete") { (action, indexPath) in
+        let deleteAction = UITableViewRowAction(style: UITableViewRowAction.Style.destructive, title: "Delete") { (action, indexPath) in
             let item = self.item(at: indexPath.row)
             if self.textType == .type {
                 self.typeController.delete(toDoTypeId: Int32(item.id))

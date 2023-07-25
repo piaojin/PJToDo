@@ -20,7 +20,7 @@ class MineCell: UITableViewCell {
         }
     }
     
-    required override public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+    required override public init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
         self.initView()
     }

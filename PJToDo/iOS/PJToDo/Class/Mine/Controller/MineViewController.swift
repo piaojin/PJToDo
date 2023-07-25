@@ -16,9 +16,9 @@ class MineViewController: PJBaseViewController {
         tempTableView.translatesAutoresizingMaskIntoConstraints = false
         tempTableView.backgroundColor = UIColor.colorWithRGB(red: 249, green: 249, blue: 249)
         tempTableView.estimatedRowHeight = 44.0
-        tempTableView.rowHeight = UITableViewAutomaticDimension
-        tempTableView.estimatedSectionHeaderHeight = UITableViewAutomaticDimension
-        tempTableView.estimatedSectionFooterHeight = UITableViewAutomaticDimension
+        tempTableView.rowHeight = UITableView.automaticDimension
+        tempTableView.estimatedSectionHeaderHeight = UITableView.automaticDimension
+        tempTableView.estimatedSectionFooterHeight = UITableView.automaticDimension
         tempTableView.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: CGFloat.leastNormalMagnitude))
         tempTableView.tableFooterView = UIView()
         tempTableView.keyboardDismissMode = .onDrag
@@ -120,7 +120,7 @@ extension MineViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section == 0 {
-            return UITableViewAutomaticDimension
+            return UITableView.automaticDimension
         }
         return CGFloat.leastNormalMagnitude
     }
@@ -170,7 +170,7 @@ extension MineViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     private func editEmailOrRemindDays(item: MineItem) {
-        let editAlert = UIAlertController(title: "Set Text", message: "", preferredStyle: UIAlertControllerStyle.alert)
+        let editAlert = UIAlertController(title: "Set Text", message: "", preferredStyle: UIAlertController.Style.alert)
         editAlert.addTextField { (textField) in
             if item.type == .remindDays {
                 textField.keyboardType = .numberPad
@@ -179,7 +179,7 @@ extension MineViewController: UITableViewDelegate, UITableViewDataSource {
             }
         }
         
-        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.cancel) { (action) in
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertAction.Style.cancel) { (action) in
             
         }
         

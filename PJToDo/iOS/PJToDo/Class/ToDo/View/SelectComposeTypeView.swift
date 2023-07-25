@@ -21,7 +21,7 @@ class SelectComposeTypeView: UIView {
         tempTableView.translatesAutoresizingMaskIntoConstraints = false
         tempTableView.backgroundColor = UIColor.colorWithRGB(red: 249, green: 249, blue: 249)
         tempTableView.estimatedRowHeight = 44.0
-        tempTableView.rowHeight = UITableViewAutomaticDimension
+        tempTableView.rowHeight = UITableView.automaticDimension
         tempTableView.tableFooterView = UIView()
         tempTableView.sectionIndexBackgroundColor = UIColor.clear
         tempTableView.tableFooterView?.backgroundColor = .white

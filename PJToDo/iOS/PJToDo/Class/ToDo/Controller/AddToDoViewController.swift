@@ -92,7 +92,7 @@ class AddToDoViewController: PJBaseViewController {
     private func initView() {
         self.title = "New ToDo"
         self.view.backgroundColor = UIColor.colorWithRGB(red: 220, green: 220, blue: 220)
-        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: UIBarButtonItemStyle.done, target: self, action: #selector(closeAction))
+        self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Close", style: UIBarButtonItem.Style.done, target: self, action: #selector(closeAction))
         
         self.view.addSubview(self.inputBox)
         self.inputBox.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
@@ -123,8 +123,8 @@ class AddToDoViewController: PJBaseViewController {
     }
     
     private func initData() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(note:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHidden(note:)), name: NSNotification.Name.UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(note:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHidden(note:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         
         self.selectComposeTypeView.delegate = self
         self.inputBox.textField.becomeFirstResponder()
@@ -238,7 +238,7 @@ class AddToDoViewController: PJBaseViewController {
     }
     
     @objc func keyboardWillShow(note: NSNotification) {
-        if let info = note.userInfo, let value = info[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+        if let info = note.userInfo, let value = info[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             UIView.animate(withDuration: 0.3) {
                 var safeAreaInsetsBottom: CGFloat = 0
                 if #available(iOS 11.0, *) {
