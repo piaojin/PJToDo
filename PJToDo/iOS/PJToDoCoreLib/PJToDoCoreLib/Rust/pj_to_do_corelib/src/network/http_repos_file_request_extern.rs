@@ -3,7 +3,7 @@ use delegates::to_do_http_request_delegate::{
     IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate,
 };
 use std::ffi::{CStr, CString};
-use libc::{c_char};
+use libc::c_char;
 use repos::repos_file::ReposFileBody;
 use std::thread;
 use common::manager::pj_repos_file_manager::PJReposFileManager;

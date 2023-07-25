@@ -19,7 +19,7 @@ use std::sync::{Arc, Mutex};
 
 lazy_static! {
     pub static ref StaticPJDBConnectionUtil: Arc<Mutex<PJDBConnectionUtil>> =
-        { Arc::new(Mutex::new(PJDBConnectionUtil::new())) };
+        Arc::new(Mutex::new(PJDBConnectionUtil::new()));
     pub static ref SQLiteUrl: String = {
         let get_db_path = unsafe { CStr::from_ptr(get_db_path()).to_string_lossy().into_owned() };
         get_db_path

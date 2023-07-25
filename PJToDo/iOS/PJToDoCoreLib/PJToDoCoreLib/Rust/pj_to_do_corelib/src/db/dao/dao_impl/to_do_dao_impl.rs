@@ -19,7 +19,7 @@ impl PJToDoDAO for PJToDoDAOImpl {
         match inserted_result {
             Ok(inserted_row) => {
                 let mut result: Result<usize, diesel::result::Error> =
-                    Err(diesel::result::Error::NotFound);;
+                    Err(diesel::result::Error::NotFound);
                 if inserted_row == 1 {
                     result = Ok(inserted_row);
                 } else {

@@ -8,11 +8,14 @@ extern crate serde_json;
 
 use self::rustc_serialize::base64::{STANDARD, ToBase64};
 
-use self::hyper::header::{HeaderValue};
-use self::hyper::{Method};
+use self::hyper::header::HeaderValue;
+use self::hyper::Method;
 use network::http_request::{PJHttpRequest, FetchError};
 use common::request_config::PJRequestConfig;
-use common::utils::pj_utils::{PJUtils};
+use common::utils::pj_utils::PJUtils;
+
+#[allow(unused_imports)]
+use common::pj_logger::PJLogger;
 
 pub struct PJHttpUserRequest;
 
@@ -42,13 +45,15 @@ impl PJHttpUserRequest {
         let authorization_str = format!("{}:{}", name, password);
         let config = STANDARD;
         let authorization = authorization_str.as_bytes().to_base64(config);
-        let basic: &'static str = PJUtils::string_to_static_str(format!("Basic {}", authorization));
+        let _basic: &'static str =
+            PJUtils::string_to_static_str(format!("Basic {}", authorization));
 
         request.headers_mut().insert(
             PJRequestConfig::authorization_head(),
-            HeaderValue::from_static(basic),
+            HeaderValue::from_static(_basic),
         );
 
+        pj_info!("👉👉The Resuest headers are: {:?}👈👈", request.headers());
         PJHttpRequest::make_http(request, completion_handler);
     }
 

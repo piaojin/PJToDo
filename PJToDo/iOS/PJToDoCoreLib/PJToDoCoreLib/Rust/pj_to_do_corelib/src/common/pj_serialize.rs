@@ -44,10 +44,7 @@ impl PJSerializeUtils {
     where
         for<'de> T: serde::Deserialize<'de>,
     {
-        pj_info!(
-            "👉👉from_file_by_line json_file_path: {}",
-            json_file_path
-        );
+        pj_info!("👉👉from_file_by_line json_file_path: {}", json_file_path);
         let mut v: Vec<Result<T, serde_json::Error>> = Vec::new();
         let file_content: String = PJFileManager::read_file_content(json_file_path);
         if !file_content.is_empty() {

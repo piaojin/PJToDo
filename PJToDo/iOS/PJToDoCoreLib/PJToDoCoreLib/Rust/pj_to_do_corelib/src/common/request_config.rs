@@ -37,7 +37,7 @@ impl PJRequestConfig {
     //personal token
     pub fn personal_token() -> &'static str {
         //from pal
-        "token 3893344ec9e010b856f1fc20753a50b070c83fbf"
+        "token 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"
     }
 }
 

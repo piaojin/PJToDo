@@ -65,11 +65,19 @@ class WelcomeViewController: PJBaseViewController {
     }
     
     @objc private func loginAction() {
+//        let base64Str = String.convertToBase64String(str: "\("piaojin"):\("Weng804488815")")
+//        let basicToken = "Basic \(base64Str)"
+//        PJHttpRequest.authorization(authorization: basicToken) { (isSuccess, authorization, error) in
+//            if (isSuccess) {
+//                try? PJKeychainManager.saveSensitiveString(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAuthorizationKey, sensitiveString: basicToken)
+//            }
+//        }
+        
 //        if let account = PJUserInfoManager.shared.userInfo?.login {
 //            if let sentiveStr = try? PJKeychainManager.readSensitiveString(withService: PJKeyCenter.KeychainUserInfoService, sensitiveKey: account) {
 //                let base64Str = String.convertToBase64String(str: "\(account):\(sentiveStr)")
 //                let basicToken = "Basic \(base64Str)"
-//                PJHttpRequest.authorization(authorization: basicToken) { (authorization, isSuccess) in
+//                PJHttpRequest.authorization(authorization: basicToken) { (isSuccess, authorization, error) in
 //                    if (isSuccess) {
 //                        try? PJKeychainManager.saveSensitiveString(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAuthorizationKey, sensitiveString: basicToken)
 //                    }
@@ -82,6 +90,7 @@ class WelcomeViewController: PJBaseViewController {
 //
 //            }
 //        }
+        
         
         let loginViewController = LoginViewController()
         if self.navigationController != nil {
