@@ -34,5 +34,11 @@ fn main() {
         String::from_utf8_lossy(&pal_path_output.stderr).trim()
     );
 
-    cc::Build::new().file(pal_path).compile("PJToDoCoreLibPAL");
+    if !pal_path.is_empty() {
+        cc::Build::new().file(pal_path).compile("PJToDoCoreLibPAL");
+    } else {
+        println!(
+            "Warning❌❌❌❌❌❌pal path is empty, pal used for rust to call Swift func cannot be empty!❌❌❌❌❌❌"
+        );
+    }
 }
