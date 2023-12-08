@@ -6,7 +6,7 @@ target 'PJToDo' do
   use_frameworks!
 
   # Pods for PJToDo
-  pod 'CocoaLumberjack/Swift', '~> 3.4.2'
+  pod 'CocoaLumberjack/Swift', '~> 3.8.1'
   pod 'SVProgressHUD', :git => 'https://github.com/SVProgressHUD/SVProgressHUD.git'
   pod 'ReachabilitySwift', '~> 4.1.0'
   pod 'SSZipArchive', '~> 2.1.3'

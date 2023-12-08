@@ -1,7 +1,7 @@
 PODS:
-  - CocoaLumberjack/Default (3.4.2)
-  - CocoaLumberjack/Swift (3.4.2):
-    - CocoaLumberjack/Default
+  - CocoaLumberjack/Core (3.8.2)
+  - CocoaLumberjack/Swift (3.8.2):
+    - CocoaLumberjack/Core
   - PJPresentation (0.1.0)
   - ReachabilitySwift (4.1.0)
   - SSZipArchive (2.1.3)
@@ -10,7 +10,7 @@ PODS:
   - SVProgressHUD/Core (2.2.6)
 
 DEPENDENCIES:
-  - CocoaLumberjack/Swift (~> 3.4.2)
+  - CocoaLumberjack/Swift (~> 3.8.1)
   - PJPresentation (~> 0.1.0)
   - ReachabilitySwift (~> 4.1.0)
   - SSZipArchive (~> 2.1.3)
@@ -33,12 +33,12 @@ CHECKOUT OPTIONS:
     :git: https://github.com/SVProgressHUD/SVProgressHUD.git
 
 SPEC CHECKSUMS:
-  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  CocoaLumberjack: f8d89a516e7710fdb2e9b8f1560b16ec6040eef0
   PJPresentation: b09ec25c548d48cf97663c345e0a0de0e36ceda4
   ReachabilitySwift: 6849231cd4e06559f3b9ef4a97a0a0f96d41e09f
   SSZipArchive: 51a800ebb77f95a8329b6ced1faaff394b47f509
   SVProgressHUD: de812b4f0e1d65358f0064416473174ae619843f
 
-PODFILE CHECKSUM: 06aece7b05ad02169a22fc71c8b5512098923d17
+PODFILE CHECKSUM: 77b5b05f72dbfe73b7f7a92ce8c80c2f803fac1a
 
 COCOAPODS: 1.12.1
