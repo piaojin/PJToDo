@@ -172,7 +172,7 @@ impl PJHttpRequest {
     {
         let completion_handler_http_err = completion_handler.clone();
         let completion_handler_json_parse_err = completion_handler.clone();
-
+        let url = request.uri().clone();
         // 4 is number of blocking DNS threads
         //为了使用https请求，默认是http请求
         let https = HttpsConnector::new(4).unwrap();
@@ -196,9 +196,9 @@ impl PJHttpRequest {
 
                 pj_info!("👉Response body: {:#?}👈", res.body());
                 if !res.status().is_success() {
-                    pj_error!("❌Response {:#?} faild!!!❌", res);
+                    pj_error!("❌❌API {:#?}, Response {:#?} faild!!!❌❌", url, res);
                 } else {
-                    pj_info!("👉👉Response {:#?}👈👈", res);
+                    pj_info!("👉👉API {:#?}, Response {:#?}👈👈", url, res);
                 }
                 //使用该函数则是把body字节数据返回
                 res.into_body().concat2()
