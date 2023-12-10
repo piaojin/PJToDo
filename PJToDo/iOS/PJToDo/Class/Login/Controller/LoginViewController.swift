@@ -43,74 +43,7 @@ class LoginViewController: PJBaseViewController {
     }
     
     private func loginAction() {
-        PJHttpRequest.loginViaAccessToken { isSuccess, user, error in
-            DispatchQueue.main.async {
-                if isSuccess, let tempUser = user {
-                    PJUserInfoManager.saveUserInfo(userInfo: tempUser)
-                    self.initRootViewController()
-                    SVProgressHUD.show(withStatus: "Sync Data...")
-                    PJReposManager.initGitHubRepos { isSuccess, _, _ in
-                        if isSuccess {
-                            PJReposFileManager.initGitHubReposFile(completedHandle: { (isSuccess, _, _) in
-                                PJReposFileManager.getReposFile(completedHandle: { (isSuccess, reposFile, error) in
-                                    if isSuccess, let tempReposFile = reposFile {
-                                        //download github data file
-                                        self.downloadDBFromGitHub(reposFile: tempReposFile)
-                                    } else {
-                                        SVProgressHUD.dismiss()
-                                        DispatchQueue.main.async(execute: {
-                                            let alert = UIAlertController(title: "Sync Failure", message: "Sync Data failure, please logout and login try again!", preferredStyle: .alert)
-                                            
-                                            let okAction = UIAlertAction(title: "OK", style: .default, handler: { (_) in
-                                                PJUserInfoManager.logOut()
-                                            })
-                                            
-                                            alert.addAction(okAction)
-                                            
-                                            self.present(alert, animated: true, completion: nil)
-                                        })
-                                    }
-                                })
-                            })
-                        } else {
-                            self.showSyncError()
-                        }
-                    }
-                } else {
-                    self.navigationController?.popViewController(animated: true)
-                    SVProgressHUD.showError(withStatus: "Login Failure!")
-                }
-            }
-        }
-    }
-    
-    private func initRootViewController() {
-        if let window = UIApplication.shared.delegate?.window {
-            window?.rootViewController = PJTabBarViewController()
-            window?.makeKeyAndVisible()
-        }
-    }
-    
-    private func downloadDBFromGitHub(reposFile: ReposFile) {
-        PJHttpRequest.downloadFile(requestUrl: reposFile.content.download_url, savePath: PJToDoConst.DBPath) { (isSuccess, errorString, error) in
-            if isSuccess {
-                DispatchQueue.main.async(execute: {
-                    pj_update_db_connection()
-                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: {
-                        NotificationCenter.default.post(name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
-                        SVProgressHUD.dismiss()
-                    })
-                })
-            } else {
-                self.showSyncError()
-            }
-        }
-    }
-    
-    private func showSyncError() {
-        DispatchQueue.main.async(execute: {
-            SVProgressHUD.showError(withStatus: "Sync Failure!")
-        })
+        PJUserInfoManager.loginViaAccessToken()
     }
 }
 

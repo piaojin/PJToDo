@@ -70,6 +70,7 @@ extension AppDelegate {
             rootTabBarViewController = UINavigationController(rootViewController: WelcomeViewController())
         }
         self.window?.rootViewController = rootTabBarViewController
+        RootController.shared.window = window
     }
     
     //init gethub data

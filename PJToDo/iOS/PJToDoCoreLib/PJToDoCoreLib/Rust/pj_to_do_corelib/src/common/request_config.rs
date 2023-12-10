@@ -43,10 +43,6 @@ impl PJRequestConfig {
     pub fn access_token_api<'a>() -> &'a str {
         "https://github.com/login/oauth/access_token"
     }
-
-    pub fn access_token<'a>() -> &'a str {
-        "https://github.com/login/oauth/access_token"
-    }
 }
 
 //repos

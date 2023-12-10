@@ -25,6 +25,17 @@ class WelcomeViewController: PJBaseViewController {
         return loginButton
     }()
     
+    private let accessTokenButton: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Access Token", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.backgroundColor = UIColor.colorWithRGB(red: 0, green: 123, blue: 249)
+        button.cornerRadius = 6
+        button.layer.masksToBounds = true
+        return button
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.initView()
@@ -58,45 +69,48 @@ class WelcomeViewController: PJBaseViewController {
         bgView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor).isActive = true
         bgView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor).isActive = true
         bgView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor).isActive = true
+        
+        view.addSubview(accessTokenButton)
+        NSLayoutConstraint.activate([
+            accessTokenButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
+            accessTokenButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -20)
+        ])
     }
     
     private func initData() {
         self.loginButton.addTarget(self, action: #selector(loginAction), for: .touchUpInside)
+        accessTokenButton.addTarget(self, action: #selector(loginViaAccessTokenAction), for: .touchUpInside)
     }
     
     @objc private func loginAction() {
-//        let base64Str = String.convertToBase64String(str: "\("piaojin"):\("Weng804488815")")
-//        let basicToken = "Basic \(base64Str)"
-//        PJHttpRequest.authorization(authorization: basicToken) { (isSuccess, authorization, error) in
-//            if (isSuccess) {
-//                try? PJKeychainManager.saveSensitiveString(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAuthorizationKey, sensitiveString: basicToken)
-//            }
-//        }
-        
-//        if let account = PJUserInfoManager.shared.userInfo?.login {
-//            if let sentiveStr = try? PJKeychainManager.readSensitiveString(withService: PJKeyCenter.KeychainUserInfoService, sensitiveKey: account) {
-//                let base64Str = String.convertToBase64String(str: "\(account):\(sentiveStr)")
-//                let basicToken = "Basic \(base64Str)"
-//                PJHttpRequest.authorization(authorization: basicToken) { (isSuccess, authorization, error) in
-//                    if (isSuccess) {
-//                        try? PJKeychainManager.saveSensitiveString(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAuthorizationKey, sensitiveString: basicToken)
-//                    }
-//                }
-//            }
-//        }
-        
-//        PJHttpRequest.createGitHubRepos { (isSuccess, resultStr, error) in
-//            if isSuccess {
-//
-//            }
-//        }
-        
-        
         let loginViewController = LoginViewController()
         if self.navigationController != nil {
             self.navigationController?.pushViewController(loginViewController, animated: true)
         } else {
             self.present(UINavigationController(rootViewController: loginViewController), animated: true, completion: nil)
         }
+    }
+    
+    @objc private func loginViaAccessTokenAction() {
+        let alertController = UIAlertController(title: "Login via access token", message: "Please input personal access token", preferredStyle: .alert)
+        alertController.addTextField()
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            guard let textField = alertController.textFields?.first, let accessToken = textField.text, !accessToken.isEmpty else { return }
+            try? PJKeychainManager.deleteItem(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAccessTokenKey)
+            
+            PJUserInfoManager.loginViaAccessToken { isSuccess in
+                if isSuccess {
+                    try? PJKeychainManager.saveSensitiveString(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAccessTokenKey, sensitiveString: accessToken)
+                }
+            }
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+            
+        }
+        
+        alertController.addAction(okAction)
+        alertController.addAction(cancelAction)
+        self.present(alertController, animated: true)
     }
 }

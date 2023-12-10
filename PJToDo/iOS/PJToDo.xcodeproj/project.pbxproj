@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -73,6 +73,7 @@
 		CA3C428921C2875800C71C6D /* SelectedComposeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA3C428721C2875800C71C6D /* SelectedComposeView.swift */; };
 		CA88DECF21C7D2DB007CFB0B /* SelectedComposeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88DECE21C7D2DB007CFB0B /* SelectedComposeCell.swift */; };
 		CA88DED321CE7B7F007CFB0B /* ToDoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA88DED221CE7B7F007CFB0B /* ToDoCell.swift */; };
+		CAA78EF92B260306000B63F6 /* RootController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAA78EF72B260306000B63F6 /* RootController.swift */; };
 		CAAD248B21E4E9340042FB94 /* DateSelectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD248A21E4E9340042FB94 /* DateSelectView.swift */; };
 		CAAD248E21E9BA3C0042FB94 /* PJUserInfoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD248D21E9BA3C0042FB94 /* PJUserInfoManager.swift */; };
 		CAAD249321E9C09E0042FB94 /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CAAD249121E9C09E0042FB94 /* LoginViewController.swift */; };
@@ -235,6 +236,7 @@
 		CA3C428721C2875800C71C6D /* SelectedComposeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedComposeView.swift; sourceTree = "<group>"; };
 		CA88DECE21C7D2DB007CFB0B /* SelectedComposeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectedComposeCell.swift; sourceTree = "<group>"; };
 		CA88DED221CE7B7F007CFB0B /* ToDoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToDoCell.swift; sourceTree = "<group>"; };
+		CAA78EF72B260306000B63F6 /* RootController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootController.swift; sourceTree = "<group>"; };
 		CAAD248A21E4E9340042FB94 /* DateSelectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateSelectView.swift; sourceTree = "<group>"; };
 		CAAD248D21E9BA3C0042FB94 /* PJUserInfoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJUserInfoManager.swift; sourceTree = "<group>"; };
 		CAAD249121E9C09E0042FB94 /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -585,6 +587,7 @@
 		764883322168C27A00F11106 /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				CAA78EF72B260306000B63F6 /* RootController.swift */,
 				CAAD248C21E9BA3C0042FB94 /* Managers */,
 				76C43DE221B8053700922FFD /* View */,
 				769769A821B0CE9A00AB3569 /* BaseControllers */,
@@ -1199,6 +1202,7 @@
 				766E6E2A21930BC800BC9DFE /* PJToDoMode.swift in Sources */,
 				76384BFD2199A61400C677BB /* PJHttpRequestConfig.swift in Sources */,
 				762E939721A58B1D0002FED3 /* PJCommonExtension.swift in Sources */,
+				CAA78EF92B260306000B63F6 /* RootController.swift in Sources */,
 				7654A8AA21BCF2F9003464E9 /* ComposeTypeCell.swift in Sources */,
 				CAD07CB521E08D0D0067AD23 /* SearchToDoViewController.swift in Sources */,
 				76BED24021B6C35100E86B59 /* PJStringExtension.swift in Sources */,
