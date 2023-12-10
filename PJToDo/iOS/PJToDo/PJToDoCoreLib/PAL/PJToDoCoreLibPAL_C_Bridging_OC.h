@@ -15,4 +15,6 @@ const char * getDBPath(void);
 
 const char * getAuthorizationStr(void);
 
+const char * getAccessTokenStr(void);
+
 #endif /* PJToDoCoreLibPAL_C_Bridging_OC_h */

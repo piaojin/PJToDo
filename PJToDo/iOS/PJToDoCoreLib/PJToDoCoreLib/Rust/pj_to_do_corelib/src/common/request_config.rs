@@ -37,7 +37,15 @@ impl PJRequestConfig {
     //personal token
     pub fn personal_token() -> &'static str {
         //from pal
-        "token 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"
+        "Bearer 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"
+    }
+
+    pub fn access_token_api<'a>() -> &'a str {
+        "https://github.com/login/oauth/access_token"
+    }
+
+    pub fn access_token<'a>() -> &'a str {
+        "https://github.com/login/oauth/access_token"
     }
 }
 

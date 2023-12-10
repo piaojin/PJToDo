@@ -13,3 +13,7 @@ const char * get_db_path() {
 const char * get_authorization_str() {
     return getAuthorizationStr();
 }
+
+const char * get_access_token_str() {
+    return getAccessTokenStr();
+}

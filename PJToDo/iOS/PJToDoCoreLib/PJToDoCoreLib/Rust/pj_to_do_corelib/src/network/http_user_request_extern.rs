@@ -32,6 +32,18 @@ pub unsafe extern "C" fn pj_login(
 }
 
 #[no_mangle]
+pub unsafe extern "C" fn pj_login_via_access_token(delegate: IPJToDoHttpRequestDelegate) {
+    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
+
+    thread::spawn(move || {
+        PJHttpUserRequest::login_via_access_token(move |result| {
+            let result = PJUserManager::update_user_with_result(result);
+            PJHttpRequest::dispatch_http_response(result, i_delegate);
+        });
+    });
+}
+
+#[no_mangle]
 pub unsafe extern "C" fn pj_authorizations(
     delegate: IPJToDoHttpRequestDelegate,
     authorization: *const c_char,
@@ -46,6 +58,37 @@ pub unsafe extern "C" fn pj_authorizations(
 
     thread::spawn(move || {
         PJHttpUserRequest::authorizations(&authorization, move |result| {
+            PJHttpRequest::dispatch_http_response(result, i_delegate);
+        });
+    });
+}
+
+#[no_mangle]
+pub unsafe extern "C" fn pj_access_token(
+    delegate: IPJToDoHttpRequestDelegate,
+    code: *const c_char,
+    client_id: *const c_char,
+    client_secret: *const c_char,
+) {
+    if code == std::ptr::null_mut()
+        || client_id == std::ptr::null_mut()
+        || client_secret == std::ptr::null_mut()
+    {
+        pj_error!("params: is null!");
+        assert!(
+            code != std::ptr::null_mut()
+                && client_id != std::ptr::null_mut()
+                && client_secret != std::ptr::null_mut()
+        );
+    }
+
+    let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
+    let code = CStr::from_ptr(code).to_string_lossy().into_owned();
+    let client_id = CStr::from_ptr(client_id).to_string_lossy().into_owned();
+    let client_secret = CStr::from_ptr(client_secret).to_string_lossy().into_owned();
+
+    thread::spawn(move || {
+        PJHttpUserRequest::access_token(&code, &client_id, &client_secret, move |result| {
             PJHttpRequest::dispatch_http_response(result, i_delegate);
         });
     });

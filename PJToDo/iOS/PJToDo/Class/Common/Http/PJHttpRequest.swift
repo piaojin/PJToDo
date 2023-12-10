@@ -38,6 +38,16 @@ public struct PJHttpRequest {
         pj_login(httpRequestConfig.iDelegate, name, passWord)
     }
     
+    public static func loginViaAccessToken(responseBlock: ((_ isSuccess : Bool, _ data: User?, _ error: PJHttpError?) -> Void)?) {
+        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
+            DispatchQueue.main.async(execute: {
+                PJHttpRequest.handleResponse(pointer, statusCode, isSuccess, actionName: "login", responseBlock: responseBlock)
+            })
+        })
+        
+        pj_login_via_access_token(httpRequestConfig.iDelegate)
+    }
+    
     public static func authorization(authorization: String, responseBlock: ((_ isSuccess : Bool, _ data: Authorizations?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
             DispatchQueue.main.async(execute: {
@@ -46,6 +56,16 @@ public struct PJHttpRequest {
         })
         
         pj_authorizations(httpRequestConfig.iDelegate, authorization)
+    }
+    
+    public static func accessToken(code: String, clientID: String, clientSecret: String, responseBlock: ((_ isSuccess : Bool, _ data: AccessToken?, _ error: PJHttpError?) -> Void)?) {
+        let httpRequestConfig = PJHttpRequestConfig(responseBlock: { (pointer, statusCode, isSuccess) -> Void in
+            DispatchQueue.main.async(execute: {
+                PJHttpRequest.handleResponse(pointer, statusCode, isSuccess, actionName: "accessToken", responseBlock: responseBlock)
+            })
+        })
+        
+        pj_access_token(httpRequestConfig.iDelegate, code, clientID, clientSecret)
     }
     
     public static func requestUserInfo(responseBlock: ((_ isSuccess : Bool, _ data: User?, _ error: PJHttpError?) -> Void)?) {

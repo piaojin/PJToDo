@@ -48,12 +48,20 @@ impl PJHttpUserRequest {
         let _basic: &'static str =
             PJUtils::string_to_static_str(format!("Basic {}", authorization));
 
-        request.headers_mut().insert(
-            PJRequestConfig::authorization_head(),
-            HeaderValue::from_static(_basic),
-        );
-
         pj_info!("👉👉The Resuest headers are: {:?}👈👈", request.headers());
+        PJHttpRequest::make_http(request, completion_handler);
+    }
+
+    /// login with access_token, access_token will set in make_http fn.
+    pub fn login_via_access_token<F>(completion_handler: F)
+    where
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+            + std::marker::Sync
+            + Send
+            + 'static
+            + std::clone::Clone,
+    {
+        let mut request = PJHttpRequest::default_request(PJRequestConfig::login());
         PJHttpRequest::make_http(request, completion_handler);
     }
 
@@ -71,12 +79,41 @@ impl PJHttpUserRequest {
         let mut request = PJHttpRequest::request_with(
             PJRequestConfig::authorizations(),
             PJRequestConfig::authorization_body(),
+            Method::POST,
         );
 
-        *request.method_mut() = Method::POST;
         request.headers_mut().insert(
             PJRequestConfig::authorization_head(),
             HeaderValue::from_static(authorization),
+        );
+
+        PJHttpRequest::make_http(request, completion_handler);
+    }
+
+    //auth token will create once and can't create again need to delete it in github.
+    pub fn access_token<'a, F>(
+        code: &'a str,
+        client_id: &'a str,
+        client_secret: &'a str,
+        completion_handler: F,
+    ) where
+        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+            + std::marker::Sync
+            + Send
+            + 'static
+            + std::clone::Clone,
+    {
+        let mut body: String = format!(
+            "\"client_id\":\"{}\",\"client_secret\":\"{}\",\"code\":\"{}\"",
+            client_id, client_secret, code
+        );
+        body.insert_str(0, "{");
+        body.push_str("}");
+
+        let mut request = PJHttpRequest::request_with(
+            PJRequestConfig::access_token_api(),
+            &PJUtils::string_to_static_str(body),
+            Method::POST,
         );
 
         PJHttpRequest::make_http(request, completion_handler);

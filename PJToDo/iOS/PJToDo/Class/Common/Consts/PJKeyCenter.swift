@@ -12,6 +12,14 @@ import Foundation
     @objc static var KeychainUserInfoService: String {
         return PJKeyCenter.KeychainUserInfoService
     }
+    
+    @objc static var KeychainAuthorizationService: String {
+        return PJKeyCenter.KeychainAuthorizationService
+    }
+    
+    @objc static var KeychainAccessTokenKey: String {
+        return PJKeyCenter.KeychainAccessTokenKey
+    }
 }
 
 public struct PJKeyCenter {
@@ -21,6 +29,7 @@ public struct PJKeyCenter {
     public static let KeychainUserInfoService = "UserInfoService"
     public static let KeychainAuthorizationService = "AuthorizationService"
     public static let KeychainAuthorizationKey = "PJToDoAuthorization"
+    public static let KeychainAccessTokenKey = "KeychainAccessTokenKey"
     public static let KeychainUserPassWordKey: String = "UserPassWord"
     public static let ReposKey: String = "ReposKey"
     public static let ReposDBFileKey: String = "ReposDBFileKey"

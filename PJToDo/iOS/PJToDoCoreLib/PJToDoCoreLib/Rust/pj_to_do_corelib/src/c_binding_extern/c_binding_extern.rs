@@ -14,3 +14,7 @@ extern "C" {
     #[link_name = "\u{1}_get_authorization_str"]
     pub fn get_authorization_str() -> *const ::std::os::raw::c_char;
 }
+extern "C" {
+    #[link_name = "\u{1}_get_access_token_str"]
+    pub fn get_access_token_str() -> *const ::std::os::raw::c_char;
+}

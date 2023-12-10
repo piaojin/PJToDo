@@ -33,10 +33,11 @@ impl PJHttpReposRequest {
             Ok(repos_request_body_json) => {
                 let repos_request_body_json =
                     PJUtils::string_to_static_str(repos_request_body_json.to_string());
-                let mut request =
-                    PJHttpRequest::request_with(PJRequestConfig::repos(), &repos_request_body_json);
-
-                *request.method_mut() = Method::POST;
+                let mut request = PJHttpRequest::request_with(
+                    PJRequestConfig::repos(),
+                    &repos_request_body_json,
+                    Method::POST,
+                );
 
                 PJHttpReposRequest::do_repos_request(request, completion_handler);
             }

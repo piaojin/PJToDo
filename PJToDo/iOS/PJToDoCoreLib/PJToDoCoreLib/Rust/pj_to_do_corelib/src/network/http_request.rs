@@ -54,16 +54,16 @@ pub struct PJHttpRequest;
 impl PJHttpRequest {
     pub fn default_request(url: &str) -> Request<Body> {
         let body = r#"{"library":"hyper"}"#;
-        PJHttpRequest::request_with(url, body)
+        PJHttpRequest::request_with(url, body, Method::GET)
     }
 
-    pub fn request_with(url: &str, body: &'static str) -> Request<Body> {
+    pub fn request_with(url: &str, body: &'static str, http_method: Method) -> Request<Body> {
         pj_info!("👉👉Resuest Url: {}👈👈", url);
         let uri = url.parse::<Uri>();
         let mut req = Request::new(Body::from(body));
         match uri {
             Ok(uri) => {
-                *req.method_mut() = Method::GET;
+                *req.method_mut() = http_method;
                 *req.uri_mut() = uri.clone();
                 req.headers_mut().insert(
                     hyper::header::CONTENT_LENGTH,
@@ -72,7 +72,7 @@ impl PJHttpRequest {
 
                 req.headers_mut().insert(
                     hyper::header::ACCEPT,
-                    HeaderValue::from_static("application/json"),
+                    HeaderValue::from_static("application/vnd.github+json"),
                 );
 
                 req.headers_mut().insert(
@@ -80,23 +80,21 @@ impl PJHttpRequest {
                     HeaderValue::from_static("application/json"),
                 );
 
-                req.headers_mut().insert(
-                    hyper::header::USER_AGENT,
-                    HeaderValue::from_static("application/vnd.github.v3+json"),
-                );
+                req.headers_mut()
+                    .insert(hyper::header::USER_AGENT, HeaderValue::from_static("hyper"));
 
-                let authorization: &'static str = unsafe {
-                    let user_authorization_str: String =
-                        PJUserPALHelp::get_user_authorization_str();
-                    if (&user_authorization_str).is_empty() {
-                        pj_error!("********Error authorization is empty!!!*********");
+                let access_token: &'static str = unsafe {
+                    let mut access_token_str: String = PJUserPALHelp::get_access_token_str();
+                    access_token_str.insert_str(0, "Bearer ");
+                    if (&access_token_str).is_empty() {
+                        pj_error!("********Error access_token is empty!!!*********");
                     }
-                    PJUtils::string_to_static_str(user_authorization_str)
+                    PJUtils::string_to_static_str(access_token_str)
                 };
 
                 req.headers_mut().insert(
                     PJRequestConfig::authorization_head(),
-                    HeaderValue::from_static(authorization),
+                    HeaderValue::from_static(access_token),
                 );
                 pj_info!("👉👉The Resuest is: {:?}👈👈", req);
                 req

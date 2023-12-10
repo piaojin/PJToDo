@@ -189,8 +189,6 @@ impl PJHttpReposFileRequest {
             Ok(file_request_body_json) => {
                 let repos_request_body_json =
                     PJUtils::string_to_static_str(file_request_body_json.to_string());
-                let mut request =
-                    PJHttpRequest::request_with(&update_file_api_url, &repos_request_body_json);
 
                 let mut request_method = Method::PUT;
 
@@ -200,7 +198,12 @@ impl PJHttpReposFileRequest {
                     request_method = Method::GET;
                 }
 
-                *request.method_mut() = request_method;
+                let mut request = PJHttpRequest::request_with(
+                    &update_file_api_url,
+                    &repos_request_body_json,
+                    request_method,
+                );
+
                 PJHttpReposFileRequest::do_crud_repos_file_request(request, completion_handler);
             }
             Err(e) => {

@@ -15,4 +15,6 @@ const char * get_db_path(void);
 
 const char * get_authorization_str(void);
 
+const char * get_access_token_str(void);
+
 #endif /* PJToDoCoreLibPAL_C_h */

@@ -163,9 +163,13 @@ typedef struct {
   Vec_ToDoType *todo_types;
 } PJToDoTypeController;
 
+extern const char *get_access_token_str(void);
+
 extern const char *get_authorization_str(void);
 
 extern const char *get_db_path(void);
+
+void pj_access_token(IPJToDoHttpRequestDelegate delegate, const char *code, const char *client_id, const char *client_secret);
 
 void pj_authorizations(IPJToDoHttpRequestDelegate delegate, const char *authorization);
 
@@ -356,6 +360,8 @@ void pj_insert_todo_tag(PJToDoTagController *ptr, ToDoTagInsert *toDoTag);
 void pj_insert_todo_type(PJToDoTypeController *ptr, ToDoTypeInsert *toDoType);
 
 void pj_login(IPJToDoHttpRequestDelegate delegate, const char *name, const char *password);
+
+void pj_login_via_access_token(IPJToDoHttpRequestDelegate delegate);
 
 void pj_logout(void);
 

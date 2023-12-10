@@ -10,4 +10,11 @@ impl PJUserPALHelp {
             .into_owned();
         authorization_str
     }
+
+    pub unsafe fn get_access_token_str() -> String {
+        let access_token_str = CStr::from_ptr(get_access_token_str())
+            .to_string_lossy()
+            .into_owned();
+        access_token_str
+    }
 }

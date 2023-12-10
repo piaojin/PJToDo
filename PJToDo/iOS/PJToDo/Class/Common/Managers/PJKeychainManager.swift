@@ -62,7 +62,7 @@ public struct PJKeychainManager {
     
     public static func saveSensitiveString(withService service: String, sensitiveKey: String, sensitiveString: String, accessGroup: String? = nil) throws {
         // Encode the password into an Data object.
-        let encodedPassword = sensitiveString.data(using: String.Encoding.utf8)!
+        guard let encodedPassword = sensitiveString.data(using: String.Encoding.utf8) else { return }
         
         do {
             // Check for an existing item in the keychain.

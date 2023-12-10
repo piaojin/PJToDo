@@ -34,3 +34,14 @@ const char * getAuthorizationStr() {
     }
     return [@"" UTF8String];
 }
+
+const char * getAccessTokenStr() {
+    NSError *error;
+    NSString *accessTokenStr = [PJKeychainManagerOC readSensitiveStringWithService: PJKeyCenterOC.KeychainAuthorizationService sensitiveKey: PJKeyCenterOC.KeychainAccessTokenKey accessGroup:nil error: &error];
+    if (accessTokenStr) {
+        return [accessTokenStr UTF8String];
+    } else {
+        NSLog(@"getAccessTokenStr error: %@", error);
+        return [@"" UTF8String];
+    }
+}
