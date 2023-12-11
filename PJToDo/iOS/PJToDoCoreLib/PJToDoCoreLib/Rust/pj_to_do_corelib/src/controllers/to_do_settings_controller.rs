@@ -284,6 +284,6 @@ pub unsafe extern "C" fn pj_get_todo_settings_count(ptr: *const PJToDoSettingsCo
 #[no_mangle]
 pub unsafe extern "C" fn pj_free_rust_PJToDoSettingsController(ptr: *mut PJToDoSettingsController) {
     if ptr != std::ptr::null_mut() {
-        Box::from_raw(ptr); //unsafe
+        let _ = Box::from_raw(ptr); //unsafe
     };
 }

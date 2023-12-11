@@ -372,6 +372,6 @@ pub unsafe extern "C" fn pj_get_todo_tag_count(ptr: *const PJToDoTagController) 
 #[no_mangle]
 pub unsafe extern "C" fn pj_free_rust_PJToDoTagController(ptr: *mut PJToDoTagController) {
     if ptr != std::ptr::null_mut() {
-        Box::from_raw(ptr); //unsafe
+        let _ = Box::from_raw(ptr); //unsafe
     };
 }

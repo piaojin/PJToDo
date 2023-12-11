@@ -355,6 +355,6 @@ pub unsafe extern "C" fn pj_get_search_todo_tag_with_id(
 #[no_mangle]
 pub unsafe extern "C" fn pj_free_rust_PJToDoSearchController(ptr: *mut PJToDoSearchController) {
     if ptr != std::ptr::null_mut() {
-        Box::from_raw(ptr); //unsafe
+        let _ = Box::from_raw(ptr); //unsafe
     }
 }

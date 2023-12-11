@@ -40,7 +40,7 @@ impl PJHttpUserRequest {
             + 'static
             + std::clone::Clone,
     {
-        let mut request = PJHttpRequest::default_request(PJRequestConfig::login());
+        let request = PJHttpRequest::default_request(PJRequestConfig::login());
 
         let authorization_str = format!("{}:{}", name, password);
         let config = STANDARD;
@@ -61,7 +61,7 @@ impl PJHttpUserRequest {
             + 'static
             + std::clone::Clone,
     {
-        let mut request = PJHttpRequest::default_request(PJRequestConfig::login());
+        let request = PJHttpRequest::default_request(PJRequestConfig::login());
         PJHttpRequest::make_http(request, completion_handler);
     }
 
@@ -110,7 +110,7 @@ impl PJHttpUserRequest {
         body.insert_str(0, "{");
         body.push_str("}");
 
-        let mut request = PJHttpRequest::request_with(
+        let request = PJHttpRequest::request_with(
             PJRequestConfig::access_token_api(),
             &PJUtils::string_to_static_str(body),
             Method::POST,

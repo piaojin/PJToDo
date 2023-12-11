@@ -374,6 +374,6 @@ pub unsafe extern "C" fn pj_get_todo_type_count(ptr: *const PJToDoTypeController
 #[no_mangle]
 pub unsafe extern "C" fn pj_free_rust_PJToDoTypeController(ptr: *mut PJToDoTypeController) {
     if ptr != std::ptr::null_mut() {
-        Box::from_raw(ptr); //unsafe
+        let _ = Box::from_raw(ptr); //unsafe
     };
 }

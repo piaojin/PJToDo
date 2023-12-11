@@ -37,6 +37,6 @@ where
     let is_null = pointer.is_null();
     pj_info!("free_rust_any_object is_null: {}", is_null);
     if !is_null {
-        Box::from_raw(pointer); //unsafe
+        let _ = Box::from_raw(pointer); //unsafe
     };
 }

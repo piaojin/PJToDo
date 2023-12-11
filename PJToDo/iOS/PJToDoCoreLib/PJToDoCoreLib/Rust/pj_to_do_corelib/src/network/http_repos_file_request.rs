@@ -198,7 +198,7 @@ impl PJHttpReposFileRequest {
                     request_method = Method::GET;
                 }
 
-                let mut request = PJHttpRequest::request_with(
+                let request = PJHttpRequest::request_with(
                     &update_file_api_url,
                     &repos_request_body_json,
                     request_method,

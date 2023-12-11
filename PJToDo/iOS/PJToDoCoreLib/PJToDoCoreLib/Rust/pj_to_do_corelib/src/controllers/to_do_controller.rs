@@ -641,6 +641,6 @@ pub unsafe extern "C" fn pj_todo_tag_with_id(
 #[no_mangle]
 pub unsafe extern "C" fn pj_free_rust_PJToDoController(ptr: *mut PJToDoController) {
     if ptr != std::ptr::null_mut() {
-        Box::from_raw(ptr); //unsafe
+        let _ = Box::from_raw(ptr); //unsafe
     }
 }
