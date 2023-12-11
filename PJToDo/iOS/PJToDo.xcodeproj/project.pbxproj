@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -159,8 +159,6 @@
 		7625021C2170A6D9001043AF /* PJCacheManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJCacheManager.swift; sourceTree = "<group>"; };
 		7625021F2170AA69001043AF /* PJToDoConst.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJToDoConst.swift; sourceTree = "<group>"; };
 		7625A99B218D36EF0014FA6E /* PJToDoTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJToDoTag.swift; sourceTree = "<group>"; };
-		762AD8E52164F39500D0C5C7 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
-		762AD8E72165075D00D0C5C7 /* libstdc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libstdc++.tbd"; path = "usr/lib/libstdc++.tbd"; sourceTree = SDKROOT; };
 		762E939621A58B1D0002FED3 /* PJCommonExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJCommonExtension.swift; sourceTree = "<group>"; };
 		76348BD92116F2AC0009455C /* PJToDo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PJToDo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76348BE82116F2AD0009455C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -175,7 +173,6 @@
 		76348C0F2116F2F30009455C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		76348C132116F2F40009455C /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		7636201D21645B5C0018008D /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
-		7636201F216463C20018008D /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		76384BFA2199A5DC00C677BB /* PJHttpRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PJHttpRequest.swift; sourceTree = "<group>"; };
 		76384BFC2199A61400C677BB /* PJHttpRequestConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PJHttpRequestConfig.swift; sourceTree = "<group>"; };
 		764882B82165BB0200F11106 /* PJToDo-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PJToDo-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -897,9 +894,6 @@
 			isa = PBXGroup;
 			children = (
 				764882C22165C72B00F11106 /* libsqlite3.tbd */,
-				762AD8E72165075D00D0C5C7 /* libstdc++.tbd */,
-				762AD8E52164F39500D0C5C7 /* libiconv.tbd */,
-				7636201F216463C20018008D /* libresolv.tbd */,
 				7636201D21645B5C0018008D /* Security.framework */,
 				99F48D99CAD898D893DACE0B /* Pods_PJToDo.framework */,
 				2DDFB5A22AEF5DBFE5C920DF /* Pods_PJToDoTests.framework */,
