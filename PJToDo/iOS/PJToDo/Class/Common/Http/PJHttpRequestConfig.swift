@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CocoaLumberjack
 //statusCode: UInt16
 public typealias PJResponseBlock = (_ data: UnsafeMutablePointer<Int8>?, _ statusCode: Int, _ isSuccess : Bool) -> Void
 
@@ -40,14 +41,14 @@ class PJHttpRequestConfig {
     
     //Rust回调Swift
     fileprivate func requestResult(data: UnsafeMutablePointer<Int8>?, statusCode: UInt16, isSuccess: Bool) {
-        print("PJHttpRequestConfig: received findByIdResult callback with  \(isSuccess)")
+        DDLogInfo("PJHttpRequestConfig: received findByIdResult callback with  \(isSuccess)")
         if let dataPointer = data {
             self.responseBlock?(dataPointer, Int(statusCode), isSuccess)
         }
     }
     
     deinit {
-        print("PJHttpRequestConfig -> deinit")
+        DDLogInfo("PJHttpRequestConfig -> deinit")
     }
 }
 

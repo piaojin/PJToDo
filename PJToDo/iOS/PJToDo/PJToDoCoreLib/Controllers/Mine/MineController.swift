@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CocoaLumberjack
 
 public protocol ToDoSettingsDelegate: NSObjectProtocol {
     func insertSettingsResult(isSuccess: Bool)
@@ -100,28 +101,28 @@ class MineController {
     
     //Rust回调Swift
     fileprivate func insertResult(isSuccess: Bool) {
-        print("MineController: received insertResult callback with  \(isSuccess)")
+        DDLogInfo("MineController: received insertResult callback with  \(isSuccess)")
         self.delegate?.insertSettingsResult(isSuccess: isSuccess)
     }
     
     fileprivate func deleteResult(isSuccess: Bool) {
-        print("MineController: received deleteResult callback with  \(isSuccess)")
+        DDLogInfo("MineController: received deleteResult callback with  \(isSuccess)")
         self.delegate?.deleteSettingsResult(isSuccess: isSuccess)
     }
     
     fileprivate func updateResult(isSuccess: Bool) {
-        print("MineController: received updateResult callback with  \(isSuccess)")
+        DDLogInfo("MineController: received updateResult callback with  \(isSuccess)")
         self.delegate?.updateSettingsResult(isSuccess: isSuccess)
     }
     
     fileprivate func fetchDataResult(isSuccess: Bool) {
-        print("MineController: received fetchDataResult callback with  \(isSuccess)")
+        DDLogInfo("MineController: received fetchDataResult callback with  \(isSuccess)")
         let mySettings: PJMySettings? = isSuccess ? self.toDoSettingsAt(index: 0) : nil
         self.delegate?.fetchSettingsDataResult(mySettings: mySettings, isSuccess: isSuccess)
     }
     
     deinit {
-        print("deinit -> MineController")
+        DDLogInfo("deinit -> MineController")
         pj_free_rust_PJToDoSettingsController(self.controller)
     }
 }

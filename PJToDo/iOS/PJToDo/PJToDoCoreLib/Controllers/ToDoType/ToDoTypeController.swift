@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CocoaLumberjack
 
 @objc public protocol ToDoTypeDelegate: NSObjectProtocol {
     @objc optional func insertTypeResult(isSuccess: Bool)
@@ -127,39 +128,39 @@ class ToDoTypeController {
     
     //Rust回调Swift
     fileprivate func insertResult(isSuccess: Bool) {
-        print("ToDoTypeController: received insertResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoTypeController: received insertResult callback with  \(isSuccess)")
         self.delegate?.insertTypeResult?(isSuccess: isSuccess)
     }
     
     fileprivate func deleteResult(isSuccess: Bool) {
-        print("ToDoTypeController: received deleteResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoTypeController: received deleteResult callback with  \(isSuccess)")
         self.delegate?.deleteTypeResult?(isSuccess: isSuccess)
     }
     
     fileprivate func updateResult(isSuccess: Bool) {
-        print("ToDoTypeController: received updateResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoTypeController: received updateResult callback with  \(isSuccess)")
         self.delegate?.updateTypeResult?(isSuccess: isSuccess)
     }
     
     fileprivate func findByIdResult(toDoType: OpaquePointer?, isSuccess: Bool) {
-        print("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
         let tempToDoType = isSuccess ? PJToDoType(iToDoType: toDoType) : nil
         self.delegate?.findTypeByIdResult?(toDoType: tempToDoType, isSuccess: isSuccess)
     }
     
     fileprivate func findByNameResult(toDoType: OpaquePointer?, isSuccess: Bool) {
-        print("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoTypeController: received findByIdResult callback with  \(isSuccess)")
         let tempToDoType = isSuccess ? PJToDoType(iToDoType: toDoType) : nil
         self.delegate?.findTypeByNameResult?(toDoType: tempToDoType, isSuccess: isSuccess)
     }
     
     fileprivate func fetchDataResult(isSuccess: Bool) {
-        print("ToDoTypeController: received fetchDataResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoTypeController: received fetchDataResult callback with  \(isSuccess)")
         self.delegate?.fetchTypeDataResult(isSuccess: isSuccess)
     }
     
     deinit {
-        print("deinit -> ToDoTypeController")
+        DDLogInfo("deinit -> ToDoTypeController")
         pj_free_rust_PJToDoTypeController(self.controller)
     }
 }

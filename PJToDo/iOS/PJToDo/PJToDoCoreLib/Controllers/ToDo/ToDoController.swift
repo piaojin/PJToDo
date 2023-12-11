@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CocoaLumberjack
 
 @objc public protocol ToDoDelegate: NSObjectProtocol {
     @objc optional func insertToDoResult(isSuccess: Bool)
@@ -151,22 +152,22 @@ class ToDoController {
     
     //Rust回调Swift
     fileprivate func insertResult(isSuccess: Bool) {
-        print("ToDoController: received insertResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoController: received insertResult callback with  \(isSuccess)")
         self.delegate?.insertToDoResult?(isSuccess: isSuccess)
     }
     
     fileprivate func deleteResult(isSuccess: Bool) {
-        print("ToDoController: received deleteResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoController: received deleteResult callback with  \(isSuccess)")
         self.delegate?.deleteToDoResult?(isSuccess: isSuccess)
     }
     
     fileprivate func updateResult(isSuccess: Bool) {
-        print("ToDoController: received updateResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoController: received updateResult callback with  \(isSuccess)")
         self.delegate?.updateToDoResult?(isSuccess: isSuccess)
     }
     
     fileprivate func findByIdResult(toDo: OpaquePointer?, isSuccess: Bool) {
-        print("ToDoController: received findByIdResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoController: received findByIdResult callback with  \(isSuccess)")
         var tempToDo: PJ_ToDo? = nil
         if isSuccess {
             let typeId = pj_get_todo_query_todo_type_id(toDo)
@@ -179,17 +180,17 @@ class ToDoController {
     }
     
     fileprivate func fetchDataResult(isSuccess: Bool) {
-        print("ToDoController: received fetchDataResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoController: received fetchDataResult callback with  \(isSuccess)")
         self.delegate?.fetchToDoDataResult(isSuccess: isSuccess)
     }
     
     fileprivate func updateOverDueToDosResult(isSuccess: Bool) {
-        print("ToDoController: received fetchDataResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoController: received fetchDataResult callback with  \(isSuccess)")
         self.delegate?.updateOverDueToDosResult?(isSuccess: isSuccess)
     }
     
     deinit {
-        print("deinit -> ToDoController")
+        DDLogInfo("deinit -> ToDoController")
         pj_free_rust_PJToDoController(self.controller)
     }
 }

@@ -9,6 +9,7 @@
 import UIKit
 import SVProgressHUD
 import WebKit
+import CocoaLumberjack
 
 class LoginViewController: PJBaseViewController {
     private let wkWebView: WKWebView = {
@@ -59,7 +60,7 @@ extension LoginViewController: WKNavigationDelegate {
         if let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems {
             var githubCode: String?
             for item in queryItems {
-                print("\(item.name): \(item.value ?? "")")
+                DDLogInfo("\(item.name): \(item.value ?? "")")
                 if item.name == "code" {
                     githubCode = item.value ?? ""
                     break

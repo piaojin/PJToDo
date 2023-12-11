@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CocoaLumberjack
 
 public protocol ToDoSearchDelegate: NSObjectProtocol {
     func findToDoLikeTitleResult(isSuccess: Bool)
@@ -79,7 +80,7 @@ class ToDoSearchController {
     //Rust回调Swift
     
     public func findByTitleResult(toDo: OpaquePointer?, isSuccess: Bool) {
-        print("ToDoSearchController: received findByIdResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoSearchController: received findByIdResult callback with  \(isSuccess)")
         var tempToDo: PJ_ToDo? = nil
         if isSuccess {
             let typeId = pj_get_todo_query_todo_type_id(toDo)
@@ -92,12 +93,12 @@ class ToDoSearchController {
     }
     
     public func findToDoLikeTitleResult(isSuccess: Bool) {
-        print("ToDoSearchController: received fetchDataResult callback with  \(isSuccess)")
+        DDLogInfo("ToDoSearchController: received fetchDataResult callback with  \(isSuccess)")
         self.delegate?.findToDoLikeTitleResult(isSuccess: isSuccess)
     }
     
     deinit {
-        print("deinit -> ToDoSearchController")
+        DDLogInfo("deinit -> ToDoSearchController")
         pj_free_rust_PJToDoSearchController(self.controller)
     }
 }
