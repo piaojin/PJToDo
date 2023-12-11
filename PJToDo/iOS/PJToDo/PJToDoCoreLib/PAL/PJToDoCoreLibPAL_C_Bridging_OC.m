@@ -10,15 +10,15 @@
 #import "PJToDo-Swift.h"
 #import <PJToDoCoreLib/PJToDoCoreLib.h>
 
-void swiftSayHi() {
+void swiftSayHi(void) {
     [PJToDoCoreLibPAL swiftSayHi];
 }
 
-const char * getDBPath() {
+const char * getDBPath(void) {
     return [PJToDoConst.DBPath UTF8String];
 }
 
-const char * getAuthorizationStr() {
+const char * getAuthorizationStr(void) {
     if (PJUserInfoManagerOC.isLogin) {
         NSError *error;
         NSString *authorizationStr = [PJKeychainManagerOC readSensitiveStringWithService: PJKeyCenterOC.KeychainUserInfoService sensitiveKey: PJUserInfoManagerOC.userAccount accessGroup:nil error: &error];
@@ -35,7 +35,7 @@ const char * getAuthorizationStr() {
     return [@"" UTF8String];
 }
 
-const char * getAccessTokenStr() {
+const char * getAccessTokenStr(void) {
     NSError *error;
     NSString *accessTokenStr = [PJKeychainManagerOC readSensitiveStringWithService: PJKeyCenterOC.KeychainAuthorizationService sensitiveKey: PJKeyCenterOC.KeychainAccessTokenKey accessGroup:nil error: &error];
     if (accessTokenStr) {
