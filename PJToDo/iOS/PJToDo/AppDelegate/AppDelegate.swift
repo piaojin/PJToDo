@@ -90,7 +90,7 @@ extension AppDelegate {
             PJReposFileManager.updateReposFile { (isSuccess, _, error) in
                 PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: isSuccess)
                 if !isSuccess {
-                    DDLogError("❌\(error?.message ?? "")❌")
+                    DDLogError("❌❌❌❌❌❌\(error?.message ?? "")❌❌❌❌❌❌")
                 }
             }
         }

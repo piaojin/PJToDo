@@ -96,7 +96,7 @@ impl PJHttpRequest {
                     PJRequestConfig::authorization_head(),
                     HeaderValue::from_static(access_token),
                 );
-                pj_info!("👉👉The Resuest is: {:?}👈👈", req);
+                // pj_info!("🙏🙏🙏🙏🙏🙏The Resuest is: {:?}🙏🙏🙏🙏🙏🙏", req);
                 req
             }
             Err(e) => {
@@ -150,7 +150,10 @@ impl PJHttpRequest {
                         error_code = status.as_u16();
                     }
                     FetchError::Json(error) => {
-                        error_string = format!("❌parser json error: {:?}!!!❌", error);
+                        error_string = format!(
+                            "❌❌❌❌❌❌parser json error: {:?}!!!❌❌❌❌❌❌❌",
+                            error
+                        );
                     }
                     FetchError::Custom(custom_error_str) => {
                         error_string = custom_error_str;
@@ -184,21 +187,25 @@ impl PJHttpRequest {
         let share_status_map_i = status_map.clone();
         let share_status_map_ii = status_map.clone();
         let share_status_map_iii = status_map.clone();
+        pj_info!("🙏🙏🙏🙏🙏🙏The Resuest is: {:?}🙏🙏🙏🙏🙏🙏", request);
 
         let response = client
             .request(request)
             .and_then(move |res| {
-                pj_info!("👉Response headers: {:#?}👈", res.headers());
-                pj_info!("👉Response status code: {:#?}👈", res.status());
-
                 let mut share_status_data = share_status_map_i.lock().unwrap();
                 *share_status_data = res.status();
-
-                pj_info!("👉Response body: {:#?}👈", res.body());
                 if !res.status().is_success() {
-                    pj_error!("❌❌API {:#?}, Response {:#?} faild!!!❌❌", url, res);
+                    pj_error!(
+                        "❌❌❌❌❌❌API {:#?}, Response {:#?} faild!!!❌❌❌❌❌❌",
+                        url,
+                        res
+                    );
                 } else {
-                    pj_info!("👉👉API {:#?}, Response {:#?}👈👈", url, res);
+                    pj_info!(
+                        "✅✅✅✅✅✅API {:#?}, Response {:#?}✅✅✅✅✅✅",
+                        url,
+                        res
+                    );
                 }
                 //使用该函数则是把body字节数据返回
                 res.into_body().concat2()
@@ -230,7 +237,7 @@ impl PJHttpRequest {
             })
             // if there was an error print it
             .map_err(|e| {
-                eprintln!("❌request error: {:?}❌", e);
+                eprintln!("❌❌❌❌❌❌request error: {:?}❌❌❌❌❌❌", e);
             });
 
         hyper::rt::run(response_data);

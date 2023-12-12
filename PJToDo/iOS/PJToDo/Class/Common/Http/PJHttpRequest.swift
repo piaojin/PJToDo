@@ -17,11 +17,11 @@ public struct PJHttpRequest {
             do {
                 httpError = try JSONDecoder().decode(PJHttpError.self, from: jsonData)
             } catch {
-                DDLogWarn("❌createPJHttpError -> parse PJHttpError error: \(error)❌")
+                DDLogWarn("❌❌❌❌❌❌createPJHttpError -> parse PJHttpError error: \(error)❌❌❌❌❌❌")
             }
         } else {
             httpError = PJHttpError()
-            httpError?.message = "❌createPJHttpError -> jsonString to data error!!!❌"
+            httpError?.message = "❌❌❌❌❌❌createPJHttpError -> jsonString to data error!!!❌❌❌❌❌❌"
         }
         return httpError
     }
@@ -153,12 +153,12 @@ public struct PJHttpRequest {
                         let model = try JSONDecoder().decode(T.self, from: jsonData)
                         responseBlock?(isSuccess, model, nil)
                     } else {
-                        responseBlock?(isSuccess, nil, PJHttpError(errorCode: statusCode, errorMessage: "❌\(actionName) -> jsonString to data error!!!❌"))
+                        responseBlock?(isSuccess, nil, PJHttpError(errorCode: statusCode, errorMessage: "❌❌❌❌❌❌\(actionName) -> jsonString to data error!!!❌❌❌❌❌❌"))
                     }
                 } catch {
                     // 异常处理
-                    DDLogWarn("❌\(actionName) parse user info error: \(error)❌")
-                    responseBlock?(isSuccess, nil, PJHttpError(errorCode: statusCode, errorMessage: "❌\(actionName) -> parse user info error: \(error)❌"))
+                    DDLogWarn("❌❌❌❌❌❌\(actionName) parse user info error: \(error)❌❌❌❌❌❌")
+                    responseBlock?(isSuccess, nil, PJHttpError(errorCode: statusCode, errorMessage: "❌❌❌❌❌❌\(actionName) -> parse user info error: \(error)❌❌❌❌❌❌"))
                 }
             } else {
                 let httpError = self.createPJHttpError(jsonString: jsonString)
@@ -166,7 +166,7 @@ public struct PJHttpRequest {
                 responseBlock?(isSuccess, nil, httpError)
             }
         } else {
-            responseBlock?(isSuccess, nil, PJHttpError(errorCode: statusCode, errorMessage: "❌\(actionName) -> pointer is null!!!❌"))
+            responseBlock?(isSuccess, nil, PJHttpError(errorCode: statusCode, errorMessage: "❌❌❌❌❌❌\(actionName) -> pointer is null!!!❌❌❌❌❌❌"))
         }
     }
 }

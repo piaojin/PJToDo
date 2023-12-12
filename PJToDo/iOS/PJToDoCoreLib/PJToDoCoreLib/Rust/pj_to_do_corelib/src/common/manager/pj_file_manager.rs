@@ -23,7 +23,11 @@ impl PJFileManager {
         match buffer_result {
             Ok(_) => Ok(()),
             Err(e) => {
-                pj_error!("❌create file error: {:}, {:}❌", e, path);
+                pj_error!(
+                    "❌❌❌❌❌❌create file error: {:}, {:}❌❌❌❌❌❌",
+                    e,
+                    path
+                );
                 Err(e)
             }
         }
@@ -69,7 +73,7 @@ impl PJFileManager {
                 Ok(())
             }
             Err(e) => {
-                pj_error!("❌create file error: {:}❌", e);
+                pj_error!("❌❌❌❌❌❌create file error: {:}❌❌❌❌❌❌", e);
                 Err(e)
             }
         }

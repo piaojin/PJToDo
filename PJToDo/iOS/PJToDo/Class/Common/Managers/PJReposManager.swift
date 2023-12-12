@@ -68,7 +68,7 @@ public struct PJReposManager {
                 //Didn't create repos
                 if let errorCode = error?.errorCode, PJHttpReponseStatusCode(rawValue: errorCode) == PJHttpReponseStatusCode.HTTP_STATUS_NOT_FOUND {
                     PJReposManager.shared.hasCreateReposOnGitHub = false
-                    DDLogError("❌Haven't create repos yet!❌")
+                    DDLogError("❌❌❌❌❌❌Haven't create repos yet!❌❌❌❌❌❌")
                 }
                 completedHandle?(isSuccess, repos, error)
             }
@@ -94,7 +94,7 @@ public struct PJReposManager {
                 } else {
                     //Create repos error
                     PJReposManager.shared.hasCreateReposOnGitHub = false
-                    DDLogError("❌Create repos error!❌")
+                    DDLogError("❌❌❌❌❌❌Create repos error!❌❌❌❌❌❌")
                     completedHandle?(isSuccess, repos, error)
                 }
             }

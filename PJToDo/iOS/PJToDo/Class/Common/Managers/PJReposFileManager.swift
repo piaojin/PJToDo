@@ -81,7 +81,7 @@ public struct PJReposFileManager {
                 })
             } catch {
                 DDLogError("\(error)")
-                completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Load db zip file error!❌"))
+                completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌❌❌❌❌❌Load db zip file error!❌❌❌❌❌❌"))
                 return
             }
         }
@@ -90,7 +90,7 @@ public struct PJReposFileManager {
     public static func updateReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
         DispatchQueue.global().async {
             guard let reposFile = PJReposFileManager.shared.reposFile else {
-                completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Didn't init user data successfully!❌"))
+                completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌❌❌❌❌❌Didn't init user data successfully!❌❌❌❌❌❌"))
                 return
             }
             
@@ -112,7 +112,7 @@ public struct PJReposFileManager {
                 })
             } catch {
                 DDLogError("\(error)")
-                completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Load db zip file error!❌"))
+                completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌❌❌❌❌❌Load db zip file error!❌❌❌❌❌❌"))
                 return
             }
         }
@@ -120,12 +120,12 @@ public struct PJReposFileManager {
     
     public static func deleteReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
         guard PJReposFileManager.shared.hasSavedReposDBFileInLocal, PJReposFileManager.shared.hasCreateReposDBFileOnGitHub else {
-            completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Didn't init user data successfully!❌"))
+            completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌❌❌❌❌❌Didn't init user data successfully!❌❌❌❌❌❌"))
             return
         }
         
         guard let reposFile = PJReposFileManager.shared.reposFile else {
-            completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌Didn't init user data successfully!❌"))
+            completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "❌❌❌❌❌❌Didn't init user data successfully!❌❌❌❌❌❌"))
             return
         }
         
@@ -153,7 +153,7 @@ public struct PJReposFileManager {
                 //Didn't create repos file
                 if let errorCode = error?.errorCode, PJHttpReponseStatusCode(rawValue: errorCode) == PJHttpReponseStatusCode.HTTP_STATUS_NOT_FOUND {
                     PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = false
-                    DDLogError("❌Haven't create repos yet!❌")
+                    DDLogError("❌❌❌❌❌❌Haven't create repos yet!❌❌❌❌❌❌")
                 }
                 completedHandle?(isSuceesss, nil, error)
             }
