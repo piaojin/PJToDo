@@ -8,6 +8,7 @@
 
 import UIKit
 import SVProgressHUD
+import CocoaLumberjack
 
 class HomeTasksViewController: PJBaseViewController {
 
@@ -90,10 +91,18 @@ class HomeTasksViewController: PJBaseViewController {
         self.tableView.delegate = self
         self.tableView.dataSource = self
         NotificationCenter.default.addObserver(self, selector: #selector(updateData), name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateData), name: .didFetchedGitHubReposFile, object: nil)
     }
     
     @objc private func updateData() {
         self.toDoController.fetchData()
+        PJReposFileManager.updateReposFile { (isSuccess, _, error) in
+            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: isSuccess)
+            if !isSuccess {
+                DDLogError("❌❌❌❌❌❌\(error?.message ?? "")❌❌❌❌❌❌")
+            }
+            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: !isSuccess)
+        }
     }
     
     private func deleteAction(indexPath: IndexPath) {

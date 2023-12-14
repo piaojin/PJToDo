@@ -1,6 +1,6 @@
 extern crate hyper;
 use std::sync::Mutex;
-use repos::repos_content::ReposFile;
+use repos::repos_content::{ReposFile, ReposContent};
 use common::pj_serialize::{PJSerializeUtils, PJSerdeDeserialize};
 use network::http_request::FetchError;
 
@@ -25,12 +25,21 @@ impl PJReposFileManager {
         match result {
             Ok((status, body)) => {
                 if status.is_success() {
-                    let parse_result = PJSerializeUtils::from_hyper_chunk::<ReposFile>(&body);
+                    let body_json = std::str::from_utf8(&body);
+                    // let parse_result = PJSerializeUtils::from_str(body_json);
+                    let parse_result = PJSerializeUtils::from_hyper_chunk::<ReposContent>(&body);
                     match parse_result {
-                        Ok(repos_file) => {
+                        Ok(repos_content) => {
+                            let mut repos_file = ReposFile::new();
+                            repos_file.setContent(repos_content);
                             PJReposFileManager::update_repos_file(repos_file);
                         }
-                        Err(_) => {}
+                        Err(err) => {
+                            pj_error!(
+                                "❌❌❌❌❌❌parse repos file result failed: {}❌❌❌❌❌❌",
+                                err
+                            );
+                        }
                     };
                 }
                 Ok((status, body))

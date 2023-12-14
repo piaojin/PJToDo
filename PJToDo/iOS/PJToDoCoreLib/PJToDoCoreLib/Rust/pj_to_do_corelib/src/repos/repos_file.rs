@@ -42,6 +42,22 @@ impl ReposFileBody {
 
         repos_file_body
     }
+
+    pub fn to_json_string(&self) -> String {
+        let mut json: String = format!(
+            "\"path\":\"{}\",\"message\":\"{}\",\"content\":\"{}\"",
+            self.path, self.message, self.content
+        );
+        if !self.sha.is_empty() {
+            json.push_str(",\"sha\":");
+            json.push_str("\"");
+            json.push_str(&self.sha);
+            json.push_str("\"");
+        }
+        json.insert_str(0, "{");
+        json.push_str("}");
+        json
+    }
 }
 
 impl<'b> PJSerdeDeserialize<'b> for ReposFileBody {

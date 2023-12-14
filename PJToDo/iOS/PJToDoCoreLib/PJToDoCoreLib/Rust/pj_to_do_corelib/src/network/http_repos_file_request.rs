@@ -182,42 +182,24 @@ impl PJHttpReposFileRequest {
             + std::clone::Clone,
     {
         let update_file_api_url = &request_url;
+        let repos_request_body_json =
+            PJUtils::string_to_static_str(file_request_body.to_json_string());
 
-        let file_request_body = serde_json::to_string(&file_request_body);
+        let mut request_method = Method::PUT;
 
-        match file_request_body {
-            Ok(file_request_body_json) => {
-                let repos_request_body_json =
-                    PJUtils::string_to_static_str(file_request_body_json.to_string());
-
-                let mut request_method = Method::PUT;
-
-                if file_action_type == FileActionType::Delete {
-                    request_method = Method::DELETE;
-                } else if file_action_type == FileActionType::Get {
-                    request_method = Method::GET;
-                }
-
-                let request = PJHttpRequest::request_with(
-                    &update_file_api_url,
-                    &repos_request_body_json,
-                    request_method,
-                );
-
-                PJHttpReposFileRequest::do_crud_repos_file_request(request, completion_handler);
-            }
-            Err(e) => {
-                pj_error!(
-                    "file_request_body: ReposFileBody can not convert to json: {}",
-                    e
-                );
-                let err = network::http_request::FetchError::from(String::from(format!(
-                    "file_request_body: ReposFileBody can not convert to json: {}",
-                    e
-                )));
-                completion_handler(Err(err));
-            }
+        if file_action_type == FileActionType::Delete {
+            request_method = Method::DELETE;
+        } else if file_action_type == FileActionType::Get {
+            request_method = Method::GET;
         }
+
+        let request = PJHttpRequest::request_with(
+            &update_file_api_url,
+            &repos_request_body_json,
+            request_method,
+        );
+
+        PJHttpReposFileRequest::do_crud_repos_file_request(request, completion_handler);
     }
 
     fn do_crud_repos_file_request<F>(request: Request<Body>, completion_handler: F)

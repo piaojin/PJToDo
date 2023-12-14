@@ -18,6 +18,10 @@ import CocoaLumberjack
     @objc optional func updateOverDueToDosResult(isSuccess: Bool)
 }
 
+public extension Notification.Name {
+    static let didFetchedGitHubReposFile: Notification.Name = Notification.Name(rawValue: "kDidFetchedGitHubReposFile")
+}
+
 class ToDoController {
     private lazy var controller: UnsafeMutablePointer<PJToDoController>? = {
         let controller = pj_create_PJToDoController(self.iDelegate)

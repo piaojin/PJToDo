@@ -317,7 +317,7 @@ impl PJToDoController {
 
         match result {
             Ok(todos) => {
-                pj_error!("fecth_todo_will_due_with_in_future_days success!");
+                pj_info!("fecth_todo_will_due_with_in_future_days success!");
                 Ok(todos)
             }
             Err(e) => {

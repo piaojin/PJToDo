@@ -59,7 +59,7 @@ public struct PJReposFileManager {
                 let data = try Data(contentsOf: URL(fileURLWithPath: PJToDoConst.DBPath))
                 let base64DBContent = data.base64EncodedString()
                 
-                PJHttpRequest.createGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl, path: PJHttpUrlConst.GitHubReposDBFilePath, message: "Create PJToDo DB file.", content: base64DBContent, sha: "", responseBlock: { (isSuccess, reposFile, error) in
+                PJHttpRequest.createGitHubReposFile(requestUrl: PJHttpUrlConst.BaseReposFileUrl, path: PJHttpUrlConst.GitHubReposDBFilePath, message: "Create PJToDo DB file.", content: base64DBContent, responseBlock: { (isSuccess, reposFile, error) in
                     PJReposFileManager.shared.hasCreateReposDBFileOnGitHub = isSuccess
                     if isSuccess {
                         if let tempReposFile = reposFile {
@@ -149,6 +149,10 @@ public struct PJReposFileManager {
                 } else {
                     completedHandle?(false, nil, error)
                 }
+                
+                DispatchQueue.main.async {
+                    NotificationCenter.default.post(name: .didFetchedGitHubReposFile, object: nil)
+                }
             } else {
                 //Didn't create repos file
                 if let errorCode = error?.errorCode, PJHttpReponseStatusCode(rawValue: errorCode) == PJHttpReponseStatusCode.HTTP_STATUS_NOT_FOUND {
@@ -161,8 +165,15 @@ public struct PJReposFileManager {
     }
     
     public static func initGitHubReposFile(completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
+        if PJReposFileManager.shared.hasCreateReposDBFileOnGitHub {
+            completedHandle?(true, PJReposFileManager.shared._reposFile, nil)
+            return
+        }
+        
         if PJUserInfoManager.shared.isLogin {
             PJReposFileManager.createReposFile(completedHandle: completedHandle)
+        } else {
+            completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "Not login"))
         }
     }
 }

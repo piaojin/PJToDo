@@ -291,13 +291,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		7625021A2170A6D9001043AF /* Tools */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Tools;
-			sourceTree = "<group>";
-		};
 		7625021E2170AA69001043AF /* Consts */ = {
 			isa = PBXGroup;
 			children = (
@@ -592,7 +585,6 @@
 				762E939521A58B1D0002FED3 /* Extension */,
 				76384BF92199A5DC00C677BB /* Http */,
 				7625021E2170AA69001043AF /* Consts */,
-				7625021A2170A6D9001043AF /* Tools */,
 				766E6E2921930BC800BC9DFE /* PJToDoMode.swift */,
 			);
 			path = Common;

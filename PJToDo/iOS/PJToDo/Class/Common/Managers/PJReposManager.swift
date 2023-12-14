@@ -112,8 +112,15 @@ public struct PJReposManager {
     }
     
     public static func initGitHubRepos(completedHandle: ((Bool, Repos?, PJHttpError?) -> ())?) {
+        if PJReposManager.shared.hasCreateReposOnGitHub {
+            completedHandle?(true, PJReposManager.shared._repos, PJHttpError(errorCode: 0, errorMessage: "Not login"))
+            return
+        }
+        
         if PJUserInfoManager.shared.isLogin {
             PJReposManager.createRepos(completedHandle: completedHandle)
+        } else {
+            completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "Not login"))
         }
     }
 }

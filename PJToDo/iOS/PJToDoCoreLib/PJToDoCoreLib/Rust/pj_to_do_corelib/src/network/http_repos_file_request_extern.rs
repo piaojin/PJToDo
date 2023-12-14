@@ -16,25 +16,24 @@ pub unsafe extern "C" fn pj_create_repos_file(
     path: *const c_char,
     message: *const c_char,
     content: *const c_char,
-    sha: *const c_char,
 ) {
     if path == std::ptr::null_mut()
         || message == std::ptr::null_mut()
         || content == std::ptr::null_mut()
-        || sha == std::ptr::null_mut()
     {
         pj_error!("path or message or content or sha: *mut PJ_CreateFile is null!");
         assert!(
             path != std::ptr::null_mut()
                 && message != std::ptr::null_mut()
                 && content != std::ptr::null_mut()
-                && sha != std::ptr::null_mut()
         );
     }
 
     let i_delegate = IPJToDoHttpRequestDelegateWrapper(delegate);
     let request_url = CStr::from_ptr(request_url).to_string_lossy().into_owned();
-    let repos_file_body = ReposFileBody::new(path, message, content, sha);
+    let c_string = CString::new("").expect("Failed to convert to CString");
+    let c_char_ptr = c_string.as_ptr();
+    let repos_file_body = ReposFileBody::new(path, message, content, c_char_ptr);
 
     thread::spawn(move || {
         PJHttpReposFileRequest::create_repos_file(request_url, repos_file_body, move |result| {

@@ -62,6 +62,12 @@ pub struct ReposFile {
     pub content: ReposContent,
 }
 
+impl ReposFile {
+    pub fn setContent(&mut self, content: ReposContent) {
+        self.content = content;
+    }
+}
+
 impl<'b> PJSerdeDeserialize<'b> for ReposFile {
     type Item = ReposFile;
     fn new() -> Self::Item {
@@ -74,6 +80,7 @@ pub struct ReposContent {
     name: String,
     path: String,
     sha: String,
+    content: String,
     size: i64,
     url: String,
     html_url: String,

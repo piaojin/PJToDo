@@ -119,6 +119,7 @@ class DetailViewController: PJBaseViewController {
     @objc private func saveAction() {
         self.updateToDoModel()
         self.toDoController.update(toDo: self.toDo)
+        PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
     }
     
     private func updateToDoModel() {

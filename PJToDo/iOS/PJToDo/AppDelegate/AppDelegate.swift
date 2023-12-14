@@ -38,9 +38,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
-        self.initGitHub()
-        self.fetchGitHubReposFile()
-        self.syncDBToGitHub()
+        initGitHub()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
@@ -75,13 +73,20 @@ extension AppDelegate {
     
     //init gethub data
     func initGitHub() {
-        PJReposManager.initGitHubRepos(completedHandle: nil)
-        PJReposFileManager.initGitHubReposFile(completedHandle: nil)
+        PJReposManager.initGitHubRepos { _, _, _ in
+            PJReposFileManager.initGitHubReposFile { _, _, _ in
+                self.fetchGitHubReposFile { _, _, _ in
+                    self.syncDBToGitHub()
+                }
+            }
+        }
     }
     
-    private func fetchGitHubReposFile() {
+    private func fetchGitHubReposFile(_ completedHandle: ((Bool, ReposFile?, PJHttpError?) -> ())?) {
         if PJUserInfoManager.shared.isLogin {
-            PJReposFileManager.getReposFile(completedHandle: nil)
+            PJReposFileManager.getReposFile(completedHandle: completedHandle)
+        } else {
+            completedHandle?(false, nil, PJHttpError(errorCode: 0, errorMessage: "Not login"))
         }
     }
     
@@ -92,6 +97,7 @@ extension AppDelegate {
                 if !isSuccess {
                     DDLogError("❌❌❌❌❌❌\(error?.message ?? "")❌❌❌❌❌❌")
                 }
+                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: !isSuccess)
             }
         }
     }

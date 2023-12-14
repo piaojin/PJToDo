@@ -9,7 +9,7 @@ extern crate serde_json;
 
 use self::hyper_tls::HttpsConnector;
 use self::hyper::{Request, Body, Method, Client, Uri};
-use self::hyper::header::{HeaderValue};
+use self::hyper::header::HeaderValue;
 use self::hyper::rt::{Stream, Future as OtherFuture};
 
 #[allow(unused_imports)]
@@ -60,15 +60,17 @@ impl PJHttpRequest {
     pub fn request_with(url: &str, body: &'static str, http_method: Method) -> Request<Body> {
         pj_info!("👉👉Resuest Url: {}👈👈", url);
         let uri = url.parse::<Uri>();
-        let mut req = Request::new(Body::from(body));
+        let mut req: Request<Body>;
+        if http_method != Method::GET {
+            req = Request::new(Body::from(body));
+        } else {
+            req = Request::default();
+        }
+
         match uri {
             Ok(uri) => {
                 *req.method_mut() = http_method;
                 *req.uri_mut() = uri.clone();
-                req.headers_mut().insert(
-                    hyper::header::CONTENT_LENGTH,
-                    HeaderValue::from_static("application/json"),
-                );
 
                 req.headers_mut().insert(
                     hyper::header::ACCEPT,
@@ -176,6 +178,7 @@ impl PJHttpRequest {
         let completion_handler_http_err = completion_handler.clone();
         let completion_handler_json_parse_err = completion_handler.clone();
         let url = request.uri().clone();
+        let url2 = request.uri().clone();
         // 4 is number of blocking DNS threads
         //为了使用https请求，默认是http请求
         let https = HttpsConnector::new(4).unwrap();
@@ -207,6 +210,7 @@ impl PJHttpRequest {
                         res
                     );
                 }
+
                 //使用该函数则是把body字节数据返回
                 res.into_body().concat2()
             })
@@ -216,9 +220,13 @@ impl PJHttpRequest {
             .from_err();
 
         let response_data = response
-            .map(|body: hyper::Chunk| body)
+            .map(move |body: hyper::Chunk| {
+                let body_json = std::str::from_utf8(&body);
+                pj_info!("ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️API {:#?}, Body {:#?}ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️", url2, body_json);
+                body
+            })
             // if there was an error print it
-            .map_err(move |e| match e {
+            .map_err(move |e: FetchError| match e {
                 FetchError::Http(_, e) => {
                     completion_handler_http_err(Err(FetchError::Http(
                         *(share_status_map_ii.lock().unwrap()),

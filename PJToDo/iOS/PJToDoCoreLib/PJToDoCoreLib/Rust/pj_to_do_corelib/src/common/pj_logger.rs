@@ -54,11 +54,11 @@ macro_rules! function {
 #[macro_export]
 macro_rules! pj_warn {
     ($fmt:expr) => {
-        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("[⚠️PJWarn⚠️] ->{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         warn!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("[⚠️PJWarn⚠️] ->{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         warn!($fmt, $($arg)*);
     };
 }
@@ -67,11 +67,11 @@ macro_rules! pj_warn {
 #[macro_export]
 macro_rules! pj_debug {
     ($fmt:expr) => {
-        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("[🏃PJDebug🏃] ->{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         debug!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("[🏃PJDebug🏃] ->{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         debug!($fmt, $($arg)*);
     };
 }
@@ -80,11 +80,11 @@ macro_rules! pj_debug {
 #[macro_export]
 macro_rules! pj_error {
     ($fmt:expr) => {
-        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("[❌PJError❌] -> {} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         error!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("[❌PJError❌] -> {} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         error!($fmt, $($arg)*);
     };
 }
@@ -93,11 +93,11 @@ macro_rules! pj_error {
 #[macro_export]
 macro_rules! pj_info {
     ($fmt:expr) => {
-        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("[ℹ️PJInfoℹ️] -> {} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         info!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("[ℹ️PJInfoℹ️] ->{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         info!($fmt, $($arg)*);
     };
 }
@@ -106,11 +106,11 @@ macro_rules! pj_info {
 #[macro_export]
 macro_rules! pj_trace {
     ($fmt:expr) => {
-        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("[🐒PJInfo🐒] ->{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         trace!(stringify!($fmt));
         };
     ($fmt:expr, $($arg:tt)*) => {
-        eprintln!("{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
+        eprintln!("[🐒PJInfo🐒] ->{} [module_path: {}, file: {}, function: {}, line: {}, column: {}]---: ", chrono::prelude::Local::now().format("%Y-%m-%d %H:%M:%S"), module_path!(), file!(), function!(), line!(), column!());
         trace!($fmt, $($arg)*);
     };
 }

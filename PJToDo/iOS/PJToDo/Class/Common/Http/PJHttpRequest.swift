@@ -97,9 +97,9 @@ public struct PJHttpRequest {
     
     //MARK: File
     
-    public static func createGitHubReposFile(requestUrl: String, path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
+    public static func createGitHubReposFile(requestUrl: String, path: String, message: String, content: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
         let httpRequestConfig = self.createHttpRequestConfig(actionName: "createGitHubFile", responseBlock: responseBlock)
-        pj_create_repos_file(httpRequestConfig.iDelegate, requestUrl, path, message, content, sha)
+        pj_create_repos_file(httpRequestConfig.iDelegate, requestUrl, path, message, content)
     }
     
     public static func updateGitHubReposFile(requestUrl: String, path: String, message: String, content: String, sha: String, responseBlock: ((_ isSuccess : Bool, _ data: ReposFile?, _ error: PJHttpError?) -> Void)?) {
