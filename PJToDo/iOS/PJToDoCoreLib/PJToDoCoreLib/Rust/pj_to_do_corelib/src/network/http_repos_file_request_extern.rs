@@ -128,7 +128,7 @@ pub unsafe extern "C" fn pj_get_repos_file(
 
     thread::spawn(move || {
         PJHttpReposFileRequest::get_repos_file(request_url, move |result| {
-            let result = PJReposFileManager::update_repos_file_with_result(result);
+            let result = PJReposFileManager::update_repos_file_content_with_result(result);
             PJHttpReposFileRequest::dispatch_file_response(i_delegate, result, "PJ_GetFile");
         });
     });
@@ -162,7 +162,7 @@ pub unsafe extern "C" fn pj_download_file(
                         );
                     }
                     Err(e) => {
-                        pj_error!("download error: {:?}", e);
+                        pj_error!("save downloaded file error: {:?}", e);
                         (i_delegate.request_result)(
                             i_delegate.user,
                             CString::new(format!("io error: {:?}", e))
@@ -174,7 +174,7 @@ pub unsafe extern "C" fn pj_download_file(
                     }
                 },
                 Err(e) => {
-                    pj_error!("download error: {:?}", e);
+                    pj_error!("download file error: {:?}", e);
                     (i_delegate.request_result)(
                         i_delegate.user,
                         CString::new(format!("download error: {:?}", e))

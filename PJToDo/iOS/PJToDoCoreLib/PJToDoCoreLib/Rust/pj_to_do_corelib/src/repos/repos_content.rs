@@ -63,7 +63,7 @@ pub struct ReposFile {
 }
 
 impl ReposFile {
-    pub fn setContent(&mut self, content: ReposContent) {
+    pub fn set_content(&mut self, content: ReposContent) {
         self.content = content;
     }
 }
@@ -80,7 +80,6 @@ pub struct ReposContent {
     name: String,
     path: String,
     sha: String,
-    content: String,
     size: i64,
     url: String,
     html_url: String,
