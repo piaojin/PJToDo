@@ -96,11 +96,12 @@ class WelcomeViewController: PJBaseViewController {
         alertController.addTextField()
         let okAction = UIAlertAction(title: "OK", style: .default) { _ in
             guard let textField = alertController.textFields?.first, let accessToken = textField.text, !accessToken.isEmpty else { return }
-            try? PJKeychainManager.deleteItem(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAccessTokenKey)
+            
+            try? PJKeychainManager.saveSensitiveString(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAccessTokenKey, sensitiveString: accessToken)
             
             PJUserInfoManager.loginViaAccessToken { isSuccess in
-                if isSuccess {
-                    try? PJKeychainManager.saveSensitiveString(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAccessTokenKey, sensitiveString: accessToken)
+                if !isSuccess {
+                    try? PJKeychainManager.deleteItem(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAccessTokenKey)
                 }
             }
         }
