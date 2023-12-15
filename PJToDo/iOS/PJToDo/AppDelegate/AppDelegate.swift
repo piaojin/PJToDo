@@ -93,11 +93,9 @@ extension AppDelegate {
     private func syncDBToGitHub() {
         if let shouldUpdateDBToGitHubKey = PJCacheManager.getDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey) as? Bool, shouldUpdateDBToGitHubKey, PJUserInfoManager.shared.isLogin {
             PJReposFileManager.updateReposFile { (isSuccess, _, error) in
-                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: isSuccess)
                 if !isSuccess {
                     DDLogError("❌❌❌❌❌❌\(error?.message ?? "")❌❌❌❌❌❌")
                 }
-                PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: !isSuccess)
             }
         }
     }

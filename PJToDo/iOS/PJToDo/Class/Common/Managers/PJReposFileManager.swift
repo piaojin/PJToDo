@@ -109,6 +109,7 @@ public struct PJReposFileManager {
                     } else {
                         completedHandle?(isSuccess, reposFile, error)
                     }
+                    PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: !isSuccess)
                 })
             } catch {
                 DDLogError("\(error)")

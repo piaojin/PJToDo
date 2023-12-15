@@ -96,12 +96,12 @@ class HomeTasksViewController: PJBaseViewController {
     
     @objc private func updateData() {
         self.toDoController.fetchData()
-        PJReposFileManager.updateReposFile { (isSuccess, _, error) in
-            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: isSuccess)
-            if !isSuccess {
-                DDLogError("❌❌❌❌❌❌\(error?.message ?? "")❌❌❌❌❌❌")
+        if let shouldUpdateDBToGitHubKey = PJCacheManager.getDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey) as? Bool, shouldUpdateDBToGitHubKey, PJUserInfoManager.shared.isLogin {
+            PJReposFileManager.updateReposFile { (isSuccess, _, error) in
+                if !isSuccess {
+                    DDLogError("❌❌❌❌❌❌\(error?.message ?? "")❌❌❌❌❌❌")
+                }
             }
-            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: !isSuccess)
         }
     }
     
@@ -109,7 +109,6 @@ class HomeTasksViewController: PJBaseViewController {
         SVProgressHUD.show(withStatus: "Please wait...")
         let model = self.toDoController.toDoAt(section: indexPath.section, index: indexPath.row)
         self.toDoController.delete(section: indexPath.section, index: indexPath.row, toDoId: Int(model.toDoId))
-        PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
     }
     
     private func completeAction(indexPath: IndexPath) {
@@ -260,7 +259,6 @@ extension HomeTasksViewController: ToDoDelegate {
     
     func deleteToDoResult(isSuccess: Bool) {
         DispatchQueue.main.async {
-            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
             if !isSuccess {
                 SVProgressHUD.showError(withStatus: "Delete ToDo error!")
             } else {
@@ -274,7 +272,6 @@ extension HomeTasksViewController: ToDoDelegate {
     
     func updateToDoResult(isSuccess: Bool) {
         DispatchQueue.main.async {
-            PJCacheManager.setDefault(key: PJKeyCenter.ShouldUpdateDBToGitHubKey, value: true)
             if !isSuccess {
                 SVProgressHUD.showError(withStatus: "Update ToDo error!")
             } else {
