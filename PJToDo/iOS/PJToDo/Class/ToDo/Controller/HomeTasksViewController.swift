@@ -92,6 +92,7 @@ class HomeTasksViewController: PJBaseViewController {
         self.tableView.dataSource = self
         NotificationCenter.default.addObserver(self, selector: #selector(updateData), name: NSNotification.Name.init(PJKeyCenter.InsertToDoNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updateData), name: .didFetchedGitHubReposFile, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(accessTokenHasExpired), name: .accessTokenHasExpired, object: nil)
     }
     
     @objc private func updateData() {
@@ -103,6 +104,11 @@ class HomeTasksViewController: PJBaseViewController {
                 }
             }
         }
+    }
+    
+    @objc private func accessTokenHasExpired() {
+        PJUserInfoManager.logOut()
+        SVProgressHUD.showError(withStatus: "Access token has expired")
     }
     
     private func deleteAction(indexPath: IndexPath) {

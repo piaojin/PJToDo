@@ -8,6 +8,7 @@
 
 import UIKit
 import SVProgressHUD
+import SafariServices
 
 class MineViewController: PJBaseViewController {
 
@@ -162,10 +163,11 @@ extension MineViewController: UITableViewDelegate, UITableViewDataSource {
                 self.navigationController?.pushViewController(textViewController, animated: true)
             case .email, .remindDays:
                 self.editEmailOrRemindDays(item: item)
-            case .blog:
-                break
-            case .about:
-                break
+            case .blog, .about:
+            if let url = URL(string: PJToDoConst.myGitHub) {
+                    let safari = SFSafariViewController(url: url)
+                    present(safari, animated: true)
+                }
         }
     }
     

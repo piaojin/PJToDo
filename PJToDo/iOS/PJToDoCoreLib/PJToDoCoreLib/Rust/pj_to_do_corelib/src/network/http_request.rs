@@ -87,18 +87,21 @@ impl PJHttpRequest {
 
                 let access_token: &'static str = unsafe {
                     let mut access_token_str: String = PJUserPALHelp::get_access_token_str();
-                    access_token_str.insert_str(0, "Bearer ");
-                    if (&access_token_str).is_empty() {
-                        pj_error!("********Error access_token is empty!!!*********");
+                    if !((&access_token_str).is_empty()) {
+                        access_token_str.insert_str(0, "Bearer ");
+                    } else {
+                        pj_warn!("********Access_token is empty!!!*********");
                     }
                     PJUtils::string_to_static_str(access_token_str)
                 };
 
-                req.headers_mut().insert(
-                    PJRequestConfig::authorization_head(),
-                    HeaderValue::from_static(access_token),
-                );
-                // pj_info!("🙏🙏🙏🙏🙏🙏The Resuest is: {:?}🙏🙏🙏🙏🙏🙏", req);
+                if !access_token.is_empty() {
+                    req.headers_mut().insert(
+                        PJRequestConfig::authorization_head(),
+                        HeaderValue::from_static(access_token),
+                    );
+                }
+
                 req
             }
             Err(e) => {
@@ -245,7 +248,7 @@ impl PJHttpRequest {
             })
             // if there was an error print it
             .map_err(|e| {
-                eprintln!("❌❌❌❌❌❌request error: {:?}❌❌❌❌❌❌", e);
+                pj_error!("❌❌❌❌❌❌request error: {:?}❌❌❌❌❌❌", e);
             });
 
         hyper::rt::run(response_data);

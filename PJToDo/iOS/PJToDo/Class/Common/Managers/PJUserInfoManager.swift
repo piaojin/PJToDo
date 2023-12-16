@@ -132,9 +132,7 @@ public struct PJUserInfoManager {
     }
     
     public static func logOut() {
-        if let account = PJUserInfoManager.shared.userInfo?.login {
-            try? PJKeychainManager.deleteItem(withService: PJKeyCenter.KeychainUserInfoService, sensitiveKey: account)
-        }
+        try? PJKeychainManager.deleteItem(withService: PJKeyCenter.KeychainAuthorizationService, sensitiveKey: PJKeyCenter.KeychainAccessTokenKey)
         PJUserInfoManager.removeUserInfo()
         PJReposManager.removeRepos()
         pj_logout()

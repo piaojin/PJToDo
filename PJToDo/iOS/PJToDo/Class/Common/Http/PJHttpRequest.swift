@@ -145,6 +145,17 @@ public struct PJHttpRequest {
     }
     
     public static func handleResponse<T: Codable>(_ dataPointer: UnsafeMutablePointer<Int8>?, _ statusCode: Int, _ isSuccess : Bool, actionName: String, responseBlock: ((_ isSuccess : Bool, _ data: T?, _ error: PJHttpError?) -> Void)?) {
+        
+        // The access token has expired.
+        if PJHttpReponseStatusCode(rawValue: statusCode) == PJHttpReponseStatusCode.HTTP_STATUS_DENIED, PJUserInfoManager.shared.isLogin {
+            DDLogWarn("❌❌❌❌❌❌The access token has expired❌❌❌❌❌❌")
+            responseBlock?(isSuccess, nil, PJHttpError(errorCode: statusCode, errorMessage: "❌❌❌❌❌❌The access token has expired❌❌❌❌❌❌"))
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .accessTokenHasExpired, object: nil)
+            }
+            return
+        }
+        
         if let tempPointer = dataPointer {
             let jsonString = String.create(cString: tempPointer)
             if isSuccess {

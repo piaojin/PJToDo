@@ -20,6 +20,7 @@ import CocoaLumberjack
 
 public extension Notification.Name {
     static let didFetchedGitHubReposFile: Notification.Name = Notification.Name(rawValue: "kDidFetchedGitHubReposFile")
+    static let accessTokenHasExpired: Notification.Name = Notification.Name("kAccessTokenHasExpired")
 }
 
 class ToDoController {

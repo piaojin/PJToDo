@@ -16,4 +16,5 @@ import UIKit
     public static let githubClientID = "c8dc6ee8217584bc6544"
     public static let githubClientSecrets = "c3ef423d3acca131720c6fa684e39fb2b0ed7767"
     public static let githubAuthCallBack = "https://github.com/piaojin/pjtodo/authorization/callback_url"
+    public static let myGitHub = "https://github.com/piaojin/"
 }
