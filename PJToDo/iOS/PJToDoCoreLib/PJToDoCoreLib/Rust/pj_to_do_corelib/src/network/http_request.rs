@@ -221,28 +221,25 @@ impl PJHttpRequest {
                     );
                 }
 
-                let some_frame = response.body_mut().frame().await;
-                match some_frame {
-                    Some(frame) => match frame {
+                let mut body_result_string: String = String::from("");
+                let mut is_response_ok: bool = true;
+                let mut response_err: FetchError = FetchError::Custom("Default error".to_string());
+                // response.body_mut().frame().await result is [Frame] and need loop to get result data.
+                while let Some(next) = response.body_mut().frame().await {
+                    match next {
                         Ok(frame) => {
                             if let Some(d) = frame.data_ref() {
                                 match std::str::from_utf8(&d) {
                                     Ok(body_str) => {
-                                        pj_info!(
-                                            "ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️ API {:#?}, Body {} ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️",
-                                            url,
-                                            body_str
-                                        );
-                                        (completion_handler.clone())(Ok((
-                                            response.status(),
-                                            body_str.to_owned(),
-                                        )));
+                                        body_result_string.push_str(body_str);
                                     }
 
                                     Err(err) => {
-                                        (completion_handler.clone())(Err(FetchError::Custom(
-                                            format!("Cannot convert response body to str: {}", err),
-                                        )));
+                                        is_response_ok = false;
+                                        response_err = FetchError::Custom(format!(
+                                            "Cannot convert response body to str: {}",
+                                            err
+                                        ));
                                         pj_error!( "❌❌❌❌❌❌Err convert response body:\n{:#?}❌❌❌❌❌❌", err);
                                     }
                                 }
@@ -250,17 +247,22 @@ impl PJHttpRequest {
                         }
 
                         Err(err) => {
-                            (completion_handler.clone())(Err(FetchError::Custom(format!(
+                            is_response_ok = false;
+                            response_err = FetchError::Custom(format!(
                                 "Cannot get Frame<Bytes> from response body: {}",
                                 err
-                            ))));
+                            ));
                             pj_error!("❌❌❌❌❌❌Err Response body:\n{:#?}❌❌❌❌❌❌", err);
                         }
-                    },
-
-                    None => {
-                        pj_error!("❌❌❌❌❌❌None Response body:\n{:#?}❌❌❌❌❌❌", "");
                     }
+                }
+
+                pj_info!("ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️API {:#?}, Body {:#?}ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️", url, body_result_string);
+
+                if is_response_ok {
+                    (completion_handler.clone())(Ok((response.status(), body_result_string)));
+                } else {
+                    (completion_handler.clone())(Err(response_err));
                 }
             }
 
