@@ -1,7 +1,7 @@
 use std::ops::Deref;
 use libc::{c_void};
 use std::marker::{Send, Sync};
-use to_do::to_do::{ToDoQuery};
+use crate::to_do::to_do::{ToDoQuery};
 
 #[repr(C)]
 pub struct IPJToDoSearchDelegate {

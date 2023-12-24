@@ -4,16 +4,14 @@ extern crate hyper_tls;
 extern crate tokio;
 extern crate rustc_serialize;
 
-use self::hyper::{Method, Request, Body};
+use self::hyper::{Method, Request};
 
-use network::http_request::{PJHttpRequest, FetchError};
-use common::utils::pj_utils::PJUtils;
-use repos::repos_file::ReposFileBody;
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
-use network;
-use delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;
-use std::ffi::{CString};
+use crate::network::http_request::{PJHttpRequest, FetchError};
+use crate::common::utils::pj_utils::PJUtils;
+use crate::repos::repos_file::ReposFileBody;
+use crate::network;
+use crate::delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;
+use std::ffi::CString;
 
 #[derive(PartialEq, Debug)]
 pub enum FileActionType {
@@ -32,7 +30,7 @@ impl PJHttpReposFileRequest {
         create_file_request_body: ReposFileBody,
         completion_handler: F,
     ) where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -51,7 +49,7 @@ impl PJHttpReposFileRequest {
         create_file_request_body: ReposFileBody,
         completion_handler: F,
     ) where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -70,7 +68,7 @@ impl PJHttpReposFileRequest {
         create_file_request_body: ReposFileBody,
         completion_handler: F,
     ) where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -86,7 +84,7 @@ impl PJHttpReposFileRequest {
 
     pub fn get_repos_file<F>(request_url: String, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -113,7 +111,7 @@ impl PJHttpReposFileRequest {
 
     pub fn download_file<F>(request_url: String, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -130,7 +128,7 @@ impl PJHttpReposFileRequest {
         file_action_type: FileActionType,
         completion_handler: F,
     ) where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -175,7 +173,7 @@ impl PJHttpReposFileRequest {
         file_action_type: FileActionType,
         completion_handler: F,
     ) where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -202,9 +200,9 @@ impl PJHttpReposFileRequest {
         PJHttpReposFileRequest::do_crud_repos_file_request(request, completion_handler);
     }
 
-    fn do_crud_repos_file_request<F>(request: Request<Body>, completion_handler: F)
+    fn do_crud_repos_file_request<F>(request: Request<String>, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -215,7 +213,7 @@ impl PJHttpReposFileRequest {
 
     pub fn dispatch_file_response(
         i_delegate: IPJToDoHttpRequestDelegateWrapper,
-        result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>,
+        result: Result<(hyper::StatusCode, String), FetchError>,
         request_action_name: &str,
     ) {
         pj_info!("request_action_name: {}", request_action_name);

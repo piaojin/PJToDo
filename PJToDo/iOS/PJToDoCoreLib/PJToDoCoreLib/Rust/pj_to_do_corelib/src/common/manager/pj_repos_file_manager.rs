@@ -1,8 +1,8 @@
 extern crate hyper;
 use std::sync::Mutex;
-use repos::repos_content::{ReposFile, ReposContent};
-use common::pj_serialize::{PJSerializeUtils, PJSerdeDeserialize};
-use network::http_request::FetchError;
+use crate::repos::repos_content::{ReposFile, ReposContent};
+use crate::common::pj_serialize::{PJSerializeUtils, PJSerdeDeserialize};
+use crate::network::http_request::FetchError;
 
 lazy_static! {
     pub static ref REPOSFILE: Mutex<ReposFile> = Mutex::new(ReposFile::new());
@@ -20,12 +20,12 @@ impl PJReposFileManager {
     }
 
     pub fn update_repos_file_with_result(
-        result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>,
-    ) -> Result<(hyper::StatusCode, hyper::Chunk), FetchError> {
+        result: Result<(hyper::StatusCode, String), FetchError>,
+    ) -> Result<(hyper::StatusCode, String), FetchError> {
         match result {
             Ok((status, body)) => {
                 if status.is_success() {
-                    let parse_result = PJSerializeUtils::from_hyper_chunk::<ReposFile>(&body);
+                    let parse_result = PJSerializeUtils::from_str::<ReposFile>(&body);
                     match parse_result {
                         Ok(repos_file) => {
                             PJReposFileManager::update_repos_file(repos_file);
@@ -45,12 +45,12 @@ impl PJReposFileManager {
     }
 
     pub fn update_repos_file_content_with_result(
-        result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>,
-    ) -> Result<(hyper::StatusCode, hyper::Chunk), FetchError> {
+        result: Result<(hyper::StatusCode, String), FetchError>,
+    ) -> Result<(hyper::StatusCode, String), FetchError> {
         match result {
             Ok((status, body)) => {
                 if status.is_success() {
-                    let parse_result = PJSerializeUtils::from_hyper_chunk::<ReposContent>(&body);
+                    let parse_result = PJSerializeUtils::from_str::<ReposContent>(&body);
                     match parse_result {
                         Ok(repos_content) => {
                             let mut repos_file = ReposFile::new();

@@ -8,6 +8,7 @@
 
 import Foundation
 import CocoaLumberjack
+import PJToDoCoreLib
 
 public struct PJHttpRequest {
     

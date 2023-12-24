@@ -48,6 +48,7 @@ extern crate serde_derive;
 extern crate serde;
 extern crate serde_json;
 
+use crate::common;
 use common::pj_serialize::PJSerdeDeserialize;
 
 #[derive(Serialize, Deserialize, Debug, Default)]

@@ -1,10 +1,9 @@
-use mine::todo_settings::{ToDoSettingsInsert, ToDoSettings};
+use crate::db;
+use crate::mine::todo_settings::{ToDoSettingsInsert, ToDoSettings};
 use db::dao::to_do_settings_dao::PJToDoSettingsDAO;
 use db::pj_db_connection_util::pj_db_connection_util::StaticPJDBConnectionUtil;
 use db::tables::schema;
 use diesel::prelude::*;
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
 use db::tables::schema::todosettings::dsl::*;
 
 pub struct PJToDoSettingsDAOImpl;

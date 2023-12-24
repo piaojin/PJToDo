@@ -1,10 +1,9 @@
-use to_do_tag::to_do_tag::{ToDoTagInsert, ToDoTag};
+use crate::db;
+use crate::to_do_tag::to_do_tag::{ToDoTagInsert, ToDoTag};
 use db::dao::to_do_tag_dao::PJToDoTagDAO;
 use db::pj_db_connection_util::pj_db_connection_util::StaticPJDBConnectionUtil;
 use db::tables::schema;
 use diesel::prelude::*;
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
 use db::tables::schema::todotag::dsl::*;
 
 pub struct PJToDoTagDAOImpl;

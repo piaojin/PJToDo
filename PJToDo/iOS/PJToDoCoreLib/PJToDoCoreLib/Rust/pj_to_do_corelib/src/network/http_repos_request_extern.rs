@@ -1,12 +1,12 @@
-use network::http_repos_request::PJHttpReposRequest;
-use delegates::to_do_http_request_delegate::{
+use crate::network::http_repos_request::PJHttpReposRequest;
+use crate::delegates::to_do_http_request_delegate::{
     IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate,
 };
 use std::ffi::{CStr};
 use libc::{c_char};
-use common::request_config::PJRequestConfig;
+use crate::common::request_config::PJRequestConfig;
 use std::thread;
-use common::manager::pj_repos_manager::PJReposManager;
+use crate::common::manager::pj_repos_manager::PJReposManager;
 
 #[no_mangle]
 pub unsafe extern "C" fn pj_create_repos(delegate: IPJToDoHttpRequestDelegate) {

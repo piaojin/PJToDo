@@ -3,7 +3,7 @@ extern crate serde;
 extern crate serde_json;
 
 use self::serde::{Deserialize, Serialize};
-use common::manager::pj_file_manager::PJFileManager;
+use crate::common::manager::pj_file_manager::PJFileManager;
 
 pub trait PJSerdeDeserialize<'a>: Deserialize<'a> + Serialize {
     type Item: Default + std::fmt::Debug;
@@ -28,15 +28,6 @@ impl PJSerializeUtils {
         T: Deserialize<'a>,
     {
         let parse_result = serde_json::from_slice(v);
-        parse_result
-    }
-
-    pub fn from_hyper_chunk<'a, T>(body: &'a hyper::Chunk) -> Result<T, serde_json::Error>
-    where
-        T: std::fmt::Debug + PJSerdeDeserialize<'a>,
-    {
-        let parse_result = PJSerializeUtils::from_slice(body);
-        pj_info!("parse data result: {:?}", parse_result);
         parse_result
     }
 

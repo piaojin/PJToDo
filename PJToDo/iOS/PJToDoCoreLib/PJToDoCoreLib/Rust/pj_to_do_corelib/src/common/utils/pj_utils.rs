@@ -6,7 +6,7 @@ extern crate serde_json;
 use std::mem;
 use libc::{c_char};
 use std::ffi::{CString, CStr};
-use common::rustc_serialize::base64::{STANDARD, ToBase64, FromBase64};
+use crate::common::rustc_serialize::base64::{STANDARD, ToBase64, FromBase64};
 
 pub struct PJUtils;
 
@@ -17,16 +17,6 @@ impl PJUtils {
             mem::forget(s);
             ret
         }
-    }
-}
-
-pub struct PJHttpUtils;
-
-impl PJHttpUtils {
-    /*body to String*/
-    pub fn hyper_body_to_string(body: hyper::Chunk) -> String {
-        let v = body.to_vec();
-        String::from_utf8_lossy(&v).to_string()
     }
 }
 

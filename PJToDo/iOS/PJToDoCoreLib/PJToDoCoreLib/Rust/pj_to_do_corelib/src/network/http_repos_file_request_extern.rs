@@ -1,11 +1,12 @@
-use network::http_repos_file_request::PJHttpReposFileRequest;
-use delegates::to_do_http_request_delegate::{
+use crate::network::http_repos_file_request::PJHttpReposFileRequest;
+use crate::delegates::to_do_http_request_delegate::{
     IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate,
 };
 use std::ffi::{CStr, CString};
 use libc::c_char;
-use repos::repos_file::ReposFileBody;
+use crate::repos::repos_file::ReposFileBody;
 use std::thread;
+use crate::common;
 use common::manager::pj_repos_file_manager::PJReposFileManager;
 use common::manager::pj_file_manager::PJFileManager;
 
@@ -152,27 +153,29 @@ pub unsafe extern "C" fn pj_download_file(
     thread::spawn(move || {
         PJHttpReposFileRequest::download_file(request_url, move |result| {
             match result {
-                Ok((status, body)) => match PJFileManager::wirte_bytes_to_file(save_path, &body) {
-                    Ok(_) => {
-                        (i_delegate.request_result)(
-                            i_delegate.user,
-                            CString::new("".to_string()).unwrap().into_raw(),
-                            status.as_u16(),
-                            status.is_success(),
-                        );
+                Ok((status, body)) => {
+                    match PJFileManager::wirte_bytes_to_file(save_path, body.as_bytes()) {
+                        Ok(_) => {
+                            (i_delegate.request_result)(
+                                i_delegate.user,
+                                CString::new("".to_string()).unwrap().into_raw(),
+                                status.as_u16(),
+                                status.is_success(),
+                            );
+                        }
+                        Err(e) => {
+                            pj_error!("save downloaded file error: {:?}", e);
+                            (i_delegate.request_result)(
+                                i_delegate.user,
+                                CString::new(format!("io error: {:?}", e))
+                                    .unwrap()
+                                    .into_raw(),
+                                0,
+                                false,
+                            );
+                        }
                     }
-                    Err(e) => {
-                        pj_error!("save downloaded file error: {:?}", e);
-                        (i_delegate.request_result)(
-                            i_delegate.user,
-                            CString::new(format!("io error: {:?}", e))
-                                .unwrap()
-                                .into_raw(),
-                            0,
-                            false,
-                        );
-                    }
-                },
+                }
                 Err(e) => {
                     pj_error!("download file error: {:?}", e);
                     (i_delegate.request_result)(

@@ -1,7 +1,5 @@
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
-use c_binding_extern::c_binding_extern::*;
-use db::pj_db_connection_util::pj_db_connection_util::*;
+use crate::c_binding_extern::c_binding_extern::*;
+use crate::db::pj_db_connection_util::pj_db_connection_util::*;
 
 pub struct PJToDoPal;
 

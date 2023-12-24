@@ -1,6 +1,5 @@
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
-use db::pj_db_connection_util::pj_db_connection_util::{pj_init_data_base, pj_init_tables};
+use crate::common::pj_logger::PJLogger;
+use crate::db::pj_db_connection_util::pj_db_connection_util::{pj_init_data_base, pj_init_tables};
 
 #[no_mangle]
 pub unsafe extern "C" fn pj_init_hello_piaojin() {

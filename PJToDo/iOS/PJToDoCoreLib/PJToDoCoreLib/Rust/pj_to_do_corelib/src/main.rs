@@ -1,5 +1,4 @@
 #![feature(unboxed_closures)]
-#![feature(custom_attribute)]
 #![allow(proc_macro_derive_resolution_fallback)]
 // #![cfg_attr(feature = "type_name", feature(core_intrinsics))]
 #![feature(core_intrinsics)]
@@ -32,13 +31,13 @@ use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType};
 #[macro_use]
 pub mod common;
 #[allow(unused_imports)]
-use common::pj_logger::PJLogger;
+use crate::common::pj_logger::PJLogger;
 
 pub mod network;
 use network::http_user_request::PJHttpUserRequest;
 use network::http_repos_request::PJHttpReposRequest;
-use common::request_config::PJRequestConfig;
-use common::pj_serialize::{PJSerializeUtils, PJSerdeDeserialize};
+use crate::common::request_config::PJRequestConfig;
+use crate::common::pj_serialize::{PJSerializeUtils, PJSerdeDeserialize};
 
 pub mod mine;
 

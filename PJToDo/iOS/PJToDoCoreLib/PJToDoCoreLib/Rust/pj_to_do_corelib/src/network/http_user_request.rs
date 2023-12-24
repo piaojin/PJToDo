@@ -10,19 +10,16 @@ use self::rustc_serialize::base64::{STANDARD, ToBase64};
 
 use self::hyper::header::HeaderValue;
 use self::hyper::Method;
-use network::http_request::{PJHttpRequest, FetchError};
-use common::request_config::PJRequestConfig;
-use common::utils::pj_utils::PJUtils;
-
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
+use crate::network::http_request::{PJHttpRequest, FetchError};
+use crate::common::request_config::PJRequestConfig;
+use crate::common::utils::pj_utils::PJUtils;
 
 pub struct PJHttpUserRequest;
 
 impl PJHttpUserRequest {
     pub fn request_user_info<F>(completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -34,7 +31,7 @@ impl PJHttpUserRequest {
 
     pub fn login<'a, F>(name: &'a str, password: &'a str, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -55,7 +52,7 @@ impl PJHttpUserRequest {
     /// login with access_token, access_token will set in make_http fn.
     pub fn login_via_access_token<F>(completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -68,7 +65,7 @@ impl PJHttpUserRequest {
     //auth token will create once and can't create again need to delete it in github.
     pub fn authorizations<'a, F>(authorization: &'a str, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -97,7 +94,7 @@ impl PJHttpUserRequest {
         client_secret: &'a str,
         completion_handler: F,
     ) where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static

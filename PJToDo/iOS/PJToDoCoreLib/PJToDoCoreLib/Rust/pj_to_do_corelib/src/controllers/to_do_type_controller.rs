@@ -1,15 +1,15 @@
-use delegates::to_do_type_delegate::{IPJToDoTypeDelegate, IPJToDoTypeDelegateWrapper};
-use service::to_do_type_service::{
+use crate::delegates::to_do_type_delegate::{IPJToDoTypeDelegate, IPJToDoTypeDelegateWrapper};
+use crate::service::to_do_type_service::{
     PJToDoTypeService, insert_todo_type, delete_todo_type, update_todo_type, find_todo_type_by_id,
     find_todo_type_by_name, fetch_data,
 };
-use service::service_impl::to_do_type_service_impl::{createPJToDoTypeServiceImpl};
-use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType, pj_create_ToDoType, pj_create_ToDoTypeInsert};
-use common::{free_rust_any_object};
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
+use crate::service::service_impl::to_do_type_service_impl::createPJToDoTypeServiceImpl;
+use crate::to_do_type::to_do_type::{
+    ToDoTypeInsert, ToDoType, pj_create_ToDoType, pj_create_ToDoTypeInsert,
+};
+use crate::common::free_rust_any_object;
 use std::ffi::{CString, CStr};
-use libc::{c_char};
+use libc::c_char;
 use std::thread;
 use std::marker::{Send, Sync};
 

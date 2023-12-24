@@ -4,16 +4,14 @@ extern crate hyper_tls;
 extern crate tokio;
 extern crate rustc_serialize;
 
-use self::hyper::{Method, Request, Body};
+use self::hyper::{Method, Request};
 
 use network::http_request::{PJHttpRequest, FetchError};
-use common::request_config::PJRequestConfig;
-use common::utils::pj_utils::PJUtils;
-use repos::repos::{ReposRequestBody};
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
-use network;
-use delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;
+use crate::common::request_config::PJRequestConfig;
+use crate::common::utils::pj_utils::PJUtils;
+use crate::repos::repos::ReposRequestBody;
+use crate::network;
+use crate::delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;
 
 pub struct PJHttpReposRequest;
 
@@ -21,7 +19,7 @@ pub struct PJHttpReposRequest;
 impl PJHttpReposRequest {
     pub fn create_repos<F>(repos_request_body: ReposRequestBody, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -57,7 +55,7 @@ impl PJHttpReposRequest {
 
     pub fn get_repos<F>(repos_url: &str, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -77,7 +75,7 @@ impl PJHttpReposRequest {
 
     pub fn delete_repos<F>(repos_url: &str, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -96,9 +94,9 @@ impl PJHttpReposRequest {
         }
     }
 
-    fn do_repos_request<F>(request: Request<Body>, completion_handler: F)
+    fn do_repos_request<F>(request: Request<String>, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -109,7 +107,7 @@ impl PJHttpReposRequest {
 
     pub fn dispatch_repos_response(
         i_delegate: IPJToDoHttpRequestDelegateWrapper,
-        result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>,
+        result: Result<(hyper::StatusCode, String), FetchError>,
         request_action_name: &str,
     ) {
         pj_info!("request_action_name: {}", request_action_name);

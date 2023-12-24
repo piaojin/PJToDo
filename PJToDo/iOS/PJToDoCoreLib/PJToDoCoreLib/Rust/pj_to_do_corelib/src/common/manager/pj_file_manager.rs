@@ -1,10 +1,8 @@
 use std::io::prelude::*;
 use std::fs::File;
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
-use std::ffi::{CStr};
+use std::ffi::CStr;
 use std::fs;
-use libc::{c_char};
+use libc::c_char;
 
 pub struct PJFileManager;
 

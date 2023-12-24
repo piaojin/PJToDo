@@ -9,7 +9,7 @@ extern crate serde_derive;
 extern crate serde;
 extern crate serde_json;
 
-use common::pj_serialize::PJSerdeDeserialize;
+use crate::common::pj_serialize::PJSerdeDeserialize;
 use std::ffi::{CStr};
 use libc::{c_char};
 

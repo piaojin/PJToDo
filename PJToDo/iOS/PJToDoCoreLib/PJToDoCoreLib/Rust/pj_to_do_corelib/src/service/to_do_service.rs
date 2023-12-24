@@ -1,4 +1,4 @@
-use to_do::to_do::{ToDoInsert, ToDoQuery};
+use crate::to_do::to_do::{ToDoInsert, ToDoQuery};
 
 pub trait PJToDoService {
     fn insert_todo(&self, to_do: &ToDoInsert) -> Result<usize, diesel::result::Error>;

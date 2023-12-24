@@ -6,7 +6,7 @@ extern crate libc;
 use self::libc::{c_char};
 use std::ffi::{CStr, CString};
 
-use db::tables::schema::{todotype};
+use crate::db::tables::schema::{todotype};
 // #[primary_key(id)]
 // #[column_name(barId)]
 #[derive(

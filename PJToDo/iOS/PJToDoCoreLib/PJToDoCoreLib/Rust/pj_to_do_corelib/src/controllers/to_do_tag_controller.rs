@@ -1,15 +1,13 @@
-use delegates::to_do_tag_delegate::{IPJToDoTagDelegate, IPJToDoTagDelegateWrapper};
-use service::to_do_tag_service::{
+use crate::delegates::to_do_tag_delegate::{IPJToDoTagDelegate, IPJToDoTagDelegateWrapper};
+use crate::service::to_do_tag_service::{
     PJToDoTagService, insert_todo_tag, delete_todo_tag, update_todo_tag, find_todo_tag_by_id,
     find_todo_tag_by_name, fetch_data,
 };
-use service::service_impl::to_do_tag_service_impl::{createPJToDoTagServiceImpl};
-use to_do_tag::to_do_tag::{ToDoTagInsert, ToDoTag, pj_create_ToDoTag, pj_create_ToDoTagInsert};
-use common::{free_rust_any_object};
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
+use crate::service::service_impl::to_do_tag_service_impl::createPJToDoTagServiceImpl;
+use crate::to_do_tag::to_do_tag::{ToDoTagInsert, ToDoTag, pj_create_ToDoTag, pj_create_ToDoTagInsert};
+use crate::common::free_rust_any_object;
 use std::ffi::{CString, CStr};
-use libc::{c_char};
+use libc::c_char;
 use std::thread;
 use std::marker::{Send, Sync};
 

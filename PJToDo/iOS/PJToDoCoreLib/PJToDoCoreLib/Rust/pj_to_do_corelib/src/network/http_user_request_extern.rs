@@ -1,11 +1,11 @@
-use delegates::to_do_http_request_delegate::{
+use crate::delegates::to_do_http_request_delegate::{
     IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate,
 };
 use std::ffi::{CStr};
-use common::manager::pj_user_manager::PJUserManager;
-use network::http_request::{PJHttpRequest};
+use crate::common::manager::pj_user_manager::PJUserManager;
+use crate::network::http_request::{PJHttpRequest};
 use std::thread;
-use network::http_user_request::PJHttpUserRequest;
+use crate::network::http_user_request::PJHttpUserRequest;
 use libc::{c_char};
 
 #[no_mangle]

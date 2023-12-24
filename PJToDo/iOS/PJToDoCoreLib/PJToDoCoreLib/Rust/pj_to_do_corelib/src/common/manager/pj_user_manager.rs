@@ -1,10 +1,10 @@
 extern crate hyper;
 use std::sync::Mutex;
-use mine::user::User;
-use network::http_request::FetchError;
-use common::manager::pj_repos_manager::PJReposManager;
-use common::manager::pj_repos_file_manager::PJReposFileManager;
-use common::pj_serialize::{PJSerializeUtils, PJSerdeDeserialize};
+use crate::mine::user::User;
+use crate::network::http_request::FetchError;
+use crate::common::manager::pj_repos_manager::PJReposManager;
+use crate::common::manager::pj_repos_file_manager::PJReposFileManager;
+use crate::common::pj_serialize::{PJSerializeUtils, PJSerdeDeserialize};
 
 lazy_static! {
     pub static ref USERINFO: Mutex<User> = Mutex::new(User::new());
@@ -22,12 +22,12 @@ impl PJUserManager {
     }
 
     pub fn update_user_with_result(
-        result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>,
-    ) -> Result<(hyper::StatusCode, hyper::Chunk), FetchError> {
+        result: Result<(hyper::StatusCode, String), FetchError>,
+    ) -> Result<(hyper::StatusCode, String), FetchError> {
         match result {
             Ok((status, body)) => {
                 if status.is_success() {
-                    let parse_result = PJSerializeUtils::from_hyper_chunk::<User>(&body);
+                    let parse_result = PJSerializeUtils::from_str::<User>(&body);
                     match parse_result {
                         Ok(user) => {
                             PJUserManager::update_user(user);

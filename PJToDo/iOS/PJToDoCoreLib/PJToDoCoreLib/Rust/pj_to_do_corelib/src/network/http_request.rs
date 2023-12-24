@@ -2,25 +2,24 @@ extern crate futures;
 extern crate hyper;
 extern crate hyper_tls;
 extern crate tokio;
+extern crate http_body_util;
+extern crate hyper_util;
 
 extern crate serde_derive;
 extern crate serde;
 extern crate serde_json;
 
 use self::hyper_tls::HttpsConnector;
-use self::hyper::{Request, Body, Method, Client, Uri};
+use self::hyper::{Request, Method, Uri};
 use self::hyper::header::HeaderValue;
-use self::hyper::rt::{Stream, Future as OtherFuture};
+use self::hyper_util::{client::legacy::Client, rt::TokioExecutor};
+use self::http_body_util::BodyExt;
 
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
-
-use pal::pj_user_pal_help::PJUserPALHelp;
-use common::utils::pj_utils::{PJUtils, PJHttpUtils};
-use common::request_config::PJRequestConfig;
+use crate::pal::pj_user_pal_help::PJUserPALHelp;
+use crate::common::utils::pj_utils::PJUtils;
+use crate::common::request_config::PJRequestConfig;
 use std::ffi::CString;
-use delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;
-use std::sync::{Arc, Mutex};
+use crate::delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;
 
 // Define a type so we can return multile types of errors
 #[derive(Debug)]
@@ -52,17 +51,17 @@ impl From<String> for FetchError {
 pub struct PJHttpRequest;
 
 impl PJHttpRequest {
-    pub fn default_request(url: &str) -> Request<Body> {
+    pub fn default_request(url: &str) -> Request<String> {
         let body = r#"{"library":"hyper"}"#;
         PJHttpRequest::request_with(url, body, Method::GET)
     }
 
-    pub fn request_with(url: &str, body: &'static str, http_method: Method) -> Request<Body> {
+    pub fn request_with(url: &str, body: &str, http_method: Method) -> Request<String> {
         pj_info!("👉👉Resuest Url: {}👈👈", url);
         let uri = url.parse::<Uri>();
-        let mut req: Request<Body>;
+        let mut req: Request<String>;
         if http_method != Method::GET {
-            req = Request::new(Body::from(body));
+            req = Request::new(body.to_owned());
         } else {
             req = Request::default();
         }
@@ -113,31 +112,48 @@ impl PJHttpRequest {
 }
 
 impl PJHttpRequest {
-    pub fn make_http<F>(request: Request<Body>, completion_handler: F)
+    pub fn make_http<F>(request: Request<String>, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
             + std::clone::Clone,
     {
-        PJHttpRequest::do_http_send(request, |result| match result {
-            Ok((status, body)) => {
-                completion_handler(Ok((status, body)));
+        let rt_res = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build();
+        match rt_res {
+            Ok(rt) => {
+                rt.block_on(async move {
+                    PJHttpRequest::do_http_send(request, |result| match result {
+                        Ok((status, body)) => {
+                            completion_handler(Ok((status, body)));
+                        }
+                        Err(e) => {
+                            completion_handler(Err(e));
+                        }
+                    })
+                    .await
+                });
             }
-            Err(e) => {
-                completion_handler(Err(e));
+
+            Err(err) => {
+                completion_handler(Err(FetchError::Custom(format!(
+                    "Cannot create tokio::runtime::Builder: {}",
+                    err
+                ))));
             }
-        });
+        }
     }
 
     pub fn dispatch_http_response(
-        result: Result<(hyper::StatusCode, hyper::Chunk), FetchError>,
+        result: Result<(hyper::StatusCode, String), FetchError>,
         i_delegate: IPJToDoHttpRequestDelegateWrapper,
     ) {
         match result {
             Ok((status, body)) => {
-                let c_str = CString::new(PJHttpUtils::hyper_body_to_string(body)).unwrap();
+                let c_str = CString::new(body).unwrap_or(CString::default());
                 let c_char = c_str.into_raw();
                 (i_delegate.request_result)(
                     i_delegate.user,
@@ -170,87 +186,88 @@ impl PJHttpRequest {
         };
     }
 
-    pub fn do_http_send<F>(request: Request<Body>, completion_handler: F)
+    pub async fn do_http_send<F>(request: Request<String>, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, hyper::Chunk), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
             + std::clone::Clone,
     {
-        let completion_handler_http_err = completion_handler.clone();
-        let completion_handler_json_parse_err = completion_handler.clone();
         let url = request.uri().clone();
-        let url2 = request.uri().clone();
         // 4 is number of blocking DNS threads
         //为了使用https请求，默认是http请求
-        let https = HttpsConnector::new(4).unwrap();
+        let https = HttpsConnector::new();
         // https.https_only(true);
-        let client = Client::builder().build::<_, hyper::Body>(https);
+        let client = Client::builder(TokioExecutor::new()).build::<_, String>(https);
 
-        let status_code: hyper::StatusCode = hyper::StatusCode::OK;
-        let status_map: Arc<Mutex<_>> = Arc::new(Mutex::new(status_code));
-        let share_status_map_i = status_map.clone();
-        let share_status_map_ii = status_map.clone();
-        let share_status_map_iii = status_map.clone();
         pj_info!("🙏🙏🙏🙏🙏🙏The Resuest is: {:?}🙏🙏🙏🙏🙏🙏", request);
 
-        let response = client
-            .request(request)
-            .and_then(move |res| {
-                let mut share_status_data = share_status_map_i.lock().unwrap();
-                *share_status_data = res.status();
-                if !res.status().is_success() {
-                    pj_error!(
-                        "❌❌❌❌❌❌API {:#?}, Response {:#?} faild!!!❌❌❌❌❌❌",
-                        url,
-                        res
-                    );
-                } else {
+        let res = client.request(request).await;
+
+        match res {
+            Ok(mut response) => {
+                if response.status().is_success() {
                     pj_info!(
                         "✅✅✅✅✅✅API {:#?}, Response {:#?}✅✅✅✅✅✅",
-                        url,
-                        res
+                        url.clone(),
+                        response
+                    );
+                } else {
+                    pj_error!(
+                        "❌❌❌❌❌❌API {:#?}, Response {:#?} faild!!!❌❌❌❌❌❌",
+                        url.clone(),
+                        response
                     );
                 }
 
-                //使用该函数则是把body字节数据返回
-                res.into_body().concat2()
-            })
-            .from_err::<FetchError>()
-            // use the body after concatenation
-            .and_then(|body: hyper::Chunk| Ok(body))
-            .from_err();
+                let some_frame = response.body_mut().frame().await;
+                match some_frame {
+                    Some(frame) => match frame {
+                        Ok(frame) => {
+                            if let Some(d) = frame.data_ref() {
+                                match std::str::from_utf8(&d) {
+                                    Ok(body_str) => {
+                                        pj_info!(
+                                            "ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️ API {:#?}, Body {} ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️",
+                                            url,
+                                            body_str
+                                        );
+                                        (completion_handler.clone())(Ok((
+                                            response.status(),
+                                            body_str.to_owned(),
+                                        )));
+                                    }
 
-        let response_data = response
-            .map(move |body: hyper::Chunk| {
-                let body_json = std::str::from_utf8(&body);
-                pj_info!("ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️API {:#?}, Body {:#?}ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️", url2, body_json);
-                body
-            })
-            // if there was an error print it
-            .map_err(move |e: FetchError| match e {
-                FetchError::Http(_, e) => {
-                    completion_handler_http_err(Err(FetchError::Http(
-                        *(share_status_map_ii.lock().unwrap()),
-                        e,
-                    )));
-                }
-                FetchError::Json(e) => {
-                    completion_handler_json_parse_err(Err(FetchError::Json(e)));
-                }
-                FetchError::Custom(e) => {
-                    completion_handler_json_parse_err(Err(FetchError::Custom(e)));
-                }
-            })
-            .map(move |body: hyper::Chunk| {
-                completion_handler(Ok((*(share_status_map_iii.lock().unwrap()), body)));
-            })
-            // if there was an error print it
-            .map_err(|e| {
-                pj_error!("❌❌❌❌❌❌request error: {:?}❌❌❌❌❌❌", e);
-            });
+                                    Err(err) => {
+                                        (completion_handler.clone())(Err(FetchError::Custom(
+                                            format!("Cannot convert response body to str: {}", err),
+                                        )));
+                                        pj_error!( "❌❌❌❌❌❌Err convert response body:\n{:#?}❌❌❌❌❌❌", err);
+                                    }
+                                }
+                            }
+                        }
 
-        hyper::rt::run(response_data);
+                        Err(err) => {
+                            (completion_handler.clone())(Err(FetchError::Custom(format!(
+                                "Cannot get Frame<Bytes> from response body: {}",
+                                err
+                            ))));
+                            pj_error!("❌❌❌❌❌❌Err Response body:\n{:#?}❌❌❌❌❌❌", err);
+                        }
+                    },
+
+                    None => {
+                        pj_error!("❌❌❌❌❌❌None Response body:\n{:#?}❌❌❌❌❌❌", "");
+                    }
+                }
+            }
+
+            Err(err) => {
+                completion_handler(Err(FetchError::Custom(format!("Invalid request: {}", err))));
+                pj_error!("❌❌❌❌❌❌Err Request:\n{:#?}❌❌❌❌❌❌", err);
+            }
+        };
     }
 }

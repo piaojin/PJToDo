@@ -1,4 +1,4 @@
-use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType};
+use crate::to_do_type::to_do_type::{ToDoTypeInsert, ToDoType};
 
 pub trait PJToDoTypeService {
     /**

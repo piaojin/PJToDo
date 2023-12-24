@@ -1,10 +1,9 @@
-use to_do_type::to_do_type::{ToDoTypeInsert, ToDoType};
+use crate::db;
+use crate::to_do_type::to_do_type::{ToDoTypeInsert, ToDoType};
 use db::dao::to_do_type_dao::PJToDoTypeDAO;
 use db::pj_db_connection_util::pj_db_connection_util::StaticPJDBConnectionUtil;
 use db::tables::schema;
 use diesel::prelude::*;
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
 use db::tables::schema::todotype::dsl::*;
 
 pub struct PJToDoTypeDAOImpl;

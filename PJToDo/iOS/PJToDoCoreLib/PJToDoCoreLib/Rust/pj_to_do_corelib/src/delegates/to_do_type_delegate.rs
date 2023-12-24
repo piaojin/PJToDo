@@ -1,7 +1,7 @@
 use std::ops::Deref;
 use libc::{c_void};
 use std::marker::{Send, Sync};
-use to_do_type::to_do_type::{ToDoType};
+use crate::to_do_type::to_do_type::{ToDoType};
 
 #[repr(C)]
 pub struct IPJToDoTypeDelegate {

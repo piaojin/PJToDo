@@ -1,4 +1,4 @@
-use to_do_tag::to_do_tag::{ToDoTagInsert, ToDoTag};
+use crate::to_do_tag::to_do_tag::{ToDoTagInsert, ToDoTag};
 
 pub trait PJToDoTagDAO {
     fn insert_todo_tag(&self, to_do_tag: &ToDoTagInsert) -> Result<usize, diesel::result::Error>;

@@ -1,10 +1,9 @@
-use to_do::to_do::{ToDoInsert, ToDoQuery};
+use crate::db;
+use crate::to_do::to_do::{ToDoInsert, ToDoQuery};
 use db::dao::to_do_dao::PJToDoDAO;
 use db::pj_db_connection_util::pj_db_connection_util::StaticPJDBConnectionUtil;
 use db::tables::schema;
 use diesel::prelude::*;
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
 use db::tables::schema::todo::dsl::*;
 use diesel::dsl::sql_query;
 

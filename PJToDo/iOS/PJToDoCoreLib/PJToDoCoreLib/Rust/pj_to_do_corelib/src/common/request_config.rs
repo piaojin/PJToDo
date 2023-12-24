@@ -1,4 +1,4 @@
-use repos::repos::ReposRequestBody;
+use crate::repos::repos::ReposRequestBody;
 
 pub struct PJRequestConfig;
 

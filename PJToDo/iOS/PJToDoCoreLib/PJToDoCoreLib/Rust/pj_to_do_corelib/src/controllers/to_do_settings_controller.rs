@@ -1,13 +1,13 @@
-use delegates::to_do_settings_delegate::{IPJToDoSettingsDelegate, IPJToDoSettingsDelegateWrapper};
-use service::to_do_settings_service::{
+use crate::delegates::to_do_settings_delegate::{
+    IPJToDoSettingsDelegate, IPJToDoSettingsDelegateWrapper,
+};
+use crate::service::to_do_settings_service::{
     PJToDoSettingsService, insert_todo_settings, delete_todo_settings, update_todo_settings,
     fetch_data,
 };
-use service::service_impl::to_do_settings_service_impl::{createPJToDoSettingsServiceImpl};
-use mine::todo_settings::{ToDoSettings, ToDoSettingsInsert};
-use common::{free_rust_any_object};
-#[allow(unused_imports)]
-use common::pj_logger::PJLogger;
+use crate::service::service_impl::to_do_settings_service_impl::createPJToDoSettingsServiceImpl;
+use crate::mine::todo_settings::{ToDoSettings, ToDoSettingsInsert};
+use crate::common::free_rust_any_object;
 use std::thread;
 use std::marker::{Send, Sync};
 

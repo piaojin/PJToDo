@@ -1,4 +1,4 @@
-use mine::todo_settings::{ToDoSettingsInsert, ToDoSettings};
+use crate::mine::todo_settings::{ToDoSettingsInsert, ToDoSettings};
 
 pub trait PJToDoSettingsService {
     /**

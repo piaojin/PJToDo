@@ -6,7 +6,7 @@ extern crate libc;
 use self::libc::{c_char};
 use std::ffi::{CStr, CString};
 
-use db::tables::schema::{todosettings};
+use crate::db::tables::schema::{todosettings};
 #[derive(
     Serialize, Deserialize, Debug, Default, PartialEq, Queryable, AsChangeset, Identifiable,
 )]
