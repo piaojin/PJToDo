@@ -126,8 +126,68 @@ impl PJHttpRequest {
         match rt_res {
             Ok(rt) => {
                 rt.block_on(async move {
-                    PJHttpRequest::do_http_send(request, |result| match result {
+                    let url = request.uri().clone();
+                    let method = request.method().clone();
+                    let headers = request.headers().clone();
+                    let req_body = request.body().clone();
+                    PJHttpRequest::do_http_send(request, move |result| match result {
+                        Ok((status, body)) => match String::from_utf8(body) {
+                            Ok(body_string) => {
+                                pj_info!("ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️API {:#?} \n Method: {:#?} \n Headers: {:#?} \n Request Body: {:#?} \n Response Body: {:#?}ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️", url, method, headers, req_body, body_string);
+                                completion_handler(Ok((status, body_string)));
+                            }
+
+                            Err(e) => {
+                                completion_handler(Err(FetchError::Custom(format!(
+                                    "Cannot convert Vec<u8> response body to String: {}",
+                                    e
+                                ))));
+                            }
+                        },
+                        Err(e) => {
+                            completion_handler(Err(e));
+                        }
+                    })
+                    .await
+                });
+            }
+
+            Err(err) => {
+                completion_handler(Err(FetchError::Custom(format!(
+                    "Cannot create tokio::runtime::Builder: {}",
+                    err
+                ))));
+            }
+        }
+    }
+
+    pub fn make_http_with_raw_res_data<F>(request: Request<String>, completion_handler: F)
+    where
+        F: FnOnce(Result<(hyper::StatusCode, Vec<u8>), FetchError>)
+            + std::marker::Sync
+            + Send
+            + 'static
+            + std::clone::Clone,
+    {
+        let rt_res = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build();
+        match rt_res {
+            Ok(rt) => {
+                rt.block_on(async move {
+                    let url = request.uri().clone();
+                    let method = request.method().clone();
+                    let headers = request.headers().clone();
+                    let req_body = request.body().clone();
+                    PJHttpRequest::do_http_send(request, move |result| match result {
                         Ok((status, body)) => {
+                            pj_info!(
+                                "ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️API {:#?} \n Method: {:#?} \n Headers: {:#?} \n Request Body: {:#?} \nℹ️ℹ️ℹ️ℹ️ℹ️ℹ️",
+                                url,
+                                method,
+                                headers,
+                                req_body
+                            );
                             completion_handler(Ok((status, body)));
                         }
                         Err(e) => {
@@ -188,7 +248,7 @@ impl PJHttpRequest {
 
     pub async fn do_http_send<F>(request: Request<String>, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, Vec<u8>), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -221,7 +281,7 @@ impl PJHttpRequest {
                     );
                 }
 
-                let mut body_result_string: String = String::from("");
+                let mut body_result_bytes: Vec<u8> = Vec::new();
                 let mut is_response_ok: bool = true;
                 let mut response_err: FetchError = FetchError::Custom("Default error".to_string());
                 // response.body_mut().frame().await result is [Frame] and need loop to get result data.
@@ -229,20 +289,7 @@ impl PJHttpRequest {
                     match next {
                         Ok(frame) => {
                             if let Some(d) = frame.data_ref() {
-                                match std::str::from_utf8(&d) {
-                                    Ok(body_str) => {
-                                        body_result_string.push_str(body_str);
-                                    }
-
-                                    Err(err) => {
-                                        is_response_ok = false;
-                                        response_err = FetchError::Custom(format!(
-                                            "Cannot convert response body to str: {}",
-                                            err
-                                        ));
-                                        pj_error!( "❌❌❌❌❌❌Err convert response body:\n{:#?}❌❌❌❌❌❌", err);
-                                    }
-                                }
+                                body_result_bytes.append(&mut (d as &[u8]).to_owned());
                             }
                         }
 
@@ -257,10 +304,8 @@ impl PJHttpRequest {
                     }
                 }
 
-                pj_info!("ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️API {:#?}, Body {:#?}ℹ️ℹ️ℹ️ℹ️ℹ️ℹ️", url, body_result_string);
-
                 if is_response_ok {
-                    (completion_handler.clone())(Ok((response.status(), body_result_string)));
+                    (completion_handler.clone())(Ok((response.status(), body_result_bytes)));
                 } else {
                     (completion_handler.clone())(Err(response_err));
                 }

@@ -154,7 +154,7 @@ pub unsafe extern "C" fn pj_download_file(
         PJHttpReposFileRequest::download_file(request_url, move |result| {
             match result {
                 Ok((status, body)) => {
-                    match PJFileManager::wirte_bytes_to_file(save_path, body.as_bytes()) {
+                    match PJFileManager::wirte_bytes_to_file(save_path, body.as_slice()) {
                         Ok(_) => {
                             (i_delegate.request_result)(
                                 i_delegate.user,

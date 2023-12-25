@@ -24,6 +24,11 @@ class LoginViewController: PJBaseViewController {
         self.initData()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        SVProgressHUD.show(withStatus: "Loading")
+    }
+    
     private func initView() {
         self.title = "Login"
         self.view.backgroundColor = UIColor.colorWithRGB(red: 249, green: 249, blue: 249)
@@ -80,5 +85,18 @@ extension LoginViewController: WKNavigationDelegate {
             }
         }
         decisionHandler(.cancel)
+    }
+    
+    func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        SVProgressHUD.dismiss()
+    }
+    
+    func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
+        SVProgressHUD.dismiss()
+        let alertController = UIAlertController(title: "Open github page failed", message: "Please back and try again", preferredStyle: .alert)
+        alertController.addTextField()
+        let okAction = UIAlertAction(title: "OK", style: .default) { _ in
+            self.navigationController?.popViewController(animated: true)
+        }
     }
 }
