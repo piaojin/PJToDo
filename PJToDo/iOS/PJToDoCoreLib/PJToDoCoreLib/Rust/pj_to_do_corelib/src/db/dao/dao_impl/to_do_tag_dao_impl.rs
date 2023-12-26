@@ -2,7 +2,7 @@ use crate::db;
 use crate::db::pj_db_connection_util::pj_db_connection_util::PJDBConnectionUtil;
 use crate::to_do_tag::to_do_tag::{ToDoTagInsert, ToDoTag};
 use db::dao::to_do_tag_dao::PJToDoTagDAO;
-use db::pj_db_connection_util::pj_db_connection_util::StaticPJDBConnectionUtil;
+
 use db::tables::schema;
 use diesel::prelude::*;
 use db::tables::schema::todotag::dsl::*;

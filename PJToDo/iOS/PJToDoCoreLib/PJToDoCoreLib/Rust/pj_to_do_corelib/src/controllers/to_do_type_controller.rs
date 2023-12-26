@@ -9,7 +9,7 @@ use crate::to_do_type::to_do_type::{
     ToDoTypeInsert, ToDoType, pj_create_ToDoType, pj_create_ToDoTypeInsert,
 };
 use crate::common::free_rust_any_object;
-use std::ffi::{CString, CStr};
+use std::ffi::{CStr};
 use libc::c_char;
 use std::thread;
 use std::marker::{Send, Sync};

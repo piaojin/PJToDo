@@ -2,7 +2,6 @@ extern crate diesel;
 
 use std::ffi::CStr;
 use diesel::prelude::*;
-use futures::lock::MutexGuard;
 
 use super::pj_database::Database;
 

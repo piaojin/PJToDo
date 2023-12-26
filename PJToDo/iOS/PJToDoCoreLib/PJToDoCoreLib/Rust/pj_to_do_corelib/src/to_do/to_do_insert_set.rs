@@ -3,7 +3,7 @@ use crate::{
     common::utils::pj_utils::PJUtils,
 };
 use libc::{c_char};
-use std::ffi::{CStr, CString};
+use std::ffi::{CStr};
 
 #[no_mangle]
 pub unsafe extern "C" fn pj_set_todo_insert_title(ptr: *mut ToDoInsert, title: *const c_char) {

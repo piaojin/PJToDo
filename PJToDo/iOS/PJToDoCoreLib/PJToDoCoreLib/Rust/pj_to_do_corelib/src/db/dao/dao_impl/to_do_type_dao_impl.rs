@@ -4,7 +4,7 @@ use crate::to_do_type::to_do_type::{ToDoTypeInsert, ToDoType};
 use db::dao::to_do_type_dao::PJToDoTypeDAO;
 use db::pj_db_connection_util::pj_db_connection_util::StaticPJDBConnectionUtil;
 use db::tables::schema;
-use diesel::{prelude::*, connection};
+use diesel::prelude::*;
 use db::tables::schema::todotype::dsl::*;
 
 pub struct PJToDoTypeDAOImpl;

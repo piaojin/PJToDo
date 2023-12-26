@@ -7,7 +7,7 @@ use crate::service::to_do_tag_service::{
 use crate::service::service_impl::to_do_tag_service_impl::createPJToDoTagServiceImpl;
 use crate::to_do_tag::to_do_tag::{ToDoTagInsert, ToDoTag, pj_create_ToDoTag, pj_create_ToDoTagInsert};
 use crate::common::free_rust_any_object;
-use std::ffi::{CString, CStr};
+use std::ffi::{CStr};
 use libc::c_char;
 use std::thread;
 use std::marker::{Send, Sync};

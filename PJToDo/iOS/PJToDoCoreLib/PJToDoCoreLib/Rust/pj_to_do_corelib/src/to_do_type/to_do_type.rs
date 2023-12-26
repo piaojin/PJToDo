@@ -4,7 +4,7 @@ extern crate serde_json;
 
 extern crate libc;
 use self::libc::{c_char};
-use std::ffi::{CStr, CString};
+use std::ffi::{CStr};
 
 use crate::{
     db::tables::schema::{todotype},

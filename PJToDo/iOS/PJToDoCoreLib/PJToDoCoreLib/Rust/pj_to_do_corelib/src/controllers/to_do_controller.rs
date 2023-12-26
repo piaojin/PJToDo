@@ -19,7 +19,6 @@ use service::service_impl::to_do_type_service_impl::createPJToDoTypeServiceImpl;
 use service::service_impl::to_do_tag_service_impl::createPJToDoTagServiceImpl;
 use std::ptr;
 use libc::c_char;
-use std::ffi::CString;
 
 /*
 * cbindgen didn't support Box<dyn PJToDoService> type,so I need to use PJToDoServiceController to define Box<dyn PJToDoService>.

@@ -2,7 +2,7 @@ use crate::db;
 use crate::db::pj_db_connection_util::pj_db_connection_util::PJDBConnectionUtil;
 use crate::mine::todo_settings::{ToDoSettingsInsert, ToDoSettings};
 use db::dao::to_do_settings_dao::PJToDoSettingsDAO;
-use db::pj_db_connection_util::pj_db_connection_util::StaticPJDBConnectionUtil;
+
 use db::tables::schema;
 use diesel::prelude::*;
 use db::tables::schema::todosettings::dsl::*;
