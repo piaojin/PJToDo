@@ -1,3 +1,4 @@
+use crate::common::utils::pj_utils::PJUtils;
 use crate::delegates::to_do_delegate::{IPJToDoDelegate, IPJToDoDelegateWrapper};
 use crate::service;
 use service::to_do_service::{
@@ -349,7 +350,7 @@ impl PJToDoController {
 
         assert!(section <= (*(self.sectionTitles)).len());
 
-        let title = CString::new((*(self.sectionTitles))[section].clone()).unwrap(); //unsafe
+        let title = PJUtils::create_cstring_from(&((*(self.sectionTitles))[section]));
         title.into_raw()
     }
 

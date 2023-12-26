@@ -5,7 +5,10 @@ extern crate libc;
 
 use self::libc::{c_char};
 use std::ffi::{CStr, CString};
-use crate::db::tables::schema::{todotag};
+use crate::{
+    db::tables::schema::{todotag},
+    common::utils::pj_utils::PJUtils,
+};
 
 #[derive(
     Serialize, Deserialize, Debug, Default, PartialEq, Queryable, AsChangeset, Identifiable,
@@ -62,8 +65,8 @@ pub unsafe extern "C" fn pj_set_todo_tag_name(ptr: *mut ToDoTag, tag_name: *cons
 #[no_mangle]
 pub unsafe extern "C" fn pj_get_todo_tag_name(ptr: *const ToDoTag) -> *mut c_char {
     assert!(ptr != std::ptr::null_mut());
-    let todo_tag = &*ptr;
-    let tag_name = CString::new(todo_tag.tag_name.clone()).unwrap(); //unsafe
+    let todo_tag = &*ptr; //unsafe
+    let tag_name = PJUtils::create_cstring_from(&todo_tag.tag_name);
     tag_name.into_raw()
 }
 
@@ -96,6 +99,6 @@ pub unsafe extern "C" fn pj_set_todo_tag_insert_name(
 pub unsafe extern "C" fn pj_get_todo_tag_insert_name(ptr: *const ToDoTagInsert) -> *mut c_char {
     assert!(ptr != std::ptr::null_mut());
     let todo_tag = &*ptr;
-    let tag_name = CString::new(todo_tag.tag_name.clone()).unwrap(); //unsafe
+    let tag_name = PJUtils::create_cstring_from(&todo_tag.tag_name); //unsafe
     tag_name.into_raw()
 }

@@ -1,3 +1,4 @@
+use crate::common::utils::pj_utils::PJUtils;
 use crate::delegates::to_do_type_delegate::{IPJToDoTypeDelegate, IPJToDoTypeDelegateWrapper};
 use crate::service::to_do_type_service::{
     PJToDoTypeService, insert_todo_type, delete_todo_type, update_todo_type, find_todo_type_by_id,
@@ -54,8 +55,8 @@ unsafe impl Sync for PJToDoTypeController {}
 
 impl PJToDoTypeController {
     fn new(delegate: IPJToDoTypeDelegate) -> PJToDoTypeController {
-        let c_str_type = CString::new("".to_string()).unwrap();
-        let c_str_type_insert = CString::new("".to_string()).unwrap();
+        let c_str_type = PJUtils::create_cstring_from("");
+        let c_str_type_insert = PJUtils::create_cstring_from("");
         let controller = unsafe {
             PJToDoTypeController {
                 delegate: delegate,

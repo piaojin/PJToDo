@@ -240,7 +240,7 @@ impl PJHttpRequest {
                         error_string = custom_error_str;
                     }
                 }
-                let c_char = CString::new(error_string).unwrap().into_raw();
+                let c_char = PJUtils::create_cstring_from(&error_string).into_raw();
                 (i_delegate.request_result)(i_delegate.user, c_char, error_code, false);
             }
         };

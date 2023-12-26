@@ -34,7 +34,7 @@ impl Database {
             table
         )))
         .get_result(&mut self.conn())
-        .unwrap()
+        .unwrap_or(false)
     }
 
     pub fn conn(&self) -> SqliteConnection {

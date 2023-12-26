@@ -1,3 +1,4 @@
+use crate::common::utils::pj_utils::PJUtils;
 use crate::delegates::to_do_tag_delegate::{IPJToDoTagDelegate, IPJToDoTagDelegateWrapper};
 use crate::service::to_do_tag_service::{
     PJToDoTagService, insert_todo_tag, delete_todo_tag, update_todo_tag, find_todo_tag_by_id,
@@ -51,8 +52,8 @@ unsafe impl Sync for PJToDoTagController {}
 
 impl PJToDoTagController {
     fn new(delegate: IPJToDoTagDelegate) -> PJToDoTagController {
-        let c_str_tag = CString::new("".to_string()).unwrap();
-        let c_str_tag_insert = CString::new("".to_string()).unwrap();
+        let c_str_tag = PJUtils::create_cstring_from("");
+        let c_str_tag_insert = PJUtils::create_cstring_from("");
         let controller = unsafe {
             PJToDoTagController {
                 delegate: delegate,

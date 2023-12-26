@@ -12,7 +12,13 @@ pub struct PJReposManager;
 
 impl PJReposManager {
     pub fn update_repos(repos: Repos) {
-        *(REPOS.lock().unwrap()) = repos;
+        match REPOS.lock() {
+            Ok(mut info) => {
+                *info = repos;
+            }
+
+            Err(_) => {}
+        }
     }
 
     pub fn remove_repos() {

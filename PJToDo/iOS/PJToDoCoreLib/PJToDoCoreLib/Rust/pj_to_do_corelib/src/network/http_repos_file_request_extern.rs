@@ -1,3 +1,4 @@
+use crate::common::utils::pj_utils::PJUtils;
 use crate::network::http_repos_file_request::PJHttpReposFileRequest;
 use crate::delegates::to_do_http_request_delegate::{
     IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate,
@@ -158,7 +159,7 @@ pub unsafe extern "C" fn pj_download_file(
                         Ok(_) => {
                             (i_delegate.request_result)(
                                 i_delegate.user,
-                                CString::new("".to_string()).unwrap().into_raw(),
+                                PJUtils::create_cstring_from("\0").into_raw(),
                                 status.as_u16(),
                                 status.is_success(),
                             );
@@ -167,8 +168,7 @@ pub unsafe extern "C" fn pj_download_file(
                             pj_error!("save downloaded file error: {:?}", e);
                             (i_delegate.request_result)(
                                 i_delegate.user,
-                                CString::new(format!("io error: {:?}", e))
-                                    .unwrap()
+                                PJUtils::create_cstring_from(&format!("io error: {:?}", e))
                                     .into_raw(),
                                 0,
                                 false,
@@ -180,8 +180,7 @@ pub unsafe extern "C" fn pj_download_file(
                     pj_error!("download file error: {:?}", e);
                     (i_delegate.request_result)(
                         i_delegate.user,
-                        CString::new(format!("download error: {:?}", e))
-                            .unwrap()
+                        PJUtils::create_cstring_from(&format!("download error: {:?}", e))
                             .into_raw(),
                         0,
                         false,
