@@ -34,9 +34,9 @@ impl Default for ToDoState {
     AsChangeset,
     QueryableByName,
 )]
-#[belongs_to(ToDoType, foreign_key = "to_do_type_id")]
-#[belongs_to(ToDoTag, foreign_key = "to_do_tag_id")]
-#[table_name = "todo"]
+#[diesel(belongs_to(ToDoType, foreign_key = to_do_type_id))]
+#[diesel(belongs_to(ToDoTag, foreign_key = to_do_tag_id))]
+#[diesel(table_name = todo)]
 pub struct ToDoQuery {
     pub id: i32,
     pub content: String,     //待办事项内容
@@ -71,7 +71,7 @@ impl ToDoQuery {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default, PartialEq, Insertable)]
-#[table_name = "todo"]
+#[diesel(table_name = todo)]
 pub struct ToDoInsert {
     pub content: String,     //待办事项内容
     pub title: String,       //待办事项标题

@@ -16,7 +16,7 @@ impl PJToDoSettingsDAO for PJToDoSettingsDAOImpl {
         pj_info!("insert_todo_settings: to_do_settings: {:?}", to_do_settings);
         let inserted_result = diesel::insert_into(schema::todosettings::table)
             .values(to_do_settings)
-            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
+            .execute(&mut (StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match inserted_result {
             Ok(inserted_row) => {
                 let mut result: Result<usize, diesel::result::Error> =
@@ -38,7 +38,7 @@ impl PJToDoSettingsDAO for PJToDoSettingsDAOImpl {
 
     fn delete_todo_settings(&self, to_do_settings_id: i32) -> Result<usize, diesel::result::Error> {
         let deleted_result = diesel::delete(todosettings.filter(id.eq(to_do_settings_id)))
-            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
+            .execute(&mut (StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match deleted_result {
             Ok(deleted_row) => {
                 let mut result: Result<usize, diesel::result::Error> =
@@ -65,7 +65,7 @@ impl PJToDoSettingsDAO for PJToDoSettingsDAOImpl {
         pj_info!("insert_todo_settings: to_do_settings: {:?}", to_do_settings);
         let update_result = diesel::update(todosettings.filter(id.eq(to_do_settings.id)))
             .set(to_do_settings)
-            .execute(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
+            .execute(&mut (StaticPJDBConnectionUtil.lock().unwrap()).connection);
 
         match update_result {
             Ok(update_row) => {
@@ -88,7 +88,7 @@ impl PJToDoSettingsDAO for PJToDoSettingsDAOImpl {
 
     fn fetch_data(&self) -> Result<Vec<ToDoSettings>, diesel::result::Error> {
         let to_do_settings_result = todosettings
-            .load::<ToDoSettings>(&(StaticPJDBConnectionUtil.lock().unwrap()).connection);
+            .load::<ToDoSettings>(&mut (StaticPJDBConnectionUtil.lock().unwrap()).connection);
         match to_do_settings_result {
             Ok(to_do_settingss) => {
                 pj_info!("fetchData success!");

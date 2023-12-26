@@ -12,7 +12,7 @@ use crate::db::tables::schema::{todotype};
 #[derive(
     Serialize, Deserialize, Debug, Default, PartialEq, Queryable, AsChangeset, Identifiable,
 )]
-#[table_name = "todotype"]
+#[diesel(table_name = todotype)]
 pub struct ToDoType {
     pub id: i32,
     pub type_name: String,
@@ -28,7 +28,7 @@ impl ToDoType {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default, PartialEq, Insertable)]
-#[table_name = "todotype"]
+#[diesel(table_name = todotype)]
 pub struct ToDoTypeInsert {
     pub type_name: String,
 }

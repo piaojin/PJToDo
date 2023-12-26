@@ -2,8 +2,8 @@ use crate::network::http_repos_request::PJHttpReposRequest;
 use crate::delegates::to_do_http_request_delegate::{
     IPJToDoHttpRequestDelegateWrapper, IPJToDoHttpRequestDelegate,
 };
-use std::ffi::{CStr};
-use libc::{c_char};
+use std::ffi::CStr;
+use libc::c_char;
 use crate::common::request_config::PJRequestConfig;
 use std::thread;
 use crate::common::manager::pj_repos_manager::PJReposManager;

@@ -3,14 +3,14 @@ extern crate serde;
 extern crate serde_json;
 
 extern crate libc;
-use self::libc::{c_char};
+use self::libc::c_char;
 use std::ffi::{CStr, CString};
 
-use crate::db::tables::schema::{todosettings};
+use crate::db::tables::schema::todosettings;
 #[derive(
     Serialize, Deserialize, Debug, Default, PartialEq, Queryable, AsChangeset, Identifiable,
 )]
-#[table_name = "todosettings"]
+#[diesel(table_name = todosettings)]
 pub struct ToDoSettings {
     pub id: i32,
     pub remind_email: String,
@@ -28,7 +28,7 @@ impl ToDoSettings {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default, PartialEq, Insertable)]
-#[table_name = "todosettings"]
+#[diesel(table_name = todosettings)]
 pub struct ToDoSettingsInsert {
     pub remind_email: String,
     pub remind_days: i32,

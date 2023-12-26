@@ -10,7 +10,7 @@ use crate::db::tables::schema::{todotag};
 #[derive(
     Serialize, Deserialize, Debug, Default, PartialEq, Queryable, AsChangeset, Identifiable,
 )]
-#[table_name = "todotag"]
+#[diesel(table_name = todotag)]
 pub struct ToDoTag {
     pub id: i32,
     pub tag_name: String,
@@ -26,7 +26,7 @@ impl ToDoTag {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default, PartialEq, Insertable)]
-#[table_name = "todotag"]
+#[diesel(table_name = todotag)]
 pub struct ToDoTagInsert {
     pub tag_name: String,
 }
