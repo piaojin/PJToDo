@@ -1,0 +1,34 @@
+{
+	"info": {
+		"_postman_id": "0beff7e8-45f4-447f-bf80-aaae289ef5a9",
+		"name": "github-get-repos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"_postman_id": "36a61650-076b-4f4a-ab80-8124b2ede009",
+			"name": "github-get-repos",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/repos/piaojin/Hello-World",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"piaojin",
+						"Hello-World"
+					]
+				},
+				"description": "github-get-repos"
+			},
+			"response": []
+		}
+	]
+}

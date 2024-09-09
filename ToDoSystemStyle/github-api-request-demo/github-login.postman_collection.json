@@ -1,0 +1,79 @@
+{
+	"info": {
+		"_postman_id": "42704b8c-9f7a-48c0-a402-26c0f8b8d467",
+		"name": "github-login",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"_postman_id": "701d43c9-d682-41f7-ae22-8853e5215415",
+			"name": "github-get-content",
+			"item": [
+				{
+					"_postman_id": "d8bd3ea6-e173-4347-aa35-872bd4e5e71f",
+					"name": "github-get-content",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {},
+						"url": {
+							"raw": "https://api.github.com/repos/piaojin/PJToDo/readme",
+							"protocol": "https",
+							"host": [
+								"api",
+								"github",
+								"com"
+							],
+							"path": [
+								"repos",
+								"piaojin",
+								"PJToDo",
+								"readme"
+							]
+						},
+						"description": "github-get-content"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"_postman_id": "7758f278-0cc3-466c-a907-d3fbf76b835e",
+			"name": "github-login",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "username",
+							"value": "piaojin",
+							"type": "string"
+						},
+						{
+							"key": "password",
+							"value": "weng804488815",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/user",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"user"
+					]
+				},
+				"description": "github-login"
+			},
+			"response": []
+		}
+	]
+}

@@ -1,0 +1,53 @@
+{
+	"info": {
+		"_postman_id": "f0ba8d4f-4c68-49ad-9d17-7a4d662e495b",
+		"name": "github-update-file",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"_postman_id": "793048d5-76cd-4bdd-9919-d9fd5a37935a",
+			"name": "github-update-file",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					},
+					{
+						"key": "Accept",
+						"value": "application/json"
+					},
+					{
+						"key": "Authorization",
+						"value": "token f8c4555a1b4303b1d7788621da51075d95b4b38f"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"path\":\"examples/test4.md\",\n    \"message\":\"测试更新一个文件\",\n    \"content\":\"5rWL6K+V5pu05paw5LiA5Liq5paH5Lu2\",\n    \"sha\": \"fa43f290c3e94a9940a7473c17c17980b0bd4b73\"\n}"
+				},
+				"url": {
+					"raw": "https://api.github.com/repos/piaojin/PJToDo/contents/examples/test4.md",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"piaojin",
+						"PJToDo",
+						"contents",
+						"examples",
+						"test4.md"
+					]
+				},
+				"description": "github-update-file"
+			},
+			"response": []
+		}
+	]
+}

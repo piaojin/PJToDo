@@ -1,0 +1,39 @@
+{
+	"info": {
+		"_postman_id": "35652887-0990-47ec-9471-aaf5590fe7d5",
+		"name": "github-delete-repos",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"_postman_id": "9856ecfd-67fc-49e6-97f9-1122e126902f",
+			"name": "github-delete-repos",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic cGlhb2ppbjp3ZW5nODA0NDg4ODE1"
+					}
+				],
+				"body": {},
+				"url": {
+					"raw": "https://api.github.com/repos/piaojin/Hello-World",
+					"protocol": "https",
+					"host": [
+						"api",
+						"github",
+						"com"
+					],
+					"path": [
+						"repos",
+						"piaojin",
+						"Hello-World"
+					]
+				},
+				"description": "github-delete-repos"
+			},
+			"response": []
+		}
+	]
+}
