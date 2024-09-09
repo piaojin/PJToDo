@@ -3,14 +3,14 @@ extern crate serde;
 extern crate serde_json;
 
 extern crate libc;
-use self::libc::{c_char};
-use std::ffi::{CStr, CString};
+use self::libc::c_char;
+use std::ffi::{CStr};
 
-use crate::db::tables::schema::{todosettings};
+use crate::{db::tables::schema::todosettings, common::utils::pj_utils::PJUtils};
 #[derive(
     Serialize, Deserialize, Debug, Default, PartialEq, Queryable, AsChangeset, Identifiable,
 )]
-#[table_name = "todosettings"]
+#[diesel(table_name = todosettings)]
 pub struct ToDoSettings {
     pub id: i32,
     pub remind_email: String,
@@ -28,7 +28,7 @@ impl ToDoSettings {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default, PartialEq, Insertable)]
-#[table_name = "todosettings"]
+#[diesel(table_name = todosettings)]
 pub struct ToDoSettingsInsert {
     pub remind_email: String,
     pub remind_days: i32,
@@ -79,8 +79,8 @@ pub unsafe extern "C" fn pj_get_todo_settings_remind_email(
     ptr: *const ToDoSettings,
 ) -> *mut c_char {
     assert!(ptr != std::ptr::null_mut());
-    let todo_settins = &*ptr;
-    let remind_email = CString::new(todo_settins.remind_email.clone()).unwrap(); //unsafe
+    let todo_settings = &*ptr;
+    let remind_email = PJUtils::create_cstring_from(&todo_settings.remind_email); //unsafe
     remind_email.into_raw()
 }
 
@@ -131,8 +131,8 @@ pub unsafe extern "C" fn pj_get_todo_settings_insert_remind_email(
     ptr: *const ToDoSettingsInsert,
 ) -> *mut c_char {
     assert!(ptr != std::ptr::null_mut());
-    let todo_settins = &*ptr;
-    let remind_email = CString::new(todo_settins.remind_email.clone()).unwrap(); //unsafe
+    let todo_settings = &*ptr;
+    let remind_email = PJUtils::create_cstring_from(&todo_settings.remind_email);
     remind_email.into_raw()
 }
 

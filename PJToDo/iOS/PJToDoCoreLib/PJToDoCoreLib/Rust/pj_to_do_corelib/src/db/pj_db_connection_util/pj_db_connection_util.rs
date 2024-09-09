@@ -84,22 +84,74 @@ impl PJDBConnectionUtil {
             }
         }
     }
+
+    pub fn fetch_connection<F, E, T>(
+        completion_handler: F,
+        failure_handler: E,
+    ) -> Result<T, diesel::result::Error>
+    where
+        F: Fn(std::sync::MutexGuard<PJDBConnectionUtil>) -> T,
+        E: Fn(diesel::result::Error) -> diesel::result::Error,
+    {
+        match StaticPJDBConnectionUtil.lock() {
+            Ok(value) => Ok(completion_handler(value)),
+
+            Err(e) => {
+                pj_error!("fetchData failure {}", e);
+                Err(failure_handler(
+                    diesel::result::Error::BrokenTransactionManager,
+                ))
+            }
+        }
+    }
+
+    pub fn get_connection() -> Option<std::sync::MutexGuard<'static, PJDBConnectionUtil>> {
+        match StaticPJDBConnectionUtil.lock() {
+            Ok(value) => Some(value),
+
+            Err(e) => {
+                pj_error!("fetchData failure {}", e);
+                None
+            }
+        }
+    }
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn pj_update_db_connection() {
-    StaticPJDBConnectionUtil
-        .lock()
-        .unwrap()
-        .update_connection(PJToDoPal::sqlite_url());
+    match StaticPJDBConnectionUtil.lock() {
+        Ok(mut value) => {
+            value.update_connection(PJToDoPal::sqlite_url());
+        }
+
+        Err(e) => {
+            pj_error!("update db connection failed: {}", e);
+        }
+    }
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn pj_init_data_base() {
-    StaticPJDBConnectionUtil.lock().unwrap().init_database();
+    match StaticPJDBConnectionUtil.lock() {
+        Ok(value) => {
+            value.init_database();
+        }
+
+        Err(e) => {
+            pj_error!("init database failed: {}", e);
+        }
+    }
 }
 
 #[no_mangle]
 pub unsafe extern "C" fn pj_init_tables() {
-    StaticPJDBConnectionUtil.lock().unwrap().init_tables();
+    match StaticPJDBConnectionUtil.lock() {
+        Ok(value) => {
+            value.init_tables();
+        }
+
+        Err(e) => {
+            pj_error!("init tables failed: {}", e);
+        }
+    }
 }

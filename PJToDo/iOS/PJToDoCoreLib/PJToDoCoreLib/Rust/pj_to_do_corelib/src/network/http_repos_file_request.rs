@@ -11,7 +11,6 @@ use crate::common::utils::pj_utils::PJUtils;
 use crate::repos::repos_file::ReposFileBody;
 use crate::network;
 use crate::delegates::to_do_http_request_delegate::IPJToDoHttpRequestDelegateWrapper;
-use std::ffi::CString;
 
 #[derive(PartialEq, Debug)]
 pub enum FileActionType {
@@ -91,10 +90,10 @@ impl PJHttpReposFileRequest {
             + std::clone::Clone,
     {
         unsafe {
-            let path = CString::new("PJToDo/Data/pj_to_db.zip".to_string()).unwrap();
-            let message = CString::new("message".to_string()).unwrap();
-            let content = CString::new("content".to_string()).unwrap();
-            let sha = CString::new("sha".to_string()).unwrap();
+            let path = PJUtils::create_cstring_from("PJToDo/Data/pj_to_db.zip");
+            let message = PJUtils::create_cstring_from("message");
+            let content = PJUtils::create_cstring_from("content");
+            let sha = PJUtils::create_cstring_from("sha");
             PJHttpReposFileRequest::crud_repos_file(
                 request_url,
                 ReposFileBody::new(
@@ -111,7 +110,7 @@ impl PJHttpReposFileRequest {
 
     pub fn download_file<F>(request_url: String, completion_handler: F)
     where
-        F: FnOnce(Result<(hyper::StatusCode, String), FetchError>)
+        F: FnOnce(Result<(hyper::StatusCode, Vec<u8>), FetchError>)
             + std::marker::Sync
             + Send
             + 'static
@@ -119,7 +118,7 @@ impl PJHttpReposFileRequest {
     {
         let mut request = PJHttpRequest::default_request(&request_url);
         *request.method_mut() = Method::GET;
-        PJHttpRequest::make_http(request, completion_handler);
+        PJHttpRequest::make_http_with_raw_res_data(request, completion_handler);
     }
 
     fn crud_repos_file<F>(

@@ -14,7 +14,13 @@ pub struct PJUserManager;
 
 impl PJUserManager {
     pub fn update_user(user: User) {
-        *(USERINFO.lock().unwrap()) = user;
+        match USERINFO.lock() {
+            Ok(mut info) => {
+                *info = user;
+            }
+
+            Err(_) => {}
+        }
     }
 
     pub fn remove_user() {

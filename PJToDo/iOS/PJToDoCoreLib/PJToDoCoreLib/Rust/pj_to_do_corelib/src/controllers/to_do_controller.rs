@@ -1,3 +1,4 @@
+use crate::common::utils::pj_utils::PJUtils;
 use crate::delegates::to_do_delegate::{IPJToDoDelegate, IPJToDoDelegateWrapper};
 use crate::service;
 use service::to_do_service::{
@@ -18,7 +19,6 @@ use service::service_impl::to_do_type_service_impl::createPJToDoTypeServiceImpl;
 use service::service_impl::to_do_tag_service_impl::createPJToDoTagServiceImpl;
 use std::ptr;
 use libc::c_char;
-use std::ffi::CString;
 
 /*
 * cbindgen didn't support Box<dyn PJToDoService> type,so I need to use PJToDoServiceController to define Box<dyn PJToDoService>.
@@ -349,7 +349,7 @@ impl PJToDoController {
 
         assert!(section <= (*(self.sectionTitles)).len());
 
-        let title = CString::new((*(self.sectionTitles))[section].clone()).unwrap(); //unsafe
+        let title = PJUtils::create_cstring_from(&((*(self.sectionTitles))[section]));
         title.into_raw()
     }
 

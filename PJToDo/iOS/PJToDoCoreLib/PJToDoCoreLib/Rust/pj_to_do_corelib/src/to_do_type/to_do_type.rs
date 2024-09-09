@@ -4,15 +4,18 @@ extern crate serde_json;
 
 extern crate libc;
 use self::libc::{c_char};
-use std::ffi::{CStr, CString};
+use std::ffi::{CStr};
 
-use crate::db::tables::schema::{todotype};
+use crate::{
+    db::tables::schema::{todotype},
+    common::utils::pj_utils::PJUtils,
+};
 // #[primary_key(id)]
 // #[column_name(barId)]
 #[derive(
     Serialize, Deserialize, Debug, Default, PartialEq, Queryable, AsChangeset, Identifiable,
 )]
-#[table_name = "todotype"]
+#[diesel(table_name = todotype)]
 pub struct ToDoType {
     pub id: i32,
     pub type_name: String,
@@ -28,7 +31,7 @@ impl ToDoType {
 }
 
 #[derive(Serialize, Deserialize, Debug, Default, PartialEq, Insertable)]
-#[table_name = "todotype"]
+#[diesel(table_name = todotype)]
 pub struct ToDoTypeInsert {
     pub type_name: String,
 }
@@ -67,7 +70,7 @@ pub unsafe extern "C" fn pj_set_todo_type_name(ptr: *mut ToDoType, type_name: *c
 pub unsafe extern "C" fn pj_get_todo_type_name(ptr: *const ToDoType) -> *mut c_char {
     assert!(ptr != std::ptr::null_mut());
     let todo_type = &*ptr;
-    let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe
+    let type_name = PJUtils::create_cstring_from(&todo_type.type_name); //unsafe
     type_name.into_raw()
 }
 
@@ -100,6 +103,6 @@ pub unsafe extern "C" fn pj_set_todo_type_insert_name(
 pub unsafe extern "C" fn pj_get_todo_type_insert_name(ptr: *const ToDoTypeInsert) -> *mut c_char {
     assert!(ptr != std::ptr::null_mut());
     let todo_type = &*ptr;
-    let type_name = CString::new(todo_type.type_name.clone()).unwrap(); //unsafe
+    let type_name = PJUtils::create_cstring_from(&todo_type.type_name); //unsafe
     type_name.into_raw()
 }

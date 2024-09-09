@@ -33,8 +33,8 @@ impl Database {
              AND name = '{}')",
             table
         )))
-        .get_result(&self.conn())
-        .unwrap()
+        .get_result(&mut self.conn())
+        .unwrap_or(false)
     }
 
     pub fn conn(&self) -> SqliteConnection {
